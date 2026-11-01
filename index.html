@@ -808,6 +808,8 @@
   body.show-offline #offlineMenu{display:block;}
   body.show-online #mainMenu,body.show-offline #mainMenu,body.show-online #aboutScreen,body.show-offline #aboutScreen,body.show-online #learnScreen,body.show-offline #learnScreen{display:none;}
   body.show-about #onlineMenu,body.show-about #offlineMenu,body.show-learn #onlineMenu,body.show-learn #offlineMenu{display:none;}
+  body.show-tournaments #tournamentScreen{display:block;}
+  body.show-tournaments #mainMenu,body.show-tournaments #onlineMenu,body.show-tournaments #offlineMenu,body.show-tournaments #aboutScreen,body.show-tournaments #learnScreen,body.show-tournaments #customScreen{display:none;}
   .menuscreen{max-width:600px;}
   .menuscreen .backbtn{background:rgba(7,11,24,.68);border-color:rgba(232,193,90,.6);color:#f7f2df;backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px);box-shadow:none;}
   .menuscreen .backbtn:hover{color:#f6d776;border-color:#f6d776;}
@@ -1835,98 +1837,98 @@ html.reduce-motion .pm-particles{display:none;}
    viewports scale the whole menu stack down rather than clipping
    the fixed bottom nav or scrolling.
    ============================================================ */
-body.show-menu:not(.show-about):not(.show-learn):not(.show-online):not(.show-offline):not(.show-custom):not(.show-setup):not(.show-shop){
+body.show-menu:not(.show-about):not(.show-learn):not(.show-online):not(.show-offline):not(.show-custom):not(.show-setup):not(.show-shop):not(.show-tournaments){
   height:100dvh;max-height:100dvh;overflow:hidden;
 }
-body.show-menu:not(.show-about):not(.show-learn):not(.show-online):not(.show-offline):not(.show-custom):not(.show-setup):not(.show-shop) .wrap{
+body.show-menu:not(.show-about):not(.show-learn):not(.show-online):not(.show-offline):not(.show-custom):not(.show-setup):not(.show-shop):not(.show-tournaments) .wrap{
   height:100dvh;max-height:100dvh;overflow:hidden;display:flex;flex-direction:column;
   padding:6px 12px 0;
 }
-body.show-menu:not(.show-about):not(.show-learn):not(.show-online):not(.show-offline):not(.show-custom):not(.show-setup):not(.show-shop) .online-corner{
+body.show-menu:not(.show-about):not(.show-learn):not(.show-online):not(.show-offline):not(.show-custom):not(.show-setup):not(.show-shop):not(.show-tournaments) .online-corner{
   flex:0 0 auto;
 }
-body.show-menu:not(.show-about):not(.show-learn):not(.show-online):not(.show-offline):not(.show-custom):not(.show-setup):not(.show-shop) #mainMenu{
+body.show-menu:not(.show-about):not(.show-learn):not(.show-online):not(.show-offline):not(.show-custom):not(.show-setup):not(.show-shop):not(.show-tournaments) #mainMenu{
   flex:1 1 auto;min-height:0;width:100%;display:flex;flex-direction:column;
   padding-bottom:calc(64px + env(safe-area-inset-bottom));
 }
-body.show-menu:not(.show-about):not(.show-learn):not(.show-online):not(.show-offline):not(.show-custom):not(.show-setup):not(.show-shop) .menu-topbar{
+body.show-menu:not(.show-about):not(.show-learn):not(.show-online):not(.show-offline):not(.show-custom):not(.show-setup):not(.show-shop):not(.show-tournaments) .menu-topbar{
   flex:0 0 auto;margin-bottom:2px;
 }
-body.show-menu:not(.show-about):not(.show-learn):not(.show-online):not(.show-offline):not(.show-custom):not(.show-setup):not(.show-shop) .pc-avatar{
+body.show-menu:not(.show-about):not(.show-learn):not(.show-online):not(.show-offline):not(.show-custom):not(.show-setup):not(.show-shop):not(.show-tournaments) .pc-avatar{
   width:clamp(30px,4.6dvh,38px);height:clamp(30px,4.6dvh,38px);font-size:clamp(16px,2.6dvh,21px);
 }
-body.show-menu:not(.show-about):not(.show-learn):not(.show-online):not(.show-offline):not(.show-custom):not(.show-setup):not(.show-shop) .radiobar{
+body.show-menu:not(.show-about):not(.show-learn):not(.show-online):not(.show-offline):not(.show-custom):not(.show-setup):not(.show-shop):not(.show-tournaments) .radiobar{
   flex:0 0 auto;margin:2px 0;padding:clamp(3px,.7dvh,5px) 7px;
 }
-body.show-menu:not(.show-about):not(.show-learn):not(.show-online):not(.show-offline):not(.show-custom):not(.show-setup):not(.show-shop) .radio-nav{
+body.show-menu:not(.show-about):not(.show-learn):not(.show-online):not(.show-offline):not(.show-custom):not(.show-setup):not(.show-shop):not(.show-tournaments) .radio-nav{
   width:clamp(24px,3.8dvh,30px);height:clamp(24px,3.8dvh,30px);
 }
-body.show-menu:not(.show-about):not(.show-learn):not(.show-online):not(.show-offline):not(.show-custom):not(.show-setup):not(.show-shop) .radio-name{
+body.show-menu:not(.show-about):not(.show-learn):not(.show-online):not(.show-offline):not(.show-custom):not(.show-setup):not(.show-shop):not(.show-tournaments) .radio-name{
   font-size:clamp(13px,2.1dvh,15px);
 }
-body.show-menu:not(.show-about):not(.show-learn):not(.show-online):not(.show-offline):not(.show-custom):not(.show-setup):not(.show-shop) .radiobar .musicbtn{
+body.show-menu:not(.show-about):not(.show-learn):not(.show-online):not(.show-offline):not(.show-custom):not(.show-setup):not(.show-shop):not(.show-tournaments) .radiobar .musicbtn{
   width:clamp(26px,4dvh,32px);height:clamp(26px,4dvh,32px);
 }
-body.show-menu:not(.show-about):not(.show-learn):not(.show-online):not(.show-offline):not(.show-custom):not(.show-setup):not(.show-shop) .menu-hero{
+body.show-menu:not(.show-about):not(.show-learn):not(.show-online):not(.show-offline):not(.show-custom):not(.show-setup):not(.show-shop):not(.show-tournaments) .menu-hero{
   flex:0 0 auto;padding:2px 0 2px;
 }
-body.show-menu:not(.show-about):not(.show-learn):not(.show-online):not(.show-offline):not(.show-custom):not(.show-setup):not(.show-shop) .hero-emblem{
+body.show-menu:not(.show-about):not(.show-learn):not(.show-online):not(.show-offline):not(.show-custom):not(.show-setup):not(.show-shop):not(.show-tournaments) .hero-emblem{
   gap:clamp(8px,1.6dvh,16px);margin-bottom:0;
 }
-body.show-menu:not(.show-about):not(.show-learn):not(.show-online):not(.show-offline):not(.show-custom):not(.show-setup):not(.show-shop) .hero-crown{
+body.show-menu:not(.show-about):not(.show-learn):not(.show-online):not(.show-offline):not(.show-custom):not(.show-setup):not(.show-shop):not(.show-tournaments) .hero-crown{
   font-size:clamp(26px,5.6dvh,52px);
 }
-body.show-menu:not(.show-about):not(.show-learn):not(.show-online):not(.show-offline):not(.show-custom):not(.show-setup):not(.show-shop) .title-die{
+body.show-menu:not(.show-about):not(.show-learn):not(.show-online):not(.show-offline):not(.show-custom):not(.show-setup):not(.show-shop):not(.show-tournaments) .title-die{
   width:clamp(26px,4.8dvh,46px);height:clamp(26px,4.8dvh,46px);font-size:clamp(15px,2.8dvh,25px);border-radius:clamp(8px,1.4dvh,12px);
 }
-body.show-menu:not(.show-about):not(.show-learn):not(.show-online):not(.show-offline):not(.show-custom):not(.show-setup):not(.show-shop) #mainMenu .menu-title{
+body.show-menu:not(.show-about):not(.show-learn):not(.show-online):not(.show-offline):not(.show-custom):not(.show-setup):not(.show-shop):not(.show-tournaments) #mainMenu .menu-title{
   font-size:clamp(30px,10.5vw,58px);line-height:1.04;
 }
-body.show-menu:not(.show-about):not(.show-learn):not(.show-online):not(.show-offline):not(.show-custom):not(.show-setup):not(.show-shop) #mainMenu .menu-tag{
+body.show-menu:not(.show-about):not(.show-learn):not(.show-online):not(.show-offline):not(.show-custom):not(.show-setup):not(.show-shop):not(.show-tournaments) #mainMenu .menu-tag{
   font-size:clamp(10px,1.8dvh,13.5px);padding-bottom:clamp(4px,.9dvh,9px);margin-top:clamp(3px,.7dvh,7px);
 }
-body.show-menu:not(.show-about):not(.show-learn):not(.show-online):not(.show-offline):not(.show-custom):not(.show-setup):not(.show-shop) .menu-opts{
+body.show-menu:not(.show-about):not(.show-learn):not(.show-online):not(.show-offline):not(.show-custom):not(.show-setup):not(.show-shop):not(.show-tournaments) .menu-opts{
   flex:1 1 auto;min-height:0;justify-content:space-evenly;
 }
-body.show-menu:not(.show-about):not(.show-learn):not(.show-online):not(.show-offline):not(.show-custom):not(.show-setup):not(.show-shop) .g-opts{
+body.show-menu:not(.show-about):not(.show-learn):not(.show-online):not(.show-offline):not(.show-custom):not(.show-setup):not(.show-shop):not(.show-tournaments) .g-opts{
   gap:clamp(5px,1dvh,9px);margin-top:clamp(4px,1dvh,14px);
 }
-body.show-menu:not(.show-about):not(.show-learn):not(.show-online):not(.show-offline):not(.show-custom):not(.show-setup):not(.show-shop) .gbtn{
+body.show-menu:not(.show-about):not(.show-learn):not(.show-online):not(.show-offline):not(.show-custom):not(.show-setup):not(.show-shop):not(.show-tournaments) .gbtn{
   padding:clamp(7px,1.5dvh,13px) 14px;min-height:44px;
 }
-body.show-menu:not(.show-about):not(.show-learn):not(.show-online):not(.show-offline):not(.show-custom):not(.show-setup):not(.show-shop) .g-icon{
+body.show-menu:not(.show-about):not(.show-learn):not(.show-online):not(.show-offline):not(.show-custom):not(.show-setup):not(.show-shop):not(.show-tournaments) .g-icon{
   width:clamp(32px,5.4dvh,42px);height:clamp(32px,5.4dvh,42px);font-size:clamp(16px,2.6dvh,21px);
 }
-body.show-menu:not(.show-about):not(.show-learn):not(.show-online):not(.show-offline):not(.show-custom):not(.show-setup):not(.show-shop) .g-title{
+body.show-menu:not(.show-about):not(.show-learn):not(.show-online):not(.show-offline):not(.show-custom):not(.show-setup):not(.show-shop):not(.show-tournaments) .g-title{
   font-size:clamp(15px,2.5dvh,19px);
 }
-body.show-menu:not(.show-about):not(.show-learn):not(.show-online):not(.show-offline):not(.show-custom):not(.show-setup):not(.show-shop) .g-sub{
+body.show-menu:not(.show-about):not(.show-learn):not(.show-online):not(.show-offline):not(.show-custom):not(.show-setup):not(.show-shop):not(.show-tournaments) .g-sub{
   font-size:clamp(10.5px,1.7dvh,12px);
 }
-body.show-menu:not(.show-about):not(.show-learn):not(.show-online):not(.show-offline):not(.show-custom):not(.show-setup):not(.show-shop) .g-halfrow .gbtn{
+body.show-menu:not(.show-about):not(.show-learn):not(.show-online):not(.show-offline):not(.show-custom):not(.show-setup):not(.show-shop):not(.show-tournaments) .g-halfrow .gbtn{
   padding:clamp(6px,1.1dvh,11px) 12px;min-height:44px;
 }
-body.show-menu:not(.show-about):not(.show-learn):not(.show-online):not(.show-offline):not(.show-custom):not(.show-setup):not(.show-shop) .g-halfrow .g-icon{
+body.show-menu:not(.show-about):not(.show-learn):not(.show-online):not(.show-offline):not(.show-custom):not(.show-setup):not(.show-shop):not(.show-tournaments) .g-halfrow .g-icon{
   width:clamp(28px,4.4dvh,34px);height:clamp(28px,4.4dvh,34px);
 }
-body.show-menu:not(.show-about):not(.show-learn):not(.show-online):not(.show-offline):not(.show-custom):not(.show-setup):not(.show-shop) .bottomnav{
+body.show-menu:not(.show-about):not(.show-learn):not(.show-online):not(.show-offline):not(.show-custom):not(.show-setup):not(.show-shop):not(.show-tournaments) .bottomnav{
   padding-top:4px;
 }
-body.show-menu:not(.show-about):not(.show-learn):not(.show-online):not(.show-offline):not(.show-custom):not(.show-setup):not(.show-shop) .bn-item{
+body.show-menu:not(.show-about):not(.show-learn):not(.show-online):not(.show-offline):not(.show-custom):not(.show-setup):not(.show-shop):not(.show-tournaments) .bn-item{
   padding:4px 2px;min-height:44px;justify-content:center;
 }
-body.show-menu:not(.show-about):not(.show-learn):not(.show-online):not(.show-offline):not(.show-custom):not(.show-setup):not(.show-shop) .bn-icon{
+body.show-menu:not(.show-about):not(.show-learn):not(.show-online):not(.show-offline):not(.show-custom):not(.show-setup):not(.show-shop):not(.show-tournaments) .bn-icon{
   font-size:clamp(17px,2.6dvh,20px);
 }
 /* extremely short viewports: scale the whole menu stack down rather
    than clipping the bottom nav or letting the page scroll */
 @media (max-height:599px){
-  body.show-menu:not(.show-about):not(.show-learn):not(.show-online):not(.show-offline):not(.show-custom):not(.show-setup):not(.show-shop) #mainMenu{
+  body.show-menu:not(.show-about):not(.show-learn):not(.show-online):not(.show-offline):not(.show-custom):not(.show-setup):not(.show-shop):not(.show-tournaments) #mainMenu{
     transform:scale(.92);transform-origin:top center;
   }
 }
 @media (max-height:519px){
-  body.show-menu:not(.show-about):not(.show-learn):not(.show-online):not(.show-offline):not(.show-custom):not(.show-setup):not(.show-shop) #mainMenu{
+  body.show-menu:not(.show-about):not(.show-learn):not(.show-online):not(.show-offline):not(.show-custom):not(.show-setup):not(.show-shop):not(.show-tournaments) #mainMenu{
     transform:scale(.84);transform-origin:top center;
   }
 }
@@ -2497,6 +2499,8 @@ html.reduce-motion .turntimer.low{animation:none !important;}
 .acct-btn-ghost{border:1.5px solid var(--gold);background:var(--panel-2);color:var(--ink);}
 .acct-btn-ghost:disabled{opacity:.45;cursor:not-allowed;}
 .acct-status{font-size:12.5px;color:var(--ink-soft);line-height:1.45;min-height:18px;margin-top:8px;}
+.acct-stay{display:flex;align-items:center;gap:10px;margin-top:12px;min-height:36px;font-size:14px;font-weight:700;color:var(--ink);cursor:pointer;}
+.acct-stay input{width:21px;height:21px;flex:0 0 auto;margin:0;accent-color:#c9a227;cursor:pointer;}
 .acct-card{background:var(--panel-2);border:1px solid var(--gold);border-radius:12px;padding:12px 14px;}
 .acct-user{font-size:18px;font-weight:850;color:var(--ink);line-height:1.25;overflow-wrap:anywhere;}
 .acct-line{font-size:13.5px;color:var(--ink-soft);line-height:1.5;margin-top:3px;}
@@ -2545,6 +2549,96 @@ html.reduce-motion .turntimer.low{animation:none !important;}
 .brw-status{font-size:12.5px;color:var(--ink-soft);min-height:18px;margin-bottom:8px;}
 .brw-pw-input{width:100%;box-sizing:border-box;min-height:48px;padding:10px 12px;font-size:15px;border-radius:10px;border:1.5px solid var(--line-strong);background:var(--panel);color:var(--ink);margin-top:4px;}
 .brw-pw-error{font-size:12.5px;color:var(--danger);line-height:1.45;min-height:18px;margin-top:6px;}
+</style>
+<style id="kd-tournaments">
+/* ===== Tournaments ===== */
+#tournamentScreen{padding-bottom:26px;}
+#trnLobbyStatus{color:#f7f2df;background:rgba(7,11,24,.68);border:1px solid rgba(232,193,90,.4);border-radius:10px;padding:8px 12px;text-shadow:0 1px 3px rgba(0,0,0,.6);}
+#trnLobbyStatus:empty{display:none;padding:0;border:0;}
+.trn-view[hidden]{display:none !important;}
+.trn-head{text-align:center;margin-bottom:6px;}
+.trn-sec-title{font-family:"Cinzel",Georgia,serif;font-size:19px;font-weight:900;letter-spacing:.06em;text-transform:uppercase;color:#f6d776;text-shadow:0 2px 6px rgba(0,0,0,.75);margin:20px 0 10px;}
+.trn-empty{background:rgba(7,11,24,.68);border:1px dashed rgba(232,193,90,.45);border-radius:14px;color:rgba(247,242,223,.85);font-size:14px;line-height:1.55;padding:16px;text-align:center;}
+.trn-card{display:block;width:100%;text-align:left;background:rgba(7,11,24,.78);border:1px solid rgba(201,162,39,.62);border-radius:16px;color:#f7f2df;padding:14px 15px;margin-bottom:10px;cursor:pointer;box-shadow:0 8px 20px rgba(0,0,0,.35);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);}
+.trn-card:hover{border-color:#f6d776;}
+.trn-card-name{font-family:"Cinzel",Georgia,serif;font-size:18px;font-weight:900;color:#fff8e6;line-height:1.2;}
+.trn-card-desc{font-size:13px;color:rgba(247,242,223,.78);line-height:1.45;margin-top:4px;overflow-wrap:anywhere;}
+.trn-card-meta{font-size:12.5px;color:rgba(247,242,223,.72);line-height:1.6;margin-top:7px;font-variant-numeric:tabular-nums;}
+.trn-card-meta b{color:#ffe98a;}
+.trn-card-status{font-size:13px;font-weight:800;color:#f6d776;margin-top:6px;}
+.trn-card-status.cancelled{color:#f3a3a3;}
+.trn-card-err{font-size:12.5px;color:#ffb4b4;line-height:1.45;margin-top:7px;min-height:0;}
+.trn-card-err:empty{display:none;}
+.trn-card-actions{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;}
+.trn-btn{border:1px solid #7a5f10;background:linear-gradient(180deg,#ffe98a,#c9a227);color:#171106;font-weight:850;font-size:14px;padding:10px 16px;border-radius:11px;cursor:pointer;min-height:44px;}
+.trn-btn.ghost{background:rgba(7,11,24,.6);color:#f7f2df;border-color:rgba(232,193,90,.6);}
+.trn-btn:disabled{opacity:.55;cursor:default;}
+.trn-tools{display:flex;gap:8px;align-items:center;margin-top:14px;}
+.trn-admin-link{margin-left:auto;background:none;border:0;color:rgba(247,242,223,.5);font-size:12.5px;cursor:pointer;padding:8px 4px;text-decoration:underline;}
+.trn-detail-head{background:rgba(7,11,24,.78);border:1px solid rgba(201,162,39,.62);border-radius:16px;padding:15px;color:#f7f2df;margin-bottom:12px;}
+.trn-detail-head h3{font-family:"Cinzel",Georgia,serif;font-size:21px;margin:0 0 4px;color:#fff8e6;line-height:1.2;}
+.trn-detail-head p{margin:3px 0;font-size:13.5px;line-height:1.5;color:rgba(247,242,223,.85);}
+.trn-rules{background:rgba(7,11,24,.72);border:1px solid rgba(255,255,255,.16);border-radius:14px;padding:12px 15px;color:rgba(247,242,223,.92);margin-bottom:12px;}
+.trn-rules h4,.trn-block h4{font-family:"Cinzel",Georgia,serif;font-size:14.5px;letter-spacing:.05em;text-transform:uppercase;color:#f6d776;margin:0 0 7px;}
+.trn-rules ul{margin:0;padding-left:18px;font-size:13px;line-height:1.6;}
+.trn-block{background:rgba(7,11,24,.72);border:1px solid rgba(255,255,255,.16);border-radius:14px;padding:12px 15px;color:#f7f2df;margin-bottom:12px;}
+.trn-roster{list-style:none;margin:0;padding:0;}
+.trn-roster li{display:flex;gap:9px;align-items:baseline;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.08);font-size:13.5px;flex-wrap:wrap;}
+.trn-roster li:last-child{border-bottom:0;}
+.trn-seed{font-weight:900;color:#f6d776;min-width:30px;}
+.trn-rname{font-weight:800;overflow-wrap:anywhere;}
+.trn-rmeta{color:rgba(247,242,223,.66);font-size:12.5px;}
+.trn-rstatus{margin-left:auto;font-size:12px;font-weight:800;letter-spacing:.03em;text-transform:uppercase;color:rgba(247,242,223,.75);}
+.trn-champ-sec{border-color:#c9a227;background:linear-gradient(170deg,rgba(60,44,6,.85),rgba(7,11,24,.85));text-align:center;}
+.trn-champ-sec .trn-champ-name{font-family:"Cinzel",Georgia,serif;font-size:22px;font-weight:900;color:#ffe98a;margin:2px 0;}
+.trn-bracket{display:flex;gap:12px;overflow-x:auto;padding:4px 2px 12px;-webkit-overflow-scrolling:touch;}
+.trn-roundcol{flex:0 0 228px;min-width:0;}
+.trn-roundcol h5{font-family:"Cinzel",Georgia,serif;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:#f6d776;margin:0 0 8px;text-align:center;}
+.trn-match{background:rgba(10,16,32,.92);border:1px solid rgba(255,255,255,.2);border-radius:12px;padding:10px 11px;margin-bottom:10px;font-size:13px;}
+.trn-match.gold{border-color:#c9a227;box-shadow:0 0 0 1px rgba(201,162,39,.35),0 6px 16px rgba(0,0,0,.35);}
+.trn-match .trn-player{display:flex;gap:6px;align-items:baseline;padding:3px 0;flex-wrap:wrap;line-height:1.35;}
+.trn-match .trn-player.win{font-weight:900;color:#ffe98a;}
+.trn-match .trn-player .trn-pmeta{color:rgba(247,242,223,.6);font-size:11.5px;font-weight:600;}
+.trn-match .trn-mstate{font-size:12px;color:rgba(247,242,223,.78);margin-top:6px;line-height:1.45;border-top:1px solid rgba(255,255,255,.1);padding-top:6px;}
+.trn-match .trn-attempts{font-size:11.5px;color:rgba(247,242,223,.6);margin-top:3px;}
+.trn-mymatch{border:1.5px solid #c9a227;background:linear-gradient(170deg,rgba(46,34,5,.92),rgba(7,11,24,.92));border-radius:16px;padding:15px;color:#f7f2df;margin-bottom:12px;box-shadow:0 0 24px rgba(212,175,55,.18);}
+.trn-mymatch h4{font-family:"Cinzel",Georgia,serif;color:#ffe98a;font-size:16px;margin:0 0 6px;letter-spacing:.04em;text-transform:uppercase;}
+.trn-mymatch p{margin:4px 0;font-size:14px;line-height:1.55;}
+.trn-cd{font-variant-numeric:tabular-nums;font-weight:900;color:#ffe98a;}
+.trn-final-banner{border:1.5px solid #c9a227;border-radius:14px;padding:12px 14px;margin-bottom:12px;background:rgba(46,34,5,.8);color:#ffe98a;text-align:center;font-weight:800;}
+.trn-form label{display:block;font-size:12px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-soft);margin:12px 0 5px;}
+.trn-form input[type="text"],.trn-form input[type="password"],.trn-form input[type="datetime-local"],.trn-form select,.trn-form textarea{width:100%;box-sizing:border-box;min-height:46px;padding:10px 12px;font-size:15px;border-radius:10px;border:1.5px solid var(--line-strong);background:var(--panel);color:var(--ink);}
+.trn-form textarea{min-height:64px;resize:vertical;}
+.trn-form .trn-btn{width:100%;margin-top:14px;}
+.trn-admin-status{font-size:13px;line-height:1.5;margin-top:10px;color:var(--ink-soft);}
+.trn-admin-status.err{color:var(--danger);}
+.trn-admin-status.ok{color:var(--brass);}
+/* tournament final in-match treatment */
+body.playing.trn-final .boardframe{border-color:#f6d776 !important;box-shadow:0 16px 36px rgba(0,0,0,.68),0 0 30px rgba(232,193,90,.45),inset 0 0 0 2px rgba(0,0,0,.5),inset 0 0 0 4px rgba(232,193,90,.55) !important;}
+.trn-plaque{display:none;text-align:center;font-family:"Cinzel",Georgia,serif;font-weight:900;font-size:12px;letter-spacing:.28em;text-indent:.28em;color:#171106;background:linear-gradient(180deg,#ffe98a,#c9a227);border-radius:8px;padding:5px 10px;margin:5px auto 0;width:fit-content;box-shadow:0 4px 14px rgba(0,0,0,.4);}
+body.playing.trn-final .trn-plaque{display:block;}
+body.trn-final .die.rolling{animation-duration:.52s;}
+.boardroll.trn-shimmer::after{content:"";position:absolute;inset:0;background:linear-gradient(115deg,transparent 30%,rgba(246,215,118,.28) 50%,transparent 70%);background-size:250% 100%;animation:trnShimmer 1.6s ease-in-out infinite;pointer-events:none;}
+@keyframes trnShimmer{0%{background-position:120% 0;}100%{background-position:-120% 0;}}
+.sq.trn-goldflash{box-shadow:inset 0 0 0 100px rgba(232,193,90,.55),inset 0 0 0 3px #ffe98a !important;}
+html.reduce-motion .boardroll.trn-shimmer::after{animation:none;display:none;}
+@media (prefers-reduced-motion: reduce){.boardroll.trn-shimmer::after{animation:none;display:none;}}
+/* final intro + champion overlays */
+.trn-intro-card,.trn-champ-card{position:relative;overflow:hidden;}
+.trn-intro-crown{font-size:44px;color:#f6d776;text-shadow:0 0 22px rgba(232,193,90,.7);line-height:1;}
+.trn-faceoff{display:flex;align-items:center;gap:10px;margin:16px 0 6px;}
+.trn-side{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;gap:5px;}
+.trn-av{width:64px;height:64px;font-size:32px;border-width:2.5px;}
+.trn-pname{font-weight:900;font-size:16.5px;color:#fff8e6;overflow-wrap:anywhere;line-height:1.2;}
+.trn-pmeta{font-size:12.5px;color:rgba(247,242,223,.75);line-height:1.45;}
+.trn-vs{font-family:"Cinzel",Georgia,serif;font-weight:900;color:#f6d776;font-size:19px;flex:0 0 auto;}
+.trn-champ-trophy{font-size:52px;line-height:1.1;}
+.trn-champ-trophy .td{display:inline-grid;place-items:center;width:52px;height:52px;border-radius:13px;font-size:27px;vertical-align:middle;margin:0 3px;}
+.trn-champ-name{font-family:"Cinzel",Georgia,serif;font-size:24px;font-weight:900;color:#ffe98a;margin:8px 0 2px;overflow-wrap:anywhere;}
+.trn-path{list-style:none;margin:10px 0 0;padding:0;text-align:left;font-size:13.5px;line-height:1.5;}
+.trn-path li{padding:6px 0;border-bottom:1px solid rgba(255,255,255,.1);}
+.trn-path li:last-child{border-bottom:0;}
+.trn-path b{color:#ffe98a;}
 </style>
 </head>
 <body class="show-menu">
@@ -2611,6 +2705,7 @@ html.reduce-motion .turntimer.low{animation:none !important;}
     <div class="menu-opts menu-main-opts">
       <button class="menu-opt minimal" type="button" data-menu-mode="live"><span class="mo-title">Live</span></button>
       <button class="menu-opt minimal" type="button" data-menu-mode="link"><span class="mo-title">Friend</span></button>
+      <button class="menu-opt minimal" type="button" id="trnOpenBtn"><span class="mo-title">🏆 Tournaments</span></button>
     </div>
     <div class="srv-menu-note"><b>Live now runs on the Kings &amp; Dice server</b> for <b>Normal</b> and <b>King of the Hill</b> — the server rolls the dice, validates every move, and holds your seat for 60 seconds if a connection drops. Other match types still use Friend (P2P) rooms, and turn codes always work as a backup.</div>
     <div class="about-sec srv-history-sec" id="onlineHistorySec" style="display:none;">
@@ -2630,6 +2725,32 @@ html.reduce-motion .turntimer.low{animation:none !important;}
     <div class="menu-opts menu-main-opts">
       <button class="menu-opt minimal" type="button" data-menu-mode="ai"><span class="mo-title">Computer</span></button>
       <button class="menu-opt minimal" type="button" data-menu-mode="local"><span class="mo-title">2 Players</span></button>
+    </div>
+  </div>
+
+  <div class="infoscreen menuscreen" id="tournamentScreen" aria-label="Tournaments">
+    <div id="trnLobbyView" class="trn-view">
+      <div class="screen-top"><button class="backbtn" type="button" id="trnBackBtn">← Back</button></div>
+      <div class="menu-hero sub-hero trn-head">
+        <div class="hero-emblem" aria-hidden="true"><span class="title-die td-blue">♞</span><span class="hero-crown">♛</span><span class="title-die td-red">♜</span></div>
+        <h2 class="menu-title sub-title">Tournaments</h2>
+        <p class="menu-tag">Single elimination · Classic</p>
+      </div>
+      <div class="note" id="trnLobbyStatus" role="status"></div>
+      <h3 class="trn-sec-title">Upcoming</h3>
+      <div id="trnUpcoming"></div>
+      <h3 class="trn-sec-title">Live</h3>
+      <div id="trnLive"></div>
+      <h3 class="trn-sec-title">Completed</h3>
+      <div id="trnCompleted"></div>
+      <div class="trn-tools">
+        <button class="trn-btn ghost" type="button" id="trnRefreshBtn">↻ Refresh</button>
+        <button class="trn-admin-link" type="button" id="trnAdminOpenBtn">Admin</button>
+      </div>
+    </div>
+    <div id="trnDetailView" class="trn-view" hidden>
+      <div class="screen-top"><button class="backbtn" type="button" id="trnDetailBackBtn">← All tournaments</button></div>
+      <div id="trnDetailBody"></div>
     </div>
   </div>
 
@@ -2896,6 +3017,7 @@ html.reduce-motion .turntimer.low{animation:none !important;}
         </div>
         <div class="framefiles" id="frameFiles" aria-hidden="true"></div>
       </div>
+      <div class="trn-plaque" id="trnPlaque" aria-hidden="true">🏆 Tournament Final</div>
       <div class="playbar">
         <div class="boarddock on" id="boardDock">
           <span class="docklabel" id="dockLabel">Dice</span>
@@ -3226,6 +3348,81 @@ html.reduce-motion .turntimer.low{animation:none !important;}
   </div>
 </div>
 
+<div class="sheetdrawer" id="trnAdminSheet" aria-label="Tournament admin">
+  <div class="sheetcard">
+    <div class="chathead"><span class="ch-title">🏆 Tournament Admin</span><button class="chatclose" id="trnAdminCloseBtn" type="button" aria-label="Close tournament admin">✕</button></div>
+    <div class="trn-form">
+      <p class="panelnote">Admin actions go to the live server. If the server has no admin token configured, it will reply that tournament admin isn't enabled yet.</p>
+      <label for="trnAdminToken">Admin token (this device only)</label>
+      <input id="trnAdminToken" type="password" placeholder="Admin token" autocomplete="off" />
+      <div class="row" style="display:flex;gap:8px;">
+        <button class="trn-btn ghost" type="button" id="trnAdminSaveBtn" style="flex:1;">Save token on this device</button>
+        <button class="trn-btn ghost" type="button" id="trnAdminForgetBtn" style="flex:1;">Forget token</button>
+      </div>
+      <div class="trn-admin-status" id="trnAdminStatus" role="status"></div>
+
+      <h4 class="trn-sec-title" style="color:var(--brass);text-shadow:none;margin-top:22px;">Create tournament</h4>
+      <label for="trnCName">Name (required)</label>
+      <input id="trnCName" type="text" maxlength="80" placeholder="Tournament name" />
+      <label for="trnCDesc">Description</label>
+      <textarea id="trnCDesc" maxlength="500" placeholder="Optional description"></textarea>
+      <label for="trnCSize">Size</label>
+      <select id="trnCSize"><option value="4">4 players</option><option value="8" selected>8 players</option><option value="16">16 players</option><option value="32">32 players</option></select>
+      <label for="trnCSeeding">Seeding</label>
+      <select id="trnCSeeding"><option value="rating" selected>By rating</option><option value="random">Random</option></select>
+      <label for="trnCTC">Time control</label>
+      <select id="trnCTC"><option value="blitz">Blitz</option><option value="rapid" selected>Rapid</option><option value="classical">Classical</option></select>
+      <label for="trnCStarts">Starts at (required)</label>
+      <input id="trnCStarts" type="datetime-local" />
+      <label for="trnCTz">Timezone (IANA)</label>
+      <input id="trnCTz" type="text" maxlength="64" />
+      <label for="trnCOpens">Registration opens (optional)</label>
+      <input id="trnCOpens" type="datetime-local" />
+      <label for="trnCCloses">Registration closes (optional)</label>
+      <input id="trnCCloses" type="datetime-local" />
+      <button class="trn-btn" type="button" id="trnCreateBtn">Create tournament</button>
+
+      <h4 class="trn-sec-title" style="color:var(--brass);text-shadow:none;margin-top:22px;">Manage tournament</h4>
+      <label for="trnAdminPick">Tournament</label>
+      <select id="trnAdminPick"><option value="">— pick from the lobby list —</option></select>
+      <label for="trnEName">New name (blank = no change)</label>
+      <input id="trnEName" type="text" maxlength="80" />
+      <label for="trnEDesc">New description (blank = no change)</label>
+      <textarea id="trnEDesc" maxlength="500"></textarea>
+      <label for="trnESize">Size</label>
+      <select id="trnESize"><option value="">No change</option><option value="4">4 players</option><option value="8">8 players</option><option value="16">16 players</option><option value="32">32 players</option></select>
+      <label for="trnESeeding">Seeding</label>
+      <select id="trnESeeding"><option value="">No change</option><option value="rating">By rating</option><option value="random">Random</option></select>
+      <label for="trnETC">Time control</label>
+      <select id="trnETC"><option value="">No change</option><option value="blitz">Blitz</option><option value="rapid">Rapid</option><option value="classical">Classical</option></select>
+      <label for="trnEStarts">New start time (blank = no change)</label>
+      <input id="trnEStarts" type="datetime-local" />
+      <label for="trnETz">Timezone (blank = no change)</label>
+      <input id="trnETz" type="text" maxlength="64" />
+      <label for="trnEOpens">Registration opens (blank = no change)</label>
+      <input id="trnEOpens" type="datetime-local" />
+      <label for="trnECloses">Registration closes (blank = no change)</label>
+      <input id="trnECloses" type="datetime-local" />
+      <button class="trn-btn" type="button" id="trnEditBtn">Save changes</button>
+      <button class="trn-btn ghost" type="button" id="trnStartBtn">Start this tournament now</button>
+
+      <h4 class="trn-sec-title" style="color:var(--brass);text-shadow:none;margin-top:22px;">Cancel tournament</h4>
+      <label for="trnCancelReason">Reason (required when the tournament is live)</label>
+      <textarea id="trnCancelReason" maxlength="300" placeholder="Why is it being cancelled?"></textarea>
+      <button class="trn-btn ghost" type="button" id="trnCancelBtn">Cancel selected tournament</button>
+
+      <h4 class="trn-sec-title" style="color:var(--brass);text-shadow:none;margin-top:22px;">Correct a result</h4>
+      <label for="trnCorrectMatch">Finalized bracket match</label>
+      <select id="trnCorrectMatch"><option value="">— pick a tournament above first —</option></select>
+      <label for="trnCorrectWinner">Correct winner</label>
+      <select id="trnCorrectWinner"><option value="">— pick a match first —</option></select>
+      <label for="trnCorrectReason">Reason (required)</label>
+      <textarea id="trnCorrectReason" maxlength="300" placeholder="Why is this result being corrected?"></textarea>
+      <button class="trn-btn" type="button" id="trnCorrectBtn">Apply correction</button>
+    </div>
+  </div>
+</div>
+
 <nav class="bottomnav" id="bottomNav" aria-label="Menu">
   <button type="button" class="bn-item bn-active" data-nav="home"><span class="bn-icon" aria-hidden="true">⌂</span><span class="bn-label">Home</span></button>
   <button type="button" class="bn-item" data-nav="profile"><span class="bn-icon" aria-hidden="true">♞</span><span class="bn-label">Profile</span></button>
@@ -3245,6 +3442,7 @@ html.reduce-motion .turntimer.low{animation:none !important;}
         <input class="acct-input" id="acctUsername" type="text" maxlength="20" placeholder="3–20 letters, numbers or _" autocomplete="username" autocapitalize="none" spellcheck="false" />
         <label class="acct-lab" for="acctPassword">Password</label>
         <input class="acct-input" id="acctPassword" type="password" placeholder="8+ characters" autocomplete="current-password" />
+        <label class="acct-stay" for="acctStayLoggedIn"><input type="checkbox" id="acctStayLoggedIn" checked /><span>Stay logged in on this device</span></label>
         <div class="acct-error" id="acctError" role="alert"></div>
         <div class="acct-btnrow">
           <button class="acct-btn-primary" id="acctCreateBtn" type="button">Create account</button>
@@ -3262,6 +3460,8 @@ html.reduce-motion .turntimer.low{animation:none !important;}
           <div class="acct-line" id="acctRecordLine"></div>
           <div class="acct-line" id="acctBalanceLine" style="display:none;"></div>
         </div>
+        <label class="acct-stay" for="acctStayLoggedIn2"><input type="checkbox" id="acctStayLoggedIn2" checked /><span>Stay logged in on this device</span></label>
+        <p class="panelnote" id="acctStayNote" style="margin-bottom:2px;"></p>
         <button class="acct-btn-ghost acct-logout" id="acctLogoutBtn" type="button">Log out</button>
         <div class="acct-status" id="acctLogoutStatus" role="status"></div>
       </div>
@@ -3508,6 +3708,40 @@ html.reduce-motion .turntimer.low{animation:none !important;}
     <div class="qp-actions">
       <button class="qp-primary" id="browsePwJoinBtn" type="button">Join room</button>
       <button class="qp-ghost" id="browsePwCancelBtn" type="button">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<div class="qp-overlay" id="trnIntro" role="dialog" aria-modal="true" aria-label="Championship final matchup">
+  <div class="qp-card trn-intro-card">
+    <div class="trn-intro-crown" aria-hidden="true">♛</div>
+    <h2 class="qp-title">Royal Championship Final</h2>
+    <p class="qp-sub" id="trnIntroTName"></p>
+    <div class="trn-faceoff">
+      <div class="trn-side">
+        <span class="pc-avatar trn-av" aria-hidden="true"><span id="trnIntroAvA">♞</span></span>
+        <div class="trn-pname" id="trnIntroNameA"></div>
+        <div class="trn-pmeta" id="trnIntroMetaA"></div>
+      </div>
+      <div class="trn-vs" aria-hidden="true">VS</div>
+      <div class="trn-side">
+        <span class="pc-avatar trn-av" aria-hidden="true"><span id="trnIntroAvB">♞</span></span>
+        <div class="trn-pname" id="trnIntroNameB"></div>
+        <div class="trn-pmeta" id="trnIntroMetaB"></div>
+      </div>
+    </div>
+    <div class="qp-actions">
+      <button class="qp-primary" id="trnIntroSkip" type="button">Skip</button>
+    </div>
+    <p class="qp-sub" style="margin-top:10px;">Tap anywhere to dismiss — your match is already live underneath.</p>
+  </div>
+</div>
+
+<div class="qp-overlay" id="trnChamp" role="dialog" aria-modal="true" aria-label="Tournament champion">
+  <div class="qp-card trn-champ-card">
+    <div id="trnChampBody"></div>
+    <div class="qp-actions">
+      <button class="qp-primary" id="trnChampClose" type="button">Close</button>
     </div>
   </div>
 </div>
@@ -8127,6 +8361,8 @@ function closeInfoScreens(){
   document.body.classList.remove("show-offline");
   document.body.classList.remove("show-setup");
   document.body.classList.remove("show-custom");
+  document.body.classList.remove("show-tournaments");
+  if (typeof trnOnScreensClosed==="function") trnOnScreensClosed();
 }
 document.querySelectorAll("[data-menu-nav]").forEach(function(btn){
   btn.addEventListener("click", function(){
@@ -9498,6 +9734,7 @@ var SRV = {
   nextSeq: 1, pendingAction: null, oooStreak: 0,
   pendingRejoin: null, reconnectTimer: null, reconnectDeadline: 0, intentionalClose: false,
   wakeTimer: null, wakeAttempts: 0, wakeBy: 0, wakeRetryTimer: null, readyQueue: [], enteredGame: false, overShownFor: null,
+  autoTimer: null, autoDelay: 5000, wantOnline: false, // background auto-reconnect (see srvArmAutoReconnect)
   autoEndTimer: null, animating: false, queuedState: null, discTimer: null, historyAt: 0,
   timerSec: null, timerAdopted: false, // turn timer for this room: host's choice, adopted from room settings / host signal
   /* private rooms: create/join intent, server-reported room facts, and
@@ -9520,17 +9757,41 @@ function srvUid(){
     return "m-" + Array.prototype.map.call(a, function(b){ return ("0"+b.toString(16)).slice(-2); }).join(""); }catch(e){}
   return "m-" + Date.now().toString(36) + "-" + Math.floor(Math.random()*1e9).toString(36);
 }
+/* ---------- stay logged in ----------
+   The session token is what signs the player back in: the server
+   restores the account from it on the hello/welcome handshake.
+   "Stay logged in" ON (the default) keeps that token in
+   localStorage, so it survives the app being closed. OFF keeps it
+   in sessionStorage instead: the visit still restores after a
+   reload, but closing the tab/app signs the player out. The
+   preference itself always lives in localStorage — it is not a
+   credential. Turning it off also wipes the persistent copies. */
+var SRV_STAY_KEY = "dicechess-stay-logged-in";
+function srvStayLoggedIn(){
+  try{ return localStorage.getItem(SRV_STAY_KEY) !== "0"; }catch(e){ return true; }
+}
+function srvSessionStore(){
+  try{ return srvStayLoggedIn() ? localStorage : sessionStorage; }catch(e){ return localStorage; }
+}
 function srvSaveSession(){
   try{
     var data = { token: SRV.token || null, code: SRV.roomCode || (SRV.pendingRejoin ? SRV.pendingRejoin.code : null),
                  color: SRV.mySrvColor || (SRV.pendingRejoin ? SRV.pendingRejoin.color : null),
                  nextSeq: SRV.nextSeq || 1, updatedAt: Date.now() };
-    if (!data.token && !data.code){ localStorage.removeItem(SRV_SESSION_KEY); return; }
-    localStorage.setItem(SRV_SESSION_KEY, JSON.stringify(data));
+    if (!data.token && !data.code){
+      try{ localStorage.removeItem(SRV_SESSION_KEY); }catch(e){}
+      try{ sessionStorage.removeItem(SRV_SESSION_KEY); }catch(e){}
+      return;
+    }
+    var store = srvSessionStore();
+    var other = store===localStorage ? sessionStorage : localStorage;
+    store.setItem(SRV_SESSION_KEY, JSON.stringify(data));
+    try{ other.removeItem(SRV_SESSION_KEY); }catch(e){}
   }catch(e){}
 }
 function srvLoadSession(){
-  try{ var v = JSON.parse(localStorage.getItem(SRV_SESSION_KEY) || "null"); return v && typeof v==="object" ? v : null; }catch(e){ return null; }
+  try{ var v = JSON.parse(localStorage.getItem(SRV_SESSION_KEY) || "null"); if (v && typeof v==="object") return v; }catch(e){}
+  try{ var s = JSON.parse(sessionStorage.getItem(SRV_SESSION_KEY) || "null"); return s && typeof s==="object" ? s : null; }catch(e){ return null; }
 }
 function srvSetStatus(txt, cls){
   SRV.statusText = txt;
@@ -9687,6 +9948,7 @@ function srvUpdateSettings(fields){
    clear notice. Keeps the socket handling in srvLeaveRoom/srvTeardown
    as the single teardown path. */
 function srvExitToLobby(notice){
+  if (typeof trnClearGame==="function") trnClearGame();
   closeModal();
   if (typeof SRV!=="undefined" && (SRV.active || SRV.ws)) goToMainMenu();
   else {
@@ -9783,6 +10045,7 @@ function srvSyncUI(){
 }
 /* ---------- connection (with Render free-tier cold start) ---------- */
 function srvConnect(onReady){
+  SRV.wantOnline = true; // any connect intent opts this visit into background auto-reconnect
   if (SRV.ws && SRV.ws.readyState===1 && SRV.welcomed){ if (onReady) onReady(); return; }
   if (onReady) SRV.readyQueue.push(onReady);
   if (SRV.ws && (SRV.ws.readyState===0 || SRV.ws.readyState===1)) return; // already opening/open
@@ -9852,6 +10115,29 @@ function srvConnectFailed(msg){
   srvSyncUI();
   if (typeof qpOnConnectFailed==="function") qpOnConnectFailed();
   if (typeof acctOnConnectFailed==="function") acctOnConnectFailed();
+  if (srvArmAutoReconnect()) srvSetStatus("Server: unreachable — retrying automatically. " + msg, "err");
+}
+/* Background auto-reconnect: once this visit wants the server (any
+   connect attempt, or a saved session restored at boot), a failed
+   or dropped connection retries on its own with growing delays
+   (5s, doubling to a 60s cap) instead of dead-ending until the
+   next manual tap — e.g. while the server restarts. In-match
+   drops keep their own 60-second seat flow and are not touched
+   here; intentional teardown opts out via wantOnline. */
+function srvArmAutoReconnect(){
+  if (!SRV.wantOnline || SRV.intentionalClose) return false;
+  if (SRV.ws || SRV.welcomed) return false;
+  if (SRV.active && SRV.phase==="playing") return false;
+  if (SRV.status==="queued") return false;
+  if (SRV.autoTimer) return true;
+  var delay = SRV.autoDelay || 5000;
+  SRV.autoDelay = Math.min(60000, delay * 2);
+  SRV.autoTimer = setTimeout(function(){
+    SRV.autoTimer = null;
+    if (!SRV.wantOnline || SRV.intentionalClose || SRV.ws || SRV.welcomed) return;
+    srvConnect();
+  }, delay);
+  return true;
 }
 function srvOnSocketDrop(){
   if (SRV.intentionalClose) return;
@@ -9878,6 +10164,8 @@ function srvOnSocketDrop(){
     SRV.status = "closed";
     srvSetStatus("Server: connection closed. Tap Create, Join or Find a match to reconnect.", "err");
   }
+  if (srvArmAutoReconnect() && SRV.status==="closed")
+    srvSetStatus("Server: connection closed — reconnecting automatically…", "err");
   srvSyncUI();
   renderBoard();
 }
@@ -9936,6 +10224,8 @@ function srvOnMessage(msg){
     case "welcome": {
       if (SRV.wakeTimer){ clearTimeout(SRV.wakeTimer); SRV.wakeTimer = null; }
       SRV.welcomed = true; SRV.wakeAttempts = 0;
+      SRV.autoDelay = 5000; // a live connection resets the auto-reconnect backoff
+      if (SRV.autoTimer){ clearTimeout(SRV.autoTimer); SRV.autoTimer = null; }
       SRV.token = msg.playerToken; SRV.playerId = msg.playerId;
       SRV.balance = (typeof msg.balance==="number") ? msg.balance : SRV.balance;
       if (typeof acctApplyWelcome==="function") acctApplyWelcome(msg);
@@ -9995,6 +10285,7 @@ function srvOnMessage(msg){
       break;
     }
     case "matched": {
+      if (typeof trnClearGame==="function") trnClearGame();
       SRV.active = true; SRV.roomCode = msg.code; SRV.mySrvColor = msg.color;
       SRV.phase = "waiting"; SRV.nextSeq = 1; SRV.enteredGame = false; SRV.overShownFor = null;
       SRV.privateIntent = false; SRV.isPrivate = false; SRV.host = null; SRV.hasPassword = false;
@@ -10090,6 +10381,42 @@ function srvOnMessage(msg){
       if (typeof brwOnRoomList==="function") brwOnRoomList(msg);
       break;
     }
+    case "tournamentLobby": {
+      if (typeof trnOnLobby==="function") trnOnLobby(msg);
+      break;
+    }
+    case "tournamentDetail": {
+      if (typeof trnOnDetail==="function") trnOnDetail(msg);
+      break;
+    }
+    case "tournamentRegistered": {
+      if (typeof trnOnRegistered==="function") trnOnRegistered(msg);
+      break;
+    }
+    case "tournamentWithdrawn": {
+      if (typeof trnOnWithdrawn==="function") trnOnWithdrawn(msg);
+      break;
+    }
+    case "tournamentCheckedIn": {
+      if (typeof trnOnCheckedIn==="function") trnOnCheckedIn(msg);
+      break;
+    }
+    case "tournamentMatchReady": {
+      if (typeof trnOnMatchReady==="function") trnOnMatchReady(msg);
+      break;
+    }
+    case "tournamentMatchStart": {
+      if (typeof trnOnMatchStart==="function") trnOnMatchStart(msg);
+      break;
+    }
+    case "tournamentStateChanged": {
+      if (typeof trnOnStateChanged==="function") trnOnStateChanged(msg);
+      break;
+    }
+    case "tournamentAdminOk": {
+      if (typeof trnOnAdminOk==="function") trnOnAdminOk(msg);
+      break;
+    }
     case "error": {
       if (msg.code==="RANKED_CLASSIC_ONLY"){
         // Backstop for the client-side mode check in qpStartQuickPlay:
@@ -10099,6 +10426,7 @@ function srvOnMessage(msg){
         srvSyncUI();
         break;
       }
+      if (typeof trnHandleError==="function" && trnHandleError(msg)) break;
       if (typeof brwHandleError==="function" && brwHandleError(msg)) break;
       if (msg.code==="RANKED_REQUIRES_ACCOUNT"){
         if (typeof QP!=="undefined" && QP && QP.open && typeof qpClose==="function") qpClose();
@@ -10118,7 +10446,8 @@ function srvOnMessage(msg){
         WRONG_PASSWORD: "That room is password-protected — enter the room password and try again.",
         NOT_HOST: "Only the host can change this room's settings.",
         CHAT_RATE_LIMITED: "Easy — chat is rate-limited for a few seconds. Your message wasn't sent again.",
-        CHAT_TOO_LONG: "That chat message was too long for the server."
+        CHAT_TOO_LONG: "That chat message was too long for the server.",
+        TOURNAMENT_NO_AGREED_DRAWS: "Agreed draws aren't allowed in tournament matches — draws are replayed."
       };
       // The server's own message wins where it sent one (join errors in
       // particular carry the exact reason); the map is the fallback.
@@ -10189,14 +10518,37 @@ var ACCT_KEY = "dicechess-account";
 var ACCT = { account: null, error: "", busy: false, action: null, timer: null, statusTimer: null, pendingCred: null };
 try{
   var _acctSaved = JSON.parse(localStorage.getItem(ACCT_KEY) || "null");
+  if (!(_acctSaved && typeof _acctSaved==="object" && _acctSaved.username)){
+    _acctSaved = JSON.parse(sessionStorage.getItem(ACCT_KEY) || "null"); // stay-logged-in off: this-visit copy
+  }
   if (_acctSaved && typeof _acctSaved==="object" && _acctSaved.username) ACCT.account = _acctSaved;
 }catch(e){}
 function acctSignedIn(){ return !!(ACCT.account && ACCT.account.username); }
 function acctSaveDisplay(){
   try{
-    if (ACCT.account) localStorage.setItem(ACCT_KEY, JSON.stringify(ACCT.account));
-    else localStorage.removeItem(ACCT_KEY);
+    if (ACCT.account){
+      var store = srvSessionStore();
+      var other = store===localStorage ? sessionStorage : localStorage;
+      store.setItem(ACCT_KEY, JSON.stringify(ACCT.account));
+      try{ other.removeItem(ACCT_KEY); }catch(e){}
+    } else {
+      localStorage.removeItem(ACCT_KEY);
+      try{ sessionStorage.removeItem(ACCT_KEY); }catch(e){}
+    }
   }catch(e){}
+}
+/* Stay logged in toggle: flips where the session token + account
+   copy live (this device vs this visit only) and moves the current
+   copies to match — turning it off forgets the device sign-in at
+   once; turning it on starts remembering from now. */
+function acctSetStayLoggedIn(on){
+  try{ localStorage.setItem(SRV_STAY_KEY, on ? "1" : "0"); }catch(e){}
+  if (!SRV.token){ var s = srvLoadSession(); if (s && s.token) SRV.token = s.token; }
+  srvSaveSession();
+  acctSaveDisplay();
+  acctRender();
+  toast(on ? "Stay logged in: on — you'll be signed back in automatically on this device."
+           : "Stay logged in: off — you'll be signed out when this tab or app closes.");
 }
 function acctSyncChip(){ if (typeof applyPlayerNameUI==="function") applyPlayerNameUI(); }
 function acctClearPassword(){ var p = document.getElementById("acctPassword"); if (p) p.value = ""; }
@@ -10227,6 +10579,14 @@ function acctRender(){
   var out = document.getElementById("acctSignedOut"), inn = document.getElementById("acctSignedIn");
   if (!out || !inn) return;
   var signed = acctSignedIn();
+  var stay = srvStayLoggedIn();
+  ["acctStayLoggedIn","acctStayLoggedIn2"].forEach(function(id){
+    var cb = document.getElementById(id); if (cb) cb.checked = stay;
+  });
+  var snote = document.getElementById("acctStayNote");
+  if (snote) snote.textContent = stay
+    ? "Stay logged in is on: you're signed back in automatically when you open the game on this device."
+    : "Stay logged in is off: you'll be signed out when this tab or app closes.";
   out.style.display = signed ? "none" : "";
   inn.style.display = signed ? "" : "none";
   var err = document.getElementById("acctError");
@@ -10410,6 +10770,10 @@ function openAccountSection(){
   if (l) l.addEventListener("click", function(){ acctAttempt("login"); });
   var lo = document.getElementById("acctLogoutBtn");
   if (lo) lo.addEventListener("click", acctLogout);
+  ["acctStayLoggedIn","acctStayLoggedIn2"].forEach(function(id){
+    var cb = document.getElementById(id);
+    if (cb) cb.addEventListener("change", function(){ acctSetStayLoggedIn(!!cb.checked); });
+  });
   var p = document.getElementById("acctPassword");
   if (p) p.addEventListener("keydown", function(e){ if (e.key==="Enter"){ e.preventDefault(); acctAttempt("login"); } });
   var u = document.getElementById("acctUsername");
@@ -10721,6 +11085,7 @@ function srvHandleFinished(s){
       var atkS = G.st.board[lmS.tr] ? G.st.board[lmS.tr][lmS.tc] : null;
       var winS = res.winner;
       setTimeout(function(){
+        if (typeof trnFinalCaptureFlash==="function") trnFinalCaptureFlash(lmS);
         playKingSmash({ kr:lmS.tr, kc:lmS.tc, victim:opp(winS), aType: atkS ? atkS.t : "q", aColor:winS, ar:lmS.fr, ac:lmS.fc },
           function(){ showGameOver(title, msg); });
       }, 40);
@@ -10791,6 +11156,11 @@ function srvResign(){
   document.getElementById("overlay").classList.add("on");
 }
 function srvDrawAction(){
+  if (typeof TRN!=="undefined" && TRN && TRN.game && SRV.active && SRV.roomCode && TRN.gameRoomCode===SRV.roomCode){
+    toast("Agreed draws aren't allowed in tournament matches — draws are replayed.");
+    setStatus("<b>Tournament match.</b> Agreed draws aren't allowed in tournament matches — draws are replayed.");
+    return;
+  }
   if (!SRV.lastState) return;
   if (SRV.lastState.drawOfferBy && SRV.lastState.drawOfferBy!==G.myColor) srvSendAction("drawAccept");
   else if (!SRV.lastState.drawOfferBy) srvSendAction("drawOffer");
@@ -11135,6 +11505,9 @@ function srvTeardown(){
   if (SRV.reconnectTimer){ clearTimeout(SRV.reconnectTimer); SRV.reconnectTimer = null; }
   if (SRV.wakeTimer){ clearTimeout(SRV.wakeTimer); SRV.wakeTimer = null; }
   if (SRV.wakeRetryTimer){ clearTimeout(SRV.wakeRetryTimer); SRV.wakeRetryTimer = null; }
+  SRV.wantOnline = false; // leaving online play on purpose — no background retries
+  if (SRV.autoTimer){ clearTimeout(SRV.autoTimer); SRV.autoTimer = null; }
+  SRV.autoDelay = 5000;
   if (SRV.autoEndTimer){ clearTimeout(SRV.autoEndTimer); SRV.autoEndTimer = null; }
   if (SRV.discTimer){ clearInterval(SRV.discTimer); SRV.discTimer = null; }
   try{ if (SRV.ws) SRV.ws.close(); }catch(e){}
@@ -11249,6 +11622,20 @@ document.querySelectorAll("[data-menu-nav]").forEach(function(btn){
   btn.addEventListener("click", function(){ if (btn.getAttribute("data-menu-nav")==="online") srvFetchHistory(false); });
 });
 document.addEventListener("visibilitychange", function(){ if (document.hidden) srvSaveSession(); });
+/* Coming back to the app (or back online) with a dead socket kicks
+   an immediate reconnect instead of waiting out the backoff. */
+document.addEventListener("visibilitychange", function(){
+  if (document.hidden) return;
+  srvKickReconnect();
+});
+window.addEventListener("online", srvKickReconnect);
+function srvKickReconnect(){
+  if (!SRV.wantOnline || SRV.intentionalClose || SRV.ws || SRV.welcomed) return;
+  if (SRV.active && SRV.phase==="playing") return; // the seat flow owns match reconnects
+  if (SRV.autoTimer){ clearTimeout(SRV.autoTimer); SRV.autoTimer = null; }
+  SRV.autoDelay = 5000;
+  srvConnect();
+}
 /* Stored session: if a server game was live moments ago (inside the
    60-second grace window), reconnect on load automatically; otherwise
    surface a manual Rejoin in the Live setup. */
@@ -11277,6 +11664,16 @@ document.addEventListener("visibilitychange", function(){ if (document.hidden) s
     } else {
       srvSetStatus("Server: you have a saved server game (room " + saved.code + ") — open Live setup and tap Rejoin to try returning to it.");
     }
+  }
+  /* Stay logged in: a saved session token (or a signed-in account)
+     reconnects on its own at boot — the welcome handshake restores
+     the account, balance and ranked access with no manual log-in.
+     If the server is briefly unreachable, the background
+     auto-reconnect keeps retrying instead of giving up. */
+  if (!SRV.ws && ((saved && saved.token) || (typeof acctSignedIn==="function" && acctSignedIn()))){
+    SRV.wantOnline = true;
+    srvSetStatus("Connecting to the server…");
+    setTimeout(function(){ if (!SRV.ws && !SRV.welcomed) srvConnect(); }, 700);
   }
   srvSyncUI();
   srvFetchHistory(false);
@@ -12865,5 +13262,1079 @@ function brwHandleError(msg){
   srkRenderNote("Sign in and connect to see your server ranked stats.");
 })();
 </script>
+<script>
+/* ============================================================
+   TOURNAMENTS — client for the live server tournament system.
+   All payloads follow the server contract exactly; nothing is
+   invented. Lobby + detail are spectator-safe (no account);
+   register / withdraw / check-in need a bound account.
+   gameCode is handled ONLY in the enter-game path and is never
+   rendered anywhere.
+   ============================================================ */
+var TRN = {
+  open: false, view: "lobby",
+  lobby: null, lobbyById: {}, serverOffset: 0,
+  detail: null, detailId: null, lastDetail: null,
+  ticker: null, lastAction: null, stateTimer: null,
+  game: null, gameRoomCode: null,
+  readyRounds: {},
+  introPending: null, introTimer: null, introShownFor: "",
+  champWantsFor: null, champShowWhenReady: null, champReady: null,
+  adminWantsDetailFor: null, adminMatches: null, adminDetail: null
+};
+var TRN_ADMIN_KEY = "dicechess-admin-token";
+
+/* ---------- helpers ---------- */
+function trnTcLabel(tc){ return tc==="blitz" ? "Blitz" : tc==="classical" ? "Classical" : "Rapid"; }
+function trnRoundWord(round, singular){
+  var map = { F: ["Final","Final"], SF: ["Semifinals","Semifinal"], QF: ["Quarterfinals","Quarterfinal"],
+    R16: ["Round of 16","Round of 16"], R32: ["Round of 32","Round of 32"], R64: ["Round of 64","Round of 64"], R128: ["Round of 128","Round of 128"] };
+  var m = map[round];
+  if (m) return singular ? m[1] : m[0];
+  return round ? String(round) : "";
+}
+function trnRoundLiveText(round){
+  if (!round) return "Live now";
+  if (round==="F") return "The Final is underway";
+  return trnRoundWord(round) + " underway";
+}
+function trnFmtStart(s){
+  try{
+    var d = new Date(s.startsAt);
+    if (isNaN(d.getTime())) return "";
+    return new Intl.DateTimeFormat(undefined, { dateStyle:"medium", timeStyle:"short", timeZone: (s.timezone || "UTC"), timeZoneName:"short" }).format(d);
+  }catch(e){ return ""; }
+}
+function trnFmtIso(iso, tz){
+  try{
+    var d = new Date(iso);
+    if (isNaN(d.getTime())) return "";
+    return new Intl.DateTimeFormat(undefined, { dateStyle:"medium", timeStyle:"short", timeZone: (tz || undefined), timeZoneName:"short" }).format(d);
+  }catch(e){ return ""; }
+}
+function trnHumanize(code){
+  return String(code || "").replace(/_/g, " ").replace(/\b\w/g, function(ch){ return ch.toUpperCase(); });
+}
+function trnReasonText(code){
+  var map = {
+    "king-capture": "King captured", "hill": "King reached the hill", "resignation": "Resignation",
+    "disconnect": "Opponent disconnected", "no_show": "Won by no-show walkover",
+    "no_show_both": "Both absent — higher seed advances", "bye": "Bye",
+    "draw_seed": "Higher seed advances after three draws", "no-moves": "No legal moves",
+    "draw-agreement": "Draw agreed", "king_capture": "King captured"
+  };
+  return map[code] || (code ? trnHumanize(code) : "");
+}
+function trnAdvanceText(m){
+  var am = m.advanceMethod;
+  if (am==="replay_win") return "Won the replay";
+  if (am==="blitz_win") return "Won the Blitz replay";
+  if (am==="seed_after_draws") return "Higher seed advances after three draws";
+  if (am==="bye") return "Bye";
+  if (am==="no_show") return "Won by no-show walkover";
+  if (am==="no_show_both") return "Both absent — higher seed advances";
+  return trnReasonText(m.decidedBy);
+}
+function trnPlayerLine(ref){
+  if (!ref) return '<span class="trn-player"><span class="trn-pmeta">To be decided</span></span>';
+  var bits = [];
+  if (ref.seed!=null) bits.push("#" + ref.seed);
+  var name = escHtml(ref.username || "Player");
+  var meta = [];
+  if (ref.tier && ref.tier.name) meta.push(escHtml(ref.tier.name));
+  if (typeof ref.rating==="number") meta.push(ref.rating + "");
+  return '<span class="trn-player">' + (bits.length ? '<span class="trn-seed">' + escHtml(bits.join(" ")) + '</span>' : "") +
+    '<span class="trn-rname">' + name + '</span>' +
+    (meta.length ? '<span class="trn-pmeta">' + meta.join(" · ") + '</span>' : "") + '</span>';
+}
+function trnPlayerPlain(ref){
+  if (!ref) return "To be decided";
+  var s = (ref.seed!=null ? "#" + ref.seed + " " : "") + (ref.username || "Player");
+  var meta = [];
+  if (ref.tier && ref.tier.name) meta.push(ref.tier.name);
+  if (typeof ref.rating==="number") meta.push(ref.rating + "");
+  return s + (meta.length ? " (" + meta.join(" · ") + ")" : "");
+}
+function trnMyName(){
+  if (typeof acctSignedIn==="function" && acctSignedIn() && ACCT.account) return ACCT.account.username;
+  return srvOwnName();
+}
+function trnDeadlineLocal(iso, fallbackMs){
+  var ms = Date.parse(iso || "");
+  if (!isNaN(ms)) return ms - TRN.serverOffset;
+  if (typeof fallbackMs==="number") return Date.now() + fallbackMs;
+  return 0;
+}
+function trnCountdownText(remMs){
+  if (remMs<=0) return "Starting…";
+  var s = Math.floor(remMs/1000);
+  var d = Math.floor(s/86400), h = Math.floor((s%86400)/3600), m = Math.floor((s%3600)/60), sec = s%60;
+  if (d>0) return "Starts in " + d + "d " + h + "h " + m + "m";
+  if (h>0) return "Starts in " + h + "h " + m + "m " + sec + "s";
+  if (m>0) return "Starts in " + m + "m " + sec + "s";
+  return "Starts in " + sec + "s";
+}
+function trnClockText(remMs){
+  if (remMs<=0) return "0:00";
+  var s = Math.ceil(remMs/1000);
+  return Math.floor(s/60) + ":" + ("0" + (s%60)).slice(-2);
+}
+
+/* ---------- tickers (single interval, qpStopTimers discipline) ---------- */
+function trnStartTicker(){
+  if (TRN.ticker) return;
+  TRN.ticker = setInterval(trnTick, 1000);
+  trnTick();
+}
+function trnStopTickers(){
+  if (TRN.ticker){ clearInterval(TRN.ticker); TRN.ticker = null; }
+  if (TRN.stateTimer){ clearTimeout(TRN.stateTimer); TRN.stateTimer = null; }
+}
+function trnTick(){
+  var nodes = document.querySelectorAll("[data-trn-cd]");
+  for (var i=0;i<nodes.length;i++){
+    var dl = Number(nodes[i].getAttribute("data-trn-cd")) || 0;
+    if (!dl) continue;
+    var rem = dl - Date.now();
+    if (nodes[i].getAttribute("data-trn-cd-kind")==="clock") nodes[i].textContent = trnClockText(rem);
+    else nodes[i].textContent = trnCountdownText(rem);
+  }
+}
+function trnOnScreensClosed(){
+  TRN.open = false;
+  trnStopTickers();
+  if (typeof SRV!=="undefined" && !SRV.active) trnClearGame();
+}
+
+/* ---------- lobby ---------- */
+function trnOpen(){
+  closeInfoScreens();
+  document.body.classList.add("show-tournaments");
+  TRN.open = true; TRN.view = "lobby";
+  var lv = document.getElementById("trnLobbyView"), dv = document.getElementById("trnDetailView");
+  if (lv) lv.hidden = false;
+  if (dv) dv.hidden = true;
+  window.scrollTo(0,0);
+  trnStartTicker();
+  trnRequestLobby();
+}
+function trnBackToOnline(){
+  closeInfoScreens();
+  document.body.classList.add("show-online");
+  window.scrollTo(0,0);
+}
+function trnShowLobbyView(){
+  TRN.view = "lobby"; TRN.detailId = null;
+  var lv = document.getElementById("trnLobbyView"), dv = document.getElementById("trnDetailView");
+  if (lv) lv.hidden = false;
+  if (dv) dv.hidden = true;
+  window.scrollTo(0,0);
+  trnRequestLobby();
+}
+function trnRequestLobby(){
+  var st = document.getElementById("trnLobbyStatus");
+  if (st && TRN.open){ st.textContent = "Loading tournaments…"; st.className = "note"; }
+  TRN.lastAction = { kind:"lobby", at: Date.now() };
+  srvConnect(function(){ srvSendRaw({ type:"tournamentLobby" }); });
+}
+function trnOnLobby(msg){
+  if (!msg) return;
+  var sn = Date.parse(msg.serverNow || "");
+  if (!isNaN(sn)) TRN.serverOffset = sn - Date.now();
+  TRN.lobby = msg;
+  TRN.lobbyById = {};
+  ["upcoming","live","completed"].forEach(function(k){
+    (msg[k] || []).forEach(function(s){ if (s && s.id) TRN.lobbyById[s.id] = s; });
+  });
+  var st = document.getElementById("trnLobbyStatus");
+  if (st) st.textContent = "";
+  if (TRN.open && TRN.view==="lobby") trnRenderLobby();
+  trnPopulateAdminPick();
+}
+function trnRegWindow(s){
+  var now = Date.now() + TRN.serverOffset;
+  var opens = Date.parse(s.registrationOpensAt || ""), closes = Date.parse(s.registrationClosesAt || "");
+  if (!isNaN(opens) && now < opens) return { open:false, label:"Registration opens " + trnFmtIso(s.registrationOpensAt, s.timezone) };
+  if (!isNaN(closes) && now > closes) return { open:false, label:"Registration closed" };
+  return { open:true, label:"" };
+}
+function trnCardHtml(s){
+  var h = '<div class="trn-card" data-trn-open="' + escHtml(s.id) + '" role="button" tabindex="0" aria-label="' + escHtml(s.name || "Tournament") + '">';
+  h += '<div class="trn-card-name">' + escHtml(s.name || "Tournament") + '</div>';
+  if (s.description) h += '<div class="trn-card-desc">' + escHtml(s.description) + '</div>';
+  h += '<div class="trn-card-meta">';
+  var start = trnFmtStart(s);
+  if (start) h += escHtml(start) + '<br>';
+  h += 'Registered <b>' + (s.registeredCount || 0) + ' / ' + (s.capacity != null ? s.capacity : (s.size || 0)) + '</b> · Classic · ' +
+    escHtml(trnTcLabel(s.timeControl)) + ' · Single elimination</div>';
+  if (s.status==="upcoming"){
+    var dl = trnDeadlineLocal(s.startsAt, typeof s.countdownMs==="number" ? s.countdownMs : null);
+    if (dl) h += '<div class="trn-card-status"><span data-trn-cd="' + dl + '">Starts soon</span></div>';
+  } else if (s.status==="live"){
+    h += '<div class="trn-card-status">🔴 Live — ' + escHtml(trnRoundLiveText(s.currentRound)) + '</div>';
+  } else if (s.status==="cancelled"){
+    h += '<div class="trn-card-status cancelled">Cancelled' + (s.cancelReason ? ' — ' + escHtml(s.cancelReason) : '') + '</div>';
+  } else if (s.status==="completed"){
+    h += '<div class="trn-card-status">🏆 Champion: ' + escHtml(s.champion && s.champion.username ? s.champion.username : "—") + '</div>';
+  }
+  if (s.status==="upcoming"){
+    h += '<div class="trn-card-actions">';
+    if (s.myRegistration){
+      h += '<span class="trn-card-status" style="margin:0;align-self:center;">✓ You\'re registered</span>';
+      h += '<button class="trn-btn ghost" type="button" data-trn-act="withdraw" data-trn-id="' + escHtml(s.id) + '">Withdraw</button>';
+    } else {
+      var w = trnRegWindow(s);
+      if (w.open) h += '<button class="trn-btn" type="button" data-trn-act="register" data-trn-id="' + escHtml(s.id) + '">Register</button>';
+      else h += '<button class="trn-btn" type="button" disabled>' + escHtml(w.label) + '</button>';
+    }
+    h += '</div>';
+  } else if (s.myRegistration && s.status==="live"){
+    h += '<div class="trn-card-status">You\'re playing in this one — tap to see your match.</div>';
+  }
+  h += '<div class="trn-card-err" data-trn-err="' + escHtml(s.id) + '"></div>';
+  h += '</div>';
+  return h;
+}
+function trnRenderLobby(){
+  if (!TRN.lobby) return;
+  var up = document.getElementById("trnUpcoming"), lv = document.getElementById("trnLive"), cp = document.getElementById("trnCompleted");
+  if (!up || !lv || !cp) return;
+  var L = TRN.lobby;
+  up.innerHTML = (L.upcoming && L.upcoming.length) ? L.upcoming.map(trnCardHtml).join("") : '<div class="trn-empty">No tournaments scheduled yet — check back soon.</div>';
+  lv.innerHTML = (L.live && L.live.length) ? L.live.map(trnCardHtml).join("") : '<div class="trn-empty">No tournaments are live right now.</div>';
+  cp.innerHTML = (L.completed && L.completed.length) ? L.completed.map(trnCardHtml).join("") : '<div class="trn-empty">No finished tournaments yet — be the first name on a trophy.</div>';
+  trnTick();
+}
+function trnReplaceSummary(sum){
+  if (!sum || !sum.id) return;
+  TRN.lobbyById[sum.id] = sum;
+  if (TRN.lobby){
+    ["upcoming","live","completed"].forEach(function(k){
+      var arr = TRN.lobby[k] || [];
+      for (var i=0;i<arr.length;i++) if (arr[i].id===sum.id) arr[i] = sum;
+    });
+  }
+  if (TRN.open && TRN.view==="lobby") trnRenderLobby();
+  if (TRN.open && TRN.view==="detail" && TRN.detailId===sum.id) trnRequestDetail(sum.id);
+  trnPopulateAdminPick();
+}
+function trnOnRegistered(msg){ if (msg && msg.tournament){ trnReplaceSummary(msg.tournament); toast("You're registered — good luck!"); srvNote("Registered for " + (msg.tournament.name || "the tournament") + "."); } }
+function trnOnWithdrawn(msg){ if (msg && msg.tournament){ trnReplaceSummary(msg.tournament); toast("Withdrawn from the tournament."); } }
+
+/* ---------- detail ---------- */
+function trnOpenDetail(id){
+  TRN.view = "detail"; TRN.detailId = id; TRN.detail = null;
+  var lv = document.getElementById("trnLobbyView"), dv = document.getElementById("trnDetailView");
+  if (lv) lv.hidden = true;
+  if (dv) dv.hidden = false;
+  var body = document.getElementById("trnDetailBody");
+  if (body) body.innerHTML = '<div class="trn-empty">Loading tournament…</div>';
+  window.scrollTo(0,0);
+  trnRequestDetail(id);
+}
+function trnRequestDetail(id){
+  TRN.lastAction = { kind:"detail", tid:id, at: Date.now() };
+  srvConnect(function(){ srvSendRaw({ type:"tournamentDetail", tournamentId:id }); });
+}
+function trnRequestDetailRaw(id){
+  srvConnect(function(){ srvSendRaw({ type:"tournamentDetail", tournamentId:id }); });
+}
+function trnRosterStatus(st){
+  var map = { registered:"Registered", eliminated:"Eliminated", champion:"Champion", no_show:"No-show", withdrawn:"Withdrawn", checked_in:"Checked in" };
+  return map[st] || trnHumanize(st || "Registered");
+}
+function trnMatchStateText(m){
+  switch (m.state){
+    case "pending": return "Waiting for earlier rounds";
+    case "ready": return "Ready — check-in open";
+    case "live": return "Live now";
+    case "bye": return "BYE — advances";
+    case "no_show": return trnAdvanceText(m) || "Decided by no-show";
+    case "finalized": return trnAdvanceText(m);
+    default: return trnHumanize(m.state || "");
+  }
+}
+function trnMatchHtml(m){
+  var gold = (m.round==="SF" || m.round==="F") ? " gold" : "";
+  var h = '<div class="trn-match' + gold + '">';
+  var wId = m.winner && m.winner.accountId;
+  function prow(ref){
+    var win = !!(ref && wId && ref.accountId===wId && (m.state==="finalized" || m.state==="bye" || m.state==="no_show"));
+    return '<div class="trn-player' + (win ? " win" : "") + '">' + trnPlayerLine(ref) + (win ? ' <span aria-hidden="true">👑</span>' : "") + '</div>';
+  }
+  h += prow(m.playerA);
+  h += prow(m.playerB);
+  h += '<div class="trn-mstate">' + escHtml(trnMatchStateText(m)) + '</div>';
+  if (m.attempts && m.attempts.length>1){
+    var parts = m.attempts.map(function(a){
+      var drew = !a.outcome || a.outcome==="draw";
+      if (a.n===1) return drew ? "Draw" : "Won";
+      if (a.n===2) return drew ? "Draw — replay" : "Won the replay";
+      return drew ? "Draw — Blitz replay" : "Won the Blitz replay";
+    });
+    h += '<div class="trn-attempts">' + escHtml(parts.join(" · ")) + '</div>';
+  }
+  if (m.state==="live" && m.round==="F"){
+    h += '<div class="trn-attempts">🏆 The Championship Final is being played.</div>';
+  }
+  h += '</div>';
+  return h;
+}
+function trnRenderMyMatch(t, mm){
+  var h = '<div class="trn-mymatch"><h4>🏆 Your match — ' + escHtml(trnRoundWord(mm.round, true)) + '</h4>';
+  h += '<p>Opponent: <b>' + escHtml(trnPlayerPlain(mm.opponent)) + '</b></p>';
+  if (mm.attempt && mm.attempt>1) h += '<p>Attempt ' + mm.attempt + ' · ' + escHtml(trnTcLabel(mm.timeControl || t.timeControl)) + (mm.attempt===2 ? ' (replay — colours swapped)' : ' (Blitz replay)') + '</p>';
+  if (mm.gameCode){
+    h += '<p>Your match is live.</p>';
+    h += '<button class="trn-btn" type="button" data-trn-act="enter" data-trn-id="' + escHtml(t.id) + '" data-trn-mid="' + escHtml(mm.bracketMatchId) + '">Enter / rejoin your match</button>';
+  } else if (mm.state==="ready" && !mm.checkedInMe){
+    var dl = trnDeadlineLocal(mm.checkInDeadline);
+    h += '<p>Check in before the window closes: <span class="trn-cd" data-trn-cd="' + dl + '" data-trn-cd-kind="clock">5:00</span> left</p>';
+    h += '<button class="trn-btn" type="button" data-trn-act="checkin" data-trn-id="' + escHtml(t.id) + '" data-trn-mid="' + escHtml(mm.bracketMatchId) + '">Check in</button>';
+  } else if (mm.checkedInMe){
+    h += '<p>✓ Checked in — waiting for your opponent.</p>';
+  } else if (mm.state==="ready"){
+    h += '<p>Your match is ready — check-in is open.</p>';
+  } else {
+    h += '<p>Your match is coming up — watch this space.</p>';
+  }
+  h += '<div class="trn-card-err" data-trn-err="' + escHtml(t.id) + '"></div>';
+  h += '</div>';
+  return h;
+}
+function trnRenderDetail(){
+  var msg = TRN.detail, body = document.getElementById("trnDetailBody");
+  if (!msg || !body) return;
+  var t = msg.tournament;
+  if (!t) return;
+  var h = "";
+  /* champion / result section (completed tournaments) */
+  if (msg.result && msg.result.champion){
+    var r = msg.result;
+    h += '<div class="trn-block trn-champ-sec"><h4>🏆 Champion</h4>';
+    h += '<div class="trn-champ-name">' + escHtml(r.champion.username || "") + '</div>';
+    if (r.runnerUp) h += '<p>Runner-up: <b>' + escHtml(r.runnerUp.username || "") + '</b></p>';
+    if (r.semifinalists && r.semifinalists.length)
+      h += '<p>Semifinalists: ' + r.semifinalists.map(function(p){ return escHtml(p.username || ""); }).join(", ") + '</p>';
+    h += '<button class="trn-btn" type="button" data-trn-act="champion" data-trn-id="' + escHtml(t.id) + '">Champion screen</button></div>';
+  }
+  /* header */
+  h += '<div class="trn-detail-head"><h3>' + escHtml(t.name || "Tournament") + '</h3>';
+  if (t.description) h += '<p>' + escHtml(t.description) + '</p>';
+  h += '<p><b>' + escHtml(t.status==="cancelled" ? "Cancelled" : trnHumanize(t.status)) + '</b>' +
+    (t.status==="cancelled" && t.cancelReason ? ' — ' + escHtml(t.cancelReason) : '') +
+    (t.status==="completed" && t.champion ? ' · 🏆 ' + escHtml(t.champion.username || "") : '') + '</p>';
+  var start = trnFmtStart(t);
+  if (start) h += '<p>Starts: <b>' + escHtml(start) + '</b></p>';
+  if (t.status==="upcoming"){
+    var dl0 = trnDeadlineLocal(t.startsAt, typeof t.countdownMs==="number" ? t.countdownMs : null);
+    if (dl0) h += '<p><span class="trn-cd" data-trn-cd="' + dl0 + '">Starts soon</span></p>';
+  }
+  if (t.status==="live") h += '<p>🔴 Live — ' + escHtml(trnRoundLiveText(t.currentRound)) + '</p>';
+  h += '<p>Classic · ' + escHtml(trnTcLabel(t.timeControl)) + ' · Single elimination · Registered <b>' + (t.registeredCount || 0) + ' / ' + (t.capacity != null ? t.capacity : (t.size || 0)) + '</b></p>';
+  if (t.status==="upcoming"){
+    h += '<div class="trn-card-actions">';
+    if (t.myRegistration){
+      h += '<span class="trn-card-status" style="margin:0;align-self:center;">✓ You\'re registered</span>';
+      h += '<button class="trn-btn ghost" type="button" data-trn-act="withdraw" data-trn-id="' + escHtml(t.id) + '">Withdraw</button>';
+    } else {
+      var w = trnRegWindow(t);
+      if (w.open) h += '<button class="trn-btn" type="button" data-trn-act="register" data-trn-id="' + escHtml(t.id) + '">Register</button>';
+      else h += '<button class="trn-btn" type="button" disabled>' + escHtml(w.label) + '</button>';
+    }
+    h += '</div>';
+  }
+  h += '<div class="trn-card-err" data-trn-err="' + escHtml(t.id) + '"></div>';
+  h += '</div>';
+  /* my match */
+  if (msg.myMatch) h += trnRenderMyMatch(t, msg.myMatch);
+  TRN.detailMyMatch = msg.myMatch || null;
+  /* spectator final intro offer */
+  var finalMatch = null;
+  (msg.matches || []).forEach(function(m){ if (m.round==="F") finalMatch = m; });
+  if (t.status==="live" && finalMatch && (finalMatch.state==="live" || finalMatch.state==="ready") && !msg.myMatch){
+    h += '<div class="trn-final-banner">🏆 The Championship Final is on!<br><button class="trn-btn" type="button" style="margin-top:9px;" data-trn-act="final-intro" data-trn-id="' + escHtml(t.id) + '">Watch the final intro</button></div>';
+  }
+  /* rules — always visible */
+  h += '<div class="trn-rules"><h4>Tournament rules</h4><ul>' +
+    '<li><b>Free entry</b> — virtual coins are never staked in tournaments.</li>' +
+    '<li>Classic ruleset, Special Dice always on.</li>' +
+    '<li><b>No agreed draws.</b> A drawn match replays with colours swapped, then a Blitz replay — after a third draw the higher seed advances.</li>' +
+    '<li>When your match is ready you have a <b>5-minute check-in window</b>.</li>' +
+    '<li>Missing check-in forfeits the match — and 2 no-shows in 30 days suspends tournament registration for 14 days.</li>' +
+    '<li>Tournament matches don\'t change your ranked rating.</li></ul></div>';
+  /* entrants */
+  h += '<div class="trn-block"><h4>Entrants (' + ((msg.roster || []).length) + ')</h4>';
+  if (msg.roster && msg.roster.length){
+    h += '<ul class="trn-roster">' + msg.roster.map(function(p){
+      return '<li><span class="trn-seed">#' + (p.seed!=null ? p.seed : "—") + '</span><span class="trn-rname">' + escHtml(p.username || "") + '</span>' +
+        (typeof p.rating==="number" ? '<span class="trn-rmeta">' + p.rating + '</span>' : '') +
+        '<span class="trn-rstatus">' + escHtml(trnRosterStatus(p.status)) + '</span></li>';
+    }).join("") + '</ul>';
+  } else {
+    h += '<p style="margin:0;font-size:13.5px;">No entrants yet — be the first to register.</p>';
+  }
+  h += '</div>';
+  /* bracket */
+  if (msg.matches && msg.matches.length){
+    var byRound = {}, order = [];
+    msg.matches.forEach(function(m){
+      var key = (m.roundIndex!=null ? m.roundIndex : 0);
+      if (!byRound[key]){ byRound[key] = { round: m.round, matches: [] }; order.push(key); }
+      byRound[key].matches.push(m);
+    });
+    order.sort(function(a,b){ return a-b; });
+    h += '<div class="trn-block"><h4>Bracket</h4><div class="trn-bracket">';
+    order.forEach(function(k){
+      var col = byRound[k];
+      h += '<div class="trn-roundcol"><h5>' + escHtml(trnRoundWord(col.round)) + '</h5>' + col.matches.map(trnMatchHtml).join("") + '</div>';
+    });
+    h += '</div></div>';
+  }
+  body.innerHTML = h;
+  trnTick();
+}
+function trnOnDetail(msg){
+  if (!msg || !msg.tournament) return;
+  var sn = Date.parse(msg.serverNow || "");
+  if (!isNaN(sn)) TRN.serverOffset = sn - Date.now();
+  TRN.lastDetail = msg;
+  var t = msg.tournament;
+  if (TRN.adminWantsDetailFor===t.id){
+    TRN.adminWantsDetailFor = null;
+    TRN.adminDetail = msg;
+    trnPopulateCorrectMatches();
+  }
+  if (TRN.introPending && TRN.introPending.tid===t.id){
+    var pend = TRN.introPending; TRN.introPending = null;
+    if (TRN.introTimer){ clearTimeout(TRN.introTimer); TRN.introTimer = null; }
+    trnShowIntroFromDetail(msg, pend);
+  }
+  if (TRN.champShowWhenReady===t.id){
+    TRN.champShowWhenReady = null;
+    if (t.status==="completed" && msg.result) trnShowChampion(msg);
+    else toast("The tournament isn't finished yet.");
+  }
+  if (TRN.champWantsFor===t.id && t.status==="completed" && msg.result){
+    TRN.champWantsFor = null;
+    TRN.champReady = msg;
+    var ov = document.getElementById("overlay");
+    if (!ov || !ov.classList.contains("on")) trnShowChampion(msg);
+  }
+  if (TRN.open && TRN.view==="detail" && TRN.detailId===t.id){
+    TRN.detail = msg;
+    trnRenderDetail();
+  }
+}
+</script>
+
+<script>
+/* ---------- tournament actions ---------- */
+function trnRegister(id){
+  if (!(typeof acctSignedIn==="function" && acctSignedIn())){
+    toast("Tournaments need a free account — sign in or create one first.");
+    if (typeof openAccountSection==="function") openAccountSection();
+    return;
+  }
+  TRN.lastAction = { kind:"register", tid:id, at: Date.now() };
+  srvConnect(function(){ srvSendRaw({ type:"tournamentRegister", tournamentId:id }); });
+}
+function trnWithdraw(id){
+  TRN.lastAction = { kind:"withdraw", tid:id, at: Date.now() };
+  srvConnect(function(){ srvSendRaw({ type:"tournamentWithdraw", tournamentId:id }); });
+}
+function trnCheckIn(id, mid){
+  TRN.lastAction = { kind:"checkin", tid:id, mid:mid, at: Date.now() };
+  srvConnect(function(){ srvSendRaw({ type:"tournamentCheckIn", tournamentId:id, bracketMatchId:mid }); });
+}
+function trnSetGame(ctx, roomCode){
+  TRN.game = ctx;
+  TRN.gameRoomCode = roomCode || null;
+  trnSyncFinalChrome();
+}
+function trnClearGame(){
+  TRN.game = null;
+  TRN.gameRoomCode = null;
+  trnSyncFinalChrome();
+}
+function trnIsFinalGame(){
+  return !!(TRN.game && TRN.game.round==="F" && typeof SRV!=="undefined" && SRV.active && TRN.gameRoomCode && TRN.gameRoomCode===SRV.roomCode);
+}
+function trnSyncFinalChrome(){
+  var on = false;
+  try{ on = trnIsFinalGame(); }catch(e){}
+  document.body.classList.toggle("trn-final", on);
+}
+function trnCorrelate(tid, mid){
+  var out = { round:null, opponentName:null };
+  var rr = TRN.readyRounds[mid];
+  if (rr && rr.tournamentId===tid && rr.round) out.round = rr.round;
+  var det = (TRN.lastDetail && TRN.lastDetail.tournament && TRN.lastDetail.tournament.id===tid) ? TRN.lastDetail : null;
+  if (det){
+    if (det.myMatch && det.myMatch.bracketMatchId===mid){
+      if (!out.round) out.round = det.myMatch.round;
+      if (det.myMatch.opponent) out.opponentName = det.myMatch.opponent.username || null;
+    }
+    (det.matches || []).forEach(function(m){
+      if (m.id===mid){
+        if (!out.round) out.round = m.round;
+        if (!out.opponentName){
+          var me = trnMyName();
+          [m.playerA, m.playerB].forEach(function(p){ if (p && p.username && p.username!==me) out.opponentName = p.username; });
+        }
+      }
+    });
+  }
+  return out;
+}
+/* Enter a live tournament game exactly like the matched/rejoined
+   flow. No server message is invented — getState is the client's
+   existing resync request and the state broadcast drives entry. */
+function trnEnterGame(tid, mid, code, color, attempt, tc){
+  var corr = trnCorrelate(tid, mid);
+  var mm = (TRN.detail && TRN.detail.myMatch && TRN.detail.myMatch.bracketMatchId===mid) ? TRN.detail.myMatch : null;
+  if (mm && mm.opponent) corr.opponentName = mm.opponent.username || corr.opponentName;
+  if (mm && !corr.round) corr.round = mm.round;
+  SRV.active = true; SRV.roomCode = code; SRV.mySrvColor = color;
+  SRV.phase = "waiting"; SRV.nextSeq = 1; SRV.enteredGame = false; SRV.overShownFor = null;
+  SRV.privateIntent = false; SRV.isPrivate = false; SRV.host = null; SRV.hasPassword = false;
+  SRV.timerAdopted = false; SRV.timerSec = null;
+  G.resultRecorded = false;
+  SRV.status = "connected";
+  G.mode = "live"; G.myColor = color; G.orientation = color;
+  trnSetGame({ tournamentId:tid, bracketMatchId:mid, round:corr.round, attempt:attempt || (mm ? mm.attempt : 1), timeControl:tc || (mm ? mm.timeControl : null), opponentName:corr.opponentName }, code);
+  srvSaveSession(); syncModeUI(); srvSyncUI();
+  closeInfoScreens();
+  srvSendRaw({ type:"getState" });
+  toast("Entering your tournament match…");
+}
+function trnOnCheckedIn(msg){
+  if (!msg) return;
+  if ((msg.started || msg.alreadyLive) && msg.gameCode){
+    toast(msg.alreadyLive ? "Your match is live — rejoining…" : "Both players checked in — your match is starting!");
+    trnEnterGame(msg.tournamentId, msg.bracketMatchId, msg.gameCode, msg.color, null, null);
+    return;
+  }
+  toast("Checked in — waiting for your opponent.");
+  srvNote("Checked in — waiting for your opponent. The match starts automatically once they're in.");
+  if (TRN.open && TRN.view==="detail" && TRN.detailId===msg.tournamentId) trnRequestDetail(msg.tournamentId);
+}
+function trnOnMatchReady(msg){
+  if (!msg) return;
+  TRN.readyRounds[msg.bracketMatchId] = { tournamentId: msg.tournamentId, round: msg.round, attempt: msg.attempt || null };
+  toast("Your tournament match is ready — check in within 5 minutes");
+  srvNote("Your tournament match is ready — check in within 5 minutes.");
+  if (TRN.open && TRN.view==="detail" && TRN.detailId===msg.tournamentId) trnRequestDetail(msg.tournamentId);
+}
+function trnOnMatchStart(msg){
+  if (!msg) return;
+  var corr = trnCorrelate(msg.tournamentId, msg.bracketMatchId);
+  SRV.active = true; SRV.roomCode = msg.code; SRV.mySrvColor = msg.color;
+  SRV.phase = "waiting"; SRV.nextSeq = 1; SRV.enteredGame = false; SRV.overShownFor = null;
+  SRV.privateIntent = false; SRV.isPrivate = false; SRV.host = null; SRV.hasPassword = false;
+  SRV.timerAdopted = false; SRV.timerSec = null;
+  G.resultRecorded = false;
+  SRV.status = "connected";
+  G.mode = "live"; G.myColor = msg.color; G.orientation = msg.color;
+  trnSetGame({ tournamentId: msg.tournamentId, bracketMatchId: msg.bracketMatchId, round: corr.round, attempt: msg.attempt || 1, timeControl: msg.timeControl || null, opponentName: corr.opponentName }, msg.code);
+  srvSaveSession(); syncModeUI(); srvSyncUI();
+  closeInfoScreens();
+  toast("Your tournament match is starting…");
+  if (corr.round==="F"){
+    TRN.introPending = { tid: msg.tournamentId, mid: msg.bracketMatchId, color: msg.color };
+    trnRequestDetailRaw(msg.tournamentId);
+    if (TRN.introTimer) clearTimeout(TRN.introTimer);
+    TRN.introTimer = setTimeout(function(){
+      TRN.introTimer = null;
+      if (TRN.introPending){
+        var p = TRN.introPending; TRN.introPending = null;
+        trnShowIntro({ tid:p.tid, mid:p.mid, tName:(TRN.lobbyById[p.tid] || {}).name || "Tournament",
+          aName: trnMyName(), aMeta:"", bName: (TRN.game && TRN.game.opponentName) || "Your opponent", bMeta:"", aGlyph:null });
+      }
+    }, 2500);
+  }
+}
+function trnOnStateChanged(msg){
+  if (!msg) return;
+  if (!TRN.open && !TRN.champWantsFor) return;
+  if (TRN.stateTimer) clearTimeout(TRN.stateTimer);
+  TRN.stateTimer = setTimeout(function(){
+    TRN.stateTimer = null;
+    if (TRN.champWantsFor===msg.tournamentId) trnRequestDetailRaw(msg.tournamentId);
+    if (!TRN.open) return;
+    if (TRN.view==="detail" && TRN.detailId===msg.tournamentId) trnRequestDetail(msg.tournamentId);
+    else if (TRN.view==="lobby") trnRequestLobby();
+  }, 600);
+}
+
+/* ---------- errors ---------- */
+var TRN_FRIENDLY = {
+  TOURNAMENT_NOT_FOUND: "That tournament couldn't be found — it may have been removed.",
+  TOURNAMENT_MATCH_NOT_FOUND: "That bracket match couldn't be found.",
+  TOURNAMENT_REQUIRES_ACCOUNT: "Tournaments need a free account — sign in or create one first.",
+  TOURNAMENT_NOT_OPEN: "That tournament isn't open for that right now.",
+  REGISTRATION_NOT_OPEN: "Registration hasn't opened for that tournament yet.",
+  REGISTRATION_CLOSED: "Registration has closed for that tournament.",
+  ALREADY_REGISTERED: "You're already registered for that tournament.",
+  TOURNAMENT_FULL: "That tournament is full.",
+  TOURNAMENT_NOT_ESTABLISHED: "Your account is still provisional — finish your placement matches before entering tournaments.",
+  TOURNAMENT_OVERLAP: "That tournament overlaps with another one you're entered in.",
+  TOURNAMENT_SUSPENDED: "Tournament registration is suspended for now — two no-shows in 30 days brings a 14-day suspension.",
+  NOT_REGISTERED: "You're not registered for that tournament.",
+  TOURNAMENT_LOCKED: "That can't be changed now — the tournament has moved past the point where it's editable.",
+  TOURNAMENT_NOT_UPCOMING: "That only works while the tournament is still upcoming.",
+  TOURNAMENT_NOT_ENOUGH_PLAYERS: "Not enough registered players to start that tournament.",
+  NOT_YOUR_MATCH: "That's not your match.",
+  TOURNAMENT_MATCH_NOT_READY: "That match isn't ready for check-in yet.",
+  TOURNAMENT_CONFLICT: "You're in the middle of another match — finish it first; the tournament match will retry.",
+  TOURNAMENT_NO_AGREED_DRAWS: "Agreed draws aren't allowed in tournament matches — draws are replayed.",
+  TOURNAMENT_NOT_FINALIZED: "Only a finished (finalized) match can be corrected.",
+  TOURNAMENT_DOWNSTREAM_PLAYED: "A later match in that bracket has already been played, so this result can't be corrected.",
+  CORRECTION_NO_CHANGE: "That correction wouldn't change the recorded winner.",
+  BAD_WINNER: "The winner must be one of the two players in that match.",
+  BAD_TOURNAMENT_FIELD: "One of the tournament fields wasn't valid — check the form and try again.",
+  ADMIN_DISABLED: "Tournament admin isn't enabled on the server yet (no admin token configured server-side).",
+  ADMIN_UNAUTHORIZED: "That admin token wasn't accepted by the server.",
+  ADMIN_REASON_REQUIRED: "The server needs a reason for that action."
+};
+function trnShowCardError(tid, txt){
+  if (!tid) return;
+  document.querySelectorAll('[data-trn-err="' + tid + '"]').forEach(function(el){ el.textContent = txt; });
+}
+function trnHandleError(msg){
+  if (!msg || !msg.code) return false;
+  var isTrnCode = !!TRN_FRIENDLY[msg.code];
+  var act = TRN.lastAction;
+  var recent = act && (Date.now() - (act.at || 0) < 20000);
+  if (!isTrnCode && !recent) return false;
+  if (!isTrnCode && act && act.kind!=="register" && act.kind!=="withdraw" && act.kind!=="checkin" && act.kind!=="admin" && act.kind!=="lobby" && act.kind!=="detail"){ TRN.lastAction = null; return false; }
+  var txt = msg.message || TRN_FRIENDLY[msg.code] || "Server error.";
+  TRN.lastAction = null;
+  if (act && act.kind==="admin"){ trnAdminStatus(txt, true); return true; }
+  if (isTrnCode || recent){
+    srvNote(txt, true);
+    if (act && act.tid) trnShowCardError(act.tid, txt);
+    if (msg.code==="TOURNAMENT_REQUIRES_ACCOUNT" && typeof openAccountSection==="function") openAccountSection();
+    return isTrnCode;
+  }
+  return false;
+}
+
+/* ---------- championship final experience (presentation only) ---------- */
+function trnFinalCaptureFlash(lm){
+  if (!trnIsFinalGame() || !lm) return;
+  try{
+    [[lm.fr, lm.fc],[lm.tr, lm.tc]].forEach(function(sq){
+      var el = (typeof finaleSquareEl==="function") ? finaleSquareEl(sq[0], sq[1]) : null;
+      if (el){
+        el.classList.add("trn-goldflash");
+        setTimeout(function(){ el.classList.remove("trn-goldflash"); }, 950);
+      }
+    });
+  }catch(e){}
+}
+function trnIntroKey(tid, mid){ return "dicechess-trn-intro-" + tid + "-" + mid; }
+function trnIntroSeen(tid, mid){ try{ return !!localStorage.getItem(trnIntroKey(tid, mid)); }catch(e){ return false; } }
+function trnIntroMarkSeen(tid, mid){ try{ localStorage.setItem(trnIntroKey(tid, mid), "1"); }catch(e){} }
+function trnShowIntroFromDetail(detailMsg, pend){
+  var m = null;
+  (detailMsg.matches || []).forEach(function(x){ if (x.id===pend.mid) m = x; });
+  var meRef = null, foeRef = null;
+  if (m){
+    var mine = (pend.color==="w") ? m.playerA : (pend.color==="b" ? m.playerB : null);
+    var foe = (pend.color==="w") ? m.playerB : (pend.color==="b" ? m.playerA : null);
+    if (!mine){ var me = trnMyName(); [m.playerA, m.playerB].forEach(function(p){ if (p && p.username===me) mine = p; else if (p) foe = p; }); }
+    meRef = mine; foeRef = foe;
+  }
+  trnShowIntro({
+    tid: pend.tid, mid: pend.mid, tName: detailMsg.tournament.name || "Tournament",
+    aName: meRef ? (meRef.username || trnMyName()) : trnMyName(),
+    aMeta: meRef ? trnRefMeta(meRef) : trnMyMeta(),
+    bName: foeRef ? (foeRef.username || "Opponent") : ((TRN.game && TRN.game.opponentName) || "Your opponent"),
+    bMeta: foeRef ? trnRefMeta(foeRef) : "",
+    aGlyph: null
+  });
+}
+function trnRefMeta(ref){
+  var bits = [];
+  if (ref.seed!=null) bits.push("Seed #" + ref.seed);
+  if (ref.tier && ref.tier.name) bits.push(ref.tier.name);
+  if (typeof ref.rating==="number") bits.push("Rating " + ref.rating);
+  return bits.join(" · ");
+}
+function trnMyMeta(){
+  var a = (typeof ACCT!=="undefined" && ACCT && ACCT.account) ? ACCT.account : null;
+  if (a && typeof a.rating==="number") return "Rating " + a.rating + (a.provisional ? " · Provisional" : "");
+  return "";
+}
+function trnShowIntro(cfg){
+  if (!cfg || trnIntroSeen(cfg.tid, cfg.mid)) return;
+  trnIntroMarkSeen(cfg.tid, cfg.mid);
+  var ov = document.getElementById("trnIntro");
+  if (!ov) return;
+  var tn = document.getElementById("trnIntroTName"); if (tn) tn.textContent = cfg.tName || "";
+  var na = document.getElementById("trnIntroNameA"); if (na) na.textContent = cfg.aName || "";
+  var ma = document.getElementById("trnIntroMetaA"); if (ma) ma.textContent = cfg.aMeta || "";
+  var nb = document.getElementById("trnIntroNameB"); if (nb) nb.textContent = cfg.bName || "";
+  var mb = document.getElementById("trnIntroMetaB"); if (mb) mb.textContent = cfg.bMeta || "";
+  var avA = document.getElementById("trnIntroAvA");
+  if (avA){
+    var glyph = cfg.aGlyph;
+    if (!glyph && typeof avatarById==="function" && typeof PROFILE!=="undefined") glyph = avatarById(PROFILE.avatar).glyph;
+    avA.textContent = glyph || "♞";
+  }
+  ov.classList.add("on");
+  if (TRN.introAutoTimer) clearTimeout(TRN.introAutoTimer);
+  var wait = (typeof fxReducedMotion==="function" && fxReducedMotion()) ? 1800 : 4000;
+  TRN.introAutoTimer = setTimeout(trnHideIntro, wait);
+}
+function trnHideIntro(){
+  var ov = document.getElementById("trnIntro");
+  if (ov) ov.classList.remove("on");
+  if (TRN.introAutoTimer){ clearTimeout(TRN.introAutoTimer); TRN.introAutoTimer = null; }
+}
+function trnSpectatorIntro(tid){
+  var d = TRN.detail;
+  if (!d || !d.tournament || d.tournament.id!==tid) return;
+  var m = null;
+  (d.matches || []).forEach(function(x){ if (x.round==="F") m = x; });
+  if (!m || !m.playerA || !m.playerB) return;
+  if (trnIntroSeen(tid, m.id)){ toast("You've already seen this final's intro."); return; }
+  trnShowIntro({ tid:tid, mid:m.id, tName:d.tournament.name || "Tournament",
+    aName: m.playerA.username || "", aMeta: trnRefMeta(m.playerA),
+    bName: m.playerB.username || "", bMeta: trnRefMeta(m.playerB), aGlyph:"♞" });
+}
+/* ---------- champion screen ---------- */
+function trnShowChampion(detailMsg){
+  if (!detailMsg || !detailMsg.result || !detailMsg.tournament) return;
+  var ov = document.getElementById("trnChamp"), body = document.getElementById("trnChampBody");
+  if (!ov || !body) return;
+  var t = detailMsg.tournament, r = detailMsg.result;
+  var champ = r.champion || {};
+  var finalMatch = null;
+  (detailMsg.matches || []).forEach(function(m){ if (m.round==="F") finalMatch = m; });
+  var h = "";
+  if (!(typeof fxReducedMotion==="function" && fxReducedMotion())){
+    h += '<div class="burst" aria-hidden="true">';
+    for (var i=0;i<16;i++){
+      var ang = (i/16)*Math.PI*2 + Math.random()*0.35, dist = 74 + Math.random()*86;
+      h += '<i style="--tx:' + Math.round(Math.cos(ang)*dist) + 'px;--ty:' + Math.round(Math.sin(ang)*dist*0.72 + 42) + 'px;--rot:' + Math.round(Math.random()*560-280) + 'deg;animation-delay:' + (Math.random()*0.14).toFixed(2) + 's"></i>';
+    }
+    h += '</div>';
+  }
+  h += '<div class="trn-champ-trophy" aria-hidden="true">♛<span class="td td-blue title-die">♞</span><span class="td td-red title-die">♜</span></div>';
+  h += '<div class="trn-champ-name">CHAMPION — ' + escHtml(champ.username || "") + '</div>';
+  h += '<p class="qp-sub">' + escHtml(t.name || "Tournament") + '</p>';
+  if (finalMatch) h += '<p class="qp-sub">Final: ' + escHtml(trnAdvanceText(finalMatch) || trnReasonText(finalMatch.decidedBy)) + '</p>';
+  if (r.runnerUp) h += '<p class="qp-sub">Runner-up: <b>' + escHtml(r.runnerUp.username || "") + '</b></p>';
+  if (champ.accountId){
+    var path = (detailMsg.matches || []).filter(function(m){
+      var inM = (m.playerA && m.playerA.accountId===champ.accountId) || (m.playerB && m.playerB.accountId===champ.accountId);
+      return inM && m.winner && m.winner.accountId===champ.accountId;
+    }).sort(function(a,b){ return (a.roundIndex||0) - (b.roundIndex||0); });
+    if (path.length){
+      h += '<ul class="trn-path">' + path.map(function(m){
+        var foe = (m.playerA && m.playerA.accountId===champ.accountId) ? m.playerB : m.playerA;
+        return '<li><b>' + escHtml(trnRoundWord(m.round, true)) + '</b> — beat ' + escHtml(foe ? (foe.username || "") : "—") +
+          ' · ' + escHtml(trnAdvanceText(m) || trnReasonText(m.decidedBy)) + '</li>';
+      }).join("") + '</ul>';
+    }
+  }
+  body.innerHTML = h;
+  ov.classList.add("on");
+}
+function trnHideChampion(){
+  var ov = document.getElementById("trnChamp");
+  if (ov) ov.classList.remove("on");
+}
+
+/* ---------- admin ---------- */
+function trnAdminToken(){
+  try{ return localStorage.getItem(TRN_ADMIN_KEY) || ""; }catch(e){ return ""; }
+}
+function trnAdminStatus(txt, isErr){
+  var el = document.getElementById("trnAdminStatus");
+  if (el){ el.textContent = txt || ""; el.className = "trn-admin-status" + (txt ? (isErr ? " err" : " ok") : ""); }
+}
+function trnAdminOpen(){
+  var inp = document.getElementById("trnAdminToken");
+  if (inp) inp.value = trnAdminToken();
+  var tz = document.getElementById("trnCTz");
+  if (tz && !tz.value){ try{ tz.value = Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC"; }catch(e){ tz.value = "UTC"; } }
+  trnPopulateAdminPick();
+  trnAdminStatus(trnAdminToken() ? "Admin token saved on this device." : "No admin token saved on this device yet — admin forms are visible, but submitting needs a saved token.");
+  openSheet("trnAdminSheet");
+}
+function trnAdminClose(){ closeSheet("trnAdminSheet"); }
+function trnPopulateAdminPick(){
+  var sel = document.getElementById("trnAdminPick");
+  if (!sel) return;
+  var cur = sel.value;
+  var all = [];
+  if (TRN.lobby) ["upcoming","live","completed"].forEach(function(k){ (TRN.lobby[k] || []).forEach(function(s){ all.push(s); }); });
+  sel.innerHTML = '<option value="">— pick from the lobby list —</option>' + all.map(function(s){
+    return '<option value="' + escHtml(s.id) + '">' + escHtml(s.name || s.id) + ' (' + escHtml(s.status || "") + ')</option>';
+  }).join("");
+  if (cur && TRN.lobbyById[cur]) sel.value = cur;
+}
+function trnAdminNeedToken(){
+  var tok = trnAdminToken();
+  if (!tok){ trnAdminStatus("Save your admin token on this device first — admin actions need it.", true); return null; }
+  return tok;
+}
+function trnIsoOrNull(v){
+  if (!v) return null;
+  var d = new Date(v);
+  return isNaN(d.getTime()) ? null : d.toISOString();
+}
+function trnAdminSend(msg){
+  TRN.lastAction = { kind:"admin", at: Date.now() };
+  srvConnect(function(){ srvSendRaw(msg); });
+}
+function trnAdminCreate(){
+  var tok = trnAdminNeedToken(); if (!tok) return;
+  var name = (document.getElementById("trnCName").value || "").trim();
+  var startsV = document.getElementById("trnCStarts").value;
+  if (!name){ trnAdminStatus("Give the tournament a name first.", true); return; }
+  if (!startsV){ trnAdminStatus("Pick a start time first.", true); return; }
+  var startsIso = trnIsoOrNull(startsV);
+  if (!startsIso){ trnAdminStatus("That start time isn't valid.", true); return; }
+  var msg = { type:"tournamentCreate", adminToken: tok, name: name, startsAt: startsIso,
+    size: parseInt(document.getElementById("trnCSize").value, 10) || 8,
+    seeding: document.getElementById("trnCSeeding").value || "rating",
+    timeControl: document.getElementById("trnCTC").value || "rapid",
+    timezone: (document.getElementById("trnCTz").value || "").trim() || "UTC" };
+  var desc = (document.getElementById("trnCDesc").value || "").trim();
+  if (desc) msg.description = desc;
+  var op = trnIsoOrNull(document.getElementById("trnCOpens").value); if (op) msg.registrationOpensAt = op;
+  var cl = trnIsoOrNull(document.getElementById("trnCCloses").value); if (cl) msg.registrationClosesAt = cl;
+  trnAdminStatus("Creating…");
+  trnAdminSend(msg);
+}
+function trnAdminPickId(){
+  var sel = document.getElementById("trnAdminPick");
+  return sel ? sel.value : "";
+}
+function trnAdminEdit(){
+  var tok = trnAdminNeedToken(); if (!tok) return;
+  var id = trnAdminPickId();
+  if (!id){ trnAdminStatus("Pick a tournament to edit first.", true); return; }
+  var msg = { type:"tournamentEdit", adminToken: tok, tournamentId: id };
+  var any = false;
+  var name = (document.getElementById("trnEName").value || "").trim(); if (name){ msg.name = name; any = true; }
+  var desc = (document.getElementById("trnEDesc").value || "").trim(); if (desc){ msg.description = desc; any = true; }
+  var size = document.getElementById("trnESize").value; if (size){ msg.size = parseInt(size, 10); any = true; }
+  var seeding = document.getElementById("trnESeeding").value; if (seeding){ msg.seeding = seeding; any = true; }
+  var tc = document.getElementById("trnETC").value; if (tc){ msg.timeControl = tc; any = true; }
+  var st = trnIsoOrNull(document.getElementById("trnEStarts").value); if (st){ msg.startsAt = st; any = true; }
+  var tz = (document.getElementById("trnETz").value || "").trim(); if (tz){ msg.timezone = tz; any = true; }
+  var op = trnIsoOrNull(document.getElementById("trnEOpens").value); if (op){ msg.registrationOpensAt = op; any = true; }
+  var cl = trnIsoOrNull(document.getElementById("trnECloses").value); if (cl){ msg.registrationClosesAt = cl; any = true; }
+  if (!any){ trnAdminStatus("Nothing to change — fill at least one field.", true); return; }
+  trnAdminStatus("Saving changes…");
+  trnAdminSend(msg);
+}
+function trnAdminStart(){
+  var tok = trnAdminNeedToken(); if (!tok) return;
+  var id = trnAdminPickId();
+  if (!id){ trnAdminStatus("Pick a tournament to start first.", true); return; }
+  trnAdminStatus("Starting…");
+  trnAdminSend({ type:"tournamentStart", adminToken: tok, tournamentId: id });
+}
+function trnAdminCancel(){
+  var tok = trnAdminNeedToken(); if (!tok) return;
+  var id = trnAdminPickId();
+  if (!id){ trnAdminStatus("Pick a tournament to cancel first.", true); return; }
+  var reason = (document.getElementById("trnCancelReason").value || "").trim();
+  var sum = TRN.lobbyById[id];
+  if (sum && sum.status==="live" && !reason){ trnAdminStatus("A reason is required when cancelling a live tournament.", true); return; }
+  var msg = { type:"tournamentCancel", adminToken: tok, tournamentId: id };
+  if (reason) msg.reason = reason;
+  trnAdminStatus("Cancelling…");
+  trnAdminSend(msg);
+}
+function trnPopulateCorrectMatches(){
+  var msel = document.getElementById("trnCorrectMatch");
+  if (!msel) return;
+  var d = TRN.adminDetail;
+  var fin = d ? (d.matches || []).filter(function(m){ return m.state==="finalized"; }) : [];
+  TRN.adminMatches = fin;
+  if (!d){
+    msel.innerHTML = '<option value="">— pick a tournament above first —</option>';
+  } else if (!fin.length){
+    msel.innerHTML = '<option value="">— no finalized matches in this tournament —</option>';
+  } else {
+    msel.innerHTML = '<option value="">— pick a finalized match —</option>' + fin.map(function(m){
+      return '<option value="' + escHtml(m.id) + '">' + escHtml(trnRoundWord(m.round, true)) + ': ' +
+        escHtml(m.playerA ? (m.playerA.username || "?") : "?") + ' vs ' + escHtml(m.playerB ? (m.playerB.username || "?") : "?") + '</option>';
+    }).join("");
+  }
+  trnPopulateCorrectWinner();
+}
+function trnPopulateCorrectWinner(){
+  var wsel = document.getElementById("trnCorrectWinner");
+  if (!wsel) return;
+  var msel = document.getElementById("trnCorrectMatch");
+  var mid = msel ? msel.value : "";
+  var m = null;
+  (TRN.adminMatches || []).forEach(function(x){ if (x.id===mid) m = x; });
+  if (!m){ wsel.innerHTML = '<option value="">— pick a match first —</option>'; return; }
+  var opts = '<option value="">— pick the correct winner —</option>';
+  [m.playerA, m.playerB].forEach(function(p){
+    if (p && p.accountId) opts += '<option value="' + escHtml(p.accountId) + '">' + escHtml(p.username || p.accountId) + '</option>';
+  });
+  wsel.innerHTML = opts;
+}
+function trnAdminCorrect(){
+  var tok = trnAdminNeedToken(); if (!tok) return;
+  var id = trnAdminPickId();
+  if (!id){ trnAdminStatus("Pick a tournament first.", true); return; }
+  var mid = document.getElementById("trnCorrectMatch").value;
+  if (!mid){ trnAdminStatus("Pick a finalized match to correct.", true); return; }
+  var winner = document.getElementById("trnCorrectWinner").value;
+  if (!winner){ trnAdminStatus("Pick the correct winner.", true); return; }
+  var reason = (document.getElementById("trnCorrectReason").value || "").trim();
+  if (!reason){ trnAdminStatus("A reason is required for a correction.", true); return; }
+  trnAdminStatus("Applying correction…");
+  trnAdminSend({ type:"tournamentCorrect", adminToken: tok, tournamentId: id, bracketMatchId: mid, winnerId: winner, reason: reason });
+}
+function trnOnAdminOk(msg){
+  if (!msg) return;
+  var words = { create:"Tournament created", edit:"Tournament updated", cancel:"Tournament cancelled", start:"Tournament started", correct:"Result corrected" };
+  var w = words[msg.action] || "Admin action done";
+  trnAdminStatus(w + (msg.tournament && msg.tournament.name ? ": " + msg.tournament.name : "") + ".");
+  toast(w);
+  if (msg.tournament) TRN.lobbyById[msg.tournament.id] = msg.tournament;
+  trnRequestLobby();
+  if (TRN.open && TRN.view==="detail" && TRN.detailId) trnRequestDetail(TRN.detailId);
+  if (msg.action==="correct") TRN.adminWantsDetailFor = trnAdminPickId() || null;
+  if (TRN.adminWantsDetailFor) trnRequestDetailRaw(TRN.adminWantsDetailFor);
+}
+
+/* ---------- bindings ---------- */
+(function trnBind(){
+  var open = document.getElementById("trnOpenBtn");
+  if (open) open.addEventListener("click", trnOpen);
+  var back = document.getElementById("trnBackBtn");
+  if (back) back.addEventListener("click", trnBackToOnline);
+  var dback = document.getElementById("trnDetailBackBtn");
+  if (dback) dback.addEventListener("click", trnShowLobbyView);
+  var ref = document.getElementById("trnRefreshBtn");
+  if (ref) ref.addEventListener("click", trnRequestLobby);
+  var adm = document.getElementById("trnAdminOpenBtn");
+  if (adm) adm.addEventListener("click", trnAdminOpen);
+
+  var screen = document.getElementById("tournamentScreen");
+  if (screen){
+    screen.addEventListener("click", function(e){
+      var actBtn = e.target.closest ? e.target.closest("[data-trn-act]") : null;
+      if (actBtn){
+        var act = actBtn.getAttribute("data-trn-act"), id = actBtn.getAttribute("data-trn-id"), mid = actBtn.getAttribute("data-trn-mid");
+        if (act==="register") trnRegister(id);
+        else if (act==="withdraw") trnWithdraw(id);
+        else if (act==="checkin") trnCheckIn(id, mid);
+        else if (act==="champion"){ if (TRN.detail) trnShowChampion(TRN.detail); }
+        else if (act==="final-intro") trnSpectatorIntro(id);
+        else if (act==="enter"){
+          var mm = TRN.detailMyMatch;
+          if (mm && mm.gameCode) trnEnterGame(id, mid, mm.gameCode, mm.color, mm.attempt, mm.timeControl);
+        }
+        return;
+      }
+      var card = e.target.closest ? e.target.closest("[data-trn-open]") : null;
+      if (card) trnOpenDetail(card.getAttribute("data-trn-open"));
+    });
+    screen.addEventListener("keydown", function(e){
+      if (e.key!=="Enter" && e.key!==" ") return;
+      var card = e.target.closest ? e.target.closest("[data-trn-open]") : null;
+      if (card && !e.target.closest("[data-trn-act]")){ e.preventDefault(); trnOpenDetail(card.getAttribute("data-trn-open")); }
+    });
+  }
+
+  /* admin bindings */
+  var ac = document.getElementById("trnAdminCloseBtn");
+  if (ac) ac.addEventListener("click", trnAdminClose);
+  var sv = document.getElementById("trnAdminSaveBtn");
+  if (sv) sv.addEventListener("click", function(){
+    var v = (document.getElementById("trnAdminToken").value || "").trim();
+    if (!v){ trnAdminStatus("Type the admin token first, then save it.", true); return; }
+    try{ localStorage.setItem(TRN_ADMIN_KEY, v); }catch(e){}
+    trnAdminStatus("Admin token saved on this device. It is only ever sent as the admin token on admin actions.");
+  });
+  var fg = document.getElementById("trnAdminForgetBtn");
+  if (fg) fg.addEventListener("click", function(){
+    try{ localStorage.removeItem(TRN_ADMIN_KEY); }catch(e){}
+    var inp = document.getElementById("trnAdminToken"); if (inp) inp.value = "";
+    trnAdminStatus("Admin token forgotten on this device.");
+  });
+  var cb = document.getElementById("trnCreateBtn"); if (cb) cb.addEventListener("click", trnAdminCreate);
+  var eb = document.getElementById("trnEditBtn"); if (eb) eb.addEventListener("click", trnAdminEdit);
+  var sb = document.getElementById("trnStartBtn"); if (sb) sb.addEventListener("click", trnAdminStart);
+  var xb = document.getElementById("trnCancelBtn"); if (xb) xb.addEventListener("click", trnAdminCancel);
+  var kb = document.getElementById("trnCorrectBtn"); if (kb) kb.addEventListener("click", trnAdminCorrect);
+  var pick = document.getElementById("trnAdminPick");
+  if (pick) pick.addEventListener("change", function(){
+    TRN.adminDetail = null;
+    trnPopulateCorrectMatches();
+    if (pick.value){ TRN.adminWantsDetailFor = pick.value; trnRequestDetailRaw(pick.value); }
+  });
+  var cm = document.getElementById("trnCorrectMatch");
+  if (cm) cm.addEventListener("change", trnPopulateCorrectWinner);
+
+  /* intro dismiss: tap anywhere or Skip */
+  var intro = document.getElementById("trnIntro");
+  if (intro) intro.addEventListener("click", trnHideIntro);
+  var cc = document.getElementById("trnChampClose");
+  if (cc) cc.addEventListener("click", trnHideChampion);
+
+  /* final dice shimmer: watch the board roll overlay while a final runs */
+  var br = document.getElementById("boardRoll");
+  if (br && window.MutationObserver){
+    var mo = new MutationObserver(function(){
+      if (br.classList.contains("on") && trnIsFinalGame()) br.classList.add("trn-shimmer");
+      else br.classList.remove("trn-shimmer");
+    });
+    mo.observe(br, { attributes:true, attributeFilter:["class"] });
+  }
+  trnSyncFinalChrome();
+})();
+
+/* Game-over modal hook: for tournament games, fetch the detail when
+   the results screen shows (champion screen follows if the
+   tournament completed) and offer a "Tournament result" button.
+   The modal is never delayed or blocked by this. */
+(function(){
+  var prevShow = showGameOver;
+  showGameOver = function(title, msg){
+    prevShow(title, msg);
+    try{
+      trnSyncFinalChrome();
+      if (typeof SRV!=="undefined" && SRV.active && TRN.game && TRN.gameRoomCode===SRV.roomCode){
+        TRN.champWantsFor = TRN.game.tournamentId;
+        trnRequestDetailRaw(TRN.game.tournamentId);
+        setTimeout(function(){
+          try{
+            var overlay = document.getElementById("overlay"), box = document.getElementById("modalBox");
+            if (!overlay || !box || !overlay.classList.contains("on")) return;
+            if (document.getElementById("trnResultBtn")) return;
+            var b = document.createElement("button");
+            b.type = "button"; b.id = "trnResultBtn"; b.className = "ghost"; b.textContent = "🏆 Tournament result";
+            b.addEventListener("click", function(){
+              if (TRN.champReady) trnShowChampion(TRN.champReady);
+              else if (TRN.game){
+                TRN.champShowWhenReady = TRN.game.tournamentId;
+                trnRequestDetailRaw(TRN.game.tournamentId);
+                toast("Loading the tournament result…");
+              }
+            });
+            box.appendChild(b);
+          }catch(e){}
+        }, 80);
+      }
+    }catch(e){}
+  };
+})();
+</script>
+
 </body>
 </html>
