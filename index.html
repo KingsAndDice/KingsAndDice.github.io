@@ -1526,6 +1526,250 @@
     body.playing .boardframe{width:min(calc(100vw - 12px),calc(100dvh - 272px));min-width:min(232px,calc(100vw - 12px));}
   }
 </style>
+<style id="kd2026">
+/* ============================================================
+   KINGS & DICE 2026 — Shop & Locker, match re-skin, post-match
+   rewards. Palette per spec: dark navy #0B1021, metallic gold.
+   ============================================================ */
+:root{
+  --kd-navy:#0B1021; --kd-navy-2:#111830; --kd-navy-3:#1a2142;
+  --kd-gold:#d4af37; --kd-gold-hi:#ffd76a; --kd-ink:#eef1ff; --kd-ink-dim:#9aa3c7;
+  --kd-line:rgba(212,175,55,.28);
+  --rarity-common:#8b93a7; --rarity-rare:#4da3ff; --rarity-epic:#b06bff; --rarity-legendary:#ffb52e;
+}
+body.show-shop #shopScreen{display:block;}
+body.show-shop #mainMenu{display:none;}
+body.show-shop header.top,body.show-shop .layout{display:none;}
+
+/* ---------- shop screen ---------- */
+.shop-head{position:sticky;top:0;z-index:6;display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+  background:linear-gradient(180deg,rgba(11,16,33,.97),rgba(11,16,33,.92));border:1px solid var(--kd-line);
+  border-radius:16px;padding:10px 12px;margin-bottom:12px;backdrop-filter:blur(6px);}
+.shop-prof{display:flex;align-items:center;gap:9px;background:none;border:none;color:var(--kd-ink);cursor:pointer;padding:2px;text-align:left;}
+.shop-prof .avatar{font-size:26px;line-height:1;}
+.shop-prof .who{display:flex;flex-direction:column;}
+.shop-prof .who b{font-size:15px;}
+.shop-prof .who small{color:var(--kd-gold-hi);font-size:11.5px;font-weight:700;}
+.shop-bals{margin-left:auto;display:flex;gap:8px;}
+.balchip{display:inline-flex;align-items:center;gap:6px;background:var(--kd-navy-3);border:1px solid var(--kd-line);
+  border-radius:999px;padding:6px 8px 6px 12px;color:var(--kd-ink);font-weight:800;font-size:14px;cursor:pointer;}
+.balchip .plus{background:linear-gradient(160deg,var(--kd-gold-hi),var(--kd-gold));color:#231a02;border-radius:50%;
+  width:20px;height:20px;display:inline-flex;align-items:center;justify-content:center;font-size:15px;font-weight:900;}
+.balchip.flash{animation:kdBalFlash .8s ease;}
+@keyframes kdBalFlash{0%{box-shadow:0 0 0 rgba(255,215,106,0)}30%{box-shadow:0 0 16px rgba(255,215,106,.8)}100%{box-shadow:0 0 0 rgba(255,215,106,0)}}
+.hero-carousel{position:relative;margin-bottom:12px;}
+.hero-card{display:none;border-radius:18px;padding:16px;border:1px solid var(--kd-line);color:var(--kd-ink);
+  background:radial-gradient(120% 160% at 50% 0%,rgba(255,215,106,.12),transparent 55%),linear-gradient(160deg,#1a2142,#0B1021 65%);}
+.hero-card.on{display:block;animation:kdFadeIn .35s ease;}
+@keyframes kdFadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+.hero-kicker{color:var(--kd-gold-hi);font-size:11.5px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;}
+.hero-card h3{margin:6px 0 2px;font-size:22px;}
+.hero-card p{margin:0 0 10px;color:var(--kd-ink-dim);font-size:13px;}
+.hero-preview{height:92px;display:flex;align-items:center;justify-content:center;margin:6px 0 10px;}
+.hero-dots{display:flex;gap:6px;justify-content:center;margin-top:8px;}
+.hero-dots button{width:9px;height:9px;border-radius:50%;border:1px solid var(--kd-gold);background:transparent;cursor:pointer;padding:0;}
+.hero-dots button.on{background:var(--kd-gold-hi);}
+.btn-buy-hero{background:linear-gradient(160deg,var(--kd-gold-hi),var(--kd-gold));color:#231a02;border:none;border-radius:12px;
+  padding:11px 20px;font-weight:900;font-size:15px;cursor:pointer;min-height:44px;}
+.btn-buy-hero:disabled{filter:grayscale(.7) brightness(.65);cursor:default;}
+.shop-tabs{position:sticky;top:76px;z-index:6;display:flex;gap:6px;overflow-x:auto;padding:6px 2px;background:rgba(11,16,33,.94);border-radius:12px;margin-bottom:8px;}
+.shop-tabs button{flex:0 0 auto;border:1px solid var(--kd-line);background:var(--kd-navy-2);color:var(--kd-ink-dim);
+  border-radius:999px;padding:8px 13px;font-weight:800;font-size:12.5px;cursor:pointer;min-height:38px;}
+.shop-tabs button.is-active{background:linear-gradient(160deg,var(--kd-gold-hi),var(--kd-gold));color:#231a02;border-color:var(--kd-gold);}
+.view-toggle{display:flex;gap:0;border:1px solid var(--kd-line);border-radius:12px;overflow:hidden;margin-bottom:10px;}
+.view-toggle button{flex:1;background:var(--kd-navy-2);color:var(--kd-ink-dim);border:none;padding:10px;font-weight:800;cursor:pointer;min-height:42px;}
+.view-toggle button.is-active{background:var(--kd-navy-3);color:var(--kd-gold-hi);box-shadow:inset 0 -2px 0 var(--kd-gold);}
+.item-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(104px,1fr));gap:10px;}
+.item-card{background:var(--kd-navy-2);border:1.5px solid var(--kd-line);border-radius:16px;padding:10px;text-align:center;
+  color:var(--kd-ink);cursor:pointer;transition:transform .15s ease,box-shadow .15s ease;display:flex;flex-direction:column;gap:5px;align-items:center;}
+.item-card:active{transform:scale(.97);}
+.item-card.rarity-rare{border-color:var(--rarity-rare);}
+.item-card.rarity-epic{border-color:var(--rarity-epic);box-shadow:0 0 10px rgba(176,107,255,.25);}
+.item-card.rarity-legendary{border-color:var(--rarity-legendary);box-shadow:0 0 14px rgba(255,181,46,.35);}
+.item-card.is-equipped{box-shadow:inset 0 0 0 2px var(--kd-gold),0 0 12px rgba(212,175,55,.4);}
+.item-card .thumb{height:52px;display:flex;align-items:center;justify-content:center;width:100%;}
+.item-card h4{margin:0;font-size:12.5px;line-height:1.25;min-height:32px;display:flex;align-items:center;}
+.item-card .rlabel{font-size:10px;font-weight:900;letter-spacing:.06em;text-transform:uppercase;}
+.rarity-common{color:var(--rarity-common);} .rarity-rare{color:var(--rarity-rare);}
+.rarity-epic{color:var(--rarity-epic);} .rarity-legendary{color:var(--rarity-legendary);}
+.item-card .card-row{display:flex;align-items:center;gap:6px;justify-content:space-between;width:100%;margin-top:auto;}
+.item-card .price{font-weight:800;font-size:12.5px;color:var(--kd-gold-hi);}
+.card-cta{border:none;border-radius:9px;padding:7px 10px;font-weight:900;font-size:11.5px;cursor:pointer;min-height:32px;
+  background:linear-gradient(160deg,var(--kd-gold-hi),var(--kd-gold));color:#231a02;}
+.card-cta.owned{background:transparent;border:1.5px solid var(--kd-gold);color:var(--kd-gold-hi);}
+.card-cta.equipped{background:var(--kd-gold);color:#231a02;}
+.card-cta.dim{filter:grayscale(.6) brightness(.7);}
+.vault-tag{font-size:9.5px;font-weight:800;color:var(--kd-ink-dim);border:1px dashed var(--kd-ink-dim);border-radius:6px;padding:1px 5px;}
+.shop-empty{color:var(--kd-ink-dim);text-align:center;padding:26px 10px;font-size:13.5px;grid-column:1/-1;}
+.thumb-die{width:44px;height:44px;border-radius:11px;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);padding:6px;position:relative;background:linear-gradient(145deg,#f6f1de,#ddd3ae);border:1.5px solid #a68c48;}
+.thumb-die i{border-radius:50%;margin:2px;}
+.thumb-pieces{font-size:30px;letter-spacing:2px;}
+.thumb-board{display:grid;grid-template-columns:repeat(4,13px);grid-template-rows:repeat(4,13px);border:2px solid var(--kd-gold);border-radius:4px;overflow:hidden;}
+.thumb-board i{display:block;}
+.thumb-emote{font-size:34px;}
+.thumb-frame{font-size:30px;border:2.5px solid var(--kd-gold);border-radius:50%;width:48px;height:48px;display:flex;align-items:center;justify-content:center;}
+
+/* earn tab */
+.earn-card{background:var(--kd-navy-2);border:1px solid var(--kd-line);border-radius:16px;padding:14px;margin-bottom:10px;color:var(--kd-ink);}
+.earn-card h4{margin:0 0 4px;font-size:15px;}
+.earn-card p{margin:0 0 10px;color:var(--kd-ink-dim);font-size:12.5px;}
+.earn-btn{background:linear-gradient(160deg,var(--kd-gold-hi),var(--kd-gold));color:#231a02;border:none;border-radius:10px;padding:10px 16px;font-weight:900;cursor:pointer;min-height:44px;}
+.earn-btn:disabled{filter:grayscale(.7) brightness(.6);cursor:default;}
+.rank-reward-row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.06);font-size:13px;}
+.rank-reward-row .st{font-weight:800;font-size:11.5px;}
+.rank-reward-row .st.got{color:var(--kd-gold-hi);} .rank-reward-row .st.now{color:#7dd87d;} .rank-reward-row .st.lock{color:var(--kd-ink-dim);}
+
+/* purchase sheet + preview stage */
+.kd-sheet{position:fixed;inset:0;z-index:80;display:none;align-items:flex-end;justify-content:center;background:rgba(3,5,12,.66);}
+.kd-sheet.on{display:flex;}
+.kd-sheet-card{background:linear-gradient(180deg,var(--kd-navy-3),var(--kd-navy));border:1.5px solid var(--kd-gold);border-bottom:none;
+  border-radius:20px 20px 0 0;width:min(560px,100%);padding:18px;color:var(--kd-ink);animation:kdSheetIn .3s ease;}
+@keyframes kdSheetIn{from{transform:translateY(26px);opacity:0}to{transform:none;opacity:1}}
+@media (min-width:700px){.kd-sheet{align-items:center;}.kd-sheet-card{border-radius:20px;border-bottom:1.5px solid var(--kd-gold);}}
+.kd-sheet-card h3{margin:0 0 6px;font-size:19px;}
+.kd-sheet-card .rowline{display:flex;justify-content:space-between;font-size:14px;padding:5px 0;color:var(--kd-ink-dim);}
+.kd-sheet-card .rowline b{color:var(--kd-ink);}
+.kd-sheet-actions{display:flex;gap:8px;margin-top:14px;}
+.kd-btn-primary{flex:1;background:linear-gradient(160deg,var(--kd-gold-hi),var(--kd-gold));color:#231a02;border:none;border-radius:12px;padding:12px;font-weight:900;cursor:pointer;min-height:46px;font-size:15px;}
+.kd-btn-ghost{flex:1;background:transparent;border:1.5px solid var(--kd-line);color:var(--kd-ink);border-radius:12px;padding:12px;font-weight:800;cursor:pointer;min-height:46px;}
+.kd-err{color:#ff9a8a;font-size:13px;min-height:18px;margin-top:8px;font-weight:700;}
+.kd-ok{color:#8fe38f;font-weight:800;}
+.preview-viewport{height:190px;display:flex;align-items:center;justify-content:center;background:radial-gradient(90% 120% at 50% 0%,rgba(255,215,106,.10),transparent 60%),var(--kd-navy-2);border-radius:14px;margin-bottom:12px;position:relative;overflow:hidden;}
+.kdprevdie{width:92px !important;height:92px !important;cursor:pointer;}
+.kdprevdie.rolling{animation:kdPrevRoll .5s ease;}
+@keyframes kdPrevRoll{0%{transform:rotate(0) scale(1)}30%{transform:rotate(-14deg) scale(1.08)}60%{transform:rotate(11deg) scale(1.05)}100%{transform:rotate(0) scale(1)}}
+.kdmini{display:grid;grid-template-columns:repeat(4,34px);grid-template-rows:repeat(4,34px);border:3px solid var(--kd-gold);border-radius:6px;overflow:hidden;}
+.kdmini .msq{display:flex;align-items:center;justify-content:center;font-size:22px;}
+.kdmini .msq.light{background:#ececd0;} .kdmini .msq.dark{background:#4a5a8a;}
+.sparkle{position:absolute;width:7px;height:7px;border-radius:50%;pointer-events:none;animation:kdSpark .7s ease-out forwards;}
+@keyframes kdSpark{from{opacity:1;transform:translate(0,0) scale(1)}to{opacity:0;transform:translate(var(--sx),var(--sy)) scale(.4)}}
+.emote-loadout{display:flex;gap:8px;flex-wrap:wrap;margin:4px 0 10px;}
+.emote-slot{border:1.5px dashed var(--kd-line);border-radius:12px;padding:7px 10px;font-size:13px;color:var(--kd-ink-dim);background:var(--kd-navy-2);}
+.emote-slot b{color:var(--kd-ink);}
+
+/* ---------- dice skins (class on body when equipped, or on preview root) ---------- */
+.kdskin-dice_royal_gold .die{background:linear-gradient(145deg,#fff3c2,#eed488 60%,#d9b84e);border-color:#a68c48;}
+.kdskin-dice_obsidian .die{background:linear-gradient(145deg,#3a3f52,#14161f 60%,#05060a);border-color:#d4af37;box-shadow:inset 0 1px 0 rgba(255,255,255,.25),0 3px 8px rgba(0,0,0,.6);}
+.kdskin-dice_obsidian .die .pip.on{background:#ffd76a;box-shadow:0 0 5px rgba(255,215,106,.8);}
+.kdskin-dice_obsidian .die .die-sym,.kdskin-dice_obsidian .die .die-sym-big{color:#ffd76a;}
+.kdskin-dice_emerald .die{background:linear-gradient(145deg,#d9f5e3,#8fd0a8 55%,#2e7d4f);border-color:#14532d;}
+.kdskin-dice_emerald .die .pip.on{background:#06351c;}
+.kdskin-dice_crimson_dice .die{background:linear-gradient(145deg,#fbe3da,#e8a58f 55%,#a03a2a);border-color:#5f1414;}
+.kdskin-dice_crimson_dice .die .pip.on{background:#4d0d0d;}
+.kdskin-dice_frost .die{background:linear-gradient(145deg,#ffffff,#cfe8ff 55%,#7db4ff);border-color:#4da3ff;}
+.kdskin-dice_frost .die .pip.on{background:#1e3a8a;}
+
+/* ---------- piece themes ---------- */
+body.playing.kdptheme-pieces_midnight_gold .piece.pw,.kdptheme-pieces_midnight_gold .kdmini .piece.pw{color:#ffe9a8;text-shadow:0 1px 0 #8a6d1b,0 2px 3px rgba(0,0,0,.55),0 0 9px rgba(255,215,106,.5);}
+body.playing.kdptheme-pieces_midnight_gold .piece.pb,.kdptheme-pieces_midnight_gold .kdmini .piece.pb{color:#232c52;text-shadow:0 1px 0 rgba(255,215,106,.65),0 2px 3px rgba(0,0,0,.6),0 0 8px rgba(212,175,55,.45);}
+body.playing.kdptheme-pieces_midnight_gold .sq.movable{box-shadow:inset 0 0 0 2px rgba(255,215,106,.75),inset 0 0 16px rgba(212,175,55,.4);}
+body.playing.kdptheme-pieces_ivory_crimson .piece.pw,.kdptheme-pieces_ivory_crimson .kdmini .piece.pw{color:#fff6ea;text-shadow:0 1px 0 #b98a7a,0 2px 3px rgba(0,0,0,.4);}
+body.playing.kdptheme-pieces_ivory_crimson .piece.pb,.kdptheme-pieces_ivory_crimson .kdmini .piece.pb{color:#8e1f1f;text-shadow:0 1px 0 rgba(255,200,180,.6),0 2px 3px rgba(0,0,0,.55);}
+body.playing.kdptheme-pieces_ivory_crimson .sq.movable{box-shadow:inset 0 0 0 2px rgba(255,120,100,.7),inset 0 0 16px rgba(200,60,40,.35);}
+body.playing.kdptheme-pieces_azure .piece.pw,.kdptheme-pieces_azure .kdmini .piece.pw{color:#eaf6ff;text-shadow:0 1px 0 #5b87b8,0 2px 3px rgba(0,0,0,.45),0 0 9px rgba(125,180,255,.55);}
+body.playing.kdptheme-pieces_azure .piece.pb,.kdptheme-pieces_azure .kdmini .piece.pb{color:#123a6e;text-shadow:0 1px 0 rgba(160,210,255,.7),0 2px 3px rgba(0,0,0,.6);}
+body.playing.kdptheme-pieces_azure .sq.movable{box-shadow:inset 0 0 0 2px rgba(96,165,250,.85),inset 0 0 16px rgba(59,130,246,.45);}
+body.playing.kdptheme-pieces_rosewood .piece.pw,.kdptheme-pieces_rosewood .kdmini .piece.pw{color:#f3ddba;text-shadow:0 1px 0 #8a5a34,0 2px 3px rgba(0,0,0,.5);}
+body.playing.kdptheme-pieces_rosewood .piece.pb,.kdptheme-pieces_rosewood .kdmini .piece.pb{color:#4a2410;text-shadow:0 1px 0 rgba(240,190,130,.55),0 2px 3px rgba(0,0,0,.6);}
+body.playing.kdptheme-pieces_rosewood .sq.movable{box-shadow:inset 0 0 0 2px rgba(230,170,100,.7),inset 0 0 16px rgba(160,95,40,.35);}
+body.playing.kdptheme-pieces_goldtrail .piece.pw,.kdptheme-pieces_goldtrail .kdmini .piece.pw{filter:drop-shadow(0 0 7px rgba(255,220,110,.95)) drop-shadow(0 0 16px rgba(232,193,90,.55));}
+body.playing.kdptheme-pieces_goldtrail .piece.pb,.kdptheme-pieces_goldtrail .kdmini .piece.pb{filter:drop-shadow(0 0 7px rgba(255,190,90,.9)) drop-shadow(0 0 15px rgba(212,160,23,.5));}
+
+/* ---------- board arenas ---------- */
+body.playing.kdarena-arena_emerald_court .sq.light,.kdarena-arena_emerald_court .kdmini .msq.light{background:radial-gradient(120% 90% at 20% 8%,rgba(255,255,255,.65),transparent 52%),linear-gradient(145deg,#eef7e2,#d8ecc0 55%,#bcd894);}
+body.playing.kdarena-arena_emerald_court .sq.dark,.kdarena-arena_emerald_court .kdmini .msq.dark{background:radial-gradient(120% 90% at 20% 8%,rgba(120,220,160,.20),transparent 56%),linear-gradient(145deg,#14532d,#0a2e1a 55%,#051a0e);}
+body.playing.kdarena-arena_crimson_court .sq.light,.kdarena-arena_crimson_court .kdmini .msq.light{background:radial-gradient(120% 90% at 20% 8%,rgba(255,255,255,.65),transparent 52%),linear-gradient(145deg,#fbeae4,#f0cfc0 55%,#dfa68e);}
+body.playing.kdarena-arena_crimson_court .sq.dark,.kdarena-arena_crimson_court .kdmini .msq.dark{background:radial-gradient(120% 90% at 20% 8%,rgba(255,140,140,.18),transparent 56%),linear-gradient(145deg,#5f1414,#330a0a 55%,#1c0505);}
+body.playing.kdarena-arena_volcano_court .sq.light,.kdarena-arena_volcano_court .kdmini .msq.light{background:linear-gradient(145deg,#f3e2b8,#e8d8b0 60%,#cdb27e);}
+body.playing.kdarena-arena_volcano_court .sq.dark,.kdarena-arena_volcano_court .kdmini .msq.dark{background:radial-gradient(90% 70% at 80% 90%,rgba(255,110,40,.35),transparent 60%),linear-gradient(145deg,#6e3a20,#59331f 55%,#2e1a0e);}
+body.playing.kdarena-arena_volcano_court .boardframe{border-color:#ff8a3d;box-shadow:0 0 22px rgba(255,110,40,.35);}
+body.playing.kdarena-arena_midnight_court .sq.light,.kdarena-arena_midnight_court .kdmini .msq.light{background:linear-gradient(145deg,#cfd6f5,#aab4e0 60%,#828fc4);}
+body.playing.kdarena-arena_midnight_court .sq.dark,.kdarena-arena_midnight_court .kdmini .msq.dark{background:linear-gradient(145deg,#1c2547,#101736 60%,#070b1e);}
+body.playing.kdarena-arena_sandstone_court .sq.light,.kdarena-arena_sandstone_court .kdmini .msq.light{background:linear-gradient(145deg,#faf0d4,#eee0b8 60%,#ddc48e);}
+body.playing.kdarena-arena_sandstone_court .sq.dark,.kdarena-arena_sandstone_court .kdmini .msq.dark{background:linear-gradient(145deg,#b08d4f,#8a6a34 60%,#66491f);}
+
+/* ---------- avatar frames ---------- */
+body.kdframe-frame_laurel_gold .pc-avatar{border:2.5px solid var(--kd-gold);border-radius:50%;box-shadow:0 0 10px rgba(212,175,55,.65),inset 0 0 6px rgba(212,175,55,.4);}
+body.kdframe-frame_laurel_gold .playerbar .pdot{box-shadow:0 0 0 2px var(--kd-gold),0 0 9px rgba(212,175,55,.6);border-radius:50%;}
+body.kdframe-frame_knight_guard .pc-avatar{border:2.5px solid #b06bff;border-radius:14px;box-shadow:0 0 12px rgba(176,107,255,.6);}
+body.kdframe-frame_knight_guard .playerbar .pdot{box-shadow:0 0 0 2px #b06bff,0 0 9px rgba(176,107,255,.55);border-radius:8px;}
+
+/* ---------- match re-skin: velvet dice tray ---------- */
+body.playing #boardDock.kd-tray{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:18px;
+  background:radial-gradient(120% 160% at 50% 0%,rgba(255,215,106,.10),transparent 55%),linear-gradient(160deg,#131a36,#0B1021 60%,#090d1a);
+  border:1px solid rgba(212,175,55,.35);box-shadow:inset 0 1px 0 rgba(255,255,255,.08),inset 0 -8px 18px rgba(0,0,0,.45),0 6px 18px rgba(0,0,0,.45);backdrop-filter:blur(6px);}
+body.playing .die[data-dstate="available"]{border-color:var(--kd-gold-hi);box-shadow:0 0 12px rgba(255,215,106,.55),inset 0 0 8px rgba(255,215,106,.25);animation:kdSlotBreath 1.6s ease-in-out infinite;}
+body.playing .die[data-dstate="selected"]{transform:translateY(-4px) scale(1.05);box-shadow:0 0 18px rgba(255,215,106,.85),inset 0 0 10px rgba(255,215,106,.35);animation:none;}
+body.playing .die[data-dstate="used"]{filter:grayscale(.8) brightness(.55);box-shadow:none;animation:none;}
+body.playing .die[data-dstate="stuck"]{border:1.5px dashed #ffb52e;box-shadow:0 0 8px rgba(255,181,46,.35);animation:none;}
+body.playing .die.kd-special{border-color:#b06bff;box-shadow:0 0 12px rgba(176,107,255,.5);}
+body.playing .die.kd-special[data-dstate="available"]{box-shadow:0 0 14px rgba(176,107,255,.65),inset 0 0 8px rgba(176,107,255,.3);}
+@keyframes kdSlotBreath{0%,100%{box-shadow:0 0 8px rgba(255,215,106,.4)}50%{box-shadow:0 0 16px rgba(255,215,106,.7)}}
+
+/* ---------- match re-skin: player cards, turn badge, check alert, pot ---------- */
+body.playing .playerbar{position:relative;border-radius:14px;transition:border-color .3s ease,box-shadow .3s ease;}
+body.playing .playerbar.is-turn{border-color:var(--kd-gold);animation:kdActivePulse 2.2s ease-in-out infinite;}
+@keyframes kdActivePulse{0%,100%{box-shadow:0 0 6px rgba(212,175,55,.25)}50%{box-shadow:0 0 18px rgba(212,175,55,.55)}}
+body.playing .playerbar .turnpill.on{background:linear-gradient(160deg,var(--kd-gold-hi),var(--kd-gold));color:#231a02;font-weight:900;border-radius:999px;padding:2px 10px;letter-spacing:.03em;white-space:nowrap;}
+body.playing .playerbar .checkbadge.on{background:linear-gradient(160deg,#ff5f4a,#c22e1f);color:#fff;font-weight:900;border-radius:999px;padding:3px 12px;box-shadow:0 4px 14px rgba(255,60,40,.5);animation:kdCheckIn .3s ease;}
+@keyframes kdCheckIn{from{transform:translateY(-6px);opacity:0}to{transform:none;opacity:1}}
+body.playing #potChip.on{border-radius:999px;animation:kdActivePulse 2.2s ease-in-out infinite;border-color:var(--kd-gold);}
+
+/* ---------- match re-skin: bottom action dock ---------- */
+body.playing .utilrow{border-radius:18px;background:linear-gradient(180deg,rgba(26,33,66,.92),rgba(11,16,33,.96));border:1px solid rgba(212,175,55,.25);padding:8px;backdrop-filter:blur(8px);gap:6px;}
+body.playing .utilrow #utilActions .actions button,body.playing .utilbtn{border-radius:12px;}
+#specialsBtn.off{opacity:.55;}
+
+/* ---------- post-match rewards modal ---------- */
+#modalBox .pm-wrap{position:relative;text-align:left;}
+.pm-particles{position:absolute;inset:-30px -10px auto;height:150px;overflow:hidden;pointer-events:none;}
+.pm-particles i{position:absolute;bottom:0;width:6px;height:6px;border-radius:50%;background:var(--kd-gold-hi);opacity:0;animation:kdRise 1.6s ease-out forwards;}
+.pm-particles.embers i{background:#ff8a5f;border-radius:2px;animation-name:kdFall;}
+.pm-particles.motes i{background:#c9d2f2;width:4px;height:4px;}
+@keyframes kdRise{0%{opacity:0;transform:translateY(0)}15%{opacity:1}100%{opacity:0;transform:translateY(-130px) translateX(var(--px,0))}}
+@keyframes kdFall{0%{opacity:0;transform:translateY(-120px)}15%{opacity:.9}100%{opacity:0;transform:translateY(0) translateX(var(--px,0))}}
+.pm-head{text-align:center;margin-bottom:8px;}
+.pm-title{font-size:32px;font-weight:900;letter-spacing:.04em;margin:0;}
+.pm-title.victory{color:var(--kd-gold-hi);text-shadow:0 0 22px rgba(255,215,106,.55);}
+.pm-title.defeat{color:#9fb2d8;text-shadow:0 0 14px rgba(120,150,220,.35);}
+.pm-title.draw{color:#d6dbec;}
+.pm-sub{color:var(--kd-ink-dim);font-size:13px;margin:2px 0 0;}
+.pm-sec{background:rgba(17,24,48,.75);border:1px solid var(--kd-line);border-radius:14px;padding:12px 14px;margin-top:10px;}
+.pm-sec h3{margin:0 0 8px;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--kd-gold-hi);}
+.reward-rows{list-style:none;margin:0;padding:0;}
+.reward-rows li{display:flex;justify-content:space-between;font-size:14px;padding:4px 0;color:var(--kd-ink);}
+.reward-rows li b{font-variant-numeric:tabular-nums;}
+.reward-rows li.neg b{color:#ff9a8a;}
+.reward-rows li.crownrow b{color:#cfa6ff;}
+.reward-rows li.pm-total{border-top:1px solid var(--kd-line);margin-top:6px;padding-top:8px;font-weight:900;font-size:15px;}
+.pm-balance{color:var(--kd-ink-dim);font-size:12.5px;margin:8px 0 0;}
+.pm-rank-row{display:flex;justify-content:space-between;align-items:center;font-size:13.5px;font-weight:800;}
+.pm-rank-row .rp-gain{color:var(--kd-gold-hi);}
+.pm-rank-row .rp-gain.pop{animation:kdPop .5s ease;}
+@keyframes kdPop{0%{transform:scale(1)}40%{transform:scale(1.35)}100%{transform:scale(1)}}
+.rp-bar{height:10px;border-radius:99px;background:#0a0e1f;border:1px solid var(--kd-line);overflow:hidden;margin:8px 0 6px;}
+.rp-fill{height:100%;width:0;background:linear-gradient(90deg,var(--kd-gold),var(--kd-gold-hi));transition:width .8s ease;}
+.rp-fill.flash{filter:brightness(1.7);}
+.pm-rank small{color:var(--kd-ink-dim);}
+.pm-stats{display:flex;gap:8px;text-align:center;}
+.pm-stats .stat{flex:1;background:rgba(255,255,255,.04);border-radius:10px;padding:8px 2px;}
+.pm-stats .stat b{display:block;font-size:19px;}
+.pm-stats .stat span{font-size:10.5px;color:var(--kd-ink-dim);}
+.pm-captures{text-align:center;font-size:19px;letter-spacing:3px;margin-top:8px;min-height:24px;}
+.pm-actions{display:flex;flex-direction:column;gap:8px;margin-top:14px;}
+.pm-actions button{min-height:46px;}
+
+/* reduced motion: collapse pulses/breathing/particles to static glows */
+@media (prefers-reduced-motion: reduce){
+  body.playing .die[data-dstate="available"],body.playing .playerbar.is-turn,body.playing #potChip.on{animation:none;}
+  .pm-particles{display:none;}
+  .rp-fill{transition:none;}
+}
+html.reduce-motion body.playing .die[data-dstate="available"],
+html.reduce-motion body.playing .playerbar.is-turn,
+html.reduce-motion body.playing #potChip.on{animation:none !important;}
+html.reduce-motion .pm-particles{display:none;}
+</style>
 </head>
 <body class="show-menu">
 <div class="wrap">
@@ -1559,6 +1803,7 @@
       <button class="gbtn g-red" type="button" data-menu-mode="ai"><span class="g-icon" aria-hidden="true">♞</span><span class="g-main"><span class="g-title">Play Offline</span><span class="g-sub">Play vs. AI</span></span><span class="g-chev" aria-hidden="true">›</span></button>
       <button class="gbtn g-purple" type="button" data-menu-mode="local"><span class="g-icon" aria-hidden="true">♟</span><span class="g-main"><span class="g-title">Local Multiplayer</span><span class="g-sub">Play on the same device</span></span><span class="g-chev" aria-hidden="true">›</span></button>
       <button class="gbtn g-green" type="button" id="learnBtn"><span class="g-icon" aria-hidden="true">📖</span><span class="g-main"><span class="g-title">How to Play</span><span class="g-sub">Learn the rules</span></span><span class="g-chev" aria-hidden="true">›</span></button>
+      <button class="gbtn g-gold" type="button" id="shopBtn" style="background:linear-gradient(160deg,#8a6d1b,#5c470e);border-color:#ffd76a;"><span class="g-icon" aria-hidden="true">🛍</span><span class="g-main"><span class="g-title">Shop &amp; Locker</span><span class="g-sub">Your cosmetics · Earn coins &amp; crowns</span></span><span class="g-chev" aria-hidden="true">›</span></button>
       <div class="g-halfrow">
         <button class="gbtn g-dark" type="button" id="customBtn"><span class="g-icon" aria-hidden="true">⚙</span><span class="g-main"><span class="g-title">Custom Game</span><span class="g-sub">Set your own rules</span></span></button>
         <button class="gbtn g-dark" type="button" id="aboutBtn"><span class="g-icon" aria-hidden="true">ⓘ</span><span class="g-main"><span class="g-title">About</span><span class="g-sub">Game info</span></span></button>
@@ -1748,6 +1993,71 @@
     <div class="screen-foot"><button class="backbtn backtomenu" type="button">← Back to Main Menu</button></div>
   </div>
 
+  <div class="infoscreen" id="shopScreen" aria-label="Shop and Locker">
+    <div class="screen-top"><button class="backbtn" id="shopBack" type="button">← Back to Main Menu</button></div>
+    <h2 class="screen-title">Shop <span>&amp; Locker</span></h2>
+    <p class="screen-sub">Cosmetics are visual only — they never change how the game plays. Coins and Crowns are earned by playing; neither can be bought. <b>Virtual only — no real money, ever.</b></p>
+    <div class="shop-head">
+      <button class="shop-prof" id="shopProfile" type="button" aria-label="Your profile">
+        <span class="avatar" id="shopAvatar">♞</span>
+        <span class="who"><b id="shopPlayerName">Guest Player</b><small id="shopPlayerTitle">Squire</small></span>
+      </button>
+      <div class="shop-bals">
+        <button class="balchip" id="shopBalCoins" type="button" aria-label="Coins — tap to open Earn">● <span id="shopCoinsAmt">0</span><span class="plus" aria-hidden="true">+</span></button>
+        <button class="balchip" id="shopBalCrowns" type="button" aria-label="Crowns — tap to open Earn">♛ <span id="shopCrownsAmt">0</span><span class="plus" aria-hidden="true">+</span></button>
+      </div>
+    </div>
+    <div class="hero-carousel" id="heroCarousel" aria-label="Featured items"></div>
+    <nav class="shop-tabs" id="shopTabs" role="tablist" aria-label="Shop categories">
+      <button role="tab" type="button" data-shop-tab="featured" class="is-active">Featured</button>
+      <button role="tab" type="button" data-shop-tab="dice_skin">Dice Skins</button>
+      <button role="tab" type="button" data-shop-tab="board_arena">Board Themes</button>
+      <button role="tab" type="button" data-shop-tab="piece_theme">Piece Sets</button>
+      <button role="tab" type="button" data-shop-tab="earn">Earn</button>
+    </nav>
+    <div class="view-toggle" id="shopViewToggle" role="group" aria-label="Shop or locker">
+      <button type="button" data-shop-view="shop" class="is-active">Shop</button>
+      <button type="button" data-shop-view="locker">My Locker</button>
+    </div>
+    <div id="shopEmoteBar"></div>
+    <div id="shopBody"></div>
+    <div class="screen-foot"><button class="backbtn" id="shopBack2" type="button">← Back to Main Menu</button></div>
+  </div>
+
+  <div class="kd-sheet" id="purchaseSheet" role="dialog" aria-modal="true" aria-label="Confirm purchase">
+    <div class="kd-sheet-card">
+      <h3 id="psTitle">Buy item</h3>
+      <div class="rowline"><span>Price</span><b id="psPrice">—</b></div>
+      <div class="rowline"><span>Your balance</span><b id="psBalNow">—</b></div>
+      <div class="rowline"><span>Balance after</span><b id="psBalAfter">—</b></div>
+      <div class="kd-err" id="psErr" role="alert"></div>
+      <div class="kd-sheet-actions">
+        <button class="kd-btn-ghost" id="psCancel" type="button">Cancel</button>
+        <button class="kd-btn-primary" id="psConfirm" type="button">Confirm</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="kd-sheet" id="previewStage" role="dialog" aria-modal="true" aria-label="Item preview">
+    <div class="kd-sheet-card">
+      <div class="preview-viewport" id="previewViewport"></div>
+      <h3 id="previewName">Item</h3>
+      <p id="previewDesc" style="color:var(--kd-ink-dim);font-size:13px;margin:0 0 6px;"></p>
+      <div class="kd-sheet-actions">
+        <button class="kd-btn-ghost" id="previewClose" type="button">Close</button>
+        <button class="kd-btn-primary" id="previewCta" type="button">Buy</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="sheetdrawer" id="specialsSheet" aria-label="Special dice legend">
+    <div class="sheetcard">
+      <div class="chathead"><span class="ch-title">✨ Special dice</span><button class="chatclose" id="specialsCloseBtn" type="button" aria-label="Close specials">✕</button></div>
+      <div id="specialsLegend"></div>
+      <p class="panelnote" id="specialsStateNote"></p>
+    </div>
+  </div>
+
   <div class="infoscreen setupscreen" id="setupScreen" aria-label="Game setup">
     <div class="screen-top"><button class="backbtn" id="setupBack" type="button">← Back</button></div>
     <h2 class="screen-title" id="setupTitle">Setup</h2>
@@ -1849,6 +2159,7 @@
       <div class="utilrow" id="utilRow">
         <div id="utilActions"></div>
         <button class="utilbtn" id="movesBtn" type="button">Moves</button>
+        <button class="utilbtn" id="specialsBtn" type="button">✨ Specials</button>
         <button class="utilbtn" id="codeBtn" type="button" style="display:none;">Code</button>
       </div>
       <div class="playerbar" id="barBottom"></div>
@@ -8921,6 +9232,983 @@ document.addEventListener("visibilitychange", function(){ if (document.hidden) s
     }
   }catch(e){}
 })();
+</script>
+<script>
+/* ============================================================
+   KINGS & DICE 2026 — part 1: match re-skin hooks + match stats
+   Presentation only: no rule, protocol or server changes.
+   ============================================================ */
+var KDHaptics = {
+  tap: function(){ try{ if (navigator.vibrate) navigator.vibrate(15); }catch(e){} },
+  roll: function(){ try{ if (navigator.vibrate) navigator.vibrate([20,30,20]); }catch(e){} },
+  invalid: function(){ try{ if (navigator.vibrate) navigator.vibrate([40,40,40]); }catch(e){} },
+  capture: function(){ try{ if (navigator.vibrate) navigator.vibrate(50); }catch(e){} }
+};
+(function(){
+  var dock = document.getElementById("boardDock");
+  if (dock) dock.classList.add("kd-tray");
+  var rollBtn = document.getElementById("rollBtn");
+  if (rollBtn) rollBtn.addEventListener("click", function(){ KDHaptics.roll(); });
+  function diceTapHaptic(ev){
+    var die = ev.target && ev.target.closest ? ev.target.closest(".die") : null;
+    if (!die || !die.id) return;
+    var idx = parseInt(String(die.id).replace(/\D/g,""), 10);
+    if (isNaN(idx)) return;
+    if (G.diceUsed[idx]) return;
+    if (typeof dieIsWaiting==="function" && dieIsWaiting(idx)) KDHaptics.invalid(); else KDHaptics.tap();
+  }
+  var row = document.getElementById("diceRow");
+  if (row) row.addEventListener("click", diceTapHaptic);
+  var dockDice = document.querySelector(".dockdice");
+  if (dockDice) dockDice.addEventListener("click", diceTapHaptic);
+  var sb = document.getElementById("specialsBtn");
+  if (sb) sb.addEventListener("click", function(){
+    var legend = document.getElementById("specialsLegend");
+    if (legend){
+      legend.innerHTML = "";
+      Object.keys(SPECIAL_INFO).forEach(function(k){
+        var info = SPECIAL_INFO[k];
+        var rowEl = document.createElement("p"); rowEl.className = "panelnote"; rowEl.style.fontSize = "13.5px";
+        var b = document.createElement("b"); b.textContent = info.sym + " " + info.title;
+        rowEl.appendChild(b); rowEl.appendChild(document.createElement("br"));
+        rowEl.appendChild(document.createTextNode(info.sub));
+        legend.appendChild(rowEl);
+      });
+    }
+    var note = document.getElementById("specialsStateNote");
+    if (note) note.textContent = G.specialsOn
+      ? "Special dice are ON in this match — a rolled die can come up special instead of numbered."
+      : "Special dice are OFF in this match — every die is a plain numbered die. Turn them on in setup for the next match.";
+    openSheet("specialsSheet");
+  });
+  var sc = document.getElementById("specialsCloseBtn");
+  if (sc) sc.addEventListener("click", function(){ closeSheet("specialsSheet"); });
+})();
+
+/* dice slot special-state class, driven from live dice state */
+var _kdOrigRenderDice = renderDice;
+renderDice = function(){
+  _kdOrigRenderDice();
+  for (var i=0;i<Math.max(3, G.dice.length);i++){
+    var special = typeof isSpecialFace==="function" && isSpecialFace(G.dice[i]);
+    ["die"+i, "ddie"+i].forEach(function(id){
+      var el = document.getElementById(id);
+      if (el) el.classList.toggle("kd-special", !!special);
+    });
+  }
+  var sb = document.getElementById("specialsBtn");
+  if (sb) sb.classList.toggle("off", !G.specialsOn);
+};
+
+/* player-card post-processing: named turn badge + check alert label */
+var _kdOrigRenderBoard = renderBoard;
+renderBoard = function(){
+  _kdOrigRenderBoard();
+  document.querySelectorAll(".playerbar").forEach(function(bar){
+    var pill = bar.querySelector(".turnpill.on");
+    if (pill){
+      var nm = bar.querySelector(".pname");
+      var name = nm ? nm.textContent.trim() : "";
+      if (name) pill.textContent = "▶ " + name.toUpperCase().slice(0,12) + " TURN";
+    }
+    var badge = bar.querySelector(".checkbadge.on");
+    if (badge) badge.textContent = (G.variant==="guard") ? "⚠ KING IN CHECK" : "⚠ KING IN DANGER!";
+  });
+};
+
+/* ---------- match stats for the post-match modal ---------- */
+var PMSTAT = { matchId: 0, diceRolled: 0, captures: [] };
+var _kdOrigReset = resetGameOnly;
+resetGameOnly = function(){
+  _kdOrigReset();
+  PMSTAT.matchId++; PMSTAT.diceRolled = 0; PMSTAT.captures = [];
+};
+var _kdOrigSettleRolls = settleRolls;
+settleRolls = function(faces){
+  if (faces && faces.length) PMSTAT.diceRolled += faces.length;
+  _kdOrigSettleRolls(faces);
+};
+var _kdOrigDoMove = doMove;
+doMove = function(m){
+  try{
+    if (!(typeof SRV!=="undefined" && SRV.active)){
+      var mover = G.st.turn;
+      var side = (G.mode==="live") ? G.myColor : "w";
+      if (mover===side && m){
+        var vic = null;
+        if (m.ep) vic = "p";
+        else if (m.capture){
+          var tp = (G.st.board[m.tr] && G.st.board[m.tr][m.tc]) ? G.st.board[m.tr][m.tc] : null;
+          vic = tp ? tp.t : (typeof m.capture==="string" ? m.capture : null);
+        }
+        if (vic) PMSTAT.captures.push(vic);
+      }
+      if (m && m.capture) KDHaptics.capture();
+    }
+  }catch(e){}
+  _kdOrigDoMove(m);
+};
+</script>
+<script>
+/* ============================================================
+   KINGS & DICE 2026 — part 2: economy, shop & locker, rewards
+   ON-DEVICE economy v1 (structured to lift to the server in the
+   accounts phase). NO REAL MONEY anywhere: Coins and Crowns are
+   earned by playing only. There is no purchase flow for currency,
+   no IAP, and no real-money price anywhere in this code.
+   Coins are the game's existing device balance (G.coins.w, key
+   dicechess-coins); Crowns + inventory live in dicechess-economy-v1
+   with a capped local transaction log.
+   ============================================================ */
+var ECON_KEY = "dicechess-economy-v1";
+var CROWN_PER_TIER = 10, CROWN_HARD_AI = 5, DAILY_COINS = 250, WEEKLY_CROWNS = 10, BASE_WIN_COINS = 25;
+
+/* ---------- catalog ----------
+   approved:true  = live in the shop. ONLY the game's pre-existing
+   cosmetics are approved at ship time.
+   approved:false = UNAPPROVED DESIGN PLACEHOLDER. These entries are
+   design proposals awaiting the player's review. They are filtered
+   out of every shop/locker surface: not visible, not purchasable,
+   not equippable. Do not flip approved without the player's say-so. */
+var CATALOG = [
+  /* — live: the game's existing cosmetics (legacy ids in dicechess-profile) — */
+  { id:"arena_emerald", legacy:"emerald", name:"Emerald board theme", category:"board_arena", rarity:"rare",
+    price:{ amount:300, currency:"coins" }, desc:"Deep green marble board", isFeatured:true, rotation:null, approved:true,
+    assets:{ light:"linear-gradient(145deg,#d8ecc0,#bcd894)", dark:"linear-gradient(145deg,#14532d,#0a2e1a)" } },
+  { id:"arena_crimson", legacy:"crimson", name:"Crimson board theme", category:"board_arena", rarity:"rare",
+    price:{ amount:300, currency:"coins" }, desc:"Dark red marble board", isFeatured:false, rotation:null, approved:true,
+    assets:{ light:"linear-gradient(145deg,#f0cfc0,#dfa68e)", dark:"linear-gradient(145deg,#5f1414,#330a0a)" } },
+  { id:"dice_royal", legacy:"dicetint", name:"Royal dice tint", category:"dice_skin", rarity:"common",
+    price:{ amount:200, currency:"coins" }, desc:"Warm gold-tinted dice", isFeatured:true, rotation:null, approved:true,
+    assets:{ bg:"linear-gradient(145deg,#fff3c2,#eed488 60%,#d9b84e)", border:"#a68c48", pip:"#5c470e", sfxVariant:"classic" } },
+  { id:"pieces_goldtrail", legacy:"glow", name:"Gold-trail piece glow", category:"piece_theme", rarity:"common",
+    price:{ amount:250, currency:"coins" }, desc:"Richer golden piece aura", isFeatured:false, rotation:null, approved:true,
+    assets:{ aura:true } },
+
+  /* — UNAPPROVED design placeholders (not visible / not purchasable / not equippable) — */
+  { id:"dice_obsidian", name:"Obsidian Dice", category:"dice_skin", rarity:"epic", price:{ amount:25, currency:"crowns" },
+    desc:"Black glass dice with gold pips", isFeatured:true, rotation:null, approved:false,
+    assets:{ bg:"linear-gradient(145deg,#3a3f52,#14161f 60%,#05060a)", border:"#d4af37", pip:"#ffd76a", sfxVariant:"crystal", particle:"#ffd76a" } },
+  { id:"dice_emerald", name:"Emerald Dice", category:"dice_skin", rarity:"rare", price:{ amount:1500, currency:"coins" },
+    desc:"Green glass dice", isFeatured:false, rotation:null, approved:false,
+    assets:{ bg:"linear-gradient(145deg,#d9f5e3,#8fd0a8 55%,#2e7d4f)", border:"#14532d", pip:"#06351c", sfxVariant:"classic" } },
+  { id:"dice_crimson_dice", name:"Crimson Dice", category:"dice_skin", rarity:"common", price:{ amount:400, currency:"coins" },
+    desc:"Warm red dice", isFeatured:false, rotation:null, approved:false,
+    assets:{ bg:"linear-gradient(145deg,#fbe3da,#e8a58f 55%,#a03a2a)", border:"#5f1414", pip:"#4d0d0d", sfxVariant:"classic" } },
+  { id:"dice_frost", name:"Frost Dice", category:"dice_skin", rarity:"epic", price:{ amount:6000, currency:"coins" },
+    desc:"Ice-blue dice", isFeatured:false, rotation:"weekly", approved:false,
+    assets:{ bg:"linear-gradient(145deg,#ffffff,#cfe8ff 55%,#7db4ff)", border:"#4da3ff", pip:"#1e3a8a", sfxVariant:"crystal", particle:"#bfe0ff" } },
+  { id:"pieces_midnight_gold", name:"Midnight & Gold Pieces", category:"piece_theme", rarity:"rare", price:{ amount:1800, currency:"coins" },
+    desc:"Ivory-gold vs midnight-blue sets with gold highlights", isFeatured:true, rotation:null, approved:false,
+    assets:{ highlightColorLight:"#ffd76a", highlightColorDark:"#b98a1e" } },
+  { id:"pieces_ivory_crimson", name:"Ivory & Crimson Pieces", category:"piece_theme", rarity:"common", price:{ amount:500, currency:"coins" },
+    desc:"Warm ivory vs deep crimson sets", isFeatured:false, rotation:null, approved:false, assets:{ highlightColorLight:"#ff7864" } },
+  { id:"pieces_azure", name:"Azure Court Pieces", category:"piece_theme", rarity:"epic", price:{ amount:30, currency:"crowns" },
+    desc:"Sky-ivory vs deep azure sets", isFeatured:false, rotation:null, approved:false, assets:{ highlightColorLight:"#60a5fa" } },
+  { id:"pieces_rosewood", name:"Rosewood Pieces", category:"piece_theme", rarity:"common", price:{ amount:350, currency:"coins" },
+    desc:"Warm wood-tone sets", isFeatured:false, rotation:null, approved:false, assets:{ highlightColorLight:"#e6aa64" } },
+  { id:"arena_volcano_court", name:"Volcano Court", category:"board_arena", rarity:"legendary", price:{ amount:60, currency:"crowns" },
+    desc:"Sandstone tiles over ember-dark tiles, lava-gold frame", isFeatured:true, rotation:"weekly", approved:false,
+    assets:{ tileColorLight:"#e8d8b0", tileColorDark:"#59331f" } },
+  { id:"arena_midnight_court", name:"Midnight Court", category:"board_arena", rarity:"epic", price:{ amount:5000, currency:"coins" },
+    desc:"Pale slate vs deep midnight tiles", isFeatured:false, rotation:null, approved:false,
+    assets:{ tileColorLight:"#aab4e0", tileColorDark:"#101736" } },
+  { id:"arena_sandstone_court", name:"Sandstone Court", category:"board_arena", rarity:"common", price:{ amount:300, currency:"coins" },
+    desc:"Warm sandstone tiles", isFeatured:false, rotation:null, approved:false,
+    assets:{ tileColorLight:"#eee0b8", tileColorDark:"#8a6a34" } },
+  { id:"emote_good_roll", name:"Emote — Good roll!", category:"emote", rarity:"common", price:{ amount:250, currency:"coins" },
+    desc:"🎲 Good roll!", isFeatured:false, rotation:null, approved:false, assets:{ glyph:"🎲", triggerText:"Good roll!" } },
+  { id:"emote_crown", name:"Emote — All hail", category:"emote", rarity:"rare", price:{ amount:1200, currency:"coins" },
+    desc:"👑 All hail", isFeatured:false, rotation:null, approved:false, assets:{ glyph:"👑", triggerText:"All hail" } },
+  { id:"frame_laurel_gold", name:"Laurel Gold Frame", category:"avatar_frame", rarity:"rare", price:{ amount:15, currency:"crowns" },
+    desc:"Gold laurel ring around your avatar", isFeatured:false, rotation:null, approved:false, assets:{ frameColor:"#d4af37" } },
+  { id:"frame_knight_guard", name:"Knight's Guard Frame", category:"avatar_frame", rarity:"epic", price:{ amount:35, currency:"crowns" },
+    desc:"Violet guard frame around your avatar", isFeatured:false, rotation:"weekly", approved:false, assets:{ frameColor:"#b06bff" } }
+];
+function catalogItem(id){ for (var i=0;i<CATALOG.length;i++) if (CATALOG[i].id===id) return CATALOG[i]; return null; }
+function liveCatalog(){ return CATALOG.filter(function(it){ return it.approved; }); }
+/* deterministic weekly rotation from the device date (only gates
+   UNAPPROVED placeholders today; kept for the approved catalog) */
+function kdWeekIndex(){ return Math.floor(Date.now() / (7*864e5)); }
+function itemAvailableNow(it){
+  if (!it.rotation) return true;
+  var h = 0; for (var i=0;i<it.id.length;i++) h = (h*31 + it.id.charCodeAt(i)) >>> 0;
+  return ((kdWeekIndex() + h) % 3) < 2;
+}
+function msToNextWeek(){
+  var now = new Date(); var d = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  var add = (8 - d.getDay()) % 7; if (add===0) add = 7;
+  return (d.getTime() + add*864e5) - now.getTime();
+}
+function fmtCountdown(ms){
+  var s = Math.max(0, Math.floor(ms/1000)), dd = Math.floor(s/86400), hh = Math.floor((s%86400)/3600), mm = Math.floor((s%3600)/60);
+  return dd>0 ? (dd + "d " + hh + "h") : (hh + "h " + mm + "m");
+}
+
+/* ---------- economy state ---------- */
+function econDefault(){
+  return { crowns:0, owned:{}, equipped:{ diceSkin:null, pieceTheme:null, boardArena:null, avatarFrame:null, emotes:[null,null,null,null] },
+           log:[], lastDaily:0, lastWeeklyCrown:0, tierClaimed:{}, migrated:false };
+}
+var ECON = (function(){
+  var d = econDefault(), s = profLoad(ECON_KEY, null);
+  if (s){ for (var k in d){ if (s[k]!==undefined) d[k]=s[k]; } }
+  return d;
+})();
+function saveEcon(){ profSave(ECON_KEY, ECON); }
+function econLog(type, itemId, currency, amount, balanceAfter){
+  ECON.log.unshift({ id:"txn_" + Date.now().toString(36) + Math.floor(Math.random()*999), at:new Date().toISOString(),
+                     type:type, itemId:itemId||null, currency:currency, amount:amount, balanceAfter:balanceAfter });
+  if (ECON.log.length > 50) ECON.log.length = 50;
+}
+function econBalance(currency){ return currency==="crowns" ? ECON.crowns : G.coins.w; }
+function econDebit(currency, amount){
+  if (currency==="crowns"){ ECON.crowns -= amount; saveEcon(); }
+  else { G.coins.w -= amount; saveCoins(); }
+}
+function econCredit(currency, amount){
+  if (currency==="crowns"){ ECON.crowns += amount; saveEcon(); }
+  else { G.coins.w += amount; saveCoins(); }
+}
+var SLOT_FOR = { dice_skin:"diceSkin", piece_theme:"pieceTheme", board_arena:"boardArena", avatar_frame:"avatarFrame" };
+function econOwns(id){ return !!ECON.owned[id]; }
+function econEquippedId(category){ return ECON.equipped[SLOT_FOR[category]] || null; }
+
+/* ---------- migration: existing profile cosmetics -> inventory ---------- */
+function syncFromProfile(){
+  var changed = false;
+  CATALOG.forEach(function(it){
+    if (!it.legacy) return;
+    if (PROFILE.owned.indexOf(it.legacy) >= 0 && !ECON.owned[it.id]){
+      ECON.owned[it.id] = { at:new Date().toISOString(), source:"migration", txnId:"migration" }; changed = true;
+    }
+  });
+  if (!ECON.migrated){
+    if (PROFILE.board==="emerald") ECON.equipped.boardArena = "arena_emerald";
+    if (PROFILE.board==="crimson") ECON.equipped.boardArena = "arena_crimson";
+    if (PROFILE.diceTint) ECON.equipped.diceSkin = "dice_royal";
+    if (PROFILE.glow) ECON.equipped.pieceTheme = "pieces_goldtrail";
+    ECON.migrated = true; changed = true;
+  }
+  /* repair: for legacy items the profile is the visual source of truth —
+     the economy loadout must never claim an equip the profile doesn't have */
+  CATALOG.forEach(function(it){
+    if (!it.legacy) return;
+    var slot = SLOT_FOR[it.category];
+    if (legacyEquipped(it) && ECON.owned[it.id] && ECON.equipped[slot]!==it.id){ ECON.equipped[slot] = it.id; changed = true; }
+    else if (!legacyEquipped(it) && ECON.equipped[slot]===it.id){ ECON.equipped[slot] = null; changed = true; }
+  });
+  if (changed) saveEcon();
+}
+function syncToProfile(it, equipped){
+  if (!it || !it.legacy) return;
+  if (it.category==="board_arena") PROFILE.board = equipped ? it.legacy : (PROFILE.board===it.legacy ? null : PROFILE.board);
+  else if (it.id==="dice_royal") PROFILE.diceTint = !!equipped;
+  else if (it.id==="pieces_goldtrail") PROFILE.glow = !!equipped;
+  saveProfile(); applyCosmetics();
+}
+syncFromProfile();
+var _kdOrigBuyCosmetic = buyOrEquipCosmetic;
+buyOrEquipCosmetic = function(id){
+  _kdOrigBuyCosmetic(id);
+  syncFromProfile();
+  CATALOG.forEach(function(it){
+    if (!it.legacy) return;
+    var eq = (it.category==="board_arena" && PROFILE.board===it.legacy) ||
+             (it.id==="dice_royal" && !!PROFILE.diceTint) ||
+             (it.id==="pieces_goldtrail" && !!PROFILE.glow);
+    if (econOwns(it.id)) ECON.equipped[SLOT_FOR[it.category]] = eq ? it.id : (ECON.equipped[SLOT_FOR[it.category]]===it.id ? null : ECON.equipped[SLOT_FOR[it.category]]);
+  });
+  saveEcon();
+};
+
+/* ---------- purchase / equip (local PurchaseItem / EquipCosmetic) ---------- */
+function kdPurchase(itemId){
+  var it = catalogItem(itemId);
+  if (!it || !it.approved) return { ok:false, code:"ITEM_NOT_FOUND" };
+  if (!itemAvailableNow(it)) return { ok:false, code:"ITEM_UNAVAILABLE" };
+  if (econOwns(itemId)) return { ok:false, code:"ALREADY_OWNED" };
+  var cur = it.price.currency, amt = it.price.amount;
+  if (econBalance(cur) < amt) return { ok:false, code:"INSUFFICIENT_FUNDS", needed:amt, have:econBalance(cur) };
+  if (it.legacy){
+    /* legacy items debit + grant through the game's existing cosmetic
+       path so the old Profile panel and the new Locker never disagree */
+    _kdOrigBuyCosmetic(it.legacy);
+    syncFromProfile();
+    if (!econOwns(itemId)) return { ok:false, code:"INSUFFICIENT_FUNDS", needed:amt, have:econBalance(cur) };
+    econLog("purchase", itemId, cur, -amt, econBalance(cur));
+    saveEcon();
+    return { ok:true, itemId:itemId, balances:{ coins:G.coins.w, crowns:ECON.crowns } };
+  }
+  econDebit(cur, amt);
+  ECON.owned[itemId] = { at:new Date().toISOString(), source:"shop", txnId:"pending" };
+  econLog("purchase", itemId, cur, -amt, econBalance(cur));
+  ECON.owned[itemId].txnId = ECON.log[0].id;
+  saveEcon();
+  return { ok:true, itemId:itemId, balances:{ coins:G.coins.w, crowns:ECON.crowns } };
+}
+function legacyEquipped(it){
+  if (!it || !it.legacy) return false;
+  if (it.category==="board_arena") return PROFILE.board===it.legacy;
+  if (it.id==="dice_royal") return !!PROFILE.diceTint;
+  if (it.id==="pieces_goldtrail") return !!PROFILE.glow;
+  return false;
+}
+function kdEquip(itemId){
+  var it = itemId ? catalogItem(itemId) : null;
+  if (!it || !it.approved) return { ok:false, code:"ITEM_NOT_FOUND" };
+  if (!econOwns(itemId)) return { ok:false, code:"NOT_OWNED" };
+  if (it.legacy){
+    /* the legacy path TOGGLES — only call it when it is not already on,
+       otherwise a purchase (which equips) followed by Equip would
+       toggle the cosmetic straight back off */
+    if (!legacyEquipped(it)) _kdOrigBuyCosmetic(it.legacy);
+    syncFromProfile();
+    ECON.equipped[SLOT_FOR[it.category]] = legacyEquipped(it) ? it.id : null;
+    saveEcon();
+    return { ok:true, equipped:ECON.equipped };
+  }
+  ECON.equipped[SLOT_FOR[it.category]] = itemId; saveEcon();
+  return { ok:true, equipped:ECON.equipped };
+}
+function kdUnequip(category){
+  var cur = econEquippedId(category);
+  var it = cur ? catalogItem(cur) : null;
+  if (it && it.legacy && legacyEquipped(it)){ _kdOrigBuyCosmetic(it.legacy); syncFromProfile(); }
+  ECON.equipped[SLOT_FOR[category]] = null; saveEcon();
+  return { ok:true, equipped:ECON.equipped };
+}
+
+/* ---------- crown grants: rank tiers (once per tier) + hard AI ---------- */
+function kdTierIndex(points){ var idx = 0; for (var i=0;i<RANKS.length;i++) if (points >= RANKS[i].pts) idx = i; return idx; }
+function claimTierCrowns(uptoIdx, source){
+  var granted = 0;
+  for (var i=1;i<=uptoIdx;i++){
+    if (!ECON.tierClaimed[i]){
+      ECON.tierClaimed[i] = true;
+      ECON.crowns += CROWN_PER_TIER; granted += CROWN_PER_TIER;
+      econLog(source || "rank_reward", null, "crowns", CROWN_PER_TIER, ECON.crowns);
+    }
+  }
+  if (granted) saveEcon();
+  return granted;
+}
+
+/* ============================================================
+   SHOP & LOCKER UI
+   ============================================================ */
+var SHOP = { tab:"featured", view:"shop", heroIdx:0, heroTimer:null, pendingItem:null, previewItem:null };
+function priceText(it){ return it.price.currency==="crowns" ? ("♛ " + fmtCoins(it.price.amount)) : ("● " + fmtCoins(it.price.amount) + " coins"); }
+function cardState(it){
+  if (econEquippedId(it.category)===it.id) return "equipped";
+  if (econOwns(it.id)) return "owned";
+  return "buy";
+}
+function renderShopHeader(){
+  function set(id, v){ var e = document.getElementById(id); if (e) e.textContent = v; }
+  set("shopCoinsAmt", fmtCoins(G.coins.w));
+  set("shopCrownsAmt", fmtCoins(ECON.crowns));
+  set("shopPlayerName", PROFILE_NAME || "Guest Player");
+  set("shopPlayerTitle", rankInfo().title);
+  var av = document.getElementById("shopAvatar");
+  if (av) av.textContent = avatarById(PROFILE.avatar).glyph;
+  var pc = document.getElementById("profCrownsAmt");
+  if (pc) pc.textContent = fmtCoins(ECON.crowns) + " crowns (earned only)";
+}
+function thumbHTML(it){
+  if (it.category==="dice_skin"){
+    var bg = it.assets && it.assets.bg ? it.assets.bg : "";
+    var bord = it.assets && it.assets.border ? it.assets.border : "#a68c48";
+    var pip = it.assets && it.assets.pip ? it.assets.pip : "#20242e";
+    var onCells = {0:1,2:1,4:1,6:1,8:1}, cells = "";
+    for (var ci=0; ci<9; ci++) cells += '<i style="background:' + (onCells[ci] ? pip : "transparent") + '"></i>';
+    return '<span class="thumb-die" style="background:' + bg + ';border-color:' + bord + '">' + cells + '</span>';
+  }
+  if (it.category==="board_arena"){
+    var L = it.assets && it.assets.light ? it.assets.light : "#ececd0";
+    var D = it.assets && it.assets.dark ? it.assets.dark : "#4a5a8a";
+    var cells = ""; for (var r=0;r<4;r++) for (var c=0;c<4;c++) cells += '<i style="background:' + (((r+c)%2===0) ? L : D) + '"></i>';
+    return '<span class="thumb-board">' + cells + '</span>';
+  }
+  if (it.category==="piece_theme"){
+    var st = it.assets && it.assets.aura ? ' style="filter:drop-shadow(0 0 6px rgba(255,220,110,.95)) drop-shadow(0 0 12px rgba(232,193,90,.55));"' : "";
+    return '<span class="thumb-pieces"' + st + '>♞♟</span>';
+  }
+  if (it.category==="emote") return '<span class="thumb-emote">' + ((it.assets && it.assets.glyph) || "🎲") + '</span>';
+  if (it.category==="avatar_frame") return '<span class="thumb-frame" style="border-color:' + ((it.assets && it.assets.frameColor) || "#d4af37") + '">' + avatarById(PROFILE.avatar).glyph + '</span>';
+  return '<span class="thumb-emote">✦</span>';
+}
+function makeCard(it){
+  var st = cardState(it);
+  var card = document.createElement("article");
+  card.className = "item-card rarity-" + it.rarity + (st==="equipped" ? " is-equipped" : "");
+  card.setAttribute("tabindex","0");
+  var avail = itemAvailableNow(it);
+  var html = '<div class="thumb">' + thumbHTML(it) + '</div><h4>' + escHtml(it.name) + '</h4>' +
+    '<span class="rlabel rarity-' + it.rarity + '">' + it.rarity + '</span>';
+  if (!avail && st!=="buy") html += '<span class="vault-tag">Vaulted</span>';
+  html += '<div class="card-row"><span class="price">' + (st==="buy" ? priceText(it) : (st==="equipped" ? "In use" : "Owned")) + '</span>';
+  var cta = document.createElement("button"); cta.type = "button";
+  if (st==="buy"){ cta.className = "card-cta" + (econBalance(it.price.currency) >= it.price.amount ? "" : " dim"); cta.textContent = "BUY"; }
+  else if (st==="owned"){ cta.className = "card-cta owned"; cta.textContent = "Equip"; }
+  else { cta.className = "card-cta equipped"; cta.textContent = "EQUIPPED"; }
+  card.innerHTML = html;
+  var row = card.querySelector(".card-row"); row.appendChild(cta);
+  cta.addEventListener("click", function(ev){
+    ev.stopPropagation();
+    if (st==="buy") openPurchaseSheet(it.id);
+    else if (st==="owned"){ kdEquip(it.id); afterShopChange(); toast(it.name + " equipped"); }
+    else { kdUnequip(it.category); afterShopChange(); toast(it.name + " unequipped — classic look restored"); }
+  });
+  card.addEventListener("click", function(){ openPreview(it.id); });
+  return card;
+}
+function defaultCard(category){
+  var names = { dice_skin:"Classic Dice", piece_theme:"Classic Pieces", board_arena:"Classic Board", avatar_frame:"No Frame" };
+  var card = document.createElement("article");
+  var eq = !econEquippedId(category);
+  card.className = "item-card rarity-common" + (eq ? " is-equipped" : "");
+  card.innerHTML = '<div class="thumb"><span class="thumb-emote">✦</span></div><h4>' + names[category] + '</h4><span class="rlabel rarity-common">Default</span>' +
+    '<div class="card-row"><span class="price">Free</span></div>';
+  var cta = document.createElement("button"); cta.type = "button";
+  cta.className = "card-cta" + (eq ? " equipped" : " owned"); cta.textContent = eq ? "EQUIPPED" : "Equip";
+  cta.addEventListener("click", function(ev){ ev.stopPropagation(); if (!eq){ kdUnequip(category); afterShopChange(); } });
+  card.querySelector(".card-row").appendChild(cta);
+  return card;
+}
+function shopItemsForTab(){
+  var items = liveCatalog();
+  if (SHOP.view==="locker") items = items.filter(function(it){ return econOwns(it.id); });
+  if (SHOP.tab==="featured") return items.filter(function(it){ return it.isFeatured; });
+  if (SHOP.tab==="earn") return [];
+  return items.filter(function(it){ return it.category===SHOP.tab; });
+}
+function renderShop(){
+  renderShopHeader(); renderCoins();
+  document.querySelectorAll("#shopTabs [data-shop-tab]").forEach(function(b){ b.classList.toggle("is-active", b.getAttribute("data-shop-tab")===SHOP.tab); });
+  document.querySelectorAll("#shopViewToggle [data-shop-view]").forEach(function(b){ b.classList.toggle("is-active", b.getAttribute("data-shop-view")===SHOP.view); });
+  var eb = document.getElementById("shopEmoteBar");
+  if (eb){
+    eb.innerHTML = "";
+    if (SHOP.view==="locker" && SHOP.tab!=="earn"){
+      var wrap = document.createElement("div");
+      var lbl = document.createElement("div"); lbl.className = "setlabel"; lbl.textContent = "Emote loadout";
+      wrap.appendChild(lbl);
+      var row = document.createElement("div"); row.className = "emote-loadout";
+      for (var i=0;i<4;i++){
+        var slot = document.createElement("span"); slot.className = "emote-slot";
+        var eid = ECON.equipped.emotes[i];
+        var eit = eid ? catalogItem(eid) : null;
+        slot.innerHTML = "Slot " + (i+1) + ": <b>" + (eit ? escHtml(eit.name) : "Empty") + "</b>";
+        row.appendChild(slot);
+      }
+      wrap.appendChild(row);
+      var note = document.createElement("p"); note.className = "panelnote";
+      note.textContent = "Emotes are saved to your loadout here. In-match emote sending arrives with the accounts phase — nothing is sent to opponents yet.";
+      wrap.appendChild(note);
+      eb.appendChild(wrap);
+    }
+  }
+  renderHero();
+  var body = document.getElementById("shopBody");
+  if (!body) return;
+  body.innerHTML = "";
+  if (SHOP.tab==="earn"){ renderEarn(body); return; }
+  var grid = document.createElement("div"); grid.className = "item-grid";
+  var items = shopItemsForTab();
+  if (SHOP.view==="locker" && SHOP.tab!=="featured"){
+    var cats = SHOP.tab==="dice_skin" ? ["dice_skin"] : SHOP.tab==="board_arena" ? ["board_arena"] : ["piece_theme"];
+    cats.forEach(function(cat){ grid.appendChild(defaultCard(cat)); });
+  }
+  items.forEach(function(it){ grid.appendChild(makeCard(it)); });
+  if (!items.length && SHOP.view==="shop") grid.innerHTML = '<div class="shop-empty">Nothing on this shelf right now.</div>';
+  if (!items.length && SHOP.view==="locker" && SHOP.tab==="featured") grid.innerHTML = '<div class="shop-empty">Your locker is empty — items you buy land here, and everything you already own was carried over automatically.</div>';
+  body.appendChild(grid);
+}
+function renderHero(){
+  var box = document.getElementById("heroCarousel");
+  if (!box) return;
+  var featured = liveCatalog().filter(function(it){ return it.isFeatured; });
+  if (!featured.length){ box.innerHTML = ""; return; }
+  if (SHOP.heroIdx >= featured.length) SHOP.heroIdx = 0;
+  box.innerHTML = "";
+  featured.forEach(function(it, i){
+    var card = document.createElement("article");
+    card.className = "hero-card" + (i===SHOP.heroIdx ? " on" : "");
+    var st = cardState(it);
+    card.innerHTML = '<span class="hero-kicker">⭐ Featured · rotation refreshes in ' + fmtCountdown(msToNextWeek()) + '</span>' +
+      '<div class="hero-preview"><span style="transform:scale(1.5);display:inline-flex;">' + thumbHTML(it) + '</span></div>' +
+      '<h3>' + escHtml(it.name) + '</h3><p>' + escHtml(it.desc || "") + ' · ' + it.rarity + '</p>';
+    var btn = document.createElement("button"); btn.type = "button"; btn.className = "btn-buy-hero";
+    btn.textContent = st==="buy" ? ("BUY · " + priceText(it)) : (st==="equipped" ? "EQUIPPED" : "Equip");
+    btn.addEventListener("click", function(){
+      if (st==="buy") openPurchaseSheet(it.id);
+      else if (st==="owned"){ kdEquip(it.id); afterShopChange(); }
+      else openPreview(it.id);
+    });
+    card.appendChild(btn);
+    box.appendChild(card);
+  });
+  if (featured.length > 1){
+    var dots = document.createElement("div"); dots.className = "hero-dots";
+    featured.forEach(function(_, i){
+      var d = document.createElement("button"); d.type = "button"; d.className = i===SHOP.heroIdx ? "on" : "";
+      d.setAttribute("aria-label", "Featured item " + (i+1));
+      d.addEventListener("click", function(){ SHOP.heroIdx = i; renderHero(); resetHeroTimer(); });
+      dots.appendChild(d);
+    });
+    box.appendChild(dots);
+  }
+}
+function resetHeroTimer(){
+  if (SHOP.heroTimer) clearInterval(SHOP.heroTimer);
+  SHOP.heroTimer = setInterval(function(){
+    if (!document.body.classList.contains("show-shop")) return;
+    var n = liveCatalog().filter(function(it){ return it.isFeatured; }).length;
+    if (n > 1){ SHOP.heroIdx = (SHOP.heroIdx + 1) % n; renderHero(); }
+  }, 6000);
+}
+function renderEarn(body){
+  var now = Date.now();
+  function card(title, text, btnLabel, ready, cb){
+    var c = document.createElement("div"); c.className = "earn-card";
+    c.innerHTML = "<h4>" + title + "</h4><p>" + text + "</p>";
+    var b = document.createElement("button"); b.type = "button"; b.className = "earn-btn"; b.textContent = btnLabel; b.disabled = !ready;
+    b.addEventListener("click", cb);
+    c.appendChild(b);
+    return c;
+  }
+  var dailyReady = now - (ECON.lastDaily||0) >= 864e5;
+  body.appendChild(card("Daily coins", "Come back each day for +" + DAILY_COINS + " virtual coins.", 
+    dailyReady ? ("Claim +" + DAILY_COINS + " coins") : ("Next claim in " + fmtCountdown(864e5 - (now - (ECON.lastDaily||0)))),
+    dailyReady, function(){
+      ECON.lastDaily = Date.now(); econCredit("coins", DAILY_COINS);
+      econLog("daily_claim", null, "coins", DAILY_COINS, G.coins.w); saveEcon();
+      toast("+" + DAILY_COINS + " coins claimed"); afterShopChange();
+    }));
+  var weeklyReady = now - (ECON.lastWeeklyCrown||0) >= 7*864e5;
+  body.appendChild(card("Weekly crowns", "Crowns are earned, never bought: a weekly claim, rank tier-ups, and beating the Hard computer (+" + CROWN_HARD_AI + " ♛).",
+    weeklyReady ? ("Claim +" + WEEKLY_CROWNS + " ♛") : ("Next claim in " + fmtCountdown(7*864e5 - (now - (ECON.lastWeeklyCrown||0)))),
+    weeklyReady, function(){
+      ECON.lastWeeklyCrown = Date.now(); ECON.crowns += WEEKLY_CROWNS;
+      econLog("weekly_crown_claim", null, "crowns", WEEKLY_CROWNS, ECON.crowns); saveEcon();
+      toast("+" + WEEKLY_CROWNS + " crowns claimed"); afterShopChange();
+    }));
+  var rc = document.createElement("div"); rc.className = "earn-card";
+  rc.innerHTML = "<h4>Rank rewards</h4><p>Reach a new rank tier to earn +" + CROWN_PER_TIER + " ♛ per tier — granted once per tier, automatically when you rank up after a match, or claimable here.</p>";
+  var pts = rankPoints();
+  RANKS.forEach(function(r, i){
+    if (i===0) return;
+    var row = document.createElement("div"); row.className = "rank-reward-row";
+    var reached = pts >= r.pts, claimed = !!ECON.tierClaimed[i];
+    row.innerHTML = "<span>" + escHtml(r.t) + " · " + r.pts + " pts</span>";
+    var st = document.createElement("span"); st.className = "st " + (claimed ? "got" : reached ? "now" : "lock");
+    if (claimed) st.textContent = "+" + CROWN_PER_TIER + " ♛ claimed";
+    else if (reached){
+      var cb2 = document.createElement("button"); cb2.type = "button"; cb2.className = "earn-btn"; cb2.style.minHeight = "34px"; cb2.style.padding = "6px 12px";
+      cb2.textContent = "Claim +" + CROWN_PER_TIER + " ♛";
+      cb2.addEventListener("click", function(){ claimTierCrowns(i, "rank_reward"); toast("Rank crowns claimed"); afterShopChange(); });
+      st.appendChild(cb2);
+    } else st.textContent = "Locked";
+    row.appendChild(st);
+    rc.appendChild(row);
+  });
+  body.appendChild(rc);
+  var note = document.createElement("p"); note.className = "panelnote";
+  note.textContent = "There is no way to buy Coins or Crowns — no real money is accepted anywhere in Kings & Dice. Everything here is earned by playing.";
+  body.appendChild(note);
+}
+function afterShopChange(){
+  saveEcon(); renderShop(); renderPanels(); renderCoins();
+  var bal = document.getElementById("shopBalCoins");
+  if (bal){ bal.classList.remove("flash"); void bal.offsetWidth; bal.classList.add("flash"); }
+}
+/* ---------- purchase sheet ---------- */
+function openPurchaseSheet(itemId){
+  var it = catalogItem(itemId); if (!it) return;
+  SHOP.pendingItem = itemId;
+  var sheet = document.getElementById("purchaseSheet");
+  document.getElementById("psTitle").textContent = "Buy — " + it.name;
+  document.getElementById("psPrice").textContent = priceText(it);
+  document.getElementById("psBalNow").textContent = it.price.currency==="crowns" ? (fmtCoins(ECON.crowns) + " ♛") : (fmtCoins(G.coins.w) + " coins");
+  var after = econBalance(it.price.currency) - it.price.amount;
+  document.getElementById("psBalAfter").textContent = it.price.currency==="crowns" ? (fmtCoins(after) + " ♛") : (fmtCoins(after) + " coins");
+  var err = document.getElementById("psErr"); err.textContent = "";
+  var conf = document.getElementById("psConfirm");
+  conf.textContent = "Confirm purchase";
+  if (after < 0){
+    err.textContent = "You need " + fmtCoins(-after) + " more " + (it.price.currency==="crowns" ? "Crowns — earn them in the Earn tab." : "Coins — earn them in the Earn tab or by winning matches.");
+    conf.textContent = "Not enough — open Earn";
+  }
+  sheet.classList.add("on");
+}
+function closePurchaseSheet(){ document.getElementById("purchaseSheet").classList.remove("on"); SHOP.pendingItem = null; }
+document.getElementById("psCancel").addEventListener("click", closePurchaseSheet);
+document.getElementById("psConfirm").addEventListener("click", function(){
+  var it = catalogItem(SHOP.pendingItem); if (!it) return;
+  if (econBalance(it.price.currency) < it.price.amount){ closePurchaseSheet(); setShopTab("earn"); return; }
+  var res = kdPurchase(it.id);
+  var err = document.getElementById("psErr");
+  if (!res.ok){
+    err.textContent = res.code==="ALREADY_OWNED" ? "You already own this — tap Equip instead." :
+      res.code==="ITEM_UNAVAILABLE" ? "This item just rotated out." :
+      res.code==="INSUFFICIENT_FUNDS" ? "You need " + fmtCoins((res.needed||0) - (res.have||0)) + " more." : "Purchase failed.";
+    return;
+  }
+  kdEquip(it.id);
+  closePurchaseSheet();
+  afterShopChange();
+  toast("✓ " + it.name + " added to your Locker and equipped");
+});
+/* ---------- preview stage ---------- */
+function miniBoardHTML(it){
+  var cells = "";
+  var pieces = { "0,0":"r-b","0,3":"k-b","3,0":"q-w","3,3":"k-w","1,1":"n-w","2,2":"b-b" };
+  for (var r=0;r<4;r++) for (var c=0;c<4;c++){
+    var dark = (r+c)%2===1;
+    var bg = "";
+    if (it.category==="board_arena" && it.assets) bg = ' style="background:' + (dark ? it.assets.dark : it.assets.light) + '"';
+    var key = r + "," + c, inner = "";
+    if (pieces[key]){
+      var parts = pieces[key].split("-");
+      var aura = (it.category==="piece_theme" && it.assets && it.assets.aura) ? ' style="filter:drop-shadow(0 0 5px rgba(255,220,110,.95)) drop-shadow(0 0 10px rgba(232,193,90,.55));"' : "";
+      inner = '<span class="piece p' + parts[1] + '"' + aura + '>' + GLYPH[parts[0]] + '</span>';
+    }
+    cells += '<span class="msq ' + (dark ? "dark" : "light") + '"' + bg + '>' + inner + '</span>';
+  }
+  return '<div class="kdmini">' + cells + '</div>';
+}
+function skinRollSound(it){
+  var v = it.assets && it.assets.sfxVariant;
+  if (v==="crystal"){ sfxTone(1320, 0.09, "sine", 0.05); sfxTone(1760, 0.12, "sine", 0.045, 0.06); sfxNoise(0.05, 0.04, 0, 2600); }
+  else { sfxDiceSettle(); }
+}
+function sparkleBurst(root, color){
+  if (document.documentElement.classList.contains("reduce-motion")) return;
+  for (var i=0;i<10;i++){
+    var s = document.createElement("span"); s.className = "sparkle";
+    s.style.background = color || "#ffd76a";
+    s.style.left = "50%"; s.style.top = "50%";
+    s.style.setProperty("--sx", Math.round((Math.random()-0.5)*130) + "px");
+    s.style.setProperty("--sy", Math.round((Math.random()-0.5)*90) + "px");
+    root.appendChild(s);
+    (function(el){ setTimeout(function(){ el.remove(); }, 750); })(s);
+  }
+}
+function openPreview(itemId){
+  var it = catalogItem(itemId); if (!it || !it.approved) return;
+  SHOP.previewItem = itemId;
+  var vp = document.getElementById("previewViewport");
+  vp.className = "preview-viewport";
+  vp.innerHTML = "";
+  document.getElementById("previewName").textContent = it.name;
+  document.getElementById("previewDesc").textContent = (it.desc || "") + " · " + it.rarity + (cardState(it)==="buy" ? " · " + priceText(it) : "");
+  if (it.category==="dice_skin"){
+    var d = document.createElement("div"); d.className = "die kdprevdie"; d.setAttribute("role","button");
+    d.setAttribute("aria-label", "Tap to roll the " + it.name);
+    if (it.assets){ d.style.background = it.assets.bg || ""; d.style.borderColor = it.assets.border || ""; }
+    vp.appendChild(d);
+    paintDie(d, 5);
+    var rollIt = function(){
+      d.classList.remove("rolling"); void d.offsetWidth; d.classList.add("rolling");
+      var ticks = 0;
+      var iv = setInterval(function(){
+        paintDie(d, 1 + Math.floor(Math.random()*6)); sfxDiceTick(); KDHaptics.tap();
+        if (++ticks >= 6){ clearInterval(iv); paintDie(d, 1 + Math.floor(Math.random()*6)); skinRollSound(it); sparkleBurst(vp, it.assets && it.assets.particle); }
+      }, 70);
+    };
+    d.addEventListener("click", rollIt);
+    setTimeout(rollIt, 250);
+  } else if (it.category==="board_arena" || it.category==="piece_theme"){
+    var holder = document.createElement("div"); holder.innerHTML = miniBoardHTML(it);
+    vp.appendChild(holder.firstChild);
+  } else if (it.category==="emote"){
+    vp.innerHTML = '<span style="font-size:64px;">' + ((it.assets && it.assets.glyph) || "🎲") + '</span>';
+  } else if (it.category==="avatar_frame"){
+    vp.innerHTML = '<span class="thumb-frame" style="width:84px;height:84px;font-size:48px;border-color:' + ((it.assets && it.assets.frameColor) || "#d4af37") + '">' + avatarById(PROFILE.avatar).glyph + '</span>';
+  }
+  var cta = document.getElementById("previewCta");
+  var st = cardState(it);
+  cta.textContent = st==="buy" ? ("BUY · " + priceText(it)) : (st==="equipped" ? "EQUIPPED ✓" : "Equip");
+  cta.onclick = function(){
+    if (st==="buy"){ closePreview(); openPurchaseSheet(it.id); }
+    else if (st==="owned"){ kdEquip(it.id); afterShopChange(); closePreview(); toast(it.name + " equipped"); }
+  };
+  document.getElementById("previewStage").classList.add("on");
+}
+function closePreview(){ document.getElementById("previewStage").classList.remove("on"); SHOP.previewItem = null; }
+document.getElementById("previewClose").addEventListener("click", closePreview);
+/* ---------- shop navigation ---------- */
+function setShopTab(tab){ SHOP.tab = tab; renderShop(); }
+document.querySelectorAll("#shopTabs [data-shop-tab]").forEach(function(b){
+  b.addEventListener("click", function(){ setShopTab(b.getAttribute("data-shop-tab")); });
+});
+document.querySelectorAll("#shopViewToggle [data-shop-view]").forEach(function(b){
+  b.addEventListener("click", function(){ SHOP.view = b.getAttribute("data-shop-view"); renderShop(); });
+});
+document.getElementById("shopBalCoins").addEventListener("click", function(){ setShopTab("earn"); });
+document.getElementById("shopBalCrowns").addEventListener("click", function(){ setShopTab("earn"); });
+function openShop(tab){
+  closeInfoScreens();
+  if (typeof closePanels==="function") closePanels();
+  document.body.classList.remove("show-menu");
+  document.body.classList.add("show-shop");
+  if (tab) SHOP.tab = tab;
+  renderShop(); resetHeroTimer();
+  window.scrollTo(0,0);
+}
+function closeShop(){
+  document.body.classList.remove("show-shop");
+  document.body.classList.add("show-menu");
+  closePreview(); closePurchaseSheet();
+  window.scrollTo(0,0);
+}
+document.getElementById("shopBtn").addEventListener("click", function(){ openShop(); });
+document.getElementById("shopBack").addEventListener("click", closeShop);
+document.getElementById("shopBack2").addEventListener("click", closeShop);
+document.getElementById("coinPlus").addEventListener("click", function(){ openShop("earn"); });
+var _kdOrigCloseInfo = closeInfoScreens;
+closeInfoScreens = function(){ _kdOrigCloseInfo(); document.body.classList.remove("show-shop"); };
+
+/* profile panel: crown balance line */
+(function(){
+  var anchor = document.getElementById("profileResetBtn");
+  if (anchor && anchor.parentNode){
+    var row = document.createElement("p"); row.className = "panelnote"; row.id = "profCrownsRow";
+    row.innerHTML = "♛ <b id=\"profCrownsAmt\">0 crowns (earned only)</b> — Crowns come from rank tier-ups, the weekly claim and beating the Hard computer. They are never sold.";
+    anchor.parentNode.insertBefore(row, anchor);
+  }
+  var _origRenderPanels = renderPanels;
+  renderPanels = function(){
+    _origRenderPanels();
+    var pc = document.getElementById("profCrownsAmt");
+    if (pc) pc.textContent = fmtCoins(ECON.crowns) + " crowns (earned only)";
+  };
+})();
+
+/* ============================================================
+   POST-MATCH REWARDS MODAL — rides the existing showGameOver, so
+   it stays behind the finale gate: while a king finale plays,
+   showGameOver queues, and this wrapper only renders once the
+   real modal is actually on screen.
+   ============================================================ */
+var PM = { shownFor: -1 };
+function pmEndReason(title){
+  var t = String(title || "");
+  if (/King Killed/.test(t)) return "King captured";
+  if (/Checkmate/.test(t)) return "Checkmate";
+  if (/Hill/.test(t)) return "King reached the Hill";
+  if (/Stalemate/.test(t)) return "Stalemate";
+  if (/Burned/.test(t)) return "King burned in the lava";
+  if (/Horde/.test(t)) return "Horde wiped out";
+  if (/Draw/.test(t)) return "Draw — no movable pieces";
+  if (/resign/i.test(t)) return "Resignation";
+  return t.replace(/!$/,"");
+}
+var _kdOrigShowGameOver = showGameOver;
+showGameOver = function(title, msg){
+  var rpBefore = rankPoints(), tierBefore = kdTierIndex(rpBefore);
+  _kdOrigShowGameOver(title, msg);
+  try{
+    if (!G.over || PM.shownFor===PMSTAT.matchId) return;
+    var overlay = document.getElementById("overlay");
+    var box = document.getElementById("modalBox");
+    if (!overlay || !box || !overlay.classList.contains("on")) return; /* queued behind the finale */
+    PM.shownFor = PMSTAT.matchId;
+
+    var side = (G.mode==="live") ? G.myColor : "w";
+    var srv = (typeof SRV!=="undefined" && SRV.active);
+    var result = G.winner==="draw" ? "draw" : (G.winner===side ? "victory" : "defeat");
+    var variantName = (typeof VARIANT_LABELS!=="undefined" && VARIANT_LABELS[G.variant]) || "Normal";
+
+    /* ---- grants (device economy; server matches settle on the server) ---- */
+    var baseWin = 0, streakBonus = 0, crownBonus = 0, tierCrowns = 0;
+    if (!srv){
+      if (result==="victory" && (G.mode==="ai" || G.mode==="local")){
+        baseWin = BASE_WIN_COINS; G.coins.w += 0; G.coins[side] += baseWin;
+        if (typeof STATS!=="undefined" && STATS.streak >= 2){ streakBonus = Math.min(25, 5*(STATS.streak-1)); G.coins[side] += streakBonus; }
+        econLog("match_reward", null, "coins", baseWin + streakBonus, G.coins.w);
+      }
+      if (result==="victory" && G.mode==="ai" && G.aiDifficulty==="hard"){
+        crownBonus = CROWN_HARD_AI; ECON.crowns += crownBonus;
+        econLog("hard_ai_bonus", null, "crowns", crownBonus, ECON.crowns);
+      }
+    }
+    var rpAfter = rankPoints(), tierAfter = kdTierIndex(rpAfter);
+    if (tierAfter > tierBefore) tierCrowns = claimTierCrowns(tierAfter, "rank_reward");
+    if (baseWin || streakBonus || crownBonus || tierCrowns) saveCoins();
+    saveEcon(); renderCoins();
+
+    var potWon = (!srv && result==="victory" && G.lastPot > 0) ? G.lastPot : 0;
+    var potLost = (!srv && result==="defeat" && G.lastStake > 0) ? G.lastStake : 0;
+    var totalCoins = baseWin + streakBonus + potWon - potLost;
+
+    /* ---- build the rewards UI inside the existing modal ---- */
+    var wrap = document.createElement("div"); wrap.className = "pm-wrap";
+    var reduced = document.documentElement.classList.contains("reduce-motion") ||
+      (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+    var head = document.createElement("div"); head.className = "pm-head";
+    var titleTxt = result==="victory" ? "VICTORY!" : (result==="draw" ? "DRAW" : "DEFEAT");
+    head.innerHTML = '<div class="pm-particles ' + (result==="defeat" ? "embers" : result==="draw" ? "motes" : "") + '" aria-hidden="true"></div>' +
+      '<h2 class="pm-title ' + result + '">' + titleTxt + '</h2>' +
+      '<p class="pm-sub">' + escHtml(pmEndReason(title)) + ' · ' + escHtml(variantName) + ' · vs ' + escHtml(playerName(opp(side))) + '</p>';
+    if (!reduced){
+      var pc2 = head.querySelector(".pm-particles");
+      for (var pi=0; pi<26; pi++){
+        var dot = document.createElement("i");
+        dot.style.left = (4 + Math.random()*92) + "%";
+        dot.style.setProperty("--px", Math.round((Math.random()-0.5)*44) + "px");
+        dot.style.animationDelay = (Math.random()*0.9) + "s";
+        pc2.appendChild(dot);
+      }
+    }
+    wrap.appendChild(head);
+
+    var rows = [];
+    if (baseWin) rows.push({ label:"🏆 Base match victory", val:baseWin });
+    if (potWon) rows.push({ label:"🎲 Pot winnings", val:potWon });
+    if (potLost) rows.push({ label:"🎲 Pot lost", val:-potLost, neg:true });
+    if (streakBonus) rows.push({ label:"🔥 Win streak bonus", val:streakBonus });
+    if (crownBonus) rows.push({ label:"♛ Hard computer bonus", val:crownBonus, crown:true });
+    if (tierCrowns) rows.push({ label:"♛ Rank-up crowns", val:tierCrowns, crown:true });
+    var sec = document.createElement("div"); sec.className = "pm-sec";
+    var ul = document.createElement("ul"); ul.className = "reward-rows";
+    rows.forEach(function(r){
+      var li = document.createElement("li");
+      if (r.neg) li.className = "neg"; if (r.crown) li.className = "crownrow";
+      var lab = document.createElement("span"); lab.textContent = r.label;
+      var b = document.createElement("b");
+      b.textContent = (r.val > 0 ? "+" : "−") + fmtCoins(Math.abs(r.val)) + (r.crown ? " ♛" : "");
+      b.setAttribute("data-cu", String(r.val)); b.setAttribute("data-crown", r.crown ? "1" : "");
+      li.appendChild(lab); li.appendChild(b); ul.appendChild(li);
+    });
+    var tot = document.createElement("li"); tot.className = "pm-total";
+    var tl = document.createElement("span"); tl.textContent = "Total coins";
+    var tb = document.createElement("b"); tb.textContent = (totalCoins>0 ? "+" : totalCoins<0 ? "−" : "") + fmtCoins(Math.abs(totalCoins));
+    tb.setAttribute("data-cu", String(totalCoins));
+    tot.appendChild(tl); tot.appendChild(tb); ul.appendChild(tot);
+    var secH = document.createElement("h3"); secH.textContent = "Rewards";
+    sec.appendChild(secH); sec.appendChild(ul);
+    var balP = document.createElement("p"); balP.className = "pm-balance";
+    balP.textContent = "New balance: ● " + fmtCoins(G.coins.w) + " coins · ♛ " + fmtCoins(ECON.crowns) + " crowns";
+    sec.appendChild(balP);
+    wrap.appendChild(sec);
+
+    /* rank / RP */
+    var rankSec = document.createElement("div"); rankSec.className = "pm-sec pm-rank";
+    var cur = RANKS[tierAfter], next = RANKS[tierAfter+1] || null;
+    var rpEarned = rpAfter - rpBefore;
+    var inTierBefore = rpBefore - RANKS[tierBefore].pts;
+    var spanBefore = next || tierAfter!==tierBefore ? ((RANKS[tierBefore+1] ? RANKS[tierBefore+1].pts : RANKS[tierBefore].pts + 1) - RANKS[tierBefore].pts) : 1;
+    var pctBefore = tierAfter!==tierBefore ? Math.round(100 * inTierBefore / Math.max(1, spanBefore)) : (next ? Math.round(100 * (rpAfter - rpEarned - cur.pts) / (next.pts - cur.pts)) : 100);
+    var pctAfter = next ? Math.round(100 * (rpAfter - cur.pts) / (next.pts - cur.pts)) : 100;
+    rankSec.innerHTML = '<div class="pm-rank-row"><span class="rank-name" id="pmTierName">' + escHtml(RANKS[tierBefore].t) + '</span>' +
+      '<span class="rp-gain" id="pmRpGain">' + (rpEarned > 0 ? "+" + rpEarned + " RP" : "0 RP") + '</span>' +
+      '<span class="rank-name">' + escHtml(cur.t) + '</span></div>' +
+      '<div class="rp-bar"><div class="rp-fill" id="pmRpFill"></div></div>' +
+      '<small id="pmRpText"></small>';
+    wrap.appendChild(rankSec);
+
+    /* stats */
+    var turns = G.log.length + ((G.turnLog && G.turnLog.length) ? 1 : 0);
+    var majors = PMSTAT.captures.filter(function(t){ return ["q","r","b","n"].indexOf(t) >= 0; });
+    var statSec = document.createElement("div"); statSec.className = "pm-sec";
+    statSec.innerHTML = '<h3>Match stats</h3><div class="pm-stats">' +
+      '<div class="stat"><b>' + Math.max(1, turns) + '</b><span>Turns played</span></div>' +
+      '<div class="stat"><b>' + PMSTAT.diceRolled + '</b><span>Dice rolled</span></div>' +
+      '<div class="stat"><b>' + PMSTAT.captures.length + '</b><span>Pieces captured</span></div></div>' +
+      (majors.length ? '<div class="pm-captures" aria-label="Major pieces captured">' + majors.map(function(t){ return GLYPH[t]; }).join(" ") + '</div>' : "");
+    wrap.appendChild(statSec);
+
+    /* actions */
+    var acts = document.createElement("div"); acts.className = "pm-actions";
+    function mkBtn(label, cls){
+      var b = document.createElement("button"); b.type = "button"; if (cls) b.className = cls;
+      b.textContent = label; b.disabled = true; b.setAttribute("data-pm-btn","1"); return b;
+    }
+    var canRematch = (G.mode==="ai" || G.mode==="local");
+    var rematchBtn = null;
+    if (canRematch){
+      rematchBtn = mkBtn("↻ Rematch", "");
+      rematchBtn.addEventListener("click", function(){ closeModal(); newGame(G.mode); });
+      acts.appendChild(rematchBtn);
+    }
+    var againBtn = mkBtn(G.mode==="ai" || G.mode==="local" ? "🎲 Play Again" : "🎲 Play Again — Find Opponent", "ghost");
+    againBtn.addEventListener("click", function(){
+      closeModal();
+      if (G.mode==="ai" || G.mode==="local"){ newGame(G.mode); }
+      else { goToMainMenu(); closeInfoScreens(); document.body.classList.add("show-online"); window.scrollTo(0,0); }
+    });
+    acts.appendChild(againBtn);
+    var menuBtn = mkBtn("Main Menu", "ghost");
+    menuBtn.addEventListener("click", function(){ closeModal(); goToMainMenu(); });
+    acts.appendChild(menuBtn);
+    wrap.appendChild(acts);
+
+    /* swap the modal's own content for the rewards layout (keep its
+       "Look at the board" ghost button, drop its old Play again) */
+    var oldH = box.querySelector("h2"); if (oldH) oldH.style.display = "none";
+    box.querySelectorAll("p").forEach(function(p){ if (!p.classList.contains("pm-sub")) p.style.display = "none"; });
+    var bigEl = box.querySelector(".big"); if (bigEl) bigEl.style.display = "none";
+    box.querySelectorAll("button").forEach(function(b){
+      if (b.textContent.trim()==="Play again") b.style.display = "none";
+    });
+    box.insertBefore(wrap, box.firstChild);
+
+    /* ---- count-ups + RP animation (tap skips) ---- */
+    var settled = false;
+    function finishAnims(){
+      if (settled) return; settled = true;
+      box.querySelectorAll("[data-cu]").forEach(function(el){
+        var v = parseInt(el.getAttribute("data-cu"), 10) || 0;
+        el.textContent = (v > 0 ? "+" : v < 0 ? "−" : "") + fmtCoins(Math.abs(v)) + (el.getAttribute("data-crown") ? " ♛" : "");
+      });
+      var fill = document.getElementById("pmRpFill");
+      var tn = document.getElementById("pmTierName");
+      var rt = document.getElementById("pmRpText");
+      if (tn) tn.textContent = cur.t;
+      if (fill) fill.style.width = pctAfter + "%";
+      if (rt) rt.textContent = next ? ((rpAfter - cur.pts) + " / " + (next.pts - cur.pts) + " RP to " + next.t) : "Max rank — Grandmaster of Dice";
+      var gain = document.getElementById("pmRpGain");
+      if (gain && tierAfter!==tierBefore){ gain.classList.add("pop"); }
+      box.querySelectorAll("[data-pm-btn]").forEach(function(b){ b.disabled = false; });
+      if (rematchBtn) rematchBtn.focus();
+    }
+    if (reduced){ finishAnims(); }
+    else {
+      var cuEls = Array.prototype.slice.call(box.querySelectorAll("[data-cu]"));
+      cuEls.forEach(function(el, i){
+        var v = parseInt(el.getAttribute("data-cu"), 10) || 0;
+        var crown = el.getAttribute("data-crown") ? " ♛" : "";
+        setTimeout(function(){
+          var t0 = null;
+          function step(ts){
+            if (settled) return;
+            if (!t0) t0 = ts;
+            var p = Math.min(1, (ts - t0) / 600);
+            var cur2 = Math.round(v * p);
+            el.textContent = (cur2 > 0 ? "+" : cur2 < 0 ? "−" : "") + fmtCoins(Math.abs(cur2)) + crown;
+            if (p < 1) requestAnimationFrame(step);
+          }
+          requestAnimationFrame(step);
+        }, 150 + i * 120);
+      });
+      var fill0 = document.getElementById("pmRpFill");
+      if (fill0){
+        fill0.style.width = pctBefore + "%";
+        setTimeout(function(){
+          if (settled) return;
+          if (tierAfter !== tierBefore){
+            fill0.style.width = "100%"; fill0.classList.add("flash");
+            setTimeout(function(){ if (!settled){ fill0.classList.remove("flash"); fill0.style.transition = "none"; fill0.style.width = "0%"; void fill0.offsetWidth; fill0.style.transition = ""; fill0.style.width = pctAfter + "%"; } }, 500);
+          } else fill0.style.width = pctAfter + "%";
+        }, 150 + cuEls.length * 120 + 500);
+      }
+      setTimeout(finishAnims, 150 + cuEls.length * 120 + 1400);
+      box.addEventListener("click", function skip(){ finishAnims(); box.removeEventListener("click", skip); });
+    }
+  }catch(e){ if (window.console) console.warn("post-match modal:", e); }
+};
 </script>
 </body>
 </html>
