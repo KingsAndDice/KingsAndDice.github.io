@@ -708,27 +708,17 @@
   .movecallout.info{background:var(--panel-2);border-color:var(--line-strong);}
   .dieinfo .req,.movecallout .mc-title{color:var(--ink);}
 
-  /* dice — glossy coloured concept dice, gold piece symbol badge */
-  .die{position:relative;overflow:hidden;background:linear-gradient(145deg,#fffdf4,#e9dfc2);border:1.5px solid var(--gold);box-shadow:0 3px 0 #a68c48,0 8px 16px rgba(20,16,40,.22),inset 0 1px 0 rgba(255,255,255,.8);}
+  /* dice — plain white casino dice: white/ivory face, dark pips, no piece
+     pictures on the faces. Bought dice skins (.kdskin-* rules below)
+     override face, border and pip colours wholesale when equipped, and
+     special dice keep their own black/gold faces via [data-special]. */
+  .die{position:relative;overflow:hidden;background:linear-gradient(145deg,#ffffff,#f8f4e7 55%,#ede6d0);border:1.5px solid #cfc7ab;box-shadow:0 3px 0 #d5cdb2,0 8px 16px rgba(20,16,40,.20),inset 0 1px 0 rgba(255,255,255,.9);}
   .die::before{content:"";position:absolute;inset:0;border-radius:inherit;background:linear-gradient(135deg,rgba(255,255,255,.5),transparent 46%);pointer-events:none;z-index:0;}
   .die .pip{position:relative;z-index:2;}
-  .die .pip.on{background:#ffffff;box-shadow:inset 0 1px 2px rgba(0,0,0,.35),0 0 0 1.5px rgba(10,10,30,.40),0 0 3px rgba(255,255,255,.5);}
-  .die[data-face="1"]{background:linear-gradient(145deg,#c084fc,#7c3aed 58%,#4c1d95);border-color:#e9d5ff;box-shadow:0 3px 0 #3b0764,0 8px 18px rgba(124,58,237,.45),inset 0 1px 0 rgba(255,255,255,.55);}
-  .die[data-face="2"]{background:linear-gradient(145deg,#7db4ff,#2563eb 58%,#1e3a8a);border-color:#bfdbfe;box-shadow:0 3px 0 #172554,0 8px 18px rgba(37,99,235,.5),inset 0 1px 0 rgba(255,255,255,.55);}
-  .die[data-face="3"]{background:linear-gradient(145deg,#5eead4,#059669 58%,#064e3b);border-color:#a7f3d0;box-shadow:0 3px 0 #022c22,0 8px 18px rgba(5,150,105,.45),inset 0 1px 0 rgba(255,255,255,.55);}
-  .die[data-face="4"]{background:linear-gradient(145deg,#fda4af,#dc2626 58%,#7f1d1d);border-color:#fecdd3;box-shadow:0 3px 0 #450a0a,0 8px 18px rgba(220,38,38,.5),inset 0 1px 0 rgba(255,255,255,.55);}
-  .die[data-face="5"]{background:linear-gradient(145deg,#fef08a,#eab308 55%,#a16207);border-color:#fef9c3;box-shadow:0 3px 0 #713f12,0 8px 18px rgba(234,179,8,.5),inset 0 1px 0 rgba(255,255,255,.65);}
-  .die[data-face="5"] .pip.on{background:#451a03;box-shadow:inset 0 1px 2px rgba(0,0,0,.5);}
-  .die[data-face="6"]{background:linear-gradient(145deg,#ffffff,#f5ecd7 60%,#d9c99e);border-color:var(--gold-bright);box-shadow:0 3px 0 #a68c48,0 8px 18px rgba(184,145,42,.4),inset 0 1px 0 #fff;}
-  .die[data-face="6"] .pip.on{background:#211a08;box-shadow:inset 0 1px 2px rgba(0,0,0,.5);}
-  /* piece glyph sits in the CENTRE of the die, behind the pips — an earlier
-     corner badge landed exactly on the bottom-right pip and hid it, so a
-     rolled 2 showed one pip and 3/4/5/6 all lost a pip. Pips (z-index 2)
-     always draw over the glyph, so no pip can ever be covered. */
-  .die-sym{position:absolute;inset:0;display:grid;place-items:center;color:#f6d776;font-size:27px;line-height:1;z-index:1;pointer-events:none;text-shadow:0 1px 3px rgba(0,0,0,.7),0 0 6px rgba(0,0,0,.35);}
-  .die[data-face="5"] .die-sym,.die[data-face="6"] .die-sym{color:#8a6d1b;text-shadow:0 1px 0 rgba(255,255,255,.65);}
-  .dockdie .die-sym{font-size:20px;}
-  .bdie .die-sym{font-size:32px;}
+  .die .pip.on{background:#22231f;box-shadow:inset 0 1px 2px rgba(0,0,0,.45);}
+  /* every value 1–6 shares the same plain white face above — the value is
+     read from the pips alone, and no piece glyph is drawn on a normal die
+     (paintDie no longer creates one). */
   .die.active{box-shadow:0 0 0 2px var(--panel-2),0 0 0 4.5px var(--gold-bright),0 0 20px rgba(59,130,246,.65),0 10px 18px rgba(10,15,40,.3);transform:translateY(-2px) scale(1.05);}
   .die.waiting{outline:2px dashed var(--gold-bright);outline-offset:1px;opacity:1;}
   .diewrap.active .dielabel,.dielabel.on{color:var(--brass);}
@@ -1078,7 +1068,7 @@
   body.playing .dockwrap{gap:2px;}
   body.playing .dockwrap .dielabel{font-size:9.5px;min-height:11px;line-height:1.1;color:#8f96ad;}
   body.playing .dockwrap .dielabel.on{color:#e8c15a;}
-  .die[data-face=""]:not([data-special]){background:linear-gradient(145deg,#1a2440,#0a0f1e 72%);border:1.5px solid rgba(201,162,39,.85);box-shadow:inset 0 2px 9px rgba(0,0,0,.8),inset 0 0 0 3px rgba(201,162,39,.13);}
+  .die[data-face=""]:not([data-special]){background:linear-gradient(145deg,#ffffff,#f4efe0 60%,#e9e1c9);border:1.5px solid #cfc7ab;box-shadow:inset 0 2px 7px rgba(90,75,30,.16),0 3px 0 #d5cdb2;}
   .die[data-face=""] .pip{background:transparent;box-shadow:none;}
   body.playing .rollbtn{flex:1 1 0;width:auto;margin-top:0;min-height:60px;padding:5px 8px 7px;display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:12px;font-size:16.5px;letter-spacing:.045em;background:linear-gradient(180deg,#fff0a3 0%,#f2d06b 30%,#d4a017 62%,#9a7b1e 100%);border:1.5px solid #7a5f10;color:#241a02;box-shadow:0 8px 20px rgba(184,145,42,.35),inset 0 1px 0 rgba(255,255,255,.85),inset 0 -8px 14px rgba(122,95,16,.45);}
   body.playing .rollbtn::before{content:"⚄ ⚅";font-size:14px;letter-spacing:5px;line-height:1.15;margin-bottom:2px;color:#fffbe9;text-shadow:0 1px 2px rgba(90,64,4,.8);}
@@ -1690,6 +1680,12 @@ body.show-shop header.top,body.show-shop .layout{display:none;}
 .kdskin-dice_frost .die{background:linear-gradient(145deg,#ffffff,#cfe8ff 55%,#7db4ff);border-color:#4da3ff;}
 .kdskin-dice_frost .die .pip.on{background:#1e3a8a;}
 .kdskin-dice_royal .die{background:linear-gradient(145deg,#fff3c2,#eed488 60%,#d9b84e);border-color:#a68c48;}
+/* Royal gold skins never defined their own pips — they inherited the old
+   base/per-face pip colours. Preserve exactly those now that the default
+   die uses dark pips: pale pips on 1–4, dark on 5 and 6. */
+.kdskin-dice_royal .die .pip.on,.kdskin-dice_royal_gold .die .pip.on{background:#ffffff;box-shadow:inset 0 1px 2px rgba(0,0,0,.35),0 0 0 1.5px rgba(10,10,30,.40),0 0 3px rgba(255,255,255,.5);}
+.kdskin-dice_royal .die[data-face="5"] .pip.on,.kdskin-dice_royal_gold .die[data-face="5"] .pip.on{background:#451a03;box-shadow:inset 0 1px 2px rgba(0,0,0,.5);}
+.kdskin-dice_royal .die[data-face="6"] .pip.on,.kdskin-dice_royal_gold .die[data-face="6"] .pip.on{background:#211a08;box-shadow:inset 0 1px 2px rgba(0,0,0,.5);}
 .kdskin-dice_azure_tide .die{background:radial-gradient(120% 90% at 25% 10%,rgba(160,225,255,.45),transparent 55%),linear-gradient(145deg,#2f8fd0,#14507f 55%,#0a2e5c);border-color:#c7d5e8;box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 0 12px rgba(80,170,255,.45),0 3px 8px rgba(4,25,50,.55);}
 .kdskin-dice_azure_tide .die .pip.on{background:#eef6ff;box-shadow:0 0 4px rgba(190,230,255,.8);}
 .kdskin-dice_azure_tide .die .die-sym,.kdskin-dice_azure_tide .die .die-sym-big{color:#eef6ff;}
@@ -2089,7 +2085,6 @@ body.playing .boardframe{width:min(calc(100vw - 12px),calc(100dvh - 366px));}
    enhancer script at the end of the body into:
      [ pinned header: title + ✕  — never scrolls ]
      [ one scrollable content region               ]
-     [ pinned bottom bar: ✓ Done                   ]
    The card is a fixed-viewport flex column capped below 100dvh;
    only the middle region scrolls (both directions, touch-native),
    the background is scroll-locked while a sheet is open and the
@@ -2108,13 +2103,10 @@ body.playing .boardframe{width:min(calc(100vw - 12px),calc(100dvh - 366px));}
   .chatdrawer{left:0;right:0;bottom:0;align-items:flex-end;justify-content:flex-end;padding:16px;}
 }
 
-/* --- sheet cards: flex column, header + footer pinned --- */
+/* --- sheet cards: flex column, header pinned --- */
 .sheetcard.kd-enhanced{display:flex;flex-direction:column;overflow:hidden;max-height:calc(100dvh - env(safe-area-inset-top) - 10px);padding:0;}
 .sheetcard.kd-enhanced>.chathead{flex:0 0 auto;margin-bottom:0;padding:calc(12px + env(safe-area-inset-top)) 16px 10px;border-bottom:1px solid var(--line);}
 .sheet-scroll{flex:1 1 auto;min-height:0;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;touch-action:pan-y;padding:12px 16px 14px;scrollbar-width:thin;}
-.sheet-foot{flex:0 0 auto;padding:10px 16px calc(10px + env(safe-area-inset-bottom));border-top:1px solid var(--line);background:var(--panel);}
-.sheet-done{width:100%;min-height:48px;border:1.5px solid var(--gold);border-radius:12px;background:linear-gradient(180deg,#f6d776,#d4a017);color:#241a02;font-size:15.5px;font-weight:850;cursor:pointer;font-family:"Cinzel",Georgia,serif;letter-spacing:.02em;}
-.sheet-done:active{transform:translateY(1px);}
 @media (min-width:700px){.sheetcard.kd-enhanced{max-height:calc(100dvh - 32px);}}
 /* the first control inside the scroll region keeps its rhythm */
 .sheet-scroll>.setrow:first-child,.sheet-scroll>.panelnote:first-child{margin-top:2px;}
@@ -2125,8 +2117,6 @@ body.playing .boardframe{width:min(calc(100vw - 12px),calc(100dvh - 366px));}
 .chatcard{max-height:calc(100dvh - env(safe-area-inset-top) - 10px);}
 @media (min-width:700px){.chatcard{max-height:calc(100dvh - 32px);}}
 .chatcard>.chathead{flex:0 0 auto;}
-.sheet-foot-inline{flex:0 0 auto;margin-top:10px;}
-.sheet-foot-inline .sheet-done{min-height:46px;}
 
 /* --- shop purchase / preview sheets: same scaffold --- */
 .kd-sheet{padding-top:calc(env(safe-area-inset-top) + 8px);}
@@ -2257,6 +2247,262 @@ html.reduce-motion .qp-dots::after{animation:none;content:"…";}
   .chatmsg .cm-text.cm-emoji{font-size:27px;line-height:1.2;}
   @media (prefers-reduced-motion: reduce){.quickpanel{transition:none;}}
 </style>
+<style id="kd-cleanup">
+/* ============================================================
+   CLEAN-UP PASS — styling only. No rules, mechanics, modes,
+   prices or features change, and NO cosmetic design changes:
+   dice skins (.kdskin-*), piece themes (.kdptheme-*), board
+   arenas (.kdarena-* / .cosm-*), avatar frames (.kdframe-*)
+   and special dice (.die[data-special]) keep their approved
+   looks — every rule below is chrome-only, and board-frame /
+   board-signal rules are explicitly guarded so they never
+   apply while an arena or piece theme is equipped.
+   1 · Gold is rationed: it now appears only on interactive or
+       important things — primary CTAs (Roll, Start, Buy, Done),
+       the selected die / selected tab / equipped state, the
+       active-turn card, values (prices, balances) and the
+       king-danger "!". Static decoration (panel borders,
+       frames, dividers, header chrome) goes flat navy/neutral.
+   2 · Menu scene darkened + softened; menu buttons become
+       clean flat panels (no heavy gloss, no gold frame).
+   3 · One type system: 11px small-caps muted labels, 12.5–13px
+       muted secondary text, bright names/values, display type
+       only on the menu title and result titles.
+   4 · Dice tray flattened to a plain dark panel, thin edge.
+   5 · Default board frame slimmed (guarded: arenas keep
+       their own frames when equipped).
+   6 · Signal priority on the board: king-danger "!" and the
+       current selection on top; move dots, hill and shield
+       quieter; only the active player's card pulses.
+   7 · One shape scale: 10px small controls, 12px buttons and
+       cards, 14px panels, 16px modals/sheets; 44px+ targets.
+   ============================================================ */
+:root{
+  --line:#d6d0bd; --line-strong:#b9b198;
+  --kd-line:rgba(148,163,184,.30);
+  --cl-line:rgba(105,116,140,.42);
+  --cl-line-d:rgba(148,163,184,.32);
+  --cl-panel-d:#0d1428;
+  --cl-muted-d:#a7b0c6;
+  --radius:14px;
+}
+
+/* ---------- 1 · ration the gold: neutral static chrome ---------- */
+.panel{border-color:var(--cl-line);box-shadow:var(--shadow-sm);}
+.modes,.variantbox,.stakebox,.dicezone,.boarddock{border-color:var(--cl-line);}
+.pdot{border-color:rgba(105,116,140,.55);}
+.coinbal,.potchip,.variantchip,.matchchip,.virtualtag{border-color:var(--cl-line);}
+.moveshead,.stakehead .stitle,.variantbox .vtitle,.chatentry .ce-title{color:var(--ink-soft);}
+.moveshead::before,.stakehead .stitle::before{content:none;}
+.rollbanner{border-color:var(--cl-line-d);color:#f3ecd7;}
+.chatbubble{border-color:var(--cl-line-d);}
+.sheetcard{border-color:var(--cl-line-d);}
+.kd-sheet-card{border-color:rgba(148,163,184,.45);}
+.shop-head{border-color:var(--kd-line);}
+.hero-card{background:linear-gradient(160deg,#151d38,#0B1021 65%);}
+.preview-viewport{background:var(--kd-navy-2);}
+.qp-box,.qp-card,.quickpanel{border-color:var(--cl-line-d);}
+.quickchatbtn{border-color:rgba(255,255,255,.30);background:#131c33;color:#f3ecd7;box-shadow:0 2px 8px rgba(0,0,0,.35);}
+.quickpanel .qp-title{color:#f3ecd7;}
+.quickpanel .qp-phrase,.quickpanel .qp-emoji{border-color:rgba(255,255,255,.22);}
+.hero-dots button{border-color:rgba(255,255,255,.35);}
+/* match header + bottom dock: flat navy, neutral edge (hover keeps gold) */
+body.playing header.top{background:var(--cl-panel-d);border-color:var(--cl-line-d);box-shadow:0 2px 8px rgba(0,0,0,.35);}
+body.playing .homebtn,body.playing .giconbtn,body.playing .chatfab{border-color:var(--cl-line-d);color:#e8e4d8;}
+body.playing .utilrow{background:var(--cl-panel-d);border-color:var(--cl-line-d);box-shadow:0 2px 8px rgba(0,0,0,.3);}
+body.playing .utilrow #utilActions .actions button::before,body.playing .utilrow .utilbtn::before{color:#c9d2e8;}
+/* menu chrome: neutral edges on profile / radio / balances / nav */
+.profilechip,.musicbtn,.radiobar{border-color:rgba(255,255,255,.24);}
+body:not([class*="kdframe-"]) .pc-avatar{border-color:rgba(255,255,255,.45);}
+.coinpill{background:rgba(7,11,24,.74);border-color:rgba(255,255,255,.24);box-shadow:0 2px 8px rgba(0,0,0,.35);}
+.cp-coin{text-shadow:none;}
+body.show-menu .bottomnav{border-top-color:rgba(255,255,255,.16);box-shadow:0 -4px 14px rgba(0,0,0,.4);}
+.bn-item.bn-active{background:rgba(255,255,255,.07);box-shadow:none;}
+.bn-item.bn-active .bn-icon{text-shadow:none;}
+
+/* ---------- 2 · calm the menu scene, flat menu panels ---------- */
+body.show-menu:not(.show-about):not(.show-learn)::before{filter:brightness(.78) contrast(.94) saturate(.82);}
+body.show-menu:not(.show-about):not(.show-learn)::after{background:linear-gradient(180deg,rgba(4,7,14,.72) 0%,rgba(4,7,14,.55) 32%,rgba(4,7,14,.62) 64%,rgba(4,7,14,.82) 100%);}
+.gbtn{border:1px solid rgba(255,255,255,.26);box-shadow:0 3px 10px rgba(0,0,0,.32);}
+.gbtn:hover{filter:brightness(1.06);}
+.g-blue{background:linear-gradient(180deg,#2e5cb8,#1e3a75);}
+.g-red{background:linear-gradient(180deg,#b02a30,#6d1a1e);}
+.g-purple{background:linear-gradient(180deg,#6d28c9,#45157e);}
+.g-green{background:linear-gradient(180deg,#0d8a68,#07503c);}
+.g-dark{background:linear-gradient(180deg,#1c2438,#0d1322);}
+.g-icon{border-color:rgba(255,255,255,.35);border-radius:12px;color:#f3ecd7;background:rgba(0,0,0,.25);text-shadow:none;}
+.g-chev{color:rgba(255,255,255,.6);text-shadow:none;}
+#mainMenu .menu-tag{border-bottom-color:rgba(255,255,255,.22);}
+
+/* ---------- 3 · one type system ---------- */
+.moveshead,.stakehead .stitle,.variantbox .vtitle,.chatentry .ce-title,
+.pm-sec h3,.hero-kicker,.setlabel,.docklabel,.menu-sec-head .ms-title{
+  font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;}
+.pm-sec h3,.hero-kicker{color:var(--cl-muted-d);}
+.dielabel{font-size:10.5px;letter-spacing:.06em;}
+.panelnote,.stakenote,.g-sub,.pc-sub,.mo-desc,.dockhint,.chatstatus,.qp-note,.qp-timing,.srv-menu-note{
+  font-size:12.5px;line-height:1.45;}
+.g-sub{color:rgba(235,240,255,.68);}
+.pc-sub{color:rgba(235,240,255,.6);}
+.shop-prof .who small{color:var(--cl-muted-d);}
+.quickpanel .qp-note{color:var(--cl-muted-d);}
+
+/* ---------- 4 · flatten the dice tray ---------- */
+body.playing #boardDock.kd-tray{
+  background:var(--cl-panel-d);border:1px solid var(--cl-line-d);border-radius:12px;
+  box-shadow:0 2px 8px rgba(0,0,0,.28);backdrop-filter:none;-webkit-backdrop-filter:none;padding:8px 10px;}
+body.playing .dockdice .diewrap.dockwrap{
+  background:#070b16;border:1px solid rgba(148,163,184,.30);border-radius:12px;
+  box-shadow:inset 0 1px 4px rgba(0,0,0,.5);}
+.boarddock{box-shadow:none;}
+/* tray state signals stay exactly as legible — but static:
+   available = steady gold outline (gold = tappable), selected =
+   strong gold glow + lift, used = greyed, stuck = amber dash */
+body.playing .die[data-dstate="available"]{animation:none;box-shadow:0 0 0 2px rgba(255,215,106,.55),0 2px 6px rgba(0,0,0,.3);}
+body.playing .rollbtn{box-shadow:0 3px 0 #6d5207,0 8px 16px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.7);}
+
+/* ---------- 5 · slim the DEFAULT board frame only ---------- */
+body:not([class*="kdarena-"]):not([class*="cosm-"]) .boardframe{
+  background:#0d1428;padding:4px;border:1px solid rgba(148,163,184,.35);border-radius:12px;
+  box-shadow:0 4px 14px rgba(0,0,0,.28);}
+body:not([class*="kdarena-"]):not([class*="cosm-"]) .board{box-shadow:none;border-radius:10px;}
+.kdmini,.thumb-board{border-color:rgba(148,163,184,.45);}
+
+/* ---------- 6 · signal priority in matches ---------- */
+/* top: king danger (look unchanged, just stacked highest) + selection */
+.sq .kingdanger{z-index:6;}
+body.playing .sq.sel::before{z-index:4;}
+/* quieter: legal-move dots and capture ring */
+body.playing .sq .hint{width:22%;height:22%;background:rgba(140,160,200,.5);box-shadow:none;}
+body.playing .sq .hint.capture{width:94%;height:94%;border:4px solid rgba(220,60,50,.55);box-shadow:none;}
+/* quieter: movable-piece ring + glow (piece themes keep their own) */
+body.playing:not([class*="kdptheme-"]) .sq.movable{box-shadow:inset 0 0 0 1.5px rgba(125,170,255,.5);}
+body.playing:not([class*="kdptheme-"]) .sq.movable .piece{filter:drop-shadow(0 0 3px rgba(255,235,140,.55)) drop-shadow(0 2px 2px rgba(0,0,0,.25));}
+/* quieter: last-move trace */
+body.playing .sq.last{box-shadow:inset 0 0 0 1.5px rgba(96,165,250,.35);}
+body.playing .sq.last::after{opacity:.16;}
+/* quieter: hill square + crown (arenas keep their own squares) */
+body.playing:not([class*="kdarena-"]):not([class*="cosm-"]) .sq.hill{box-shadow:inset 0 0 0 100px rgba(212,160,23,.16);}
+body.playing:not([class*="kdarena-"]):not([class*="cosm-"]) .sq.light.hill{background:linear-gradient(145deg,#f3e3ac,#e6cd7e);}
+body.playing:not([class*="kdarena-"]):not([class*="cosm-"]) .sq.dark.hill{background:linear-gradient(145deg,#4d3f14,#2e250c);}
+.sq.hill .hillmark{opacity:.6;font-size:11px;text-shadow:0 1px 2px rgba(0,0,0,.6);}
+/* quieter: shield ring + mark */
+body.playing .sq.shielded{box-shadow:inset 0 0 0 2px rgba(246,215,118,.55),inset 0 0 0 100px rgba(232,193,90,.10);}
+.sq .shieldmark{opacity:.8;text-shadow:0 1px 2px rgba(0,0,0,.8);}
+/* one pulse only: the active player's card. Turn banner and pot
+   keep their gold (they mark the live turn) but sit still; the
+   card's pulse slows down. Reduced-motion rules already in
+   kd2026 / kd-match-redesign still cancel it entirely. */
+body.playing .turnchip{animation:none;box-shadow:0 0 0 1px rgba(255,215,106,.35);}
+body.playing #potChip.on{animation:none;}
+body.playing .playerbar.is-turn{animation-duration:2.6s;}
+
+/* ---------- 7 · consistent shapes + button rhythm ---------- */
+.panel,.hero-card{border-radius:14px;}
+.gbtn,.menu-opt,.item-card,.earn-card,.qp-box{border-radius:12px;}
+.modal,.qp-card{border-radius:16px;}
+.sheetcard,.kd-sheet-card,.chatcard{border-radius:16px 16px 0 0;}
+@media (min-width:700px){.sheetcard,.kd-sheet-card,.chatcard{border-radius:16px;}}
+.quickpanel{border-radius:14px;}
+.about-sec,.learnsteps li,.howpanel{border-radius:14px;}
+body.playing header.top,body.playing .utilrow{border-radius:12px;}
+.btn-buy-hero,.kd-btn-primary,.kd-btn-ghost,.earn-btn,.qp-primary,.qp-cancel,.card-cta{border-radius:12px;}
+.card-cta{border-radius:10px;}
+</style>
+<style id="kd-menu-mockup">
+/* ============================================================
+   MAIN MENU — mockup layout, clean-up colours. Layout only:
+   top bar (profile chip with real rank-progress bar · centred
+   coin pill · Settings gear, wired to the same [data-nav]
+   handler as the old nav tab), crown over three dice tiles
+   with laurel sprigs, hairline tagline, four flat identity-
+   colour buttons, a row of three flat dark buttons (Shop &
+   Locker / Custom Game / About), the working radio bar slim
+   under the buttons, and a four-item bottom nav (Settings
+   moved to the gear). Gold stays rationed: title + crown,
+   coin pill, rank progress, active HOME tab, icon accents.
+   Every control keeps its existing id / data hooks and does
+   exactly what it did before. Fit still comes from the
+   kd-menu-fit dvh clamps (untouched); rules below use
+   #mainMenu scope where they must beat those clamps, and
+   only for the NEW elements — the four main buttons keep
+   their clamped sizing.
+   ============================================================ */
+/* --- top bar --- */
+#mainMenu .menu-topbar{align-items:center;}
+#mainMenu .coinpill{margin:0 auto;}
+.pc-text{min-width:88px;}
+.pc-prog{display:block;height:3px;margin-top:3px;background:rgba(255,255,255,.18);border-radius:99px;overflow:hidden;}
+.pc-prog-fill{display:block;height:100%;width:0;background:linear-gradient(90deg,#c9a227,#f6d776);border-radius:99px;transition:width .5s ease;}
+.topgear{width:38px;height:38px;flex:0 0 auto;border-radius:50%;border:1px solid rgba(255,255,255,.24);background:rgba(7,11,24,.68);color:#d8dcea;font-size:17px;line-height:1;cursor:pointer;display:grid;place-items:center;padding:0;}
+.topgear.bn-active{color:#f6d776;border-color:rgba(246,215,118,.55);background:rgba(212,175,55,.14);}
+/* --- title block: crown over blue/gold/red dice, laurel sprigs --- */
+#mainMenu .hero-emblem{flex-direction:column;align-items:center;gap:0;}
+#mainMenu .hero-dice{display:flex;align-items:center;justify-content:center;gap:9px;}
+.title-die.td-gold{background:linear-gradient(145deg,#f6d776,#c9a227 58%,#8a6d1b);color:#2a1f04;text-shadow:0 1px 2px rgba(255,255,255,.35);}
+.hero-laurel{width:20px;height:34px;color:#c9a227;opacity:.75;flex:0 0 auto;}
+.hero-laurel.flip{transform:scaleX(-1);}
+#mainMenu .menu-tag{display:flex;align-items:center;justify-content:center;gap:8px;border-bottom:0;white-space:nowrap;}
+#mainMenu .menu-tag .tag-line{flex:0 1 34px;height:1px;background:linear-gradient(90deg,transparent,rgba(246,215,118,.55),transparent);}
+/* --- three small flat dark buttons --- */
+#mainMenu .g-trirow{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;}
+#mainMenu .g-trirow .gbtn{flex-direction:column;align-items:center;justify-content:center;gap:5px;text-align:center;padding:clamp(6px,1.2dvh,10px) 6px;min-height:clamp(54px,8.6dvh,66px);}
+#mainMenu .g-trirow .g-icon{width:clamp(30px,5dvh,36px);height:clamp(30px,5dvh,36px);font-size:clamp(15px,2.4dvh,18px);}
+#mainMenu .g-trirow .g-title{font-size:clamp(11px,1.9dvh,13px);letter-spacing:.04em;}
+.shopdot{position:absolute;top:-4px;right:-4px;width:11px;height:11px;border-radius:50%;background:#e5484d;border:2px solid #0d1428;}
+.shopdot[hidden]{display:none;}
+/* --- radio: slim bar under the buttons --- */
+#mainMenu .radiobar{margin-top:clamp(4px,1dvh,10px);}
+/* --- bottom nav: active HOME = filled gold tint --- */
+body.show-menu .bn-item.bn-active{background:rgba(212,175,55,.16);color:#f6d776;}
+</style>
+<style id="kd-turntimer">
+/* ============================================================
+   TURN TIMER — setup choice (30/60/90/Off, 60 default) locked
+   at Start; one countdown per turn on the active player's
+   card. Quiet grey normally; under 10s it turns red and
+   pulses (static red under reduced motion). Chrome only —
+   no new heavy panels, matching the clean-up system.
+   ============================================================ */
+.turntimer{display:none;align-items:center;font-size:12px;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:.03em;color:#a7b0c6;background:rgba(255,255,255,.06);border:1px solid rgba(148,163,184,.35);padding:2px 8px;border-radius:999px;white-space:nowrap;line-height:1.35;}
+.turntimer.on{display:inline-flex;}
+.turntimer.paused{opacity:.55;}
+.turntimer.low{color:#ffb3ab;background:rgba(217,44,30,.16);border-color:rgba(240,138,128,.75);animation:turnTimerPulse .5s ease-in-out infinite alternate;}
+@keyframes turnTimerPulse{from{transform:scale(1);}to{transform:scale(1.09);}}
+@media (prefers-reduced-motion: reduce){.turntimer.low{animation:none;}}
+html.reduce-motion .turntimer.low{animation:none !important;}
+#timerChip{font-variant-numeric:tabular-nums;}
+.varianttoggle.timer-toggle button:disabled{opacity:.38;cursor:not-allowed;}
+#timerBox.timer-nomode .vdesc{opacity:.75;}
+#timerNote{color:var(--brass);font-weight:650;}
+.srv-setrow .varianttoggle.timer-toggle{flex-wrap:nowrap;}
+</style>
+<style id="kd-accounts">
+/* ============================================================
+   ACCOUNTS — Profile panel section (signed-out form / signed-in
+   card) for the server accounts system. Flat, restrained gold,
+   same inputs and buttons as the rest of the app; every tap
+   target is at least 44px. Chrome only — auth behaviour lives
+   in the accounts script beside the server code.
+   ============================================================ */
+.acct-lab{font-size:12px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-soft);display:block;margin:10px 0 5px;}
+.acct-lab:first-child{margin-top:2px;}
+.acct-input{width:100%;font-size:15px;padding:12px;border-radius:10px;border:1px solid var(--line-strong);background:var(--panel-2);color:var(--ink);min-height:48px;}
+.acct-input:focus{border-color:var(--gold-bright);background:var(--panel);outline:none;}
+.acct-error{color:var(--danger);font-size:13.5px;font-weight:650;line-height:1.45;min-height:20px;margin:8px 0 0;}
+.acct-btnrow{display:flex;gap:8px;margin-top:10px;}
+.acct-btnrow button{flex:1;min-height:48px;font-size:14.5px;font-weight:800;padding:12px 10px;border-radius:10px;cursor:pointer;}
+.acct-btnrow button:disabled{opacity:.45;cursor:not-allowed;}
+.acct-btn-primary{border:1px solid #8a6d1b;background:linear-gradient(180deg,#f6d776,#d4a017);color:#171106;}
+.acct-btn-ghost{border:1.5px solid var(--gold);background:var(--panel-2);color:var(--ink);}
+.acct-btn-ghost:disabled{opacity:.45;cursor:not-allowed;}
+.acct-status{font-size:12.5px;color:var(--ink-soft);line-height:1.45;min-height:18px;margin-top:8px;}
+.acct-card{background:var(--panel-2);border:1px solid var(--gold);border-radius:12px;padding:12px 14px;}
+.acct-user{font-size:18px;font-weight:850;color:var(--ink);line-height:1.25;overflow-wrap:anywhere;}
+.acct-line{font-size:13.5px;color:var(--ink-soft);line-height:1.5;margin-top:3px;}
+.acct-line b{color:var(--brass);font-variant-numeric:tabular-nums;}
+.acct-logout{width:100%;min-height:48px;font-size:14.5px;font-weight:800;padding:12px;border-radius:10px;cursor:pointer;margin-top:10px;}
+</style>
 </head>
 <body class="show-menu">
 <div class="wrap">
@@ -2265,11 +2511,28 @@ html.reduce-motion .qp-dots::after{animation:none;content:"…";}
     <div class="menu-topbar">
       <div class="profilechip">
         <span class="pc-avatar" aria-hidden="true"><span class="pc-crown">♛</span><span id="menuAvatar">♞</span></span>
-        <span class="pc-text"><span class="pc-name" id="menuPlayerName">Guest Player</span><span class="pc-sub" id="menuRankTitle">Squire</span></span>
+        <span class="pc-text"><span class="pc-name" id="menuPlayerName">Guest Player</span><span class="pc-sub" id="menuRankTitle">Squire</span><span class="pc-prog" aria-hidden="true"><span class="pc-prog-fill" id="menuRankProgFill"></span></span></span>
       </div>
       <div class="coinpill" title="Your virtual coins (White) — free, no real money">
         <span class="cp-coin" aria-hidden="true">●</span><span class="cp-amt" id="menuCoins">1,000</span>
         <button class="cp-plus" id="coinPlus" type="button" aria-label="Top up coins for free">+</button>
+      </div>
+      <button class="topgear" type="button" data-nav="settings" aria-label="Settings" title="Settings">⚙</button>
+    </div>
+    <div class="menu-hero">
+      <div class="hero-emblem" aria-hidden="true"><span class="hero-crown">♛</span><span class="hero-dice"><svg class="hero-laurel" viewBox="0 0 24 40" aria-hidden="true"><g fill="currentColor"><path d="M11 39 C5 30 3 20 5 8 C5.6 4.6 7 2 9 0 C7.6 6 7.4 12 8.4 19 C9.3 26 10.2 32 11 39 Z"/><ellipse cx="6.4" cy="10" rx="3.4" ry="1.7" transform="rotate(-38 6.4 10)"/><ellipse cx="5.6" cy="17" rx="3.6" ry="1.8" transform="rotate(-24 5.6 17)"/><ellipse cx="6" cy="24" rx="3.6" ry="1.8" transform="rotate(-10 6 24)"/><ellipse cx="7.4" cy="30.6" rx="3.4" ry="1.7" transform="rotate(6 7.4 30.6)"/></g></svg><span class="title-die td-blue">♞</span><span class="title-die td-gold">♛</span><span class="title-die td-red">♜</span><svg class="hero-laurel flip" viewBox="0 0 24 40" aria-hidden="true"><g fill="currentColor"><path d="M11 39 C5 30 3 20 5 8 C5.6 4.6 7 2 9 0 C7.6 6 7.4 12 8.4 19 C9.3 26 10.2 32 11 39 Z"/><ellipse cx="6.4" cy="10" rx="3.4" ry="1.7" transform="rotate(-38 6.4 10)"/><ellipse cx="5.6" cy="17" rx="3.6" ry="1.8" transform="rotate(-24 5.6 17)"/><ellipse cx="6" cy="24" rx="3.6" ry="1.8" transform="rotate(-10 6 24)"/><ellipse cx="7.4" cy="30.6" rx="3.4" ry="1.7" transform="rotate(6 7.4 30.6)"/></g></svg></span></div>
+      <h2 class="menu-title">Kings <span>&amp; Dice</span></h2>
+      <p class="menu-tag"><span class="tag-line" aria-hidden="true"></span>Strategy Meets Chance<span class="tag-line" aria-hidden="true"></span></p>
+    </div>
+    <div class="menu-opts g-opts">
+      <button class="gbtn g-blue" type="button" data-menu-nav="online"><span class="g-icon" aria-hidden="true">⚔</span><span class="g-main"><span class="g-title">Play Online</span><span class="g-sub">Live or with a friend code</span></span><span class="g-chev" aria-hidden="true">›</span></button>
+      <button class="gbtn g-red" type="button" data-menu-mode="ai"><span class="g-icon" aria-hidden="true">♞</span><span class="g-main"><span class="g-title">Play Offline</span><span class="g-sub">Play vs. AI</span></span><span class="g-chev" aria-hidden="true">›</span></button>
+      <button class="gbtn g-purple" type="button" data-menu-mode="local"><span class="g-icon" aria-hidden="true">♟</span><span class="g-main"><span class="g-title">Local Multiplayer</span><span class="g-sub">Play on the same device</span></span><span class="g-chev" aria-hidden="true">›</span></button>
+      <button class="gbtn g-green" type="button" id="learnBtn"><span class="g-icon" aria-hidden="true">📖</span><span class="g-main"><span class="g-title">How to Play</span><span class="g-sub">Learn the rules</span></span><span class="g-chev" aria-hidden="true">›</span></button>
+      <div class="g-trirow">
+        <button class="gbtn g-dark g-small" type="button" id="shopBtn"><span class="g-icon" aria-hidden="true">🛍</span><span class="g-title">Shop &amp; Locker</span><span class="shopdot" id="shopDot" hidden aria-hidden="true"></span></button>
+        <button class="gbtn g-dark g-small" type="button" id="customBtn"><span class="g-icon" aria-hidden="true">⚙</span><span class="g-title">Custom Game</span></button>
+        <button class="gbtn g-dark g-small" type="button" id="aboutBtn"><span class="g-icon" aria-hidden="true">ⓘ</span><span class="g-title">About</span></button>
       </div>
     </div>
     <div class="radiobar" id="radioBar" aria-label="Game radio">
@@ -2279,22 +2542,6 @@ html.reduce-motion .qp-dots::after{animation:none;content:"…";}
       <span class="radio-live-dot off" id="radioDot" aria-hidden="true"></span>
       <button class="radio-nav" id="radioNext" type="button" aria-label="Next radio station">▶</button>
       <button class="musicbtn" id="musicBtn" type="button" aria-label="Toggle radio on or off" title="Radio on/off">🔊</button>
-    </div>
-    <div class="menu-hero">
-      <div class="hero-emblem" aria-hidden="true"><span class="title-die td-blue">♞</span><span class="hero-crown">♛</span><span class="title-die td-red">♜</span></div>
-      <h2 class="menu-title">Kings <span>&amp; Dice</span></h2>
-      <p class="menu-tag">Strategy Meets Chance</p>
-    </div>
-    <div class="menu-opts g-opts">
-      <button class="gbtn g-blue" type="button" data-menu-nav="online"><span class="g-icon" aria-hidden="true">⚔</span><span class="g-main"><span class="g-title">Play Online</span><span class="g-sub">Live or with a friend code</span></span><span class="g-chev" aria-hidden="true">›</span></button>
-      <button class="gbtn g-red" type="button" data-menu-mode="ai"><span class="g-icon" aria-hidden="true">♞</span><span class="g-main"><span class="g-title">Play Offline</span><span class="g-sub">Play vs. AI</span></span><span class="g-chev" aria-hidden="true">›</span></button>
-      <button class="gbtn g-purple" type="button" data-menu-mode="local"><span class="g-icon" aria-hidden="true">♟</span><span class="g-main"><span class="g-title">Local Multiplayer</span><span class="g-sub">Play on the same device</span></span><span class="g-chev" aria-hidden="true">›</span></button>
-      <button class="gbtn g-green" type="button" id="learnBtn"><span class="g-icon" aria-hidden="true">📖</span><span class="g-main"><span class="g-title">How to Play</span><span class="g-sub">Learn the rules</span></span><span class="g-chev" aria-hidden="true">›</span></button>
-      <button class="gbtn g-gold" type="button" id="shopBtn" style="background:linear-gradient(160deg,#8a6d1b,#5c470e);border-color:#ffd76a;"><span class="g-icon" aria-hidden="true">🛍</span><span class="g-main"><span class="g-title">Shop &amp; Locker</span><span class="g-sub">Your cosmetics · Earn coins &amp; crowns</span></span><span class="g-chev" aria-hidden="true">›</span></button>
-      <div class="g-halfrow">
-        <button class="gbtn g-dark" type="button" id="customBtn"><span class="g-icon" aria-hidden="true">⚙</span><span class="g-main"><span class="g-title">Custom Game</span><span class="g-sub">Set your own rules</span></span></button>
-        <button class="gbtn g-dark" type="button" id="aboutBtn"><span class="g-icon" aria-hidden="true">ⓘ</span><span class="g-main"><span class="g-title">About</span><span class="g-sub">Game info</span></span></button>
-      </div>
     </div>
   </div>
 
@@ -2385,6 +2632,7 @@ html.reduce-motion .qp-dots::after{animation:none;content:"…";}
         <li><b>King of the Hill:</b> as well as killing the King, a player wins immediately by legally moving their own King — with a King (6) die — onto any of the four hill squares <b>d4, d5, e4, e5</b>, marked on the board in that variant. The game ends at once, even mid-turn, and it counts as a full win for the coin pot.</li>
       </ul>
       <p>Match type, names and stake are all chosen on the <b>setup screen before the game starts</b> — the game screen itself only shows read-only chips for them. Special Dice are always on. In Live rooms and Friend turn codes, the setup travels with the game so both players play by the same choices.</p>
+      <p><b>Turn timer:</b> also chosen in setup — <b>30s, 60s (the default), 90s or Off</b> — and locked at Start. The clock starts when the dice land, pauses while a panel is open, and if it reaches zero the turn passes with unused dice lost. Turn-code games are untimed.</p>
     </div>
 
     <div class="about-sec">
@@ -2469,6 +2717,7 @@ html.reduce-motion .qp-dots::after{animation:none;content:"…";}
       <li><span class="ls-title">Tap a glowing piece, then where it goes</span><span class="ls-body">Your pieces of that type that can move <b>glow</b>. Tap one, then tap a highlighted square to move it there.</span></li>
       <li><span class="ls-title">A stuck die stays — it isn't lost</span><span class="ls-body">If a die's piece can't move yet, the die <b>stays for this turn</b>. Example: your <b>Bishop</b> is blocked by your own pawn. Use your <b>Pawn die</b> first to move the pawn — the bishop's path opens, and now that same Bishop die works.</span></li>
       <li><span class="ls-title">How a turn ends</span><span class="ls-body">Your turn ends when all 3 dice are spent. In a hurry? Tap <b>End Turn</b> to pass — any dice left are lost then, and only then. Then it's the other player's roll.</span></li>
+      <li><span class="ls-title">Beat the clock</span><span class="ls-body">Setup offers a <b>turn timer — 30s, 60s (the default), 90s or Off</b> — locked in at Start. The clock starts when your dice land; if it runs out, <b>your turn passes</b> and unused dice are lost. Turn-code games have no timer.</span></li>
       <li><span class="ls-title">How you win — kill the King</span><span class="ls-body">You win by <b>capturing the enemy King</b>. There is no checkmate: a King under attack gets a red <b>“!”</b> bubble on its square but the game goes on — you can even leave your King attacked. In <b>King of the Hill</b>, you also win the moment your King legally lands on a centre hill square — <b>d4, d5, e4 or e5</b>.</span></li>
       <li><span class="ls-title">Special dice</span><span class="ls-body">Special Dice are always on — a rolled die can come up special instead of numbered: <b>★ WILD</b> move any piece · <b>⚡ EXTRA</b> move any piece, then roll a bonus die · <b>⚔ CAPTURE</b> move any piece but it must capture · <b>🛡 SHIELD</b> protect one of your pieces from capture until your next turn · <b>⇄ SWAP</b> trade the squares of two of your pieces.</span></li>
       <li><span class="ls-title">Stakes and the pot</span><span class="ls-body">Before a match, both players stake the <b>same</b> number of virtual coins. The <b>pot is both stakes together</b> — winner takes the pot, a draw gives both stakes back. Virtual coins only, no real money.</span></li>
@@ -2549,7 +2798,7 @@ html.reduce-motion .qp-dots::after{animation:none;content:"…";}
   <div class="infoscreen setupscreen" id="setupScreen" aria-label="Game setup">
     <div class="screen-top"><button class="backbtn" id="setupBack" type="button">← Back</button></div>
     <h2 class="screen-title" id="setupTitle">Setup</h2>
-    <p class="screen-sub">Names, match type and stake — locked in when you tap Start. Special Dice are always on.</p>
+    <p class="screen-sub">Names, match type, turn timer and stake — locked in when you tap Start. Special Dice are always on.</p>
     <div id="setupBody"></div>
     <div class="variantbox" id="specialsBox" aria-label="Special dice">
       <div class="vtitle">Special Dice <span id="specialsSummary" style="color:var(--ink-soft);font-weight:650;">· Always On</span></div>
@@ -2563,6 +2812,17 @@ html.reduce-motion .qp-dots::after{animation:none;content:"…";}
         <button type="button" data-aidiff="medium" class="on">Medium</button>
         <button type="button" data-aidiff="hard">Hard</button>
       </div>
+    </div>
+    <div class="variantbox" id="timerBox" aria-label="Turn timer">
+      <div class="vtitle">Turn timer <span id="timerSummary" style="color:var(--ink-soft);font-weight:650;">· 60s per turn</span></div>
+      <div class="vdesc">One clock per turn, starting when the dice land. If it runs out, the turn passes and unused dice are lost. It pauses while a panel is open.</div>
+      <div class="varianttoggle timer-toggle" role="group" aria-label="Turn timer for the next match">
+        <button type="button" data-timer="30">30s</button>
+        <button type="button" data-timer="60" class="on">60s</button>
+        <button type="button" data-timer="90">90s</button>
+        <button type="button" data-timer="0">Off</button>
+      </div>
+      <div class="vdesc" id="timerNote" style="display:none;margin-top:8px;">No timer in turn-code games — turns are played when you can, so the clock doesn't apply here.</div>
     </div>
     <div class="variantbox" id="setupLinkBox" style="display:none;" aria-label="Continue a friend game">
       <div class="vtitle">Continue a Friend game</div>
@@ -2637,6 +2897,7 @@ html.reduce-motion .qp-dots::after{animation:none;content:"…";}
           <span class="variantchip matchchip on" id="matchChip">Normal</span>
           <span class="variantchip matchchip on spec-on" id="specialsChip">Specials: Always On</span>
           <span class="variantchip matchchip" id="aiChip" style="display:none;">AI · Medium</span>
+          <span class="variantchip matchchip" id="timerChip" style="display:none;">⏱ 60s per turn</span>
           <span class="variantchip" id="variantChip">♛ King of the Hill — King to d4 / d5 / e4 / e5 wins</span>
         </div>
         <p id="statusMsg">Roll the dice to start your turn.</p>
@@ -2773,7 +3034,7 @@ html.reduce-motion .qp-dots::after{animation:none;content:"…";}
         <p><b>Server rooms</b> (Normal &amp; King of the Hill) run on the Kings &amp; Dice server: <b>it rolls the dice and validates every move</b> — no client can pick its own dice, move out of turn, or replay a move. If a connection drops, your seat is held for <b>60 seconds</b> to rejoin. <b>Friend (P2P) rooms</b> below remain for every other match type and as a fallback. Turn codes always work too.</p>
         <div class="srvbox" id="srvBox">
           <div class="srv-title">Server rooms — authoritative play</div>
-          <p>The first connect can take up to a minute while the free server wakes — hang tight, it retries patiently. Server coins are tracked by the server and are <b>separate from your device coins</b>. Virtual coins only — no cash value, never bought or redeemed.</p>
+          <p>The server is always on and connecting usually takes a few seconds. Server coins are tracked by the server and are <b>separate from your device coins</b>. Virtual coins only — no cash value, never bought or redeemed.</p>
           <div class="livestatus" id="srvStatus">Server: not connected yet. Tap Create, Join or Find a match.</div>
           <div class="srvbal" id="srvBalance" style="display:none;"></div>
           <div class="note" id="srvUnsupported" style="display:none;"></div>
@@ -2790,7 +3051,7 @@ html.reduce-motion .qp-dots::after{animation:none;content:"…";}
             <div class="row">
               <button id="srvQuickRankedBtn" type="button" class="qp-ranked">Quick Play — Ranked</button>
             </div>
-            <div class="qp-ranked-note">Ranked — rating system coming soon; matches are unrated</div>
+            <div class="qp-ranked-note">Ranked requires a free account — guests can play Casual</div>
           </div>
           <label for="srvCreatePassword" style="font-size:13px;font-weight:700;">Private match — set it up above (match type and stake), then create your room</label>
           <input class="srv-pw-field" id="srvCreatePassword" type="password" placeholder="Room password (optional)" autocomplete="off" maxlength="32" />
@@ -2828,6 +3089,15 @@ html.reduce-motion .qp-dots::after{animation:none;content:"…";}
                 <div class="srv-setrow">
                   <span class="srv-setlabel">Special Dice</span>
                   <span style="font-size:13px;font-weight:700;">Always On</span>
+                </div>
+                <div class="srv-setrow">
+                  <span class="srv-setlabel">Turn timer</span>
+                  <div class="varianttoggle timer-toggle" role="group" aria-label="Waiting room turn timer">
+                    <button type="button" data-srv-timer="30">30s</button>
+                    <button type="button" data-srv-timer="60">60s</button>
+                    <button type="button" data-srv-timer="90">90s</button>
+                    <button type="button" data-srv-timer="0">Off</button>
+                  </div>
                 </div>
                 <div class="srv-setrow">
                   <span class="srv-setlabel">Stake (server coins each)</span>
@@ -2925,7 +3195,6 @@ html.reduce-motion .qp-dots::after{animation:none;content:"…";}
   <button type="button" class="bn-item" data-nav="profile"><span class="bn-icon" aria-hidden="true">♞</span><span class="bn-label">Profile</span></button>
   <button type="button" class="bn-item" data-nav="achievements"><span class="bn-icon" aria-hidden="true">♛</span><span class="bn-label">Trophies</span></button>
   <button type="button" class="bn-item" data-nav="leaderboard"><span class="bn-icon" aria-hidden="true">▥</span><span class="bn-label">Ranks</span></button>
-  <button type="button" class="bn-item" data-nav="settings"><span class="bn-icon" aria-hidden="true">⚙</span><span class="bn-label">Settings</span></button>
 </nav>
 
 <div class="sheetdrawer navpanel" id="panelProfile" aria-label="Profile">
@@ -2933,6 +3202,34 @@ html.reduce-motion .qp-dots::after{animation:none;content:"…";}
     <div class="chathead"><span class="ch-title">Profile</span><button class="chatclose" type="button" data-close-panel aria-label="Close profile">✕</button></div>
     <label class="setlabel" for="profileName">Your display name (prefills game setups)</label>
     <div class="chatinputrow"><input id="profileName" type="text" maxlength="16" placeholder="Guest Player" autocomplete="off" /><button id="profileSaveBtn" type="button">Save</button></div>
+    <div class="setrow" id="acctSection">
+      <span class="setlabel">Account</span>
+      <div id="acctSignedOut">
+        <label class="acct-lab" for="acctUsername">Username</label>
+        <input class="acct-input" id="acctUsername" type="text" maxlength="20" placeholder="3–20 letters, numbers or _" autocomplete="username" autocapitalize="none" spellcheck="false" />
+        <label class="acct-lab" for="acctPassword">Password</label>
+        <input class="acct-input" id="acctPassword" type="password" placeholder="8+ characters" autocomplete="current-password" />
+        <div class="acct-error" id="acctError" role="alert"></div>
+        <div class="acct-btnrow">
+          <button class="acct-btn-primary" id="acctCreateBtn" type="button">Create account</button>
+          <button class="acct-btn-ghost" id="acctLoginBtn" type="button">Log in</button>
+        </div>
+        <div class="acct-status" id="acctStatus" role="status"></div>
+        <p class="panelnote">Free account — saves your coins, rating and ranked access on the server. Guests can still play casual.</p>
+        <p class="panelnote">No password reset yet — keep it safe.</p>
+      </div>
+      <div id="acctSignedIn" style="display:none;">
+        <div class="acct-card">
+          <div class="acct-lab" style="margin-top:0;">Signed in as</div>
+          <div class="acct-user" id="acctUserLine">—</div>
+          <div class="acct-line" id="acctRatingLine"></div>
+          <div class="acct-line" id="acctRecordLine"></div>
+          <div class="acct-line" id="acctBalanceLine" style="display:none;"></div>
+        </div>
+        <button class="acct-btn-ghost acct-logout" id="acctLogoutBtn" type="button">Log out</button>
+        <div class="acct-status" id="acctLogoutStatus" role="status"></div>
+      </div>
+    </div>
     <div class="setrow"><span class="setlabel">Avatar</span><div class="avatargrid" id="avatarGrid" role="group" aria-label="Choose your avatar emblem">
       <button type="button" class="avbtn" data-avatar="knight" aria-label="Knight avatar">♞</button>
       <button type="button" class="avbtn" data-avatar="crown" aria-label="Crown avatar">♛</button>
@@ -3121,6 +3418,7 @@ html.reduce-motion .qp-dots::after{animation:none;content:"…";}
     <p>It shows on the menu, in game setups and to a friend in Live rooms. Just a display name — no account. Your name, stats and coins are saved only on this device. Server-room coins are tracked by the game server for your device session instead.</p>
     <input id="nameInput" type="text" maxlength="16" placeholder="Guest Player" autocomplete="off" style="width:100%;font-size:16px;padding:12px;border-radius:11px;border:1px solid var(--line-strong);background:var(--panel-2);color:var(--ink);text-align:center;margin-bottom:14px;" />
     <div><button id="nameConfirm" type="button">Let's Play</button></div>
+    <div><button id="nameSignIn" type="button" style="margin-top:8px;">Sign In</button></div>
     <div><button id="nameSkip" type="button" class="ghost" style="margin-top:8px;">Skip</button></div>
   </div>
 </div>
@@ -3149,6 +3447,19 @@ html.reduce-motion .qp-dots::after{animation:none;content:"…";}
         <button class="qp-primary" id="qpRetryBtn" type="button">Try Again</button>
         <button class="qp-ghost" id="qpBackBtn" type="button">Back to Online</button>
       </div>
+    </div>
+  </div>
+</div>
+
+<div class="qp-overlay" id="rankedGateOverlay" role="dialog" aria-modal="true" aria-label="Ranked needs an account">
+  <div class="qp-card">
+    <div class="qp-foundicon" aria-hidden="true">♛</div>
+    <h2 class="qp-title">Ranked needs a free account</h2>
+    <p class="qp-sub" id="rankedGateMsg">Ranked play requires an account — register or log in first. It is free and takes a few seconds; guests can keep playing Casual.</p>
+    <div class="qp-actions">
+      <button class="qp-primary" id="rankedGateProfileBtn" type="button">Create account / Log in</button>
+      <button class="qp-ghost" id="rankedGateCasualBtn" type="button">Play Casual instead</button>
+      <button class="qp-ghost" id="rankedGateCloseBtn" type="button">Not now</button>
     </div>
   </div>
 </div>
@@ -3379,6 +3690,8 @@ var G = {
   coins: { w: 1000, b: 1000 }, // virtual coin balances (fun only, no real money)
   pendingStake: 25,         // stake chosen for the next match
   pendingAllIn: false,
+  pendingTimerSec: 60,      // turn-timer choice for the next match: 30 | 60 | 90 | 0 (Off)
+  timerSec: 60,             // active match turn timer in seconds (0 = Off); locked at Start, never in turn-code games
   stake: 0,                 // active match stake per player
   pot: 0,                   // active pot (both stakes combined)
   coinsSettled: true,       // true when the active pot has been paid out / refunded
@@ -3812,13 +4125,10 @@ function paintDie(el, face){
     d.className = "pip" + (on.indexOf(i)>=0 ? " on" : "");
     el.appendChild(d);
   }
-  if (face && DIE_FOR[face]){
-    var sym = document.createElement("span");
-    sym.className = "die-sym";
-    sym.textContent = GLYPH[DIE_FOR[face]];
-    sym.setAttribute("aria-hidden","true");
-    el.appendChild(sym);
-  }
+  /* Normal dice show pips only — no piece pictures on the faces. The tray
+     label under each die and the tap-a-die banner still name the piece
+     this die moves, so nothing about play changes. Special faces return
+     above with their own symbols, untouched. */
 }
 /* Dice rows can grow past 3 when an EXTRA die grants a bonus die. */
 function ensureDiceDOM(){
@@ -4323,6 +4633,7 @@ function renderBars(){
     plus.setAttribute("aria-label", "Top up coins for free");
     plus.addEventListener("click", function(ev){ ev.stopPropagation(); var rb=document.getElementById("resetCoinsBtn"); if (rb) rb.click(); });
     var turnPill=document.createElement("span"); turnPill.className="turnpill"+(isTurn?" on":""); turnPill.textContent="▶ Turn"; turnPill.setAttribute("aria-label","Current player");
+    var timerEl=document.createElement("span"); timerEl.className="turntimer"; timerEl.setAttribute("data-tcol", col); timerEl.setAttribute("aria-label","Turn timer");
     var cap=document.createElement("span"); cap.className="captured";
     capturedByThisPlayer.slice().sort(function(a,b){ return VALUE[b]-VALUE[a]; }).forEach(function(t){
       var s=document.createElement("span");
@@ -4331,7 +4642,7 @@ function renderBars(){
       cap.appendChild(s);
     });
     if (diffFor>0){ var md=document.createElement("span"); md.className="matdiff"; md.textContent="+"+diffFor; cap.appendChild(md); }
-    el.appendChild(dot); el.appendChild(nm); el.appendChild(tag); el.appendChild(turnPill); el.appendChild(coin); el.appendChild(plus); el.appendChild(cap);
+    el.appendChild(dot); el.appendChild(nm); el.appendChild(tag); el.appendChild(turnPill); el.appendChild(timerEl); el.appendChild(coin); el.appendChild(plus); el.appendChild(cap);
   }
   var topCol = opp(G.orientation), botCol = G.orientation;
   bar(document.getElementById("barTop"), topCol, topCol==="w" ? caps.byWhite : caps.byBlack, topCol==="w" ? caps.diff : -caps.diff, "top");
@@ -4423,6 +4734,7 @@ function renderStatus(){
   if (typeof updateChatUI==="function") updateChatUI();
   renderCoins();
   refreshCallout();
+  if (typeof ttUpdateChip==="function"){ ttUpdateChip(); ttPaint(); }
 }
 function isHumanTurn(){
   if (typeof SRV!=="undefined" && SRV.active) return SRV.status==="connected" && SRV.phase==="playing" && G.st.turn===G.myColor && !G.over;
@@ -4561,6 +4873,7 @@ function toast(msg){
 }
 function startTurn(){
   CALL_OVERRIDE=null;
+  if (typeof TT!=="undefined" && TT) TT.epoch++; // a genuinely new turn instance — the turn clock re-arms
   // A shield lasts until the START of its owner's next turn — clear it now.
   if (G.shield && G.shield.owner===G.st.turn) G.shield=null;
   if (G.shieldRain && G.shieldRain[G.st.turn]){ delete G.shieldRain[G.st.turn]; if (!G.shieldRain.w && !G.shieldRain.b) G.shieldRain=null; }
@@ -5146,6 +5459,165 @@ function endTurnManually(){
   broadcastState();
   finishTurn();
   return true;
+}
+/* ============================================================
+   TURN TIMER — one countdown per turn for the active player.
+   Duration comes from the setup choice (G.pendingTimerSec:
+   30/60/90/0), locked into G.timerSec at Start; turn-code
+   (link) games never run it. The clock only counts while the
+   turn's dice have settled and input is unlocked (phase
+   "await-move") — roll animation time never counts. It pauses
+   while any popup/sheet is open, during the king finale, and
+   while the tab/app is hidden. On expiry the turn is force-
+   passed through the normal turn-end path (finishTurn, or the
+   server's endTurn intent) — BYPASSING the voluntary End Turn
+   last-die gate, which is for button presses only. Vs Computer
+   times the human's turns only; in Live games each client
+   renders the countdown, and only the active player's own
+   client fires the forced pass (client-enforced beta).
+   ============================================================ */
+var TT = { sig: null, epoch: 0, remaining: 60000, deadline: 0, counting: false, lastWhole: -1, lastTickSfx: -1, firedSig: null };
+function ttTurnSig(){ return G.st.turn + "|" + G.log.length + "|" + TT.epoch; }
+function ttTimerApplies(){
+  if (!G.timerSec || G.timerSec <= 0) return false;
+  if (G.mode === "link") return false; // turn-code games are untimed
+  if (G.over) return false;
+  if (!document.body.classList.contains("playing")) return false;
+  if (G.mode === "ai" && G.st.turn === (G.aiColor || "b")) return false; // AI turns untimed
+  return true;
+}
+function ttPopupOpen(){
+  return !!document.querySelector(".sheetdrawer.on, .chatdrawer.on, .kd-sheet.on, .overlay.on, .qp-overlay.on, .quickpanel.on");
+}
+function ttPaused(){
+  if (document.hidden) return true;
+  if (typeof _finaleActive !== "undefined" && _finaleActive) return true;
+  if (typeof REMOTE_ROLL !== "undefined" && REMOTE_ROLL.active) return true;
+  if (typeof SRV !== "undefined" && SRV.animating) return true;
+  return ttPopupOpen();
+}
+function ttCanFire(){
+  if (G.mode === "local") return true;
+  if (G.mode === "ai") return G.st.turn !== (G.aiColor || "b");
+  if (G.mode === "live") return G.st.turn === G.myColor;
+  return false;
+}
+function ttDisplayText(){ return Math.max(0, Math.ceil(TT.remaining / 1000)) + "s"; }
+function ttPaint(){
+  var show = ttTimerApplies();
+  var els = document.querySelectorAll(".turntimer");
+  for (var i = 0; i < els.length; i++){
+    var el = els[i];
+    var on = show && el.getAttribute("data-tcol") === G.st.turn;
+    el.classList.toggle("on", on);
+    if (on){
+      el.textContent = "⏱ " + ttDisplayText();
+      el.classList.toggle("low", TT.remaining <= 10000);
+      el.classList.toggle("paused", !TT.counting && G.phase === "await-move");
+    }
+  }
+}
+function ttForcePass(){
+  TT.firedSig = TT.sig;
+  TT.counting = false;
+  toast("⏱ Time! Turn passes");
+  try{ sfxTone(196, 0.16, "triangle", 0.05); sfxTone(147, 0.2, "triangle", 0.05, 0.12); }catch(e){}
+  if (typeof SRV !== "undefined" && SRV.active){
+    // Server room: the forced pass is the plain endTurn intent — the
+    // voluntary last-die gate is a client UI rule and never applies.
+    if (srvSendAction("endTurn")){
+      setStatus("<b>⏱ Time!</b> Your turn passes — unused dice are lost.");
+      renderBoard();
+    } else {
+      TT.firedSig = null; // not sent (an action is in flight) — the supervisor retries
+    }
+    return;
+  }
+  for (var i = 0; i < G.dice.length; i++){
+    if (G.dice[i] && !G.diceUsed[i]){ G.diceUsed[i] = true; G.turnLog.push("🎲" + dieLabel(G.dice[i]) + " ✕ time"); }
+  }
+  G.activeDie = null; G.roll = null; G.rollMoves = []; G.selected = null; G.specialMode = null; G.swapFirst = null; CALL_OVERRIDE = null;
+  renderBoard();
+  broadcastState();
+  finishTurn(); // full normal turn end: shield expiry, hill/lava, Guard start-of-turn checks all run
+}
+function ttTick(){
+  if (!ttTimerApplies()){
+    TT.counting = false; TT.sig = null;
+    ttPaint();
+    return;
+  }
+  var sig = ttTurnSig();
+  if (sig !== TT.sig){
+    TT.sig = sig;
+    TT.remaining = G.timerSec * 1000;
+    TT.counting = false;
+    TT.lastWhole = -1; TT.lastTickSfx = -1;
+  }
+  var shouldCount = G.phase === "await-move" && !ttPaused() && TT.firedSig !== sig;
+  var now = Date.now();
+  if (shouldCount && !TT.counting){
+    TT.deadline = now + TT.remaining;
+    TT.counting = true;
+  } else if (!shouldCount && TT.counting){
+    TT.remaining = Math.max(0, TT.deadline - now);
+    TT.counting = false;
+  }
+  if (TT.counting){
+    TT.remaining = TT.deadline - now;
+    var whole = Math.ceil(TT.remaining / 1000);
+    if (whole !== TT.lastWhole){
+      TT.lastWhole = whole;
+      ttPaint();
+    }
+    // soft ticks in the final 5 seconds — only on the client whose
+    // player is actually on the clock and would fire the pass
+    if (whole <= 5 && whole >= 1 && whole !== TT.lastTickSfx && ttCanFire()){
+      TT.lastTickSfx = whole;
+      try{ sfxTone(920, 0.045, "sine", 0.028); }catch(e){}
+    }
+    if (TT.remaining <= 0){
+      TT.remaining = 0;
+      ttPaint();
+      if (ttCanFire()) ttForcePass();
+      else { TT.firedSig = sig; TT.counting = false; } // watching the opponent's clock — their client fires
+    }
+  } else {
+    ttPaint();
+  }
+}
+setInterval(ttTick, 200);
+function ttResetClock(){
+  TT.sig = null; TT.counting = false; TT.firedSig = null; TT.lastWhole = -1; TT.lastTickSfx = -1;
+  TT.remaining = (G.timerSec || 60) * 1000;
+}
+function ttAdoptTimer(sec, resetClock){
+  sec = Math.max(0, Math.floor(Number(sec) || 0));
+  G.timerSec = sec; G.pendingTimerSec = sec;
+  if (typeof SRV !== "undefined") SRV.timerSec = sec;
+  if (typeof syncTimerUI === "function") syncTimerUI();
+  if (resetClock) ttResetClock();
+}
+function syncTimerUI(){
+  document.querySelectorAll("[data-timer]").forEach(function(btn){
+    btn.classList.toggle("on", parseInt(btn.getAttribute("data-timer"), 10) === G.pendingTimerSec);
+    btn.disabled = G.mode === "link";
+  });
+  var sum = document.getElementById("timerSummary");
+  if (sum) sum.textContent = G.pendingTimerSec > 0 ? "· " + G.pendingTimerSec + "s per turn" : "· Off";
+  var note = document.getElementById("timerNote");
+  if (note) note.style.display = G.mode === "link" ? "" : "none";
+  var box = document.getElementById("timerBox");
+  if (box) box.classList.toggle("timer-nomode", G.mode === "link");
+  ttUpdateChip();
+}
+function ttUpdateChip(){
+  var chip = document.getElementById("timerChip");
+  if (!chip) return;
+  var show = G.timerSec > 0 && G.mode !== "link" && document.body.classList.contains("playing");
+  chip.style.display = show ? "" : "none";
+  chip.classList.toggle("on", show);
+  if (show) chip.textContent = "⏱ " + G.timerSec + "s per turn";
 }
 function selectDie(i){
   if (_finaleActive) return; /* king finale playing — dice locked until the modal */
@@ -6597,6 +7069,7 @@ function loadCode(){
     if (d.ms) adoptModeState(d.ms);
     G.specialMode=null; G.swapFirst=null;
     G.hillWin = !!d.hillWin;
+    G.timerSec = 0; ttResetClock(); // turn-code games are untimed — a loaded code never starts a clock
     if (d.names){ G.names = d.names; syncNameInputs(); }
     if (d.coins) adoptCoinState(d.coins);
     G.history=[]; G.over=false; G.winner=null; G.linkLocked=false;
@@ -6657,7 +7130,7 @@ function serializeState(){
     h: G.st.half, log: G.log.slice(), lm: G.lastMove,
     dice: G.dice.slice(), used: G.diceUsed.slice(), active: G.activeDie,
     turnLog: G.turnLog.slice(),
-    over: G.over, winner: G.winner, vt: G.variant, hw: G.hillWin ? 1 : 0,
+    over: G.over, winner: G.winner, vt: G.variant, hw: G.hillWin ? 1 : 0, tt: G.timerSec,
     sp: 1, // Special Dice always on sh: shieldEncode(),
     ms: modeStateForSync(),
     n: [G.names.w || "", G.names.b || ""],
@@ -6886,6 +7359,7 @@ function applyRemoteState(s, senderColor){
     G.turnLog = s.turnLog || [];
     G.pendingEp = null;
     G.over = !!s.over; G.winner = s.winner || null;
+    if (s.tt !== undefined && s.tt !== null) ttAdoptTimer(s.tt, false); // host's locked timer choice, synced with the setup
     if (s.vt){ G.variant = VARIANT_LABELS[s.vt] ? s.vt : "normal"; G.pendingVariant = G.variant; syncVariantUI(); }
     G.hillWin = !!s.hw;
     syncVariantUI();
@@ -6940,7 +7414,7 @@ function renderOnlineBadge(){
   if (!badge || !txt) return;
   if (typeof SRV!=="undefined" && (SRV.active || SRV.pendingRejoin || SRV.status==="waking" || SRV.status==="reconnecting" || SRV.status==="queued")){
     var sState = "waiting", sLabel = "";
-    if (SRV.status==="waking") sLabel = "Waking the server…";
+    if (SRV.status==="waking") sLabel = "Connecting to the server…";
     else if (SRV.status==="reconnecting") sLabel = "Reconnecting to your server game…";
     else if (SRV.pendingRejoin && !SRV.active) sLabel = "Server game waiting — open Online → Live to rejoin";
     else if (SRV.status==="queued") sLabel = "Server matchmaking — searching for an opponent…";
@@ -7029,6 +7503,7 @@ function liveSetupConn(conn){
     liveSend({ kind:"name", from: G.myColor, name: (G.names[G.myColor]||"").slice(0,20) });
     if (LIVE.role==="host"){
       resetGameOnly();
+      G.timerSec = G.pendingTimerSec; // host's timer choice rides with the room state both players sync
       G.variant = G.pendingVariant; syncVariantUI();
       applyVariantStart();
       beginMatchStake();
@@ -7200,6 +7675,7 @@ function liveJoin(){
 }
 function resetGameOnly(){
   CALL_OVERRIDE=null;
+  if (typeof ttResetClock==="function") ttResetClock();
   hideRollOverlayNow();
   REMOTE_ROLL.gen++; REMOTE_ROLL.active=false; REMOTE_ROLL.queued=null; REMOTE_ROLL.queuedFrom=null; REMOTE_ROLL.faces=null;
   clearTimers(); closeModal();
@@ -7288,6 +7764,8 @@ function newGame(mode){
   clearTimers(); closeModal();
   G.mode = mode || G.mode;
   if (G.mode!=="live"){ G.myColor="w"; }
+  G.timerSec = G.mode==="link" ? 0 : G.pendingTimerSec; // turn timer locks in at Start; turn-code games are untimed
+  if (typeof syncTimerUI==="function") syncTimerUI();
   G.aiDifficulty = G.pendingAiDifficulty || "medium";
   G.aiPlan = null;
   resetGameOnly();
@@ -7320,6 +7798,7 @@ function syncModeUI(){
   var st = document.getElementById("setupTitle");
   if (st) st.textContent = { ai:"Computer", local:"2 Players", link:"Friend", live:"Live" }[G.mode] || "Setup";
   syncNameUI();
+  if (typeof syncTimerUI==="function") syncTimerUI();
   if (typeof syncAiDiffUI==="function") syncAiDiffUI();
   updateLiveUI();
   if (typeof srvSyncUI==="function") srvSyncUI();
@@ -7672,7 +8151,7 @@ var PROFILE_NAME = "";
 try{ PROFILE_NAME = String(localStorage.getItem("dicechess-name") || "").trim().slice(0,16); }catch(e){ PROFILE_NAME = ""; }
 function applyPlayerNameUI(){
   var el = document.getElementById("menuPlayerName");
-  if (el) el.textContent = PROFILE_NAME || "Guest Player";
+  if (el) el.textContent = (typeof ACCT!=="undefined" && ACCT && ACCT.account && ACCT.account.username) ? ACCT.account.username : (PROFILE_NAME || "Guest Player");
   var pn = document.getElementById("profileName");
   if (pn && PROFILE_NAME) pn.value = PROFILE_NAME;
   if (PROFILE_NAME) G.names.w = PROFILE_NAME;
@@ -7869,6 +8348,8 @@ function renderPanels(){
   set("rankNext", ri.next ? (ri.next.pts - ri.points) + " pts to " + ri.next.t : "Top rank reached — Grandmaster of Dice");
   var pcSub = document.getElementById("menuRankTitle");
   if (pcSub) pcSub.textContent = ri.title;
+  var mpf = document.getElementById("menuRankProgFill");
+  if (mpf) mpf.style.width = ri.pct + "%";
   document.querySelectorAll("#achList li").forEach(function(li){
     var key = li.getAttribute("data-ach");
     var date = STATS.ach[key];
@@ -7878,6 +8359,7 @@ function renderPanels(){
   });
   applyAvatarUI();
   renderCosmetics();
+  if (typeof acctRender==="function") acctRender();
 }
 applyCosmetics();
 
@@ -9090,6 +9572,15 @@ applyVolumes();
   tunesRenderList();
   tunesInit();
 })();
+document.querySelectorAll("[data-timer]").forEach(function(btn){
+  btn.addEventListener("click", function(){
+    var v = parseInt(btn.getAttribute("data-timer"), 10);
+    G.pendingTimerSec = (v===30 || v===60 || v===90 || v===0) ? v : 60;
+    syncTimerUI();
+    toast(G.pendingTimerSec ? "Turn timer: " + G.pendingTimerSec + "s per turn — applies to the next match" : "Turn timer off for the next match");
+  });
+});
+syncTimerUI();
 document.querySelectorAll("[data-aidiff]").forEach(function(btn){
   btn.addEventListener("click", function(){
     var v = btn.getAttribute("data-aidiff");
@@ -9114,6 +9605,12 @@ document.getElementById("nameConfirm").addEventListener("click", function(){
 });
 document.getElementById("nameSkip").addEventListener("click", function(){
   document.getElementById("namePopup").classList.remove("on");
+});
+/* Sign in from the name pop-up: dismiss it and land on the Profile
+   panel's Account section — the same route the ranked gate uses. */
+document.getElementById("nameSignIn").addEventListener("click", function(){
+  document.getElementById("namePopup").classList.remove("on");
+  if (typeof openAccountSection==="function") openAccountSection();
 });
 document.getElementById("nameInput").addEventListener("keydown", function(e){
   if (e.key === "Enter"){ e.preventDefault(); document.getElementById("nameConfirm").click(); }
@@ -9271,6 +9768,7 @@ var SRV = {
   pendingRejoin: null, reconnectTimer: null, reconnectDeadline: 0, intentionalClose: false,
   wakeTimer: null, wakeAttempts: 0, wakeBy: 0, wakeRetryTimer: null, readyQueue: [], enteredGame: false, overShownFor: null,
   autoEndTimer: null, animating: false, queuedState: null, discTimer: null, historyAt: 0,
+  timerSec: null, timerAdopted: false, // turn timer for this room: host's choice, adopted from room settings / host signal
   /* private rooms: create/join intent, server-reported room facts, and
      the local rematch vote (the state broadcast's rematch flags are the
      authority; this only covers the gap before it lands) */
@@ -9383,13 +9881,15 @@ function srvRenderWaitRoom(){
   if (hostBox) hostBox.style.display = iAmHost ? "" : "none";
   if (roBox){
     roBox.style.display = iAmHost ? "none" : "";
-    roBox.innerHTML = "<b>" + (mode==="hill" ? "King of the Hill" : "Normal") + "</b> · Special Dice <b>Always On</b> · Stake <b>" + fmtCoins(stake) + "</b> server coins each" +
+    roBox.innerHTML = "<b>" + (mode==="hill" ? "King of the Hill" : "Normal") + "</b> · Special Dice <b>Always On</b> · Turn timer <b>" + ((SRV.timerSec!=null ? SRV.timerSec : G.pendingTimerSec) > 0 ? ((SRV.timerSec!=null ? SRV.timerSec : G.pendingTimerSec) + "s") : "Off") + "</b> · Stake <b>" + fmtCoins(stake) + "</b> server coins each" +
       (SRV.hasPassword ? " · 🔒 Password-protected" : "") +
       "<br><span style='color:var(--ink-soft);font-weight:600;'>Set by the host — changes show here as they make them.</span>";
   }
   if (iAmHost){
     document.querySelectorAll("[data-srv-mode]").forEach(function(b){ b.classList.toggle("on", b.getAttribute("data-srv-mode")===mode); });
     document.querySelectorAll("[data-srv-stake]").forEach(function(b){ b.classList.toggle("on", parseInt(b.getAttribute("data-srv-stake"), 10)===stake); });
+    var srvTimerVal = SRV.timerSec!=null ? SRV.timerSec : G.pendingTimerSec;
+    document.querySelectorAll("[data-srv-timer]").forEach(function(b){ b.classList.toggle("on", parseInt(b.getAttribute("data-srv-timer"), 10)===srvTimerVal); });
   }
   var statusEl = document.getElementById("srvWaitStatus");
   var statusTxt = srvWaitStatusText();
@@ -9561,7 +10061,7 @@ function srvConnect(onReady){
   SRV.status = waking ? "waking" : "reconnecting";
   SRV.wakeAttempts++;
   srvSetStatus(waking
-    ? "Waking the server… the free server can take up to a minute to start. Hang tight."
+    ? "Connecting to the server…"
     : "Reconnecting to the server…");
   srvSyncUI();
   var sock;
@@ -9570,7 +10070,7 @@ function srvConnect(onReady){
   SRV.welcomed = false;
   if (SRV.wakeTimer) clearTimeout(SRV.wakeTimer);
   SRV.wakeTimer = setTimeout(function(){
-    if (!SRV.welcomed) srvConnectFailed("The server didn't wake within 75 seconds — it may still be starting. Try again in a moment, or use Friend (P2P) rooms below.");
+    if (!SRV.welcomed) srvConnectFailed("Couldn't connect to the server within 75 seconds — check your connection and try again in a moment, or use Friend (P2P) rooms below.");
   }, waking ? Math.max(5000, SRV.wakeBy - Date.now()) : 75000);
   sock.onopen = function(){
     if (SRV.ws!==sock) return;
@@ -9594,7 +10094,7 @@ function srvConnect(onReady){
       // attempts while it spins up — keep retrying inside the wake
       // window instead of failing on the first dropped attempt.
       if (Date.now() < SRV.wakeBy && SRV.wakeAttempts < 6){
-        srvSetStatus("Waking the server… the free server can take up to a minute to start. Hang tight. (attempt " + (SRV.wakeAttempts + 1) + ")");
+        srvSetStatus("Connecting to the server… (attempt " + (SRV.wakeAttempts + 1) + ")");
         if (SRV.wakeRetryTimer) clearTimeout(SRV.wakeRetryTimer);
         SRV.wakeRetryTimer = setTimeout(function(){
           SRV.wakeRetryTimer = null;
@@ -9602,7 +10102,7 @@ function srvConnect(onReady){
         }, 2500);
         return;
       }
-      srvConnectFailed("The server didn't answer — it may still be waking up. Give it a few seconds and tap again, or use Friend (P2P) rooms below.");
+      srvConnectFailed("The server didn't answer — give it a few seconds and tap again, or use Friend (P2P) rooms below.");
       return;
     }
     srvOnSocketDrop();
@@ -9620,6 +10120,7 @@ function srvConnectFailed(msg){
   srvNote("You can still play right now in Friend (P2P) rooms below, or by turn codes.", true);
   srvSyncUI();
   if (typeof qpOnConnectFailed==="function") qpOnConnectFailed();
+  if (typeof acctOnConnectFailed==="function") acctOnConnectFailed();
 }
 function srvOnSocketDrop(){
   if (SRV.intentionalClose) return;
@@ -9706,6 +10207,7 @@ function srvOnMessage(msg){
       SRV.welcomed = true; SRV.wakeAttempts = 0;
       SRV.token = msg.playerToken; SRV.playerId = msg.playerId;
       SRV.balance = (typeof msg.balance==="number") ? msg.balance : SRV.balance;
+      if (typeof acctApplyWelcome==="function") acctApplyWelcome(msg);
       if (SRV.status!=="queued") SRV.status = "connected";
       srvSetStatus("Server: connected — you have " + fmtCoins(SRV.balance!=null ? SRV.balance : 0) + " server coins.", "ok");
       srvSaveSession();
@@ -9713,6 +10215,14 @@ function srvOnMessage(msg){
       var q = SRV.readyQueue; SRV.readyQueue = [];
       q.forEach(function(fn){ try{ fn(); }catch(e){} });
       srvSyncUI();
+      break;
+    }
+    case "authOk": {
+      if (typeof acctOnAuthOk==="function") acctOnAuthOk(msg);
+      break;
+    }
+    case "authError": {
+      if (typeof acctOnAuthError==="function") acctOnAuthError(msg);
       break;
     }
     case "roomCreated": {
@@ -9731,6 +10241,7 @@ function srvOnMessage(msg){
       SRV.active = true; SRV.roomCode = msg.code; SRV.mySrvColor = msg.color;
       SRV.phase = "waiting"; SRV.nextSeq = 1; SRV.enteredGame = false; SRV.overShownFor = null;
       SRV.privateIntent = true; SRV.joinNeedsPassword = false;
+      SRV.timerAdopted = false; SRV.timerSec = null; // the host's timer choice arrives with the room settings / host signal
       SRV.rematchVotes = null; SRV.rematchRequested = false;
       G.resultRecorded = false;
       G.mode = "live"; G.myColor = msg.color; G.orientation = msg.color;
@@ -9755,6 +10266,7 @@ function srvOnMessage(msg){
       SRV.active = true; SRV.roomCode = msg.code; SRV.mySrvColor = msg.color;
       SRV.phase = "waiting"; SRV.nextSeq = 1; SRV.enteredGame = false; SRV.overShownFor = null;
       SRV.privateIntent = false; SRV.isPrivate = false; SRV.host = null; SRV.hasPassword = false;
+      SRV.timerAdopted = false; SRV.timerSec = null;
       G.resultRecorded = false;
       SRV.status = "connected";
       G.mode = "live"; G.myColor = msg.color; G.orientation = msg.color;
@@ -9807,7 +10319,16 @@ function srvOnMessage(msg){
       var cf = msg.from || {};
       var cCol = (typeof cf === "string") ? cf : (cf.color === "b" ? "b" : "w");
       var cName = (cf && typeof cf === "object" && cf.name) ? String(cf.name).slice(0, 20) : "";
-      if (typeof receiveChat === "function") receiveChat({ from: cCol, name: cName, text: String(msg.text == null ? "" : msg.text), time: Number(msg.ts) || Date.now() });
+      var chatText = String(msg.text == null ? "" : msg.text);
+      // Host's turn-timer signal for this room (rides the chat relay as a
+      // control line; never shown as a chat message). The sender's own
+      // echo is ignored — only the opponent's host signal adopts.
+      if (chatText.indexOf("KD_TIMER:") === 0 && cCol !== G.myColor){
+        var tv = parseInt(chatText.slice(9), 10);
+        if (!isNaN(tv) && tv >= 0 && tv <= 600){ SRV.timerAdopted = true; ttAdoptTimer(tv, true); }
+        break;
+      }
+      if (typeof receiveChat === "function") receiveChat({ from: cCol, name: cName, text: chatText, time: Number(msg.ts) || Date.now() });
       break;
     }
     case "state": {
@@ -9825,6 +10346,13 @@ function srvOnMessage(msg){
       break;
     }
     case "error": {
+      if (msg.code==="RANKED_REQUIRES_ACCOUNT"){
+        if (typeof QP!=="undefined" && QP && QP.open && typeof qpClose==="function") qpClose();
+        srvNote(msg.message || "Ranked play requires an account — register or log in first.", true);
+        if (typeof showRankedGate==="function") showRankedGate(msg.message);
+        srvSyncUI();
+        break;
+      }
       var friendly = {
         UNSUPPORTED_MODE: "That match type isn't on the server yet — it stays on Friend (P2P) rooms.",
         ROOM_NOT_FOUND: "No server room with that code — check the code and try again.",
@@ -9887,6 +10415,265 @@ function srvHandleRejected(msg){
   setStatus("<b>Server rejected that.</b> " + escHtml(txt));
   if (was && was.type==="roll") renderBoard();
 }
+/* ============================================================
+   ACCOUNTS — register / log in / log out over the same server
+   WebSocket, after the hello/welcome flow. Protocol (exact):
+   out {type:"register"|"login", username, password} and
+   {type:"logout"}; in {type:"authOk", action, playerToken,
+   balance, account|null} and {type:"authError", code, message};
+   welcome also carries account. A successful auth ROTATES the
+   session token — the authOk playerToken replaces the stored
+   `dicechess-server-session` token at once (logout included: it
+   returns a fresh guest token). The stored account copy is the
+   server's public profile only, kept for display. The password
+   is read from the field, held only in a transient local until
+   the send fires, and the field is cleared on EVERY attempt —
+   it is never written to storage or kept in any variable.
+   Guests are untouched: no account, same play as before.
+   ============================================================ */
+var ACCT_KEY = "dicechess-account";
+var ACCT = { account: null, error: "", busy: false, action: null, timer: null, statusTimer: null, pendingCred: null };
+try{
+  var _acctSaved = JSON.parse(localStorage.getItem(ACCT_KEY) || "null");
+  if (_acctSaved && typeof _acctSaved==="object" && _acctSaved.username) ACCT.account = _acctSaved;
+}catch(e){}
+function acctSignedIn(){ return !!(ACCT.account && ACCT.account.username); }
+function acctSaveDisplay(){
+  try{
+    if (ACCT.account) localStorage.setItem(ACCT_KEY, JSON.stringify(ACCT.account));
+    else localStorage.removeItem(ACCT_KEY);
+  }catch(e){}
+}
+function acctSyncChip(){ if (typeof applyPlayerNameUI==="function") applyPlayerNameUI(); }
+function acctClearPassword(){ var p = document.getElementById("acctPassword"); if (p) p.value = ""; }
+function acctStatusText(){
+  if (SRV.status==="waking") return "Connecting to the server…";
+  if (SRV.welcomed) return "Waiting for the server…";
+  return "Connecting to the server…";
+}
+function acctSetBusy(busy){
+  ACCT.busy = !!busy;
+  if (ACCT.timer){ clearTimeout(ACCT.timer); ACCT.timer = null; }
+  if (ACCT.statusTimer){ clearInterval(ACCT.statusTimer); ACCT.statusTimer = null; }
+  if (!busy){ ACCT.action = null; return; }
+  ACCT.statusTimer = setInterval(function(){
+    if (!ACCT.busy) return;
+    var st = document.getElementById("acctStatus"); if (st) st.textContent = acctStatusText();
+    var ls = document.getElementById("acctLogoutStatus"); if (ls) ls.textContent = acctStatusText();
+  }, 600);
+  ACCT.timer = setTimeout(function(){
+    ACCT.timer = null;
+    if (ACCT.pendingCred){ ACCT.pendingCred.password = ""; ACCT.pendingCred = null; }
+    acctSetBusy(false);
+    ACCT.error = "Couldn't reach the server — check your connection and try again.";
+    acctRender();
+  }, 85000);
+}
+function acctRender(){
+  var out = document.getElementById("acctSignedOut"), inn = document.getElementById("acctSignedIn");
+  if (!out || !inn) return;
+  var signed = acctSignedIn();
+  out.style.display = signed ? "none" : "";
+  inn.style.display = signed ? "" : "none";
+  var err = document.getElementById("acctError");
+  if (err) err.textContent = ACCT.error || "";
+  var st = document.getElementById("acctStatus");
+  if (st) st.textContent = ACCT.busy && !signed ? acctStatusText() : "";
+  ["acctCreateBtn","acctLoginBtn"].forEach(function(id){
+    var b = document.getElementById(id); if (b) b.disabled = !!ACCT.busy;
+  });
+  var lo = document.getElementById("acctLogoutBtn");
+  if (lo) lo.disabled = !!ACCT.busy;
+  var ls = document.getElementById("acctLogoutStatus");
+  if (ls) ls.textContent = ACCT.busy && signed ? acctStatusText() : "";
+  if (signed){
+    var a = ACCT.account;
+    var ul = document.getElementById("acctUserLine");
+    if (ul) ul.textContent = a.username;
+    var rl = document.getElementById("acctRatingLine");
+    if (rl){
+      if (typeof a.rating==="number"){
+        rl.style.display = "";
+        rl.innerHTML = "Rating <b>" + fmtCoins(a.rating) + "</b>" + (a.provisional ? " · Provisional" : "");
+      } else rl.style.display = "none";
+    }
+    var rc = document.getElementById("acctRecordLine");
+    if (rc) rc.innerHTML = "Wins <b>" + (a.wins || 0) + "</b> · Losses <b>" + (a.losses || 0) + "</b> · Draws <b>" + (a.draws || 0) + "</b>";
+    var bl = document.getElementById("acctBalanceLine");
+    if (bl){
+      if (typeof SRV.balance==="number"){
+        bl.style.display = "";
+        bl.innerHTML = "Server coins: <b>" + fmtCoins(SRV.balance) + "</b>";
+      } else bl.style.display = "none";
+    }
+  }
+}
+/* welcome carries the account (null for guests): it is the
+   authority on every (re)connect, so signed-in state restores
+   from it and a stale display copy is corrected by it. */
+function acctApplyWelcome(msg){
+  ACCT.account = (msg && msg.account && msg.account.username) ? msg.account : null;
+  acctSaveDisplay();
+  acctSyncChip();
+  acctRender();
+}
+function acctOnAuthOk(msg){
+  acctClearPassword();
+  if (ACCT.pendingCred){ ACCT.pendingCred.password = ""; ACCT.pendingCred = null; }
+  acctSetBusy(false);
+  ACCT.error = "";
+  if (msg && msg.playerToken) SRV.token = msg.playerToken; // rotated token — the only valid one from now on
+  if (msg && typeof msg.balance==="number") SRV.balance = msg.balance;
+  srvSaveSession();
+  if (msg && msg.action==="logout"){
+    ACCT.account = null;
+    acctSaveDisplay();
+    acctSyncChip();
+    acctRender();
+    srvSyncUI();
+    toast("Logged out — you're playing as a guest now.");
+    return;
+  }
+  if (msg && msg.account && msg.account.username) ACCT.account = msg.account;
+  acctSaveDisplay();
+  acctSyncChip();
+  acctRender();
+  srvSyncUI();
+  toast(msg && msg.action==="register" ? "Account created — you're signed in." : "Signed in — welcome back.");
+}
+function acctOnAuthError(msg){
+  acctClearPassword();
+  if (ACCT.pendingCred){ ACCT.pendingCred.password = ""; ACCT.pendingCred = null; }
+  var wasLogout = ACCT.action==="logout";
+  acctSetBusy(false);
+  var code = msg && msg.code;
+  var message = (msg && msg.message) || "Something went wrong — try again.";
+  if (code==="AUTH_RATE_LIMITED" && !/minute|wait/i.test(message)) message = "Too many attempts — wait a minute, then try again.";
+  if (wasLogout && code==="NOT_AUTHENTICATED"){
+    // The server already treats this session as a guest — match it locally.
+    ACCT.account = null;
+    acctSaveDisplay();
+    acctSyncChip();
+    ACCT.error = "";
+    acctRender();
+    toast("You're signed out.");
+    return;
+  }
+  ACCT.error = message;
+  acctRender();
+  if (wasLogout) toast(message);
+}
+function acctAttempt(action){
+  if (ACCT.busy || acctSignedIn()) return;
+  var uEl = document.getElementById("acctUsername"), pEl = document.getElementById("acctPassword");
+  var username = uEl ? uEl.value.trim() : "";
+  var cred = { password: pEl ? pEl.value : "" };
+  if (pEl) pEl.value = ""; // the field is cleared on every attempt, before anything else can happen
+  ACCT.error = "";
+  if (!username || !cred.password){
+    cred.password = "";
+    ACCT.error = "Enter a username and a password.";
+    acctRender();
+    return;
+  }
+  ACCT.action = action;
+  ACCT.pendingCred = cred;
+  acctSetBusy(true);
+  acctRender();
+  var sent = false;
+  function send(){
+    if (sent) return; sent = true;
+    var ok = srvSendRaw({ type: action, username: username, password: cred.password });
+    cred.password = "";
+    if (ACCT.pendingCred===cred) ACCT.pendingCred = null;
+    if (!ok){
+      acctSetBusy(false);
+      ACCT.error = "Server isn't connected right now — try again in a moment.";
+      acctRender();
+    }
+  }
+  if (SRV.ws && SRV.ws.readyState===1 && SRV.welcomed) send();
+  else srvConnect(send); // reuses the existing connect/wake flow; welcome flushes the queue
+}
+/* srvConnectFailed hook: a pending auth send never fired (it sat in
+   the ready queue), so fail the attempt cleanly instead of hanging. */
+function acctOnConnectFailed(){
+  if (!ACCT.busy) return;
+  if (ACCT.pendingCred){ ACCT.pendingCred.password = ""; ACCT.pendingCred = null; }
+  acctSetBusy(false);
+  ACCT.error = "Couldn't reach the server — give it a few seconds and try again.";
+  acctRender();
+}
+function acctLogout(){
+  if (ACCT.busy || !acctSignedIn()) return;
+  ACCT.error = "";
+  ACCT.action = "logout";
+  acctSetBusy(true);
+  acctRender();
+  var sent = false;
+  function send(){
+    if (sent) return; sent = true;
+    if (!srvSendRaw({ type:"logout" })){
+      acctSetBusy(false);
+      acctRender();
+      toast("Server isn't connected right now");
+    }
+  }
+  if (SRV.ws && SRV.ws.readyState===1 && SRV.welcomed) send();
+  else srvConnect(send);
+}
+/* ---------- ranked gate prompt ---------- */
+function showRankedGate(serverMsg){
+  var ov = document.getElementById("rankedGateOverlay");
+  if (!ov) return;
+  var m = document.getElementById("rankedGateMsg");
+  if (m && serverMsg) m.textContent = serverMsg;
+  ov.classList.add("on");
+}
+function hideRankedGate(){
+  var ov = document.getElementById("rankedGateOverlay");
+  if (ov) ov.classList.remove("on");
+}
+function openAccountSection(){
+  hideRankedGate();
+  closePanels();
+  renderPanels();
+  acctRender();
+  openSheet("panelProfile");
+  setTimeout(function(){
+    var sec = document.getElementById("acctSection");
+    if (sec && sec.scrollIntoView){ try{ sec.scrollIntoView({ block:"start" }); }catch(e){} }
+    if (!acctSignedIn()){
+      var u = document.getElementById("acctUsername");
+      if (u){ try{ u.focus({ preventScroll:true }); }catch(e){} }
+    }
+  }, 80);
+}
+(function acctBind(){
+  var c = document.getElementById("acctCreateBtn");
+  if (c) c.addEventListener("click", function(){ acctAttempt("register"); });
+  var l = document.getElementById("acctLoginBtn");
+  if (l) l.addEventListener("click", function(){ acctAttempt("login"); });
+  var lo = document.getElementById("acctLogoutBtn");
+  if (lo) lo.addEventListener("click", acctLogout);
+  var p = document.getElementById("acctPassword");
+  if (p) p.addEventListener("keydown", function(e){ if (e.key==="Enter"){ e.preventDefault(); acctAttempt("login"); } });
+  var u = document.getElementById("acctUsername");
+  if (u) u.addEventListener("keydown", function(e){
+    if (e.key==="Enter"){ e.preventDefault(); var pw = document.getElementById("acctPassword"); if (pw) pw.focus(); }
+  });
+  var g1 = document.getElementById("rankedGateProfileBtn");
+  if (g1) g1.addEventListener("click", openAccountSection);
+  var g2 = document.getElementById("rankedGateCloseBtn");
+  if (g2) g2.addEventListener("click", hideRankedGate);
+  var g3 = document.getElementById("rankedGateCasualBtn");
+  if (g3) g3.addEventListener("click", function(){ hideRankedGate(); qpStartQuickPlay("casual"); });
+  var ov = document.getElementById("rankedGateOverlay");
+  if (ov) ov.addEventListener("click", function(e){ if (e.target===ov) hideRankedGate(); });
+  acctRender();
+  acctSyncChip();
+})();
+
 /* ---------- server state -> local rendering ---------- */
 function srvSquareToRC(sq){
   if (!sq || sq.length!==2) return null;
@@ -9959,7 +10746,22 @@ function srvApplyState(s, silent){
   }
   srvApplyStateNow(s);
 }
+/* Turn timer carried by a server state, if the server echoes room
+   settings back (createRoom / updateSettings carry timerSec out;
+   this reads whichever field a state offers). Null = not carried. */
+function srvTimerFromState(s){
+  if (!s) return null;
+  var cands = [s.timerSec, s.turnTimerSec, s.timer, s.settings && s.settings.timerSec, s.settings && s.settings.timer];
+  for (var i = 0; i < cands.length; i++){
+    var v = cands[i];
+    if (v !== undefined && v !== null && v !== ""){ var n = Math.floor(Number(v)); if (!isNaN(n) && n >= 0 && n <= 600) return n; }
+  }
+  return null;
+}
 function srvApplyStateNow(s){
+  var srvT = srvTimerFromState(s);
+  if (srvT !== null && srvT !== G.timerSec){ SRV.timerAdopted = true; ttAdoptTimer(srvT, true); }
+  else if (srvT !== null){ SRV.timerAdopted = true; SRV.timerSec = srvT; }
   var prevLastMoveText = G.lastMove ? (G.lastMove.fr + "," + G.lastMove.fc + ">" + G.lastMove.tr + "," + G.lastMove.tc) : "";
   // Capture detection for the glide/flash: compare the incoming moveLog's
   // last move against the board as it was BEFORE this state is applied.
@@ -10092,6 +10894,12 @@ function srvEnterGameIfNeeded(s){
   if (!SRV.enteredGame){
     SRV.enteredGame = true;
     if (!document.body.classList.contains("playing")) enterGameView();
+    // Turn timer for this server match: if the room's settings never
+    // carried one, fall back to this client's setup choice (60s by
+    // default on both sides). A private-room host also signals its
+    // locked choice over the chat relay so the guest adopts the same.
+    if (!SRV.timerAdopted) ttAdoptTimer(G.pendingTimerSec, true);
+    if (SRV.isPrivate && SRV.host && SRV.host===G.myColor) srvSendRaw({ type:"chat", text:"KD_TIMER:" + (G.timerSec || 0) });
   }
 }
 function srvAfterState(s){
@@ -10250,7 +11058,8 @@ function srvCreate(){
       var cap = SRV.balance>0 ? SRV.balance : 1000; // a broke balance is reset to 1,000 by the server at start
       if (stake>cap){ stake = cap; srvNote("Stake capped at " + fmtCoins(cap) + " — that's your server balance."); }
     }
-    var createMsg = { type:"createRoom", mode: srvServerMode(), specials: true, stake: stake, hostColor: "w" };
+    var createMsg = { type:"createRoom", mode: srvServerMode(), specials: true, stake: stake, hostColor: "w", timerSec: G.pendingTimerSec };
+    SRV.timerSec = G.pendingTimerSec; SRV.timerAdopted = true; G.timerSec = G.pendingTimerSec;
     var pwEl = document.getElementById("srvCreatePassword");
     var pw = pwEl ? pwEl.value.trim() : "";
     if (pw) createMsg.password = pw; // password is sent only when the host entered one — never stored, never in any link
@@ -10332,7 +11141,7 @@ function qpRender(){
     var title = document.getElementById("qpTitle");
     if (title) title.innerHTML = QP.phase==="searching"
       ? "Searching for an opponent<span class=\"qp-dots\"></span>"
-      : (SRV.status==="waking" ? "Waking the server<span class=\"qp-dots\"></span>" : "Connecting<span class=\"qp-dots\"></span>");
+      : (SRV.status==="waking" ? "Connecting to the server<span class=\"qp-dots\"></span>" : "Connecting<span class=\"qp-dots\"></span>");
     var ql = document.getElementById("qpQueueLine");
     if (ql) ql.textContent = qpQueueLine();
     var el = document.getElementById("qpElapsed");
@@ -10340,7 +11149,7 @@ function qpRender(){
     var tm = document.getElementById("qpTiming");
     if (tm) tm.textContent = QP.phase==="searching"
       ? "Search widens after " + qpFmt(QP.strictSec) + " · gives up after " + qpFmt(QP.maxSearchSec)
-      : "The free server can take up to a minute to start. Hang tight.";
+      : "The server is always on — connecting usually takes a few seconds.";
     var nt = document.getElementById("qpNote");
     if (nt) nt.textContent = QP.noteText || "";
     var cb = document.getElementById("qpCancelBtn");
@@ -10406,6 +11215,7 @@ function qpStartQuickPlay(queueClass){
   if (!srvSupported()){ srvNote("Quick Play covers Normal & King of the Hill only — " + pendingVariantLabel() + " uses Friend (P2P) rooms below.", true); toast("Quick Play is for Normal & King of the Hill"); return; }
   if (SRV.active){ toast("You're already in a server game — finish or leave it first"); return; }
   if (SRV.status==="queued"){ toast("Already searching — cancel that search first"); return; }
+  if (queueClass==="ranked" && !(typeof ACCT!=="undefined" && ACCT && ACCT.account)){ showRankedGate(); return; }
   if (typeof LIVE!=="undefined" && LIVE.status!=="off") liveTeardown();
   srvEnsureLiveMode();
   QP.quick = true; QP.queueClass = queueClass; QP.oppName = null; QP.strictSec = 20; QP.maxSearchSec = 120;
@@ -10504,7 +11314,7 @@ function qpOnStatePlaying(s){
 }
 function qpOnConnectFailed(){
   if (QP.open && (QP.phase==="connecting" || QP.phase==="searching"))
-    qpShowNotice("failed", "Couldn't connect to the server", "The server didn't answer — it may still be waking up. Give it a few seconds and try again, or play a Friend (P2P) room instead.");
+    qpShowNotice("failed", "Couldn't connect to the server", "The server didn't answer — give it a few seconds and try again, or play a Friend (P2P) room instead.");
 }
 function qpOnSearchDropped(){
   if (QP.open && (QP.phase==="searching" || QP.phase==="connecting"))
@@ -10664,6 +11474,15 @@ document.querySelectorAll("[data-srv-mode]").forEach(function(b){
 document.querySelectorAll("[data-srv-stake]").forEach(function(b){
   b.addEventListener("click", function(){ srvUpdateSettings({ stake: parseInt(b.getAttribute("data-srv-stake"), 10) || 0 }); });
 });
+document.querySelectorAll("[data-srv-timer]").forEach(function(b){
+  b.addEventListener("click", function(){
+    var v = parseInt(b.getAttribute("data-srv-timer"), 10) || 0;
+    SRV.timerSec = v; SRV.timerAdopted = true;
+    ttAdoptTimer(v, false); // host's choice — applies to both players in this room
+    srvUpdateSettings({ timerSec: v });
+    srvRenderWaitRoom();
+  });
+});
 document.getElementById("srvJoinPassword").addEventListener("keydown", function(e){ if (e.key==="Enter"){ e.preventDefault(); srvJoin(); } });
 document.getElementById("srvResignBtn").addEventListener("click", function(){ if (SRV.active && SRV.phase==="playing") srvResign(); });
 document.getElementById("srvDrawBtn").addEventListener("click", function(){ if (SRV.active && SRV.phase==="playing") srvDrawAction(); });
@@ -10715,8 +11534,10 @@ document.addEventListener("visibilitychange", function(){ if (document.hidden) s
   startTurn();
   renderOnlineBadge();
   renderPanels();
-  // first visit with no saved name: ask for the in-game name over the menu
-  if (!PROFILE_NAME){
+  // first visit with no saved name: ask for the in-game name over the menu.
+  // Never when a server account is signed in — the account already
+  // identifies the player (the menu chip shows the account username).
+  if (!PROFILE_NAME && !(typeof acctSignedIn==="function" && acctSignedIn())){
     var np = document.getElementById("namePopup");
     if (np) np.classList.add("on");
   }
@@ -11836,11 +12657,11 @@ showGameOver = function(title, msg){
 <script>
 /* ============================================================
    SHEET SCROLL FIX — enhancer (see the kd-sheet-fix stylesheet).
-   Rebuilds each sheet card as pinned header / scrolling content /
-   pinned ✓ Done footer, and scroll-locks the background while any
-   sheet is open. Closing goes through the exact same functions /
-   class removals the existing ✕ and Cancel buttons already use —
-   no new close paths, no state changes.
+   Rebuilds each sheet card as pinned header / scrolling content,
+   and scroll-locks the background while any sheet is open.
+   Closing goes through the exact same functions / class removals
+   the existing ✕ and Cancel buttons already use — no new close
+   paths, no state changes.
    ============================================================ */
 (function(){
   "use strict";
@@ -11850,12 +12671,6 @@ showGameOver = function(title, msg){
     if (d.id === "purchaseSheet" && typeof closePurchaseSheet === "function"){ closePurchaseSheet(); return; }
     if (d.id === "previewStage" && typeof closePreview === "function"){ closePreview(); return; }
     d.classList.remove("on");
-  }
-  function makeDoneBtn(){
-    var b = document.createElement("button");
-    b.type = "button"; b.className = "sheet-done"; b.textContent = "✓ Done";
-    b.setAttribute("aria-label", "Done — close this panel");
-    return b;
   }
   function enhanceSheetCard(card){
     if (!card || card.classList.contains("kd-enhanced")) return;
@@ -11872,11 +12687,6 @@ showGameOver = function(title, msg){
       node = next;
     }
     card.appendChild(scroll);
-    var foot = document.createElement("div"); foot.className = "sheet-foot";
-    var done = makeDoneBtn();
-    done.addEventListener("click", function(){ closeDrawerEl(card.closest(".sheetdrawer, .chatdrawer, .kd-sheet")); });
-    foot.appendChild(done);
-    card.appendChild(foot);
     card.classList.add("kd-enhanced");
   }
   function enhanceKdCard(card){
@@ -11909,15 +12719,8 @@ showGameOver = function(title, msg){
   document.querySelectorAll(".sheetdrawer .sheetcard").forEach(enhanceSheetCard);
   document.querySelectorAll(".kd-sheet .kd-sheet-card").forEach(enhanceKdCard);
   /* room chat: its list is already the scroll region and its header
-     already pinned — it only gains the same pinned Done bar */
-  var chatCard = document.querySelector("#chatDrawer .chatcard");
-  if (chatCard && !chatCard.querySelector(".sheet-foot-inline")){
-    var cfoot = document.createElement("div"); cfoot.className = "sheet-foot-inline";
-    var cdone = makeDoneBtn();
-    cdone.addEventListener("click", function(){ closeDrawerEl(document.getElementById("chatDrawer")); });
-    cfoot.appendChild(cdone);
-    chatCard.appendChild(cfoot);
-  }
+     already pinned, so the enhancer leaves it as is — it closes from
+     the ✕ in its header like every other sheet */
   /* background scroll-lock: on while any sheet is open, fully off
      the moment the last one closes, so the page/game behind the
      sheet responds again without a refresh */
@@ -11977,6 +12780,30 @@ showGameOver = function(title, msg){
       if (typeof srvSyncRematchUI==="function") srvSyncRematchUI();
     }catch(e){}
   };
+})();
+</script>
+<script>
+/* Menu truth-keeping: the profile chip's rank-progress bar and the
+   Shop & Locker dot. The bar mirrors rankInfo().pct (the same value
+   the Profile panel's rank bar uses); the dot shows ONLY while a
+   daily or weekly Earn claim is actually ready, using the same
+   ECON timestamps and cooldowns as the Shop's Earn tab. */
+(function(){
+  function upd(){
+    try{
+      if (typeof rankInfo==="function"){
+        var f=document.getElementById("menuRankProgFill");
+        if (f) f.style.width=rankInfo().pct+"%";
+      }
+      if (typeof ECON!=="undefined" && ECON){
+        var now=Date.now();
+        var ready=(now-(ECON.lastDaily||0)>=864e5)||(now-(ECON.lastWeeklyCrown||0)>=7*864e5);
+        var d=document.getElementById("shopDot");
+        if (d) d.hidden=!ready;
+      }
+    }catch(e){}
+  }
+  upd(); setInterval(upd,5000);
 })();
 </script>
 </body>
