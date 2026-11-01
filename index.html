@@ -1416,6 +1416,26 @@
   html.reduce-motion .burst{display:none !important;}
 
   /* ============================================================
+     KING SMASH FINALE — when a King is captured, the capturing
+     piece strikes it and it shatters before the victory modal
+     rises; a checkmated Royal Guard King kneels and drops its
+     crown instead. One overlay layer above the board; purely
+     presentational — game state and settlement never wait on it.
+     ============================================================ */
+  .ksmash{position:absolute;inset:0;z-index:30;pointer-events:none;overflow:hidden;border-radius:12px;}
+  .kveil{position:absolute;inset:0;z-index:1;opacity:0;}
+  .kpiece{position:absolute;z-index:2;display:grid;place-items:center;line-height:1;transform:translateY(-1px);}
+  .kpiece.pw{color:#fffef8;text-shadow:0 1px 0 rgba(30,30,20,.85),0 0 3px rgba(30,30,20,.75),0 3px 4px rgba(20,20,10,.35),-1px 0 1px rgba(30,30,20,.6),1px 0 1px rgba(30,30,20,.6);}
+  .kpiece.pb{color:#1b1b17;text-shadow:0 1px 0 rgba(255,255,240,.28),0 2px 3px rgba(0,0,0,.35);}
+  .kcracks{position:absolute;z-index:4;opacity:0;}
+  .kflash{position:absolute;z-index:5;border-radius:50%;background:radial-gradient(circle,rgba(255,246,200,.95) 0%,rgba(246,215,118,.55) 42%,rgba(246,215,118,0) 72%);opacity:0;}
+  .kshard{position:absolute;z-index:6;will-change:transform,opacity;}
+  .kspark{position:absolute;z-index:6;border-radius:50%;background:radial-gradient(circle,#fff3c4 0%,#e8c15a 68%,rgba(232,193,90,0) 100%);will-change:transform,opacity;}
+  .kcrown{position:absolute;z-index:3;display:grid;place-items:center;line-height:1;color:#f6d776;text-shadow:0 0 10px rgba(232,193,90,.85),0 2px 3px rgba(0,0,0,.5);opacity:0;}
+  @media (prefers-reduced-motion: reduce){ .ksmash{display:none !important;} }
+  html.reduce-motion .ksmash{display:none !important;}
+
+  /* ============================================================
      PROGRESSION — avatar picker, rank ladder, cosmetics.
      Cosmetic themes are pure CSS overrides keyed off body
      classes set from the saved on-device profile.
@@ -1627,7 +1647,7 @@
     <div class="about-sec">
       <h3>Radio &amp; voice</h3>
       <p><b>Radio:</b> the menu 📻 bar tunes four original stations made by the game itself — <b>Kings FM</b> (calm royal pads), <b>Pool Party</b> (dreamy chill plucks), <b>War Drums</b> (tense drums for matches) and <b>Lo-Fi Court</b> (mellow chords with vinyl crackle) — plus Off. Your station is saved on this device, plays on menu and setup screens, and in a match only if you turn it on from the in-game 📻 button. It is purely local and never syncs to your friend.</p>
-      <p><b>Voice:</b> in Live Online rooms, the 🎤 button starts an audio-only <b>voice chat</b> with your friend — the mic only opens when you tap, nothing is recorded, and headphones are recommended. <b>Voice Controls</b> (Settings, off by default) add a 🎙 button in any match: tap it and say “roll”, “knight”, “e2 to e4”, “end turn”, “undo” or “flip board” — listening only starts on your tap and nothing is stored by the game.</p>
+      <p><b>Voice:</b> in Live Online rooms (server rooms and Friend rooms alike), the 🎤 button starts an audio-only <b>voice chat</b> with your friend — the mic only opens when you tap, nothing is recorded, and headphones are recommended. <b>Voice Controls</b> (Settings, off by default) add a 🎙 button in any match: tap it and say “roll”, “knight”, “e2 to e4”, “end turn”, “undo” or “flip board” — listening only starts on your tap and nothing is stored by the game.</p>
     </div>
 
     <div class="about-sec">
@@ -2097,7 +2117,7 @@
       <button class="utilbtn" id="voiceMuteBtn" type="button" disabled>Mute</button>
       <button class="utilbtn" id="voiceHangBtn" type="button" disabled>Hang up</button>
     </div>
-    <p class="panelnote">Live Online rooms only — audio only, over the same friend connection as the game. Your mic never opens until you tap Start (or Join), and nothing is recorded or stored. <b>Headphones recommended</b> — phone speakers can echo. Either side can mute or hang up at any time.</p>
+    <p class="panelnote">Live Online rooms only — works in server rooms and Friend (P2P) rooms. Audio only, direct between your two phones; the game server never hears it. Your mic never opens until you tap Start (or Join), and nothing is recorded or stored. <b>Headphones recommended</b> — phone speakers can echo. Either side can mute or hang up at any time.</p>
   </div>
 </div>
 
@@ -3395,6 +3415,10 @@ function sfxMove(){ sfxNoise(0.045, 0.04, 0, 750); sfxTone(215, 0.07, "sine", 0.
 function sfxCapture(){ sfxNoise(0.07, 0.06, 0, 520); sfxTone(150, 0.13, "triangle", 0.07, 0, 82); }
 function sfxCheck(){ sfxTone(196, 0.11, "triangle", 0.055); sfxTone(147, 0.16, "triangle", 0.055, 0.1); }
 function sfxVictory(){ [523,659,784,1047].forEach(function(f,i){ sfxTone(f, 0.16, "triangle", 0.05, i*0.09); }); }
+/* KING SMASH impact: a much deeper, louder layer over the plain capture
+   hit — sub boom, low thud and a bright shatter crackle. All sfx helpers
+   already honour the Sound FX toggle via sfxCtx(). */
+function sfxSmash(){ sfxNoise(0.18, 0.12, 0, 260); sfxTone(110, 0.34, "triangle", 0.12, 0, 44); sfxTone(62, 0.42, "sine", 0.09, 0.02, 38); sfxNoise(0.24, 0.06, 0.05, 2600); }
 function syncSfxUI(){
   document.querySelectorAll("[data-sfx-set]").forEach(function(b){ b.classList.toggle("on", (b.getAttribute("data-sfx-set")==="on")===SFX.on); });
 }
@@ -3432,7 +3456,8 @@ function startTurn(){
       if (gInCheck){
         G.winner = opp(G.st.turn);
         settleCoins();
-        renderBoard(); showGameOver("Checkmate!", nameWithColour(opp(G.st.turn)) + " wins — " + nameWithColour(G.st.turn) + "'s King is in check and no legal escape exists at all. True checkmate, declared before any dice are rolled.");
+        renderBoard();
+        playKingKneel(G.st.turn, function(){ showGameOver("Checkmate!", nameWithColour(opp(G.st.turn)) + " wins — " + nameWithColour(G.st.turn) + "'s King is in check and no legal escape exists at all. True checkmate, declared before any dice are rolled."); });
       } else {
         G.winner = "draw";
         settleCoins();
@@ -3834,7 +3859,7 @@ function guardAfterRoll(){
   G.over=true; G.winner=opp(G.st.turn); G.phase="over";
   settleCoins();
   renderBoard();
-  showGameOver("Checkmate by dice!", nameWithColour(opp(G.st.turn)) + " wins — " + nameWithColour(G.st.turn) + "'s King stayed in check: escape moves existed, but the roll and the one reroll produced no die that could play one.");
+  playKingKneel(G.st.turn, function(){ showGameOver("Checkmate by dice!", nameWithColour(opp(G.st.turn)) + " wins — " + nameWithColour(G.st.turn) + "'s King stayed in check: escape moves existed, but the roll and the one reroll produced no die that could play one."); });
   afterAnyMove(); broadcastState();
 }
 function rerollGuardDice(){
@@ -4256,8 +4281,12 @@ function doMove(m){
     G.turnLog=[];
     G.over=true; G.winner=mover; G.phase="over"; G.kingKillWin=true;
     settleCoins();
-    renderBoard(); showGameOver("King Killed!", nameWithColour(mover) + " killed the King and wins the game!");
+    renderBoard();
     afterAnyMove(); broadcastState();
+    // KING SMASH finale: state and settlement are already committed
+    // above — the animation only delays the victory modal.
+    playKingSmash({ kr:m.tr, kc:m.tc, victim:opp(mover), aType:(m.promo || piece.t), aColor:mover, ar:m.fr, ac:m.fc },
+      function(){ showGameOver("King Killed!", nameWithColour(mover) + " killed the King and wins the game!"); });
     return;
   }
   // King of the Hill: legally moving your own King onto a hill square wins
@@ -4344,6 +4373,231 @@ function showGameOver(title, msg){
   box.appendChild(big); box.appendChild(h); box.appendChild(p); if (typeof coinP!=="undefined" && coinP) box.appendChild(coinP); box.appendChild(b); box.appendChild(b2);
   document.getElementById("overlay").classList.add("on");
   setStatus("<b>"+title+".</b> " + msg + (G.coinResult ? " <b>" + escHtml(G.coinResult) + "</b>" : ""));
+}
+
+/* ---------- KING SMASH finale (presentation only) ----------
+   Triggered ONLY by the game-ending King capture, in every mode where
+   Kings are captured (the Double Kings first capture never reaches it —
+   doMove returns earlier). Sequence (~1.6s): a ~300ms slow-motion beat
+   while the board dims around the doomed King, the capturing piece
+   lunges in and strikes, an impact flash + spider cracks cross the
+   King, the board shakes, then the King shatters into shards in its own
+   colours with a gold spark burst — and only then does the caller show
+   the victory modal. Game state, the result and coin settlement are
+   committed by the caller BEFORE this runs; nothing here gates them,
+   and online clients each play it off the game-over result they already
+   receive. Royal Guard checkmates use playKingKneel instead (Kings are
+   never captured there). Reduced motion collapses both to a simple
+   gold flash on the King's square, then the modal. */
+var _finaleToken = 0;
+function fxReducedMotion(){
+  return document.documentElement.classList.contains("reduce-motion") || (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+}
+function finaleSquareEl(r, c){
+  var o = G.orientation;
+  var dr = o==="w" ? r : 7-r, dc = o==="w" ? c : 7-c;
+  return boardEl.children[dr*8+dc] || null;
+}
+function finaleLayer(){
+  var wrap = boardEl.parentElement;
+  var old = wrap.querySelector(".ksmash"); if (old) old.remove();
+  var layer = document.createElement("div");
+  layer.className = "ksmash"; layer.setAttribute("aria-hidden", "true");
+  wrap.appendChild(layer);
+  return layer;
+}
+function finalePos(r, c){ /* % position of a square's top-left in the board layer */
+  var o = G.orientation;
+  var dr = o==="w" ? r : 7-r, dc = o==="w" ? c : 7-c;
+  return { x: dc*12.5, y: dr*12.5 };
+}
+function finalePieceEl(type, color){
+  var el = document.createElement("span");
+  el.className = "kpiece " + (color==="w" ? "pw" : "pb");
+  el.textContent = GLYPH[type];
+  el.style.fontSize = Math.round(((boardEl.clientWidth || 320)/8) * 0.86) + "px";
+  el.style.width = "12.5%"; el.style.height = "12.5%";
+  return el;
+}
+function finaleFlashSquare(r, c, ms){
+  var sq = finaleSquareEl(r, c);
+  if (!sq) return;
+  sq.style.boxShadow = "inset 0 0 0 3px rgba(246,215,118,.95), inset 0 0 26px rgba(232,193,90,.75)";
+  setTimeout(function(){ sq.style.boxShadow = ""; }, ms || 450);
+}
+function playKingSmash(o, done){
+  var my = ++_finaleToken, finished = false, timers = [];
+  function at(fn, ms){ timers.push(setTimeout(fn, ms)); }
+  function finish(){
+    if (finished) return; finished = true;
+    timers.forEach(clearTimeout);
+    var wrap = boardEl.parentElement, layer = wrap.querySelector(".ksmash");
+    if (layer) layer.remove();
+    if (my===_finaleToken && G.over) done();
+  }
+  try{
+    if (fxReducedMotion()){ finaleFlashSquare(o.kr, o.kc, 450); at(finish, 480); return; }
+    var layer = finaleLayer();
+    var kp = finalePos(o.kr, o.kc), ap = finalePos(o.ar, o.ac);
+    var sqW = (boardEl.clientWidth || 320)/8, sqH = (boardEl.clientHeight || boardEl.clientWidth || 320)/8;
+    // The real attacker already sits rendered on the King's square —
+    // hide it; a clone in the layer performs the strike from its origin.
+    var destSq = finaleSquareEl(o.kr, o.kc);
+    var realPiece = destSq ? destSq.querySelector(".piece") : null;
+    if (realPiece) realPiece.style.visibility = "hidden";
+    // slow-motion veil: the board dims, the doomed King stays lit
+    var veil = document.createElement("div"); veil.className = "kveil";
+    veil.style.background = "radial-gradient(circle at " + (kp.x+6.25) + "% " + (kp.y+6.25) + "%, rgba(0,0,0,0) 0 9%, rgba(4,5,12,.52) 36%)";
+    layer.appendChild(veil);
+    var king = finalePieceEl("k", o.victim);
+    king.style.left = kp.x + "%"; king.style.top = kp.y + "%"; king.style.zIndex = "2";
+    layer.appendChild(king);
+    var atk = finalePieceEl(o.aType, o.aColor);
+    atk.style.left = ap.x + "%"; atk.style.top = ap.y + "%"; atk.style.zIndex = "3";
+    layer.appendChild(atk);
+    var cracks = document.createElement("div");
+    cracks.className = "kcracks";
+    cracks.style.left = kp.x + "%"; cracks.style.top = kp.y + "%"; cracks.style.width = "12.5%"; cracks.style.height = "12.5%";
+    var stroke = o.victim==="w" ? "rgba(38,36,28,.92)" : "rgba(240,236,220,.95)";
+    cracks.innerHTML = '<svg viewBox="0 0 100 100" width="100%" height="100%" fill="none" stroke="' + stroke + '" stroke-width="2.4" stroke-linecap="round">'
+      + '<polyline points="50,50 43,36 46,24 39,10"/><polyline points="50,50 61,39 59,27 66,15"/>'
+      + '<polyline points="50,50 36,47 24,50 12,45"/><polyline points="50,50 64,52 76,49 88,55"/>'
+      + '<polyline points="50,50 44,63 47,76 41,89"/><polyline points="50,50 58,64 55,78 62,90"/>'
+      + '<polyline points="50,50 50,34"/><polyline points="43,36 33,31"/><polyline points="61,39 71,33"/></svg>';
+    layer.appendChild(cracks);
+    var flash = document.createElement("div");
+    flash.className = "kflash";
+    flash.style.left = (kp.x-6.25) + "%"; flash.style.top = (kp.y-6.25) + "%"; flash.style.width = "25%"; flash.style.height = "25%";
+    layer.appendChild(flash);
+    if (veil.animate) veil.animate([{ opacity:0 }, { opacity:1 }], { duration:300, fill:"forwards", easing:"ease-out" });
+    // the beat (~300ms slow motion): the attacker rears back, the King braces
+    if (atk.animate) atk.animate([
+      { transform:"translateY(-1px) scale(1)" },
+      { transform:"translateY(-6px) scale(1.14) rotate(-4deg)" }
+    ], { duration:300, fill:"forwards", easing:"ease-out" });
+    if (king.animate) king.animate([
+      { transform:"translateY(-1px) scale(1)" }, { transform:"translateY(-1px) scale(1.05)" }
+    ], { duration:300, fill:"forwards", easing:"ease-out" });
+    at(function(){ /* LUNGE — the strike travels to the King's square */
+      if (!atk.animate){ return; }
+      try{ atk.getAnimations().forEach(function(a){ a.cancel(); }); }catch(e){}
+      var dx = ((kp.x-ap.x)/12.5) * sqW, dy = ((kp.y-ap.y)/12.5) * sqH;
+      atk.animate([
+        { transform:"translate(0px,-6px) scale(1.14) rotate(-4deg)" },
+        { transform:"translate(" + Math.round(dx) + "px," + Math.round(dy-1) + "px) scale(1.06) rotate(0deg)" }
+      ], { duration:230, fill:"forwards", easing:"cubic-bezier(.55,0,.85,.4)" });
+    }, 320);
+    at(function(){ /* IMPACT — flash, cracks, shake, the deep hit */
+      sfxSmash();
+      if (flash.animate) flash.animate([
+        { opacity:0, transform:"scale(.55)" }, { opacity:.95, transform:"scale(1.05)", offset:.35 }, { opacity:0, transform:"scale(1.7)" }
+      ], { duration:400, fill:"forwards", easing:"ease-out" });
+      if (cracks.animate) cracks.animate([
+        { opacity:0, transform:"scale(.9)" }, { opacity:1, transform:"scale(1)" }
+      ], { duration:90, fill:"forwards", easing:"ease-out" });
+      if (king.animate){
+        try{ king.getAnimations().forEach(function(a){ a.cancel(); }); }catch(e){}
+        king.animate([
+          { transform:"translateY(-1px) scale(1.05)" }, { transform:"translate(2px,0px) scale(1.02)", offset:.4 }, { transform:"translateY(0px) scale(1)" }
+        ], { duration:150, fill:"forwards", easing:"ease-out" });
+      }
+      var wrap = boardEl.parentElement;
+      if (wrap.animate) wrap.animate([
+        { transform:"translate(0px,0px)" }, { transform:"translate(-7px,3px)" }, { transform:"translate(6px,-3px)" },
+        { transform:"translate(-5px,-2px)" }, { transform:"translate(4px,2px)" }, { transform:"translate(-2px,0px)" }, { transform:"translate(0px,0px)" }
+      ], { duration:340, easing:"ease-out" });
+    }, 550);
+    at(function(){ /* SHATTER — the King breaks apart over the nearby squares */
+      king.remove(); cracks.remove();
+      var cx = ((kp.x+6.25)/100) * (boardEl.clientWidth || 320), cy = ((kp.y+6.25)/100) * (boardEl.clientHeight || boardEl.clientWidth || 320);
+      var tones = o.victim==="w" ? ["#fffef8","#efe9d8","#ddd5bf","#f6f1e2"] : ["#26261f","#171712","#33332a","#1f1f19"];
+      var polys = ["polygon(50% 0,100% 100%,0 78%)","polygon(0 0,100% 22%,58% 100%)","polygon(18% 0,100% 60%,30% 100%,0 45%)","polygon(0 30%,70% 0,100% 100%,15% 85%)"];
+      for (var i=0; i<13; i++){
+        var sh = document.createElement("div"); sh.className = "kshard";
+        var w = 5 + Math.random()*11, h = 5 + Math.random()*10;
+        sh.style.width = w + "px"; sh.style.height = h + "px";
+        sh.style.left = cx + "px"; sh.style.top = cy + "px";
+        sh.style.marginLeft = (-w/2) + "px"; sh.style.marginTop = (-h/2) + "px";
+        sh.style.background = i%4===3 ? "linear-gradient(160deg,#ffe98a,#c49a28)" : tones[i % tones.length];
+        sh.style.clipPath = polys[i % polys.length];
+        layer.appendChild(sh);
+        if (sh.animate){
+          var ang = Math.random()*Math.PI*2, dist = sqW*(0.55 + Math.random()*1.5);
+          var dx2 = Math.cos(ang)*dist, up = -(8 + Math.random()*sqH*0.55), drop = sqH*(0.5 + Math.random()*0.9);
+          var rot = Math.round(Math.random()*560 - 280);
+          sh.animate([
+            { transform:"translate(0px,0px) rotate(0deg)", opacity:1 },
+            { transform:"translate(" + Math.round(dx2*0.6) + "px," + Math.round(up) + "px) rotate(" + Math.round(rot*0.6) + "deg)", opacity:1, offset:.45 },
+            { transform:"translate(" + Math.round(dx2) + "px," + Math.round(drop) + "px) rotate(" + rot + "deg)", opacity:0 }
+          ], { duration:720 + Math.random()*260, fill:"forwards", easing:"cubic-bezier(.25,.6,.35,1)" });
+        }
+      }
+      for (var j=0; j<8; j++){ /* gold spark burst */
+        var sp = document.createElement("div"); sp.className = "kspark";
+        var sz = 4 + Math.random()*4;
+        sp.style.width = sz + "px"; sp.style.height = sz + "px";
+        sp.style.left = cx + "px"; sp.style.top = cy + "px";
+        sp.style.marginLeft = (-sz/2) + "px"; sp.style.marginTop = (-sz/2) + "px";
+        layer.appendChild(sp);
+        if (sp.animate){
+          var a2 = (j/8)*Math.PI*2 + Math.random()*0.5, d2 = sqW*(0.8 + Math.random()*0.9);
+          sp.animate([
+            { transform:"translate(0px,0px) scale(1)", opacity:1 },
+            { transform:"translate(" + Math.round(Math.cos(a2)*d2) + "px," + Math.round(Math.sin(a2)*d2*0.8) + "px) scale(.4)", opacity:0 }
+          ], { duration:520 + Math.random()*220, fill:"forwards", easing:"ease-out" });
+        }
+      }
+      if (atk.animate) atk.animate([
+        { transform:"scale(1.06)" }, { transform:"scale(1)" }
+      ], { duration:260, fill:"forwards", easing:"ease-out", composite:"add" });
+    }, 700);
+    at(finish, 1620);
+  }catch(e){ finish(); }
+}
+/* ROYAL GUARD finale: the mated King is never captured — it kneels,
+   bows, and its crown drops beside it and fades. Then the modal. */
+function playKingKneel(loserColor, done){
+  var my = ++_finaleToken, finished = false, timers = [];
+  function at(fn, ms){ timers.push(setTimeout(fn, ms)); }
+  function finish(){
+    if (finished) return; finished = true;
+    timers.forEach(clearTimeout);
+    var wrap = boardEl.parentElement, layer = wrap.querySelector(".ksmash");
+    if (layer) layer.remove();
+    if (my===_finaleToken && G.over) done();
+  }
+  try{
+    var ksq = findKing(G.st.board, loserColor);
+    if (!ksq){ finish(); return; }
+    if (fxReducedMotion()){ finaleFlashSquare(ksq.r, ksq.c, 450); at(finish, 480); return; }
+    var sqEl = finaleSquareEl(ksq.r, ksq.c);
+    var pieceEl = sqEl ? sqEl.querySelector(".piece") : null;
+    var layer = finaleLayer();
+    var kp = finalePos(ksq.r, ksq.c);
+    var crown = document.createElement("span");
+    crown.className = "kcrown"; crown.textContent = "♛";
+    crown.style.fontSize = Math.round(((boardEl.clientWidth || 320)/8) * 0.5) + "px";
+    crown.style.width = "12.5%"; crown.style.height = "12.5%";
+    crown.style.left = kp.x + "%"; crown.style.top = kp.y + "%";
+    layer.appendChild(crown);
+    if (pieceEl && pieceEl.animate){
+      pieceEl.animate([
+        { transform:"translateY(-1px) rotate(0deg) scale(1,1)", opacity:1 },
+        { transform:"translateY(4px) rotate(-5deg) scale(.94,.88)", opacity:.92, offset:.55 },
+        { transform:"translateY(7px) rotate(-3deg) scale(.96,.86)", opacity:.88 }
+      ], { duration:820, fill:"forwards", easing:"cubic-bezier(.4,0,.3,1)" });
+    }
+    if (crown.animate){
+      crown.animate([
+        { transform:"translate(4px,-16px) rotate(12deg)", opacity:0 },
+        { transform:"translate(9px,-9px) rotate(20deg)", opacity:1, offset:.3 },
+        { transform:"translate(15px,9px) rotate(38deg)", opacity:.85, offset:.72 },
+        { transform:"translate(19px,17px) rotate(52deg)", opacity:0 }
+      ], { duration:1000, delay:260, fill:"forwards", easing:"cubic-bezier(.5,0,.7,.4)" });
+    }
+    at(function(){ sfxTone(1180, 0.07, "triangle", 0.028); }, 950); /* the crown lands */
+    at(finish, 1300);
+  }catch(e){ finish(); }
 }
 
 /* ---------- computer player ---------- */
@@ -5168,6 +5422,7 @@ function adoptNames(n, senderColor){
 }
 function applyRemoteState(s, senderColor){
   var wasOver = G.over;
+  var prevBoard = (G.st && G.st.board) || null;
   try{
     var st = freshState();
     st.board = stringToBoard(s.b);
@@ -5207,7 +5462,24 @@ function applyRemoteState(s, senderColor){
     if (G.over && !wasOver){
       if (G.winner==="draw") showGameOver("Game over", "The game ended in a draw.");
       else if (G.hillWin) showGameOver("King of the Hill!", nameWithColour(G.winner) + " wins — King reached the hill!");
-      else showGameOver("King Killed!", nameWithColour(G.winner) + " killed the King and wins the game!");
+      else if (G.variant==="guard"){
+        // Royal Guard ends by checkmate, never by capture — kneel finale.
+        playKingKneel(opp(G.winner), function(){ showGameOver("King Killed!", nameWithColour(G.winner) + " killed the King and wins the game!"); });
+      }
+      else {
+        // KING SMASH on the receiving client too — but only when the
+        // last move really captured the loser's King (checked against
+        // the board as it was before this state landed), so Horde
+        // wipeouts and Shrinking Board burns keep their plain modal.
+        var lmK = G.lastMove;
+        var prevPc = (lmK && prevBoard && prevBoard[lmK.tr]) ? prevBoard[lmK.tr][lmK.tc] : null;
+        var nowPc = (lmK && G.st.board[lmK.tr]) ? G.st.board[lmK.tr][lmK.tc] : null;
+        if (lmK && prevPc && prevPc.t==="k" && prevPc.c===opp(G.winner) && nowPc && nowPc.c===G.winner){
+          playKingSmash({ kr:lmK.tr, kc:lmK.tc, victim:opp(G.winner), aType:nowPc.t, aColor:G.winner, ar:lmK.fr, ac:lmK.fc },
+            function(){ showGameOver("King Killed!", nameWithColour(G.winner) + " killed the King and wins the game!"); });
+        }
+        else showGameOver("King Killed!", nameWithColour(G.winner) + " killed the King and wins the game!");
+      }
     } else if (!G.over){
       if (G.phase==="await-roll"){
         if (G.st.turn===G.myColor) setStatus("Your turn, " + escHtml(playerName(G.myColor)) + " — roll the 3 dice.");
@@ -5301,6 +5573,7 @@ function liveTeardown(silent){
   try{ if (LIVE.peer) LIVE.peer.destroy(); }catch(e){}
   LIVE.peer=null; LIVE.conn=null; LIVE.role=null; LIVE.code=null; LIVE.status="off";
   resetChat(); closeChatDrawer();
+  if (typeof voiceTeardownSrvPeer==="function") voiceTeardownSrvPeer();
   if (!silent) updateLiveUI();
 }
 function liveSetupConn(conn){
@@ -5566,6 +5839,8 @@ function newGame(mode){
   }
   var switching = mode && mode!==G.mode;
   if (switching && G.mode==="live") liveTeardown();
+  _finaleToken++; /* a pending king-smash/kneel finale must not modal over the new game */
+  var staleSmash = document.querySelector(".ksmash"); if (staleSmash) staleSmash.remove();
   clearTimers(); closeModal();
   G.mode = mode || G.mode;
   if (G.mode!=="live"){ G.myColor="w"; }
@@ -6457,13 +6732,30 @@ radioRenderUI();
 window.RADIO_STATE = MUSIC;
 
 /* ============================================================
-   VOICE CHAT — Live only, PeerJS audio-only media call.
+   VOICE CHAT — Live rooms, audio-only WebRTC media call.
+   Works in BOTH live transports:
+   - Friend (P2P) rooms: the call rides the same PeerJS peer as
+     the game data connection, with a data-channel invite first.
+   - Server rooms: each player opens a small dedicated PeerJS
+     peer whose id is derived from the server room code + colour
+     (dicechess-voice-v1-<code>-<w|b>), so the two phones find
+     each other directly — the game server never carries audio.
+   Both use the same ICE/TURN config as the game connection
+   (PEER_OPTS), which is what lets calls cross phone-carrier NATs.
    The mic opens ONLY on an explicit tap (Start / Join).
    Nothing is recorded or stored anywhere.
    ============================================================ */
-var VOICE = { state:"off", stream:null, call:null, pendingCall:null, remoteAudio:null, muted:false, watchedPeer:null };
-function voiceSupported(){
-  return typeof Peer!=="undefined" && !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia);
+var VOICE = { state:"off", stream:null, call:null, pendingCall:null, remoteAudio:null, muted:false, watchedPeer:null,
+              srvPeer:null, srvPeerId:null, srvPeerRetry:0, wantJoin:false, connectTimer:null, note:null, transport:null, _ensuring:false };
+var VOICE_PREFIX = "dicechess-voice-v1-";
+var VOICE_CONNECT_TIMEOUT = 25000;
+function voiceSrvRoomOn(){
+  return typeof SRV!=="undefined" && !!SRV.active && G.mode==="live";
+}
+function voiceTransport(){
+  if (voiceSrvRoomOn()) return SRV.phase==="playing" ? "srv" : null;
+  if (G.mode==="live" && LIVE.status==="connected" && LIVE.peer && LIVE.conn) return "p2p";
+  return null;
 }
 function voiceUnavailable(msg){
   VOICE.state = "off";
@@ -6472,13 +6764,49 @@ function voiceUnavailable(msg){
   var st = document.getElementById("voiceStatus");
   if (st){ st.textContent = VOICE.note; st.className = "livestatus err"; }
   updateVoiceUI();
-  toast("Voice chat isn't available here — text chat still works");
+  toast(VOICE.note.length < 150 ? VOICE.note : "Voice chat isn't available here — text chat still works");
+}
+function voiceSupportedCheck(){
+  if (typeof Peer==="undefined"){ voiceUnavailable("The voice connection library didn't load — check your connection, reload the game, then tap Start again."); return false; }
+  if (!window.isSecureContext){ voiceUnavailable("Voice chat needs the game opened over a secure (HTTPS) connection — this page isn't secure, so the browser blocks the microphone."); return false; }
+  if (!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia)){
+    voiceUnavailable(window.self!==window.top
+      ? "The app window you're playing in is blocking microphone access, so voice chat can't start here. Open the game's own address in your phone's browser (Chrome), allow the mic there, and voice will work. Text chat still works here."
+      : "This browser doesn't offer a microphone here, so voice chat can't start — text chat still works.");
+    return false;
+  }
+  return true;
+}
+function voiceMicError(err){
+  var name = (err && err.name) || "";
+  if (name==="NotAllowedError" || name==="SecurityError"){
+    if (window.self!==window.top) voiceUnavailable("The app window you're playing in blocked the microphone. Open the game's own address in your phone's browser (Chrome), allow the mic there, and voice chat will work — text chat still works here.");
+    else voiceUnavailable("Microphone permission was denied — allow the mic for this site in your browser settings, then tap Start again. Text chat still works.");
+  } else if (name==="NotFoundError" || name==="OverconstrainedError" || name==="ConstraintNotSatisfiedError"){
+    voiceUnavailable("No microphone was found on this device, so voice chat can't start — text chat still works.");
+  } else if (name==="NotReadableError" || name==="AbortError" || name==="TrackStartError"){
+    voiceUnavailable("Your microphone is busy — another app may be using it. Close that app, then tap Start again.");
+  } else {
+    voiceUnavailable("The microphone couldn't be opened here — voice chat isn't available in this browser/session. Text chat still works.");
+  }
+}
+function voiceClearConnectTimer(){
+  if (VOICE.connectTimer){ clearTimeout(VOICE.connectTimer); VOICE.connectTimer = null; }
+}
+function voiceArmConnectTimer(onTimeout){
+  voiceClearConnectTimer();
+  VOICE.connectTimer = setTimeout(function(){
+    VOICE.connectTimer = null;
+    if (VOICE.state==="connecting") onTimeout();
+  }, VOICE_CONNECT_TIMEOUT);
 }
 function voiceCleanupMedia(){
+  voiceClearConnectTimer();
+  VOICE.wantJoin = false;
   try{ if (VOICE.call) VOICE.call.close(); }catch(e){}
   VOICE.call = null; VOICE.pendingCall = null;
   if (VOICE.stream){ try{ VOICE.stream.getTracks().forEach(function(t){ t.stop(); }); }catch(e){} VOICE.stream = null; }
-  if (VOICE.remoteAudio){ try{ VOICE.remoteAudio.pause(); VOICE.remoteAudio.srcObject = null; }catch(e){} VOICE.remoteAudio = null; }
+  if (VOICE.remoteAudio){ try{ VOICE.remoteAudio.pause(); VOICE.remoteAudio.srcObject = null; if (VOICE.remoteAudio.parentNode) VOICE.remoteAudio.parentNode.removeChild(VOICE.remoteAudio); }catch(e){} VOICE.remoteAudio = null; }
   VOICE.muted = false;
 }
 function voiceEnd(notify){
@@ -6486,102 +6814,250 @@ function voiceEnd(notify){
   VOICE.state = "off";
   voiceCleanupMedia();
   if (notify && typeof liveSend==="function") { try{ liveSend({ kind:"voice", ev:"end" }); }catch(e){} }
+  VOICE.transport = null;
   updateVoiceUI();
   if (was==="live" || was==="muted" || was==="connecting") toast("Voice chat ended — mic is off");
+}
+function voiceArmAutoplayRetry(){
+  var retry = function(){
+    document.removeEventListener("pointerdown", retry);
+    try{ if (VOICE.remoteAudio){ var p = VOICE.remoteAudio.play(); if (p && p.catch) p.catch(function(){}); } }catch(e){}
+  };
+  document.addEventListener("pointerdown", retry);
 }
 function voiceWireCall(call){
   VOICE.call = call;
   call.on("stream", function(remote){
+    if (VOICE.call!==call) return; // superseded (glare resolution) — ignore
+    voiceClearConnectTimer();
     try{
-      if (!VOICE.remoteAudio){ VOICE.remoteAudio = document.createElement("audio"); VOICE.remoteAudio.autoplay = true; VOICE.remoteAudio.setAttribute("playsinline",""); }
+      if (!VOICE.remoteAudio){ VOICE.remoteAudio = document.createElement("audio"); VOICE.remoteAudio.autoplay = true; VOICE.remoteAudio.setAttribute("playsinline",""); VOICE.remoteAudio.style.display = "none"; document.body.appendChild(VOICE.remoteAudio); }
       VOICE.remoteAudio.srcObject = remote;
-      var p = VOICE.remoteAudio.play(); if (p && p.catch) p.catch(function(){});
+      var p = VOICE.remoteAudio.play(); if (p && p.catch) p.catch(function(){ voiceArmAutoplayRetry(); });
     }catch(e){}
     VOICE.state = VOICE.muted ? "muted" : "live";
     updateVoiceUI();
     toast("🎤 Voice chat live — headphones recommended");
   });
-  call.on("close", function(){ if (VOICE.state!=="off") voiceEnd(false); });
-  call.on("error", function(){ if (VOICE.state!=="off") voiceUnavailable("Voice chat hit a problem and stopped — text chat still works."); });
+  call.on("close", function(){ if (VOICE.call!==call) return; if (VOICE.state!=="off") voiceEnd(false); });
+  call.on("error", function(){ if (VOICE.call!==call) return; if (VOICE.state!=="off") voiceUnavailable("Voice chat hit a problem and stopped — text chat still works."); });
+  // If the media path itself can't be built (strict carrier NAT, relay
+  // blocked), the call never produces a stream — surface that instead
+  // of sitting on "Connecting…" forever.
+  try{
+    var pc = call.peerConnection;
+    if (pc && pc.addEventListener){
+      pc.addEventListener("iceconnectionstatechange", function(){
+        if (VOICE.call===call && pc.iceConnectionState==="failed" && VOICE.state!=="off"){
+          voiceUnavailable("The voice connection couldn't get through your networks — this happens on some mobile data connections. Try again on Wi-Fi, or keep using text chat.");
+        }
+      });
+    }
+  }catch(e){}
 }
 function voiceGetMic(){
-  return navigator.mediaDevices.getUserMedia({ audio:true, video:false });
+  var md = navigator.mediaDevices;
+  return md.getUserMedia({ audio:{ echoCancellation:true, noiseSuppression:true, autoGainControl:true }, video:false }).catch(function(err){
+    if (err && (err.name==="OverconstrainedError" || err.name==="ConstraintNotSatisfiedError")) return md.getUserMedia({ audio:true, video:false });
+    throw err;
+  });
 }
-function voiceStart(){
-  if (typeof SRV!=="undefined" && SRV.active){ toast("Voice chat lives in Friend (P2P) rooms for now"); return; }
-  if (G.mode!=="live" || LIVE.status!=="connected" || !LIVE.peer || !LIVE.conn){
-    var st = document.getElementById("voiceStatus");
-    if (st){ st.textContent = "Voice chat needs a connected Live room — create or join a room and connect with your friend first. Text chat works the same way."; st.className = "livestatus"; }
-    toast("Voice chat connects when your friend joins your Live room");
-    return;
-  }
-  if (!voiceSupported()){ voiceUnavailable(); return; }
-  if (VOICE.state==="live" || VOICE.state==="muted" || VOICE.state==="connecting") return;
-  VOICE.note = null;
-  VOICE.state = "connecting"; updateVoiceUI();
-  voiceGetMic().then(function(stream){
-    VOICE.stream = stream; VOICE.muted = false;
-    try{ liveSend({ kind:"voice", ev:"invite" }); }catch(e){}
+function voiceSrvPeerId(color){
+  var code = "";
+  try{ code = String(SRV.roomCode || ""); }catch(e){}
+  return VOICE_PREFIX + code.toLowerCase().replace(/[^a-z0-9]/g,"") + "-" + (color==="b" ? "b" : "w");
+}
+function voiceTeardownSrvPeer(){
+  var had = !!VOICE.srvPeer;
+  if (VOICE.srvPeer){ try{ VOICE.srvPeer.destroy(); }catch(e){} VOICE.srvPeer = null; VOICE.srvPeerId = null; }
+  if (had && VOICE.transport==="srv" && VOICE.state!=="off") voiceEnd(false);
+}
+function voiceEnsureSrvPeer(){
+  if (VOICE._ensuring) return;
+  VOICE._ensuring = true;
+  try{
+    if (!voiceSrvRoomOn() || SRV.phase!=="playing"){
+      if (VOICE.srvPeer) voiceTeardownSrvPeer();
+      return;
+    }
+    if (typeof Peer==="undefined") return;
+    var id = voiceSrvPeerId(SRV.mySrvColor || G.myColor);
+    if (VOICE.srvPeer && VOICE.srvPeerId===id && !VOICE.srvPeer.destroyed) return;
+    voiceTeardownSrvPeer();
+    var p = null;
+    try{ p = new Peer(id, PEER_OPTS); }catch(e){ return; }
+    VOICE.srvPeer = p; VOICE.srvPeerId = id;
+    p.on("open", function(){ VOICE.srvPeerRetry = 0; });
+    p.on("call", function(call){ voiceOnIncomingCall(call); });
+    p.on("disconnected", function(){ try{ p.reconnect(); }catch(e){} });
+    p.on("error", function(err){
+      var t = err && err.type;
+      if (t==="unavailable-id" && VOICE.srvPeer===p && (VOICE.srvPeerRetry||0)<2){
+        // A stale registration from a dropped session can hold our id
+        // briefly — wait for the relay to free it and register again.
+        VOICE.srvPeerRetry = (VOICE.srvPeerRetry||0) + 1;
+        try{ p.destroy(); }catch(e){}
+        if (VOICE.srvPeer===p){ VOICE.srvPeer = null; VOICE.srvPeerId = null; }
+        setTimeout(function(){ voiceEnsureSrvPeer(); }, 4000);
+      } else if (t==="peer-unavailable" && VOICE.state==="connecting"){
+        voiceUnavailable("Your friend's game isn't reachable for voice right now — they may still be loading the match, or on an older copy of the game. Ask them to reload the game, then tap Start again.");
+      }
+    });
+  } finally { VOICE._ensuring = false; }
+}
+function voiceSrvCallWhenOpen(stream){
+  voiceEnsureSrvPeer();
+  var peer = VOICE.srvPeer;
+  if (!peer){ voiceUnavailable("Voice chat couldn't reach its relay — check your connection and tap Start again."); return; }
+  var placed = false;
+  var place = function(){
+    if (placed) return; placed = true;
+    if (VOICE.state!=="connecting" || !VOICE.stream) return;
+    var target = voiceSrvPeerId(opp(SRV.mySrvColor || G.myColor));
     var call = null;
-    try{ call = LIVE.peer.call(LIVE.conn.peer, stream); }catch(e){}
+    try{ call = peer.call(target, stream); }catch(e){}
     if (!call){ voiceUnavailable("Voice chat couldn't start here — text chat still works."); return; }
     voiceWireCall(call);
     updateVoiceUI();
-  }).catch(function(){
-    voiceUnavailable("Microphone permission was denied — voice chat isn't available here. Text chat still works.");
+  };
+  if (peer.open) place();
+  else peer.on("open", place); // the connect timer reports if it never opens
+}
+function voiceStart(){
+  if (VOICE.state==="live" || VOICE.state==="muted" || VOICE.state==="connecting" || VOICE.state==="invite") return;
+  var tr = voiceTransport();
+  if (!tr){
+    var msg = voiceSrvRoomOn()
+      ? "Voice chat connects when your server match starts."
+      : "Voice chat needs a connected Live room — create or join a room and connect with your friend first.";
+    var st = document.getElementById("voiceStatus");
+    if (st){ st.textContent = msg; st.className = "livestatus"; }
+    toast(msg);
+    return;
+  }
+  if (!voiceSupportedCheck()) return;
+  VOICE.note = null;
+  VOICE.transport = tr;
+  VOICE.state = "connecting"; updateVoiceUI();
+  voiceArmConnectTimer(function(){
+    voiceUnavailable("Your friend didn't join the voice chat in time — or the voice connection couldn't be built. Check you're both online and in the same room, then tap Start again. Text chat still works.");
   });
+  voiceGetMic().then(function(stream){
+    if (VOICE.state!=="connecting"){ // hung up while the mic prompt was open
+      try{ stream.getTracks().forEach(function(t){ t.stop(); }); }catch(e){}
+      return;
+    }
+    VOICE.stream = stream; VOICE.muted = false;
+    if (tr==="p2p"){
+      try{ liveSend({ kind:"voice", ev:"invite" }); }catch(e){}
+      var call = null;
+      try{ call = LIVE.peer.call(LIVE.conn.peer, stream); }catch(e){}
+      if (!call){ voiceUnavailable("Voice chat couldn't start here — text chat still works."); return; }
+      voiceWireCall(call);
+      updateVoiceUI();
+    } else {
+      voiceSrvCallWhenOpen(stream);
+    }
+  }).catch(function(err){ voiceMicError(err); });
 }
 function voiceJoin(){
-  if (!VOICE.pendingCall){ VOICE.state = "off"; updateVoiceUI(); return; }
-  if (!voiceSupported()){ voiceUnavailable(); return; }
+  if (!VOICE.pendingCall){
+    if (VOICE.state==="invite"){
+      // The invite signal can land a moment before the actual voice
+      // connection — arm auto-answer for when it arrives instead of
+      // throwing the invite away (the old behaviour silently reset
+      // the panel to "off" and the call rang out unanswered).
+      VOICE.wantJoin = true;
+      VOICE.state = "connecting"; updateVoiceUI();
+      voiceArmConnectTimer(function(){
+        voiceUnavailable("The voice connection didn't arrive — ask your friend to tap Start again.");
+      });
+      toast("Joining voice chat…");
+    } else { VOICE.state = "off"; updateVoiceUI(); }
+    return;
+  }
+  if (!voiceSupportedCheck()) return;
   VOICE.state = "connecting"; updateVoiceUI();
+  voiceArmConnectTimer(function(){
+    voiceUnavailable("The voice connection couldn't be built in time — try again on Wi-Fi if you're on mobile data, or keep using text chat.");
+  });
   var pending = VOICE.pendingCall;
   voiceGetMic().then(function(stream){
     VOICE.stream = stream; VOICE.muted = false;
-    try{ pending.answer(stream); }catch(e){ voiceUnavailable("Couldn't join the voice chat — text chat still works."); return; }
     VOICE.pendingCall = null;
+    try{ pending.answer(stream); }catch(e){ voiceUnavailable("Couldn't join the voice chat — text chat still works."); return; }
     voiceWireCall(pending);
     updateVoiceUI();
-  }).catch(function(){
+  }).catch(function(err){
     try{ pending.close(); }catch(e){}
     VOICE.pendingCall = null;
-    voiceUnavailable("Microphone permission was denied — voice chat isn't available here. Text chat still works.");
+    voiceMicError(err);
+  });
+}
+function voiceOnIncomingCall(call){
+  // Both players tapped Start at once (glare): one call must win.
+  // White's outgoing call wins — Black drops its own and answers.
+  if (VOICE.state==="connecting" && VOICE.call){
+    if ((G.myColor||"w")==="b" && VOICE.stream){
+      var myCall = VOICE.call; VOICE.call = null;
+      try{ myCall.close(); }catch(e){}
+      voiceClearConnectTimer();
+      try{ call.answer(VOICE.stream); }catch(e){ voiceUnavailable("Couldn't join the voice chat — text chat still works."); return; }
+      voiceWireCall(call);
+      updateVoiceUI();
+      return;
+    }
+    try{ call.close(); }catch(e){}
+    return;
+  }
+  if (VOICE.wantJoin && VOICE.state==="connecting" && !VOICE.call){
+    VOICE.pendingCall = call;
+    voiceJoin();
+    return;
+  }
+  if (VOICE.call || VOICE.pendingCall || VOICE.state==="live" || VOICE.state==="muted" || VOICE.state==="connecting"){
+    try{ call.close(); }catch(e){}
+    return;
+  }
+  VOICE.transport = voiceSrvRoomOn() ? "srv" : "p2p";
+  VOICE.pendingCall = call;
+  VOICE.state = "invite";
+  updateVoiceUI();
+  toast("🎤 Your friend wants to voice chat — tap Join to talk");
+  if (typeof openSheet==="function") openSheet("panelVoice");
+  call.on("close", function(){
+    if (VOICE.pendingCall===call){ VOICE.pendingCall = null; if (VOICE.state==="invite"){ VOICE.state = "off"; updateVoiceUI(); } }
   });
 }
 function voiceWatchPeer(){
   try{
     if (!LIVE.peer || VOICE.watchedPeer===LIVE.peer) return;
     VOICE.watchedPeer = LIVE.peer;
-    LIVE.peer.on("call", function(call){
-      if (VOICE.call || VOICE.pendingCall || VOICE.state==="live" || VOICE.state==="muted" || VOICE.state==="connecting"){
-        try{ call.close(); }catch(e){}
-        return;
-      }
-      VOICE.pendingCall = call;
-      VOICE.state = "invite";
-      updateVoiceUI();
-      toast("🎤 Your friend wants to voice chat — tap Join to talk");
-      if (typeof openSheet==="function") openSheet("panelVoice");
-      call.on("close", function(){
-        if (VOICE.pendingCall===call){ VOICE.pendingCall = null; if (VOICE.state==="invite"){ VOICE.state = "off"; updateVoiceUI(); } }
-      });
-    });
+    LIVE.peer.on("call", function(call){ voiceOnIncomingCall(call); });
   }catch(e){}
 }
 function handleVoiceSignal(data){
   if (!data) return;
   if (data.ev==="invite"){
-    if (VOICE.state==="off"){ VOICE.state = "invite"; updateVoiceUI(); toast("🎤 Your friend wants to voice chat — open 🎤 and tap Join"); }
+    if (VOICE.state==="off"){ VOICE.transport = "p2p"; VOICE.state = "invite"; updateVoiceUI(); toast("🎤 Your friend wants to voice chat — open 🎤 and tap Join"); }
   } else if (data.ev==="end" || data.ev==="decline"){
     if (VOICE.state!=="off"){ voiceEnd(false); toast(data.ev==="decline" ? "Your friend declined voice chat" : "Your friend ended voice chat"); }
   }
 }
+function voiceFoeDisconnected(){
+  try{
+    var foe = opp(SRV.mySrvColor || G.myColor);
+    return !!(SRV.lastState && SRV.lastState.players && SRV.lastState.players[foe] && SRV.lastState.players[foe].connected===false);
+  }catch(e){ return false; }
+}
 function updateVoiceUI(){
+  voiceEnsureSrvPeer();
   var inLive = (G.mode==="live");
   var playing = document.body.classList.contains("playing");
+  var srvOn = voiceSrvRoomOn();
   var btn = document.getElementById("voiceChatBtn");
   if (btn){
-    btn.style.display = (inLive && playing && !(typeof SRV!=="undefined" && SRV.active)) ? "" : "none";
+    btn.style.display = (inLive && playing) ? "" : "none";
     btn.classList.toggle("vc-live", VOICE.state==="live" || VOICE.state==="muted");
     btn.classList.toggle("listening", VOICE.state==="invite");
     btn.classList.toggle("busy", VOICE.state==="connecting");
@@ -6590,17 +7066,19 @@ function updateVoiceUI(){
     btn.title = "Voice chat — " + VOICE.state;
   }
   var st = document.getElementById("voiceStatus");
-  if (st && VOICE.state!=="unavailable"){
+  if (st){
     var msg, cls = "livestatus";
     if (!inLive) msg = "Voice chat is for Live Online rooms only — this match isn't a Live room, so there's no voice button here.";
-    else if (typeof SRV!=="undefined" && SRV.active) msg = "Voice chat lives in Friend (P2P) rooms for now — server rooms have no voice yet.";
-    else if (LIVE.status!=="connected") msg = "Voice chat connects when your friend joins your Live room.";
+    else if (srvOn && SRV.phase==="finished") msg = "That match has ended — start a new match to voice chat again.";
+    else if (srvOn && SRV.phase!=="playing") msg = "Voice chat connects when your server match starts.";
+    else if (srvOn && voiceFoeDisconnected() && VOICE.state==="off") msg = "Your friend is disconnected right now — voice chat will work again when they're back in the match.";
+    else if (!srvOn && LIVE.status!=="connected") msg = "Voice chat connects when your friend joins your Live room.";
     else if (VOICE.state==="off") msg = "Voice chat is off. Tap Start — your mic only opens when you tap, and your friend has to tap Join on their side too.";
     else if (VOICE.state==="invite") msg = "🎤 Your friend wants to voice chat. Tap Join to open your mic and talk — or Decline.";
-    else if (VOICE.state==="connecting") msg = "Connecting voice chat… waiting for your friend to join.";
+    else if (VOICE.state==="connecting") msg = VOICE.wantJoin ? "Joining voice chat… waiting for the voice connection to arrive." : "Connecting voice chat… waiting for your friend to join.";
     else if (VOICE.state==="muted") msg = "Voice chat is live — you are MUTED. Your friend can't hear you until you unmute.";
     else msg = "Voice chat is LIVE — you're talking with your friend. Headphones recommended.";
-    if (VOICE.state==="off" && VOICE.note && inLive && LIVE.status==="connected"){ msg = VOICE.note; cls += " err"; }
+    if (VOICE.state==="off" && VOICE.note && inLive && (LIVE.status==="connected" || (srvOn && SRV.phase==="playing"))){ msg = VOICE.note; cls += " err"; }
     if (VOICE.state==="live" || VOICE.state==="muted") cls += " ok";
     if (st.textContent !== msg) st.textContent = msg;
     st.className = cls;
@@ -7600,6 +8078,7 @@ function srvApplyStateNow(s){
   } else if (!s.moveLog || !s.moveLog.length) G.lastMove = null;
   G.specialMode = null; G.swapFirst = null;
   syncVariantUI(); syncSpecialsUI();
+  SRV.justFinished = !!(prev && prev.phase==="playing" && s.phase==="finished");
   if (s.phase==="waiting"){
     G.phase = "await-roll"; G.over = false; G.winner = null;
     setStatus("<b>Server room " + escHtml(SRV.roomCode || "") + "</b> — waiting for your friend to join with the code. The match starts the moment they do.");
@@ -7700,7 +8179,21 @@ function srvHandleFinished(s){
   var key = (SRV.roomCode || "") + ":" + (s.version || 0) + ":" + (res.reason || "");
   if (SRV.overShownFor!==key){
     SRV.overShownFor = key;
-    showGameOver(title, msg);
+    if (res.reason==="king-capture" && res.winner && SRV.justFinished && G.lastMove){
+      // KING SMASH, server edition: the result and balances are already
+      // committed from the server's verdict above — the finale only
+      // delays the modal. Deferred a tick so srvApplyStateNow's
+      // renderBoard lands the final position first.
+      var lmS = G.lastMove;
+      var atkS = G.st.board[lmS.tr] ? G.st.board[lmS.tr][lmS.tc] : null;
+      var winS = res.winner;
+      setTimeout(function(){
+        playKingSmash({ kr:lmS.tr, kc:lmS.tc, victim:opp(winS), aType: atkS ? atkS.t : "q", aColor:winS, ar:lmS.fr, ac:lmS.fc },
+          function(){ showGameOver(title, msg); });
+      }, 40);
+    } else {
+      showGameOver(title, msg);
+    }
   } else {
     setStatus("<b>" + escHtml(title) + ".</b> " + escHtml(msg));
   }
@@ -7816,6 +8309,7 @@ function srvLeaveRoom(){
   srvSetStatus("Server: connected" + (SRV.balance!=null ? " — " + fmtCoins(SRV.balance) + " server coins." : "."), "ok");
   srvNote("");
   srvSyncUI();
+  if (typeof voiceTeardownSrvPeer==="function") voiceTeardownSrvPeer();
 }
 function srvTeardown(){
   if (SRV.active && SRV.roomCode && SRV.phase==="playing") SRV.pendingRejoin = { code: SRV.roomCode, color: SRV.mySrvColor || "w" };
@@ -7831,6 +8325,7 @@ function srvTeardown(){
   SRV.lastState = null; SRV.pendingAction = null; SRV.enteredGame = false;
   if (SRV.status!=="off"){ SRV.status = "off"; srvSetStatus("Server: not connected yet. Tap Create, Join or Find a match."); }
   srvSyncUI();
+  if (typeof voiceTeardownSrvPeer==="function") voiceTeardownSrvPeer();
 }
 function srvRejoin(){
   var saved = SRV.pendingRejoin || srvLoadSession();
