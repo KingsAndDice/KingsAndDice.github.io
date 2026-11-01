@@ -2770,6 +2770,150 @@ body.rpl-on .watchbar#rplBar{display:block;}
 @media (prefers-color-scheme: dark){.rpl-mv.cur{color:#14100a;}}
 </style>
 </head>
+<style id="kd-playflow">
+/* ============================================================
+   PLAY FLOW REDESIGN — opponent-first navigation, "Choose Your
+   Battle" category grid, mode browser, Customize bottom sheet,
+   Quick Play presets, competitive screens (versus / series /
+   mirror), match clocks. Dark royal navy + gold, per the mock.
+   ============================================================ */
+:root{ --nx-navy:#0a1128; --nx-card:#141d33; --nx-card-hi:#1b2745; --nx-line:rgba(201,162,39,.38); --nx-gold:#e8c15a; --nx-gold-hi:#ffd76a; --nx-ink:#f3ecd7; --nx-dim:#9aa3c7; }
+.nxscreen{display:none;max-width:600px;margin:0 auto;padding:2px 2px 118px;}
+body.show-nxplay #nxPlay{display:block;}
+body.show-nxfriends #nxFriends{display:block;}
+body.show-nxplay #mainMenu,body.show-nxfriends #mainMenu,body.show-nxplay header.top,body.show-nxfriends header.top,body.show-nxplay .layout,body.show-nxfriends .layout,body.show-nxplay .online-corner,body.show-nxfriends .online-corner{display:none !important;}
+body.show-nxplay::before,body.show-nxfriends::before{content:"";position:fixed;inset:0;z-index:-2;background:linear-gradient(180deg,#0d1531 0%,#070b1a 46%,#04060e 100%);}
+body.show-nxplay,body.show-nxfriends{background:#05070f;}
+.nx-topbar{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 2px 0;}
+.nx-iconbtn{width:40px;height:40px;flex:0 0 auto;border-radius:50%;border:1.5px solid rgba(201,162,39,.45);background:rgba(20,29,51,.85);color:var(--nx-gold-hi);font-size:18px;font-weight:800;cursor:pointer;display:grid;place-items:center;transition:transform .15s,background .15s;}
+.nx-iconbtn:active{transform:scale(.94);}
+.nx-brand{font-family:"Cinzel",Georgia,serif;font-weight:800;letter-spacing:.13em;color:var(--nx-gold);font-size:16px;text-align:center;}
+.nx-title{font-size:27px;font-weight:800;color:#fff;margin:12px 2px 2px;letter-spacing:.01em;line-height:1.15;}
+.nx-stepnote{color:var(--nx-dim);font-size:13px;margin:0 2px 12px;line-height:1.45;}
+.nx-oppgrid{display:flex;flex-direction:column;gap:10px;}
+.nx-opp{display:flex;align-items:center;gap:13px;width:100%;text-align:left;padding:15px 16px;border-radius:16px;border:1.5px solid rgba(160,175,210,.16);background:linear-gradient(165deg,var(--nx-card-hi),#0e1526);color:var(--nx-ink);cursor:pointer;transition:border-color .18s,background .18s,transform .12s;}
+.nx-opp:active{transform:scale(.985);}
+.nx-opp .nx-opp-ic{font-size:27px;line-height:1;flex:0 0 auto;}
+.nx-opp .nx-opp-main{display:flex;flex-direction:column;gap:1px;min-width:0;}
+.nx-opp .nx-opp-name{font-size:16.5px;font-weight:800;}
+.nx-opp .nx-opp-sub{font-size:12.5px;color:var(--nx-dim);}
+.nx-opp .nx-chev{margin-left:auto;color:var(--nx-gold);font-size:20px;font-weight:800;flex:0 0 auto;}
+.nx-minilinks{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap;}
+.nx-minilinks button{flex:1 1 30%;border:1.5px solid rgba(201,162,39,.4);background:rgba(20,29,51,.7);color:var(--nx-ink);border-radius:12px;padding:11px 6px;font-size:13.5px;font-weight:750;cursor:pointer;min-height:44px;}
+.nx-minilinks button:active{transform:scale(.97);}
+.nx-catgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.nx-cat{display:flex;flex-direction:column;align-items:flex-start;gap:2px;padding:14px 14px 12px;min-height:92px;border-radius:16px;border:1.5px solid rgba(160,175,210,.16);background:linear-gradient(165deg,var(--nx-card-hi),#0e1526);color:var(--nx-ink);cursor:pointer;text-align:left;transition:background .18s,border-color .18s,color .18s,transform .12s;}
+.nx-cat:active{transform:scale(.98);}
+.nx-cat .nx-cat-ic{font-size:28px;line-height:1.1;}
+.nx-cat .nx-cat-name{font-size:16.5px;font-weight:800;}
+.nx-cat .nx-cat-sub{font-size:12px;color:var(--nx-dim);}
+.nx-cat.on{background:linear-gradient(155deg,#cfa22f,#7c5f10 78%);border-color:var(--nx-gold-hi);color:#221a02;box-shadow:0 6px 22px rgba(212,160,23,.35);}
+.nx-cat.on .nx-cat-sub{color:rgba(34,26,2,.78);}
+.nx-modehead{font-size:12px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:var(--nx-dim);margin:16px 2px 8px;}
+.nx-modegrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.nx-mode{display:flex;align-items:center;gap:10px;padding:10px 11px;min-height:58px;border-radius:13px;border:1.5px solid rgba(160,175,210,.15);background:linear-gradient(165deg,rgba(27,39,69,.85),rgba(13,20,38,.9));color:var(--nx-ink);cursor:pointer;text-align:left;transition:background .18s,border-color .18s,color .18s,transform .12s;width:100%;}
+.nx-mode:active{transform:scale(.98);}
+.nx-mode .nx-mode-ic{font-size:21px;line-height:1;flex:0 0 auto;}
+.nx-mode .nx-mode-main{display:flex;flex-direction:column;min-width:0;}
+.nx-mode .nx-mode-name{font-size:14px;font-weight:800;line-height:1.2;}
+.nx-mode .nx-mode-desc{font-size:11px;color:var(--nx-dim);line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.nx-mode.on{background:linear-gradient(155deg,#cfa22f,#7c5f10 80%);border-color:var(--nx-gold-hi);color:#221a02;box-shadow:0 5px 18px rgba(212,160,23,.32);}
+.nx-mode.on .nx-mode-desc{color:rgba(34,26,2,.75);}
+.nx-mode.soon{opacity:.55;cursor:default;}
+.nx-mode .nx-soon-tag{margin-left:auto;flex:0 0 auto;font-size:9.5px;font-weight:800;letter-spacing:.05em;border:1px solid currentColor;border-radius:999px;padding:2px 6px;}
+.nx-summary{margin-top:16px;border:1.5px solid var(--nx-line);border-radius:16px;background:linear-gradient(170deg,#131d36,#0b1122);padding:13px 15px;color:var(--nx-ink);}
+.nx-sum-row{display:flex;align-items:baseline;justify-content:space-between;gap:10px;}
+.nx-sum-title{font-size:15.5px;font-weight:800;}
+.nx-sum-custom{border:0;background:none;color:var(--nx-gold-hi);font-size:14.5px;font-weight:800;cursor:pointer;padding:4px 2px;}
+.nx-sum-mode{font-size:13px;color:var(--nx-ink);margin-top:3px;}
+.nx-sum-mode b{color:var(--nx-gold-hi);}
+.nx-sum-set{display:flex;justify-content:space-between;gap:10px;font-size:13px;color:var(--nx-dim);margin-top:5px;}
+.nx-sum-names{font-size:12px;color:var(--nx-dim);margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+#nxStartBar{position:fixed;left:0;right:0;bottom:0;z-index:44;display:none;padding:12px 14px calc(12px + env(safe-area-inset-bottom));background:linear-gradient(180deg,rgba(5,7,15,0),rgba(5,7,15,.94) 34%);}
+body.show-nxplay #nxStartBar.on{display:block;}
+#nxStartBtn{display:block;width:min(600px,100%);margin:0 auto;border:0;border-radius:15px;padding:16px;font-size:17.5px;font-weight:900;letter-spacing:.03em;background:linear-gradient(160deg,var(--nx-gold-hi),#d4a017);color:#231a02;cursor:pointer;box-shadow:0 8px 26px rgba(212,160,23,.4);transition:transform .12s,filter .15s;min-height:56px;}
+#nxStartBtn:active{transform:translateY(1px) scale(.99);}
+#nxStartBtn:disabled{opacity:.45;box-shadow:none;cursor:not-allowed;}
+/* friends screen */
+.nx-friendcard{display:flex;flex-direction:column;gap:12px;}
+.nx-bigopt{width:100%;text-align:left;padding:15px 16px;border-radius:16px;border:1.5px solid rgba(160,175,210,.16);background:linear-gradient(165deg,var(--nx-card-hi),#0e1526);color:var(--nx-ink);cursor:pointer;transition:transform .12s,border-color .18s;}
+.nx-bigopt:active{transform:scale(.985);}
+.nx-bigopt .nx-bo-name{font-size:16.5px;font-weight:800;display:block;}
+.nx-bigopt .nx-bo-sub{font-size:12.5px;color:var(--nx-dim);display:block;margin-top:2px;line-height:1.45;}
+.nx-codebox{border:1.5px solid var(--nx-line);border-radius:16px;background:linear-gradient(170deg,#131d36,#0b1122);padding:14px 15px;}
+.nx-codebox label{font-size:13.5px;font-weight:800;color:var(--nx-ink);display:block;margin-bottom:7px;}
+.nx-codebox input{width:100%;font-size:14px;padding:11px 12px;border-radius:11px;border:1.5px solid rgba(201,162,39,.4);background:#0a0f22;color:var(--nx-ink);box-sizing:border-box;}
+.nx-codebox .nx-loadbtn{margin-top:10px;width:100%;border:0;border-radius:12px;padding:13px;font-size:15px;font-weight:850;background:linear-gradient(160deg,var(--nx-gold-hi),#d4a017);color:#231a02;cursor:pointer;min-height:48px;}
+.nx-note{font-size:12.5px;color:var(--nx-dim);line-height:1.5;margin-top:9px;min-height:15px;}
+.nx-note.err{color:#ef8a7f;}
+/* main-menu Quick Play block */
+.nx-qp-block{max-width:600px;margin:14px auto 0;}
+.nx-qp-btn{width:100%;border:0;border-radius:15px;padding:15px;font-size:17px;font-weight:900;letter-spacing:.02em;background:linear-gradient(160deg,var(--nx-gold-hi),#d4a017);color:#231a02;cursor:pointer;box-shadow:0 8px 24px rgba(212,160,23,.35);min-height:54px;transition:transform .12s;}
+.nx-qp-btn:active{transform:scale(.99);}
+.nx-qp-sub{font-size:12px;color:var(--nx-dim);text-align:center;margin-top:6px;}
+.nx-presets{display:flex;flex-direction:column;gap:7px;margin-top:10px;}
+.nx-preset{display:flex;align-items:center;gap:9px;width:100%;text-align:left;padding:10px 12px;border-radius:12px;border:1.5px solid rgba(201,162,39,.35);background:rgba(16,24,46,.88);color:var(--nx-ink);cursor:pointer;}
+.nx-preset .nx-p-main{flex:1;min-width:0;}
+.nx-preset .nx-p-name{font-size:13.5px;font-weight:800;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.nx-preset .nx-p-sub{font-size:11.5px;color:var(--nx-dim);display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.nx-preset .nx-p-x{flex:0 0 auto;width:30px;height:30px;border-radius:50%;border:1px solid rgba(201,162,39,.4);background:none;color:var(--nx-dim);font-size:14px;cursor:pointer;display:grid;place-items:center;}
+.nx-preset-save{width:100%;border:1.5px dashed rgba(201,162,39,.45);background:none;color:var(--nx-gold-hi);border-radius:12px;padding:10px;font-size:13.5px;font-weight:800;cursor:pointer;min-height:44px;}
+.nx-repeat-btn{width:100%;margin-top:8px;border:1.5px solid rgba(201,162,39,.55);background:rgba(27,39,69,.9);color:var(--nx-gold-hi);border-radius:12px;padding:11px;font-size:14px;font-weight:850;cursor:pointer;min-height:46px;}
+/* customize + explain sheets */
+.nx-sheet-sec{margin-bottom:16px;}
+.nx-sheet-sec > h4{font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 8px;}
+.nx-seg{display:flex;gap:6px;flex-wrap:wrap;}
+.nx-seg button{flex:1 1 auto;border:1.5px solid var(--line-strong);background:var(--panel-2);color:var(--ink);border-radius:10px;padding:10px 8px;font-size:13.5px;font-weight:750;cursor:pointer;min-height:42px;transition:background .15s,border-color .15s;}
+.nx-seg button.on{background:linear-gradient(155deg,#cfa22f,#7c5f10);border-color:#c9a227;color:#fff8e1;}
+.nx-seg button:disabled{opacity:.4;cursor:not-allowed;}
+.nx-sheet input[type="text"],.nx-sheet input[type="number"]{width:100%;font-size:14px;padding:10px 11px;border-radius:10px;border:1px solid var(--line-strong);background:var(--panel-2);color:var(--ink);box-sizing:border-box;}
+.nx-sheet .nx-namerow{margin-bottom:9px;}
+.nx-sheet .nx-namerow label{font-size:12.5px;font-weight:700;display:block;margin-bottom:4px;}
+.nx-sheet-bal{font-size:13px;line-height:1.55;color:var(--ink-soft);}
+.nx-sheet-bal b{color:var(--ink);}
+.nx-customrow{display:flex;gap:7px;align-items:center;}
+.nx-customrow input{flex:1;}
+.nx-customrow button{flex:0 0 auto;border:1.5px solid var(--line-strong);background:var(--panel-2);color:var(--ink);border-radius:10px;padding:10px 12px;font-weight:750;cursor:pointer;min-height:42px;}
+.nx-explain-victory{font-weight:750;line-height:1.55;margin:0 0 8px;}
+.nx-explain-rules{color:var(--ink-soft);line-height:1.6;font-size:13.5px;margin:0 0 14px;}
+.nx-explain-play{width:100%;border:0;border-radius:12px;padding:14px;font-size:16px;font-weight:900;background:linear-gradient(160deg,var(--nx-gold-hi),#d4a017);color:#231a02;cursor:pointer;min-height:52px;}
+/* competitive overlays (versus / contest / queue / confirm) */
+.comp-overlay{position:fixed;inset:0;z-index:67;display:none;place-items:center;padding:18px;background:rgba(5,7,15,.85);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);}
+.comp-overlay.on{display:grid;}
+.comp-card{width:min(430px,100%);background:linear-gradient(170deg,#141c33,#0b1021 70%);border:1.5px solid #c9a227;border-radius:20px;padding:24px 22px 20px;color:#f3ecd7;box-shadow:0 18px 50px rgba(0,0,0,.55);max-height:calc(100dvh - 36px);overflow-y:auto;}
+.comp-title{font-family:"Cinzel",Georgia,serif;font-size:22px;font-weight:800;margin:0 0 4px;color:#f7f1dc;text-align:center;}
+.comp-sub{font-size:13px;color:#c8bfa4;text-align:center;margin:0 0 14px;line-height:1.5;}
+.vs-sides{display:flex;gap:10px;align-items:stretch;margin:6px 0 12px;}
+.vs-side{flex:1;border:1.5px solid rgba(201,162,39,.35);border-radius:14px;padding:12px 10px;text-align:center;background:rgba(27,39,69,.5);min-width:0;}
+.vs-side .vs-name{font-size:16px;font-weight:850;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.vs-side .vs-meta{font-size:12px;color:#c8bfa4;margin-top:2px;}
+.vs-side .vs-color{font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--nx-gold-hi);margin-top:5px;}
+.vs-side .vs-ready{margin-top:8px;font-size:11.5px;font-weight:800;color:#8b93a7;}
+.vs-side.ready{border-color:#57c785;}
+.vs-side.ready .vs-ready{color:#7fe0a8;}
+.vs-mid{align-self:center;font-family:"Cinzel",Georgia,serif;font-weight:800;color:var(--nx-gold);font-size:15px;}
+.comp-actions{display:flex;flex-direction:column;gap:8px;margin-top:14px;}
+.comp-primary{border:0;cursor:pointer;font-weight:850;font-size:15.5px;padding:13px;border-radius:12px;background:linear-gradient(160deg,var(--nx-gold-hi),#d4a017);color:#231a02;min-height:50px;}
+.comp-primary:disabled{opacity:.5;cursor:default;}
+.comp-ghost{border:1.5px solid rgba(201,162,39,.65);background:transparent;color:#f3ecd7;font-size:14.5px;font-weight:750;padding:12px;border-radius:12px;cursor:pointer;min-height:48px;}
+.comp-count{text-align:center;font-size:13px;color:var(--nx-gold-hi);font-weight:800;min-height:18px;font-variant-numeric:tabular-nums;}
+.comp-lines{font-size:14px;line-height:1.6;color:#e9e2c8;margin:0 0 4px;padding-left:18px;}
+.comp-lines li{margin-bottom:3px;}
+.comp-score{text-align:center;font-size:19px;font-weight:850;margin:8px 0 2px;font-variant-numeric:tabular-nums;}
+.comp-ratingline{text-align:center;font-size:15px;font-weight:800;color:var(--nx-gold-hi);margin-top:8px;}
+.comp-note{font-size:12.5px;color:#9aa3c7;line-height:1.55;margin-top:10px;text-align:center;}
+/* match clocks bar (in game view) */
+#compClocks{display:none;gap:8px;margin:2px auto 8px;width:100%;max-width:560px;}
+#compClocks.on{display:flex;}
+.cc-chip{flex:1;display:flex;align-items:center;justify-content:space-between;gap:8px;border:1.5px solid var(--line-strong);border-radius:11px;padding:7px 11px;background:var(--panel);color:var(--ink);font-size:13px;min-width:0;}
+.cc-chip .cc-name{font-weight:750;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.cc-chip .cc-time{font-weight:900;font-variant-numeric:tabular-nums;font-size:16px;letter-spacing:.02em;}
+.cc-chip.active{border-color:#c9a227;box-shadow:0 0 0 1px rgba(201,162,39,.5),0 0 12px rgba(212,175,55,.25);}
+.cc-chip.low .cc-time{color:var(--danger);}
+html.comp-reduce .nx-cat,html.comp-reduce .nx-mode,html.comp-reduce .nx-opp,html.comp-reduce .comp-card *{transition:none !important;animation:none !important;}
+@media (max-width:360px){ .nx-title{font-size:24px;} .nx-mode .nx-mode-desc{display:none;} .nx-cat{min-height:84px;padding:12px;} }
+@media (prefers-reduced-motion: reduce){ .nx-cat,.nx-mode,.nx-opp,#nxStartBtn,.nx-iconbtn{transition:none !important;} }
+</style>
 <body class="show-menu">
 <div class="wrap">
   <div class="online-corner"><button class="online-badge" id="onlineBadge" type="button" data-state="offline" aria-label="Online players"><span class="ob-dot" aria-hidden="true"></span><span class="ob-text" id="onlineBadgeText">Offline — not in a live room</span></button></div>
@@ -2800,6 +2944,14 @@ body.rpl-on .watchbar#rplBar{display:block;}
         <button class="gbtn g-dark g-small" type="button" id="customBtn"><span class="g-icon" aria-hidden="true">⚙</span><span class="g-title">Custom Game</span></button>
         <button class="gbtn g-dark g-small" type="button" id="aboutBtn"><span class="g-icon" aria-hidden="true">ⓘ</span><span class="g-title">About</span></button>
       </div>
+    </div>
+    <div class="nx-qp-block" id="nxQpBlock">
+      <button class="nx-qp-btn" id="nxQpBtn" type="button">⚡ Quick Play</button>
+      <div class="nx-qp-sub" id="nxQpSub">Your last setup, one tap — Classic vs Computer to start</div>
+      <button class="nx-repeat-btn" id="nxRepeatBtn" type="button" style="display:none;">↻ Repeat Last Match</button>
+      <div class="nx-presets" id="nxPresets"></div>
+      <button class="nx-preset-save" id="nxPresetSave" type="button">＋ Save current setup as a preset</button>
+      <button class="nx-repeat-btn" id="nxFriendsBtn" type="button">🤝 Play With Friends</button>
     </div>
     <div class="radiobar" id="radioBar" aria-label="Game radio">
       <span class="radio-ic" aria-hidden="true">📻</span>
@@ -2856,6 +3008,68 @@ body.rpl-on .watchbar#rplBar{display:block;}
     <div class="menu-opts menu-main-opts">
       <button class="menu-opt minimal" type="button" data-menu-mode="ai"><span class="mo-title">Computer</span></button>
       <button class="menu-opt minimal" type="button" data-menu-mode="local"><span class="mo-title">2 Players</span></button>
+    </div>
+  </div>
+
+  <div class="nxscreen" id="nxPlay" aria-label="Choose your battle">
+    <div class="nx-topbar">
+      <button class="nx-iconbtn" id="nxBack" type="button" aria-label="Back">←</button>
+      <span class="nx-brand">KINGS &amp; DICE</span>
+      <button class="nx-iconbtn" id="nxGear" type="button" aria-label="Settings">⚙</button>
+    </div>
+    <div id="nxStep1">
+      <h2 class="nx-title">Choose How to Play</h2>
+      <p class="nx-stepnote">Pick your opponent first — then choose the battle.</p>
+      <div class="nx-oppgrid">
+        <button class="nx-opp" type="button" data-nx-opp="online"><span class="nx-opp-ic" aria-hidden="true">⚔</span><span class="nx-opp-main"><span class="nx-opp-name">Play Online</span><span class="nx-opp-sub">Matchmaking &amp; ranked on the server</span></span><span class="nx-chev" aria-hidden="true">›</span></button>
+        <button class="nx-opp" type="button" data-nx-opp="friends"><span class="nx-opp-ic" aria-hidden="true">🤝</span><span class="nx-opp-main"><span class="nx-opp-name">Play With Friends</span><span class="nx-opp-sub">Live rooms &amp; turn-code games</span></span><span class="nx-chev" aria-hidden="true">›</span></button>
+        <button class="nx-opp" type="button" data-nx-opp="ai"><span class="nx-opp-ic" aria-hidden="true">♞</span><span class="nx-opp-main"><span class="nx-opp-name">Play vs AI</span><span class="nx-opp-sub">The computer, on this device</span></span><span class="nx-chev" aria-hidden="true">›</span></button>
+        <button class="nx-opp" type="button" data-nx-opp="local"><span class="nx-opp-ic" aria-hidden="true">♟</span><span class="nx-opp-main"><span class="nx-opp-name">Local Two-Player</span><span class="nx-opp-sub">Two players, one device</span></span><span class="nx-chev" aria-hidden="true">›</span></button>
+      </div>
+      <div class="nx-minilinks">
+        <button type="button" id="nxLinkTrn">🏆 Tournaments</button>
+        <button type="button" id="nxLinkWatch">👁 Watch</button>
+        <button type="button" id="nxLinkReplays">🎞 Replays</button>
+      </div>
+    </div>
+    <div id="nxStep2" style="display:none;">
+      <h2 class="nx-title">Choose Your Battle</h2>
+      <p class="nx-stepnote" id="nxOppLine">Vs Computer</p>
+      <div class="nx-catgrid" id="nxCatGrid">
+        <button class="nx-cat" type="button" data-nx-cat="classic"><span class="nx-cat-ic" aria-hidden="true">♛</span><span class="nx-cat-name">Classic</span><span class="nx-cat-sub">Original dice chess</span></button>
+        <button class="nx-cat" type="button" data-nx-cat="competitive"><span class="nx-cat-ic" aria-hidden="true">⚔</span><span class="nx-cat-name">Competitive</span><span class="nx-cat-sub">Ranked &amp; duels</span></button>
+        <button class="nx-cat" type="button" data-nx-cat="arcade"><span class="nx-cat-ic" aria-hidden="true">⚄</span><span class="nx-cat-name">Arcade</span><span class="nx-cat-sub">Special game modes</span></button>
+        <button class="nx-cat" type="button" data-nx-cat="custom"><span class="nx-cat-ic" aria-hidden="true">♟</span><span class="nx-cat-name">Custom</span><span class="nx-cat-sub">Your rules</span></button>
+      </div>
+      <div class="nx-modehead" id="nxModeHead">Classic</div>
+      <div class="nx-modegrid" id="nxModeGrid"></div>
+      <div class="nx-summary" id="nxSummary">
+        <div class="nx-sum-row"><span class="nx-sum-title">Match Settings</span><button class="nx-sum-custom" id="nxCustomizeBtn" type="button">Customize ›</button></div>
+        <div class="nx-sum-mode" id="nxSumMode">Mode: <b>Classic Dice Chess</b></div>
+        <div class="nx-sum-set"><span id="nxSumTimer">Timer: 60s</span><span id="nxSumStake">Stake: No stake</span></div>
+        <div class="nx-sum-names" id="nxSumNames"></div>
+      </div>
+    </div>
+  </div>
+  <div id="nxStartBar"><button id="nxStartBtn" type="button">⚔ START MATCH</button></div>
+
+  <div class="nxscreen" id="nxFriends" aria-label="Play with friends">
+    <div class="nx-topbar">
+      <button class="nx-iconbtn" id="nxFriendsBack" type="button" aria-label="Back">←</button>
+      <span class="nx-brand">KINGS &amp; DICE</span>
+      <button class="nx-iconbtn" id="nxFriendsGear" type="button" aria-label="Settings">⚙</button>
+    </div>
+    <h2 class="nx-title">Play With Friends</h2>
+    <p class="nx-stepnote">Live rooms play in real time; turn codes play at your own pace, by message.</p>
+    <div class="nx-friendcard">
+      <button class="nx-bigopt" type="button" id="nxFrCreate"><span class="nx-bo-name">Create Live Room</span><span class="nx-bo-sub">Start a server room and share the code — Normal &amp; King of the Hill run on the server; other modes use a Friend (P2P) room from the same screen.</span></button>
+      <button class="nx-bigopt" type="button" id="nxFrJoin"><span class="nx-bo-name">Join Live Room</span><span class="nx-bo-sub">Enter the room code your friend sent you.</span></button>
+      <div class="nx-codebox">
+        <label for="nxCodeIn">Continue a Turn-Code Game</label>
+        <input id="nxCodeIn" type="text" placeholder="Paste your friend's turn code…" autocomplete="off" />
+        <button class="nx-loadbtn" id="nxCodeLoadBtn" type="button">Load code &amp; continue</button>
+        <div class="nx-note" id="nxCodeNote">Turn codes carry the full game — board, names, mode and stake — exactly as your friend sent it.</div>
+      </div>
     </div>
   </div>
 
@@ -3228,6 +3442,7 @@ body.rpl-on .watchbar#rplBar{display:block;}
         </div>
         <p id="statusMsg">Roll the dice to start your turn.</p>
       </div>
+      <div id="compClocks" aria-label="Match clocks"></div>
       <button class="endturnbtn" id="endTurnBtn" type="button">End Turn — pass remaining dice</button>
       <div class="endturnhint" id="endTurnHint" role="note"></div>
       <button class="endturnbtn guardreroll" id="guardRerollBtn" type="button">♚ Reroll useless dice — find an escape</button>
@@ -3901,6 +4116,7 @@ body.rpl-on .watchbar#rplBar{display:block;}
     </div>
     <div class="setrow"><span class="setlabel">Voice Controls</span><div class="varianttoggle setseg" role="group" aria-label="Voice controls"><button type="button" data-vc-set="on">On</button><button type="button" data-vc-set="off" class="on">Off</button></div><p class="panelnote" id="vcNote">Off. When on, a 🎙 button appears in matches — tap it, then say “roll”, a piece name like “knight”, “e2 to e4”, “end turn”, “undo” or “flip board”. Listening only ever starts when you tap; nothing is recorded or stored by the game.</p></div>
     <div class="setrow"><span class="setlabel">Animations</span><div class="varianttoggle setseg" role="group" aria-label="Animations"><button type="button" data-motion-set="full" class="on">Full</button><button type="button" data-motion-set="reduced">Reduced</button></div></div>
+    <div class="setrow"><span class="setlabel">Reduce motion in competitive games</span><div class="varianttoggle setseg" role="group" aria-label="Reduce motion in competitive games"><button type="button" data-comp-motion="on">On</button><button type="button" data-comp-motion="off" class="on">Off</button></div><p class="panelnote">When on, the versus, series and mirror screens and the match clocks use no animation. Saved on this device.</p></div>
     <div class="setrow"><span class="setlabel">Sound FX</span><div class="varianttoggle setseg" role="group" aria-label="Sound effects"><button type="button" data-sfx-set="on" class="on">On</button><button type="button" data-sfx-set="off">Off</button></div><p class="panelnote">Subtle game sounds — dice rattle, moves, captures, check warnings and victory — made by the game itself (no audio files). Separate from the radio. Your choice is saved on this device.</p></div>
     <div class="setrow"><span class="setlabel">Volume</span>
       <div class="volrow"><label for="volMusic">🎵 Music</label><input type="range" id="volMusic" min="0" max="100" step="1" value="100" aria-label="Music volume"><span class="volval" id="volMusicVal">100%</span></div>
@@ -3992,6 +4208,163 @@ body.rpl-on .watchbar#rplBar{display:block;}
   </div>
 </div>
 <div class="toast" id="toast"></div>
+
+<div class="sheetdrawer nx-sheet" id="nxSheet" aria-label="Customize match">
+  <div class="sheetcard">
+    <div class="chathead"><span class="ch-title">Customize Match</span><button class="chatclose" id="nxSheetClose" type="button" aria-label="Close customize">✕</button></div>
+    <div id="nxSheetBody">
+      <div class="nx-sheet-sec" id="nxSecPlayers">
+        <h4>Players</h4>
+        <div class="nx-namerow" id="nxRowW"><label for="nxNameW">Your name (White)</label><input id="nxNameW" type="text" maxlength="20" placeholder="White" autocomplete="off" /></div>
+        <div class="nx-namerow" id="nxRowB"><label for="nxNameB">Black player name</label><input id="nxNameB" type="text" maxlength="20" placeholder="Black" autocomplete="off" /></div>
+        <div class="nx-namerow" id="nxRowOwn" style="display:none;"><label for="nxNameOwn">Your display name</label><input id="nxNameOwn" type="text" maxlength="20" placeholder="Your name" autocomplete="off" /></div>
+        <div id="nxAiDiffRow" style="display:none;">
+          <label style="font-size:12.5px;font-weight:700;display:block;margin:10px 0 4px;">Computer difficulty</label>
+          <div class="nx-seg" role="group" aria-label="Computer difficulty">
+            <button type="button" data-nx-aidiff="easy">Easy</button>
+            <button type="button" data-nx-aidiff="medium">Medium</button>
+            <button type="button" data-nx-aidiff="hard">Hard</button>
+          </div>
+        </div>
+        <div id="nxHordeRow" style="display:none;">
+          <label style="font-size:12.5px;font-weight:700;display:block;margin:10px 0 4px;">Play as (Horde vs Computer)</label>
+          <div class="nx-seg" role="group" aria-label="Play as Horde or Army">
+            <button type="button" data-nx-horde="w">Horde (White)</button>
+            <button type="button" data-nx-horde="b">Army (Black)</button>
+          </div>
+        </div>
+      </div>
+      <div class="nx-sheet-sec">
+        <h4>Timer</h4>
+        <div class="nx-seg" role="group" aria-label="Turn timer">
+          <button type="button" data-nx-timer="30">30s</button>
+          <button type="button" data-nx-timer="60">60s</button>
+          <button type="button" data-nx-timer="90">90s</button>
+          <button type="button" data-nx-timer="0">Off</button>
+        </div>
+        <p class="panelnote" style="margin:7px 0 0;">One clock per turn, starting when the dice land. Ranked games use match clocks instead.</p>
+      </div>
+      <div class="nx-sheet-sec">
+        <h4>Virtual Coin Stake</h4>
+        <div class="nx-seg" role="group" aria-label="Stake">
+          <button type="button" data-nx-stake="0">No Stake</button>
+          <button type="button" data-nx-stake="10">10</button>
+          <button type="button" data-nx-stake="25">25</button>
+          <button type="button" data-nx-stake="50">50</button>
+          <button type="button" data-nx-stake="100">100</button>
+          <button type="button" data-nx-stake="250">250</button>
+          <button type="button" data-nx-stake="all">All-In</button>
+        </div>
+        <div class="nx-customrow" style="margin-top:8px;">
+          <input id="nxStakeCustom" type="number" min="0" step="1" inputmode="numeric" placeholder="Custom amount" aria-label="Custom stake amount" />
+          <button id="nxStakeSet" type="button">Set stake</button>
+        </div>
+        <p class="nx-sheet-bal" id="nxSheetBal" style="margin:9px 0 0;"></p>
+        <p class="panelnote" style="margin:6px 0 0;">Virtual coins only — no cash value, cannot be bought, sold or redeemed. Online matchmaking games are unstaked; stakes apply to local games and private rooms.</p>
+      </div>
+      <div class="nx-sheet-sec" id="nxSecMode">
+        <h4>Mode-specific</h4>
+        <div class="nx-seg" id="nxSheetModes" role="group" aria-label="Match type"></div>
+        <p class="panelnote" id="nxSheetModeNote" style="margin:7px 0 0;">Special Dice are always on in every mode — there is no off switch.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="sheetdrawer nx-sheet" id="nxExplainSheet" aria-label="About this mode">
+  <div class="sheetcard">
+    <div class="chathead"><span class="ch-title" id="nxExplainTitle">Mode</span><button class="chatclose" id="nxExplainClose" type="button" aria-label="Close mode details">✕</button></div>
+    <p class="nx-explain-victory" id="nxExplainVictory"></p>
+    <p class="nx-explain-rules" id="nxExplainRules"></p>
+    <button class="nx-explain-play" id="nxExplainPlay" type="button">Play</button>
+    <p class="panelnote" id="nxExplainSoon" style="display:none;text-align:center;">Coming Soon — this mode isn't built yet, so there's nothing to play.</p>
+  </div>
+</div>
+
+<div class="comp-overlay" id="compQueueOverlay" role="dialog" aria-modal="true" aria-label="Ranked queue">
+  <div class="comp-card">
+    <h2 class="comp-title" id="cqTitle">Royal Duel</h2>
+    <p class="comp-sub" id="cqDesc">Ranked Classic — rating will change.</p>
+    <div id="cqPoolRow">
+      <div class="nx-seg" role="group" aria-label="Time control pool">
+        <button type="button" data-cq-pool="duel">Duel · 10:00</button>
+        <button type="button" data-cq-pool="blitz">Blitz · 3:00</button>
+        <button type="button" data-cq-pool="bullet">Bullet · 1:00</button>
+      </div>
+    </div>
+    <p class="comp-note" id="cqNote">Both players confirm on a versus screen before the clock starts. Declining matches too often pauses the queue.</p>
+    <div class="comp-actions">
+      <button class="comp-primary" id="cqFindBtn" type="button">Find Match</button>
+      <button class="comp-ghost" id="cqCancelBtn" type="button">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<div class="comp-overlay" id="compVersus" role="dialog" aria-modal="true" aria-label="Match found">
+  <div class="comp-card">
+    <h2 class="comp-title" id="vsTitle">Match Found</h2>
+    <p class="comp-sub" id="vsSub">Ranked · 10:00 clocks</p>
+    <div class="vs-sides">
+      <div class="vs-side" id="vsYouSide">
+        <div class="vs-name" id="vsYouName">You</div>
+        <div class="vs-meta" id="vsYouMeta"></div>
+        <div class="vs-color" id="vsYouColor"></div>
+        <div class="vs-ready" id="vsYouReady">Not ready</div>
+      </div>
+      <div class="vs-mid" aria-hidden="true">VS</div>
+      <div class="vs-side" id="vsOppSide">
+        <div class="vs-name" id="vsOppName">Opponent</div>
+        <div class="vs-meta" id="vsOppMeta"></div>
+        <div class="vs-color" id="vsOppColor"></div>
+        <div class="vs-ready" id="vsOppReady">Not ready</div>
+      </div>
+    </div>
+    <div class="comp-count" id="vsCount"></div>
+    <div class="comp-actions">
+      <button class="comp-primary" id="vsReadyBtn" type="button">Ready</button>
+      <button class="comp-ghost" id="vsDeclineBtn" type="button">Decline</button>
+    </div>
+  </div>
+</div>
+
+<div class="comp-overlay" id="compContest" role="dialog" aria-modal="true" aria-label="Series">
+  <div class="comp-card">
+    <h2 class="comp-title" id="ccTitle">Best of Three</h2>
+    <p class="comp-sub" id="ccSub"></p>
+    <div id="ccBody"></div>
+    <div class="comp-count" id="ccCount"></div>
+    <div class="comp-actions">
+      <button class="comp-primary" id="ccMainBtn" type="button">Continue</button>
+      <button class="comp-ghost" id="ccLeaveBtn" type="button">Leave</button>
+      <button class="comp-ghost" id="ccVerifyBtn" type="button" style="display:none;">Verify dice fairness</button>
+      <button class="comp-ghost" id="ccCloseBtn" type="button" style="display:none;">Close</button>
+    </div>
+    <div id="ccVerify" style="display:none;"></div>
+  </div>
+</div>
+
+<div class="comp-overlay" id="compRematchOffer" role="dialog" aria-modal="true" aria-label="Rematch offer">
+  <div class="comp-card">
+    <h2 class="comp-title">Rematch?</h2>
+    <p class="comp-sub" id="croText">Your opponent wants a rematch — colours swap.</p>
+    <div class="comp-count" id="croCount"></div>
+    <div class="comp-actions">
+      <button class="comp-primary" id="croAcceptBtn" type="button">Accept rematch</button>
+      <button class="comp-ghost" id="croDeclineBtn" type="button">Decline</button>
+    </div>
+  </div>
+</div>
+
+<div class="comp-overlay" id="nxConfirm" role="dialog" aria-modal="true" aria-label="Confirm">
+  <div class="comp-card">
+    <h2 class="comp-title" id="nxcTitle">Start match?</h2>
+    <ul class="comp-lines" id="nxcLines"></ul>
+    <div class="comp-actions">
+      <button class="comp-primary" id="nxcStartBtn" type="button">Start</button>
+      <button class="comp-ghost" id="nxcCancelBtn" type="button">Cancel</button>
+    </div>
+  </div>
+</div>
 
 <div class="qp-overlay" id="qpOverlay" role="dialog" aria-modal="true" aria-label="Find a match">
   <div class="qp-card">
@@ -16797,6 +17170,1172 @@ function tutShowDone(){
   var replay = document.getElementById("tutReplayBtn");
   if (replay) replay.addEventListener("click", function(){ var d = document.getElementById("tutDone"); if (d) d.classList.remove("on"); tutStart(); });
   tutSyncDoneTag();
+})();
+</script>
+
+<script>
+/* ============================================================
+   PLAY FLOW REDESIGN (1/3) — opponent-first navigation, the
+   "Choose Your Battle" category grid + mode browser, the
+   Customize bottom sheet, and the Play With Friends screen.
+   Everything here drives the EXISTING setup state (G.pending*
+   + the real setup controls' handlers' state), so stakes,
+   timers, variants and names behave exactly as before.
+   ============================================================ */
+function nxEl(id){ return document.getElementById(id); }
+function nxLsGet(k){ try{ var v = localStorage.getItem(k); return v ? JSON.parse(v) : null; }catch(e){ return null; } }
+function nxLsSet(k, v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} }
+var NX_KEYS = { last:"dicechess-qp-last", presets:"dicechess-qp-presets", lastPlayed:"dicechess-qp-lastplayed", compMotion:"dicechess-comp-reduced-motion" };
+var NX = {
+  step: 1, opponent: "ai", category: "classic", modeId: "normal",
+  names: null, activeConfig: null,
+  lastCompleted: nxLsGet(NX_KEYS.lastPlayed),
+  friendsReturn: "menu"
+};
+var COMP = {
+  pendingKind: null, pendingPool: "duel",
+  versus: null, versusTimer: null,
+  contest: null, seriesState: null, mirrorState: null, found: null,
+  commitment: null, reveal: null, contestTimer: null,
+  clock: null, clockTimer: null, rematchOfferTimer: null,
+  reduceMotion: nxLsGet(NX_KEYS.compMotion) === true
+};
+var NX_CATS = { classic:"Classic", competitive:"Competitive", arcade:"Arcade", custom:"Custom" };
+var NX_OPP_LABEL = { ai:"Vs Computer", local:"Local Two-Player", online:"Play Online", friends:"Play With Friends" };
+var NX_MODES = {
+  classic: [
+    { id:"normal", icon:"♛", name:"Classic Dice Chess", desc:"Original dice chess", play:"variant", variant:"normal" }
+  ],
+  competitive: [
+    { id:"duel", icon:"⚔", name:"Royal Duel", desc:"Ranked · 10-min clocks", play:"comp", kind:"pool", pool:"duel" },
+    { id:"blitz", icon:"⚡", name:"Blitz Royale", desc:"Ranked · 3-min clocks", play:"comp", kind:"pool", pool:"blitz" },
+    { id:"bo3", icon:"♜", name:"Best of Three", desc:"Ranked series · first to 2", play:"comp", kind:"series" },
+    { id:"mirror", icon:"◐", name:"Mirror Dice", desc:"Ranked pair · same dice both ways", play:"comp", kind:"mirror" },
+    { id:"gauntlet", icon:"🏆", name:"Royal Gauntlet", desc:"Tournaments", play:"gauntlet" },
+    { id:"alliance", icon:"🤝", name:"Royal Alliance", desc:"Team battles", play:"soon" }
+  ],
+  arcade: [
+    { id:"hill", icon:"♚", name:"King of the Hill", desc:"Take the hill squares", play:"variant", variant:"hill" },
+    { id:"chaos", icon:"✦", name:"Chaos", desc:"Specials at 50% + Fates", play:"variant", variant:"chaos" },
+    { id:"double", icon:"♜", name:"Double Kings", desc:"Capture BOTH Kings", play:"variant", variant:"double" },
+    { id:"horde", icon:"♟", name:"Horde", desc:"24 pawns vs the army", play:"variant", variant:"horde" },
+    { id:"random", icon:"⚄", name:"Random Royals", desc:"Shuffled back rank", play:"variant", variant:"random" },
+    { id:"shrink", icon:"◎", name:"Shrinking Board", desc:"The edge burns away", play:"variant", variant:"shrink" },
+    { id:"zombie", icon:"♠", name:"Zombie", desc:"Resurrect with a WILD die", play:"variant", variant:"zombie" },
+    { id:"guard", icon:"♔", name:"Royal Guard", desc:"Classic check rules", play:"variant", variant:"guard" }
+  ],
+  custom: [
+    { id:"custom", icon:"♟", name:"Custom Rules", desc:"Your setup, your way", play:"custom" }
+  ]
+};
+function nxModeObj(){
+  var list = NX_MODES[NX.category] || [];
+  for (var i = 0; i < list.length; i++) if (list[i].id === NX.modeId) return list[i];
+  return list[0] || null;
+}
+function nxExplainFor(m){
+  if (!m) return { victory:"", rules:"" };
+  if (m.play === "variant"){
+    var v = m.variant;
+    var victory = v === "guard"
+      ? "Royal Guard plays by the classic check rules: win by checkmate — your opponent's King attacked with no escape."
+      : "Win by capturing (killing) the enemy King. There is no checkmate — an attacked King plays on.";
+    if (v === "hill") victory += " You also win instantly by legally moving your King onto a hill square — d4, d5, e4 or e5.";
+    if (v === "double") victory = "Win by capturing BOTH enemy Kings — each side starts with two, and taking the first doesn't end the game.";
+    if (v === "horde") victory = "The Army wins by capturing every Horde piece; the Horde wins by capturing the Army's King.";
+    var rules = (typeof VARIANT_NOTES !== "undefined" && VARIANT_NOTES[v]) ? VARIANT_NOTES[v] : "Normal dice chess: roll 3 dice each turn, each die moves one piece of its kind, in any order. A die whose piece can't move yet stays for the rest of the turn. Special Dice are always on.";
+    return { victory: victory, rules: rules };
+  }
+  if (m.id === "duel" || m.id === "blitz"){
+    var mins = m.pool === "blitz" ? "3-minute" : "10-minute";
+    return { victory:"Ranked Classic — win by capturing the enemy King.",
+      rules:"Both players confirm on a versus screen, then a " + mins + " chess clock runs for each player's whole turn (roll + all dice). Flag-fall loses. Your " + (m.pool === "blitz" ? "Blitz" : "Duel") + " rating changes with the result. Ranked is Classic mode only and needs a free account." };
+  }
+  if (m.id === "bo3") return { victory:"First to 2 game wins takes the series (up to 3 games).",
+    rules:"Ranked Classic games on 10-minute clocks, colours alternating each game. Both players confirm before Game 1 and between games. One rating update for the whole series, in the Duel pool — a series nobody wins inside 3 games rates as a draw." };
+  if (m.id === "mirror") return { victory:"Two games, colours swapped — most points wins (win 1, draw ½).",
+    rules:"Before the match, the server commits to one fixed dice sequence per side and shows the hash up front. In Game B you play the other colour against the same sequences, so both players face identical dice luck — and afterwards you can verify the reveal against the commitment. Mirror Dice balances dice-sequence exposure, not every strategic consequence of a roll. Games run on 10-minute clocks; one Mirror-pool rating update at the end." };
+  if (m.id === "gauntlet") return { victory:"Win your bracket matches to take the tournament.",
+    rules:"Royal Gauntlet is the Tournaments system: scheduled single-elimination brackets, Classic mode. Tap Play to open the Tournaments lobby." };
+  if (m.id === "alliance") return { victory:"Team battles — not built yet.",
+    rules:"Royal Alliance is planned but has no server support yet, so it can't be played. It stays on this list so you can see it's coming." };
+  if (m.id === "custom") return { victory:"Your match, your settings.",
+    rules:"Opens the full setup screen with the Customize sheet — names, turn timer, stake, computer difficulty and every existing option. It uses only the options the game already has; no new rules are invented." };
+  return { victory:"", rules:"" };
+}
+/* ---------- screen plumbing ---------- */
+function nxShowPlay(step){
+  document.body.classList.remove("show-menu", "show-nxfriends");
+  document.body.classList.add("show-nxplay");
+  NX.step = step || NX.step || 1;
+  nxRenderPlay();
+  window.scrollTo(0, 0);
+}
+function nxShowFriends(){
+  document.body.classList.remove("show-menu", "show-nxplay");
+  document.body.classList.add("show-nxfriends");
+  nxStartBarSync();
+  window.scrollTo(0, 0);
+}
+function nxShowMenu(){
+  document.body.classList.remove("show-nxplay", "show-nxfriends");
+  document.body.classList.add("show-menu");
+  nxStartBarSync();
+  window.scrollTo(0, 0);
+}
+function nxStartBarSync(){
+  var bar = nxEl("nxStartBar");
+  if (bar) bar.classList.toggle("on", document.body.classList.contains("show-nxplay") && NX.step === 2);
+}
+function nxOpen(opponent, step){
+  if (opponent) NX.opponent = opponent;
+  if (NX.opponent === "friends"){ NX.friendsReturn = "step1"; nxShowFriends(); return; }
+  nxShowPlay(step || 1);
+}
+function nxRenderPlay(){
+  var s1 = nxEl("nxStep1"), s2 = nxEl("nxStep2");
+  if (s1) s1.style.display = NX.step === 1 ? "" : "none";
+  if (s2) s2.style.display = NX.step === 2 ? "" : "none";
+  document.querySelectorAll("[data-nx-cat]").forEach(function(b){
+    b.classList.toggle("on", b.getAttribute("data-nx-cat") === NX.category);
+  });
+  var head = nxEl("nxModeHead");
+  if (head) head.textContent = NX_CATS[NX.category] || "";
+  var ol = nxEl("nxOppLine");
+  if (ol) ol.textContent = (NX_OPP_LABEL[NX.opponent] || "") + " — tap a mode for its rules, then Start.";
+  nxRenderModes();
+  nxRenderSummary();
+  nxStartBarSync();
+}
+function nxRenderModes(){
+  var grid = nxEl("nxModeGrid");
+  if (!grid) return;
+  grid.innerHTML = "";
+  (NX_MODES[NX.category] || []).forEach(function(m){
+    var b = document.createElement("button");
+    b.type = "button";
+    b.className = "nx-mode" + (m.id === NX.modeId ? " on" : "") + (m.play === "soon" ? " soon" : "");
+    b.innerHTML = '<span class="nx-mode-ic" aria-hidden="true">' + m.icon + '</span><span class="nx-mode-main"><span class="nx-mode-name">' + escHtml(m.name) + '</span><span class="nx-mode-desc">' + escHtml(m.desc) + '</span></span>' + (m.play === "soon" ? '<span class="nx-soon-tag">SOON</span>' : "");
+    b.addEventListener("click", function(){ nxSelectMode(m, true); });
+    grid.appendChild(b);
+  });
+}
+function nxTimerLabel(){
+  var m = nxModeObj();
+  if (m && m.play === "comp"){
+    if (m.kind === "series" || m.kind === "mirror") return "Clock: 10:00 each";
+    return "Clock: " + (m.pool === "blitz" ? "3:00" : "10:00") + " each";
+  }
+  return G.pendingTimerSec > 0 ? "Timer: " + G.pendingTimerSec + "s per turn" : "Timer: Off";
+}
+function nxStakeLabel(){
+  var s = (typeof pendingStakeValue === "function") ? pendingStakeValue() : 0;
+  return s > 0 ? "Stake: " + fmtCoins(s) + " coins · Pot " + fmtCoins(s * 2) : "Stake: No stake";
+}
+function nxNamesLine(){
+  var w = (nxEl("nameW") && nxEl("nameW").value.trim()) || "White";
+  var b = (nxEl("nameB") && nxEl("nameB").value.trim()) || "Black";
+  if (NX.opponent === "ai") return w + " vs Computer" + (G.pendingAiDifficulty ? " · " + (AI_DIFF_LABELS[G.pendingAiDifficulty] || "Medium") : "");
+  if (NX.opponent === "local") return w + " vs " + b + " — same device";
+  if (NX.opponent === "online"){ var m = nxModeObj(); return (m && m.play === "comp") ? "Ranked queue — account required" : "Server matchmaking · unstaked"; }
+  return "";
+}
+function nxRenderSummary(){
+  var m = nxModeObj();
+  var sm = nxEl("nxSumMode");
+  if (sm && m) sm.innerHTML = "Mode: <b>" + escHtml(m.name) + "</b> · " + escHtml(NX_OPP_LABEL[NX.opponent] || "");
+  var st = nxEl("nxSumTimer"); if (st) st.textContent = nxTimerLabel();
+  var ss = nxEl("nxSumStake"); if (ss) ss.textContent = nxStakeLabel();
+  var sn = nxEl("nxSumNames"); if (sn) sn.textContent = nxNamesLine();
+  var btn = nxEl("nxStartBtn");
+  if (btn && m){
+    if (m.play === "soon"){ btn.disabled = true; btn.textContent = "COMING SOON"; }
+    else if (m.play === "gauntlet"){ btn.disabled = false; btn.textContent = "🏆 OPEN TOURNAMENTS"; }
+    else if (m.play === "custom"){ btn.disabled = false; btn.textContent = "OPEN SETUP"; }
+    else if (m.play === "comp"){ btn.disabled = false; btn.textContent = "⚔ FIND MATCH"; }
+    else { btn.disabled = false; btn.textContent = "⚔ START MATCH"; }
+  }
+}
+function nxSelectCategory(cat){
+  NX.category = cat;
+  var list = NX_MODES[cat] || [];
+  if (list.length) NX.modeId = list[0].id;
+  var m = nxModeObj();
+  if (m && m.play === "variant") setPendingVariant(m.variant);
+  nxRenderPlay();
+}
+function nxSelectMode(m, openExplain){
+  NX.modeId = m.id;
+  if (m.play === "variant") setPendingVariant(m.variant);
+  nxRenderModes();
+  nxRenderSummary();
+  if (openExplain) nxOpenExplain(m);
+}
+/* ---------- explain sheet ---------- */
+function nxOpenExplain(m){
+  var ex = nxExplainFor(m);
+  nxEl("nxExplainTitle").textContent = m.name;
+  nxEl("nxExplainVictory").textContent = ex.victory;
+  nxEl("nxExplainRules").textContent = ex.rules;
+  var play = nxEl("nxExplainPlay");
+  var soon = nxEl("nxExplainSoon");
+  if (m.play === "soon"){ play.style.display = "none"; soon.style.display = ""; }
+  else {
+    play.style.display = ""; soon.style.display = "none";
+    play.textContent = m.play === "gauntlet" ? "Open Tournaments" : (m.play === "comp" ? "Find Match" : (m.play === "custom" ? "Open Setup" : "Play"));
+  }
+  openSheet("nxExplainSheet");
+}
+/* ---------- customize sheet ---------- */
+function nxOpenSheet(){
+  var rw = nxEl("nxRowW"), rb = nxEl("nxRowB"), ro = nxEl("nxRowOwn");
+  if (rw) rw.style.display = NX.opponent === "online" ? "none" : "";
+  if (rb) rb.style.display = (NX.opponent === "local") ? "" : "none";
+  if (ro) ro.style.display = NX.opponent === "online" ? "" : "none";
+  var nw = nxEl("nxNameW"), nb = nxEl("nxNameB"), no = nxEl("nxNameOwn");
+  if (nw && nxEl("nameW")) nw.value = nxEl("nameW").value;
+  if (nb && nxEl("nameB")) nb.value = nxEl("nameB").value;
+  if (no && nxEl("nameOwn")) no.value = nxEl("nameOwn").value;
+  nxRenderSheet();
+  openSheet("nxSheet");
+}
+function nxRenderSheet(){
+  document.querySelectorAll("[data-nx-timer]").forEach(function(b){
+    b.classList.toggle("on", parseInt(b.getAttribute("data-nx-timer"), 10) === G.pendingTimerSec);
+  });
+  var sv = pendingStakeValue();
+  document.querySelectorAll("[data-nx-stake]").forEach(function(b){
+    var v = b.getAttribute("data-nx-stake");
+    b.classList.toggle("on", v === "all" ? !!G.pendingAllIn : (!G.pendingAllIn && sv === parseInt(v, 10)));
+  });
+  document.querySelectorAll("[data-nx-aidiff]").forEach(function(b){
+    b.classList.toggle("on", b.getAttribute("data-nx-aidiff") === G.pendingAiDifficulty);
+  });
+  document.querySelectorAll("[data-nx-horde]").forEach(function(b){
+    b.classList.toggle("on", b.getAttribute("data-nx-horde") === G.pendingHordeSide);
+  });
+  var adr = nxEl("nxAiDiffRow"); if (adr) adr.style.display = NX.opponent === "ai" ? "" : "none";
+  var hr = nxEl("nxHordeRow"); if (hr) hr.style.display = (G.pendingVariant === "horde" && NX.opponent === "ai") ? "" : "none";
+  var bal = nxEl("nxSheetBal");
+  if (bal){
+    bal.innerHTML = "Balances — White <b>" + fmtCoins(G.coins.w) + "</b> · Black <b>" + fmtCoins(G.coins.b) + "</b> (lower: <b>" + fmtCoins(lowerBalance()) + "</b>)<br>Stake <b>" + fmtCoins(sv) + "</b> each → pot <b>" + fmtCoins(sv * 2) + "</b>";
+  }
+  var modes = nxEl("nxSheetModes");
+  if (modes){
+    modes.innerHTML = "";
+    Object.keys(VARIANT_LABELS).forEach(function(v){
+      var b = document.createElement("button");
+      b.type = "button";
+      b.textContent = VARIANT_LABELS[v];
+      b.classList.toggle("on", v === G.pendingVariant);
+      b.addEventListener("click", function(){
+        setPendingVariant(v);
+        var cat = v === "normal" ? "classic" : "arcade";
+        NX.category = cat; NX.modeId = v;
+        nxRenderSheet(); nxRenderPlay();
+      });
+      modes.appendChild(b);
+    });
+  }
+  var note = nxEl("nxSheetModeNote");
+  if (note){
+    var vn = (typeof VARIANT_NOTES !== "undefined" && VARIANT_NOTES[G.pendingVariant]) || "";
+    note.textContent = (vn ? vn + " " : "") + "Special Dice are always on in every mode — there is no off switch.";
+  }
+  nxRenderSummary();
+}
+function nxSheetBind(){
+  nxEl("nxSheetClose").addEventListener("click", function(){ closeSheet("nxSheet"); });
+  nxEl("nxExplainClose").addEventListener("click", function(){ closeSheet("nxExplainSheet"); });
+  [["nxNameW", "nameW", "w"], ["nxNameB", "nameB", "b"], ["nxNameOwn", "nameOwn", "own"]].forEach(function(trio){
+    var inp = nxEl(trio[0]);
+    if (!inp) return;
+    inp.addEventListener("input", function(){
+      var real = nxEl(trio[1]);
+      if (real) real.value = inp.value;
+      if (!NX.names) NX.names = {};
+      NX.names[trio[2]] = inp.value;
+      nxRenderSummary();
+    });
+  });
+  document.querySelectorAll("[data-nx-timer]").forEach(function(b){
+    b.addEventListener("click", function(){
+      var v = parseInt(b.getAttribute("data-nx-timer"), 10);
+      G.pendingTimerSec = (v === 30 || v === 60 || v === 90 || v === 0) ? v : 60;
+      syncTimerUI();
+      nxRenderSheet();
+    });
+  });
+  document.querySelectorAll("[data-nx-stake]").forEach(function(b){
+    b.addEventListener("click", function(){
+      var v = b.getAttribute("data-nx-stake");
+      if (v === "all") setPendingStake(lowerBalance(), true);
+      else setPendingStake(parseInt(v, 10) || 0, false);
+      nxRenderSheet();
+    });
+  });
+  nxEl("nxStakeSet").addEventListener("click", function(){
+    var amt = Math.floor(Number(nxEl("nxStakeCustom").value));
+    if (isNaN(amt) || amt < 0){ toast("Type a custom stake of 0 or more coins"); return; }
+    setPendingStake(amt, false);
+    nxRenderSheet();
+  });
+  document.querySelectorAll("[data-nx-aidiff]").forEach(function(b){
+    b.addEventListener("click", function(){
+      G.pendingAiDifficulty = AI_DIFF_LABELS[b.getAttribute("data-nx-aidiff")] ? b.getAttribute("data-nx-aidiff") : "medium";
+      if (typeof syncAiDiffUI === "function") syncAiDiffUI();
+      nxRenderSheet();
+    });
+  });
+  document.querySelectorAll("[data-nx-horde]").forEach(function(b){
+    b.addEventListener("click", function(){
+      G.pendingHordeSide = b.getAttribute("data-nx-horde") === "b" ? "b" : "w";
+      syncVariantUI();
+      nxRenderSheet();
+    });
+  });
+  nxEl("nxExplainPlay").addEventListener("click", function(){
+    closeSheet("nxExplainSheet");
+    nxStart();
+  });
+}
+/* ---------- confirm overlay (shared by Quick Play gating) ---------- */
+var NXC = { onStart: null };
+function nxConfirmShow(title, lines, startLabel, onStart){
+  nxEl("nxcTitle").textContent = title;
+  var ul = nxEl("nxcLines");
+  ul.innerHTML = "";
+  lines.forEach(function(t){
+    var li = document.createElement("li");
+    li.textContent = t;
+    ul.appendChild(li);
+  });
+  nxEl("nxcStartBtn").textContent = startLabel || "Start";
+  NXC.onStart = onStart || null;
+  nxEl("nxConfirm").classList.add("on");
+}
+function nxConfirmHide(){ nxEl("nxConfirm").classList.remove("on"); NXC.onStart = null; }
+/* ---------- start dispatch ---------- */
+function nxApplyNames(){
+  if (!NX.names) return;
+  if (NX.names.w != null && nxEl("nameW")) nxEl("nameW").value = NX.names.w;
+  if (NX.names.b != null && nxEl("nameB")) nxEl("nameB").value = NX.names.b;
+  if (NX.names.own != null && nxEl("nameOwn")) nxEl("nameOwn").value = NX.names.own;
+}
+function nxStart(){
+  var m = nxModeObj();
+  if (!m) return;
+  if (m.play === "soon"){ toast("Royal Alliance is coming soon — it isn't built yet."); return; }
+  if (m.play === "gauntlet"){ if (typeof trnOpen === "function") trnOpen(); return; }
+  if (m.play === "custom"){
+    var om = NX.opponent === "ai" ? "ai" : (NX.opponent === "local" ? "local" : "live");
+    openSetup(om);
+    setTimeout(nxOpenSheet, 180);
+    return;
+  }
+  if (m.play === "comp"){
+    if (NX.opponent !== "online") toast("Competitive formats play online — switching you to the online flow.");
+    compOpenQueue(m);
+    return;
+  }
+  /* variant modes */
+  setPendingVariant(m.variant);
+  var cfg = nxCurrentConfig();
+  NX.activeConfig = cfg;
+  nxSaveLast(cfg);
+  if (NX.opponent === "ai" || NX.opponent === "local"){
+    openSetup(NX.opponent);
+    nxApplyNames();
+    startFromSetup();
+    return;
+  }
+  if (NX.opponent === "online"){
+    if (srvSupported()){
+      if (pendingStakeValue() > 0){
+        nxConfirmShow("Online matchmaking is unstaked",
+          ["Quick matchmaking games never carry a stake — your " + fmtCoins(pendingStakeValue()) + "-coin stake won't apply to this match."],
+          "Start unstaked",
+          function(){ qpStartQuickPlay("casual"); });
+        return;
+      }
+      qpStartQuickPlay("casual");
+      return;
+    }
+    openSetup("live");
+    toast(pendingVariantLabel() + " plays in Friend (P2P) rooms — create a room here and share the code.");
+    return;
+  }
+  if (NX.opponent === "friends"){ nxShowFriends(); }
+}
+function nxCurrentConfig(){
+  var m = nxModeObj();
+  return {
+    opponent: NX.opponent,
+    category: NX.category,
+    modeId: NX.modeId,
+    variant: (m && m.play === "variant") ? m.variant : G.pendingVariant,
+    comp: (m && m.play === "comp") ? { kind: m.kind, pool: m.pool || "duel" } : null,
+    timer: G.pendingTimerSec,
+    stake: pendingStakeValue(),
+    allIn: !!G.pendingAllIn,
+    aiDiff: G.pendingAiDifficulty,
+    hordeSide: G.pendingHordeSide
+  };
+}
+function nxSaveLast(cfg){ if (cfg) nxLsSet(NX_KEYS.last, cfg); }
+/* ---------- friends screen ---------- */
+function nxFriendsBind(){
+  nxEl("nxFrCreate").addEventListener("click", function(){
+    openSetup("live");
+    setTimeout(function(){
+      if (srvSupported()){ srvCreate(); }
+      else {
+        var b = nxEl("liveCreateBtn");
+        if (b) b.click();
+        toast(pendingVariantLabel() + " uses a Friend (P2P) room — share the code below.");
+      }
+    }, 90);
+  });
+  nxEl("nxFrJoin").addEventListener("click", function(){
+    openSetup("live");
+    setTimeout(function(){
+      var inp = nxEl("srvCodeIn");
+      if (inp){ try{ inp.scrollIntoView({ block: "center" }); }catch(e){} try{ inp.focus({ preventScroll: true }); }catch(e){} }
+    }, 90);
+  });
+  nxEl("nxCodeLoadBtn").addEventListener("click", function(){
+    var v = nxEl("nxCodeIn").value.trim();
+    var note = nxEl("nxCodeNote");
+    if (!v){ note.className = "nx-note err"; note.textContent = "Paste your friend's turn code first."; return; }
+    G.mode = "link"; G.myColor = "w";
+    syncModeUI();
+    nxEl("codeIn").value = v;
+    enterGameView();
+    loadCode();
+    var ln = nxEl("linkNote");
+    if (ln && ln.className.indexOf("err") >= 0){
+      /* bad code: loadCode left a fresh board behind — reset it and
+         bounce back here with the error, instead of dropping the
+         player into an empty game */
+      goToMainMenu();
+      nxShowFriends();
+      note.className = "nx-note err";
+      note.textContent = "That code didn't work — check you copied the whole thing and try again.";
+    }
+  });
+  nxEl("nxFriendsBack").addEventListener("click", function(){
+    if (NX.friendsReturn === "step1") nxShowPlay(1);
+    else nxShowMenu();
+  });
+  nxEl("nxFriendsGear").addEventListener("click", nxOpenSettings);
+}
+function nxOpenSettings(){ closePanels(); renderPanels(); openSheet("panelSettings"); }
+/* ---------- wiring ---------- */
+(function nxInit(){
+  document.querySelectorAll("[data-nx-opp]").forEach(function(b){
+    b.addEventListener("click", function(){
+      var o = b.getAttribute("data-nx-opp");
+      if (o === "friends"){ NX.opponent = "friends"; NX.friendsReturn = "step1"; nxShowFriends(); return; }
+      NX.opponent = o;
+      nxShowPlay(2);
+    });
+  });
+  document.querySelectorAll("[data-nx-cat]").forEach(function(b){
+    b.addEventListener("click", function(){ nxSelectCategory(b.getAttribute("data-nx-cat")); });
+  });
+  nxEl("nxBack").addEventListener("click", function(){
+    if (NX.step === 2) nxShowPlay(1);
+    else nxShowMenu();
+  });
+  nxEl("nxGear").addEventListener("click", nxOpenSettings);
+  nxEl("nxCustomizeBtn").addEventListener("click", nxOpenSheet);
+  nxEl("nxStartBtn").addEventListener("click", nxStart);
+  nxEl("nxLinkTrn").addEventListener("click", function(){ if (typeof trnOpen === "function") trnOpen(); });
+  nxEl("nxLinkWatch").addEventListener("click", function(){ if (typeof specOpenSheet === "function") specOpenSheet(); });
+  nxEl("nxLinkReplays").addEventListener("click", function(){ if (typeof rplOpenSheet === "function") rplOpenSheet(); });
+  nxEl("nxcStartBtn").addEventListener("click", function(){ var f = NXC.onStart; nxConfirmHide(); if (f) f(); });
+  nxEl("nxcCancelBtn").addEventListener("click", nxConfirmHide);
+  nxSheetBind();
+  nxFriendsBind();
+  /* main-menu entries route into the new flow (capture phase, so the
+     old openSetup / online-menu handlers don't also fire) */
+  document.addEventListener("click", function(e){
+    var t = e.target && e.target.closest ? e.target.closest("[data-menu-mode],[data-menu-nav]") : null;
+    if (!t || !t.closest || !t.closest("#mainMenu")) return;
+    var nav = t.getAttribute("data-menu-nav"), mode = t.getAttribute("data-menu-mode");
+    if (nav === "online"){ e.preventDefault(); e.stopPropagation(); NX.opponent = "online"; nxShowPlay(1); }
+    else if (mode === "ai"){ e.preventDefault(); e.stopPropagation(); NX.opponent = "ai"; nxShowPlay(2); }
+    else if (mode === "local"){ e.preventDefault(); e.stopPropagation(); NX.opponent = "local"; nxShowPlay(2); }
+    else if (mode === "live"){ e.preventDefault(); e.stopPropagation(); NX.opponent = "online"; nxShowPlay(1); }
+    else if (mode === "link"){ e.preventDefault(); e.stopPropagation(); NX.friendsReturn = "menu"; nxShowFriends(); }
+  }, true);
+  nxEl("nxFriendsBtn").addEventListener("click", function(){ NX.friendsReturn = "menu"; nxShowFriends(); });
+  /* turn-code input lives on the Friends screen now — keep it off setup */
+  var _nxSyncModeUI = syncModeUI;
+  syncModeUI = function(){
+    _nxSyncModeUI();
+    var b = nxEl("setupLinkBox");
+    if (b) b.style.display = "none";
+  };
+  var slb = nxEl("setupLinkBox");
+  if (slb) slb.style.display = "none";
+  /* leaving the flow (any existing path) closes the new screens too */
+  var _nxCloseInfo = closeInfoScreens;
+  closeInfoScreens = function(){
+    _nxCloseInfo();
+    document.body.classList.remove("show-nxplay", "show-nxfriends");
+    nxStartBarSync();
+  };
+  if (COMP.reduceMotion) document.documentElement.classList.add("comp-reduce");
+})();
+</script>
+
+<script>
+/* ============================================================
+   PLAY FLOW REDESIGN (2/3) — Quick Play: last-config one-tap
+   start, up to 3 saved presets, Repeat Last Match, and the
+   confirmation gate (a staked or ranked config is NEVER
+   started silently). New localStorage keys only.
+   ============================================================ */
+function nxMapGMode(){
+  return G.mode === "ai" ? "ai" : G.mode === "local" ? "local" : G.mode === "link" ? "friends" : "online";
+}
+function nxSnapshotFromG(pending){
+  var variant = pending ? G.pendingVariant : (G.variant || G.pendingVariant);
+  var st = (typeof SRV !== "undefined" && SRV.lastState) ? SRV.lastState : null;
+  var comp = null;
+  if (st && st.seriesId) comp = { kind: "series", pool: "duel" };
+  else if (st && st.mirrorId) comp = { kind: "mirror", pool: "duel" };
+  else if (st && st.ranked) comp = { kind: "pool", pool: st.pool || "duel" };
+  return {
+    opponent: nxMapGMode(),
+    category: variant === "normal" ? "classic" : "arcade",
+    modeId: variant,
+    variant: variant,
+    comp: comp,
+    timer: G.pendingTimerSec,
+    stake: pending ? pendingStakeValue() : (G.lastStake || 0),
+    allIn: !!G.pendingAllIn,
+    aiDiff: G.pendingAiDifficulty,
+    hordeSide: G.pendingHordeSide
+  };
+}
+function nxCfgSummary(cfg){
+  if (!cfg) return "";
+  var modeName = cfg.comp
+    ? (cfg.comp.kind === "series" ? "Best of Three" : cfg.comp.kind === "mirror" ? "Mirror Dice" : (cfg.comp.pool === "blitz" ? "Blitz Royale" : cfg.comp.pool === "bullet" ? "Bullet" : "Royal Duel"))
+    : (VARIANT_LABELS[cfg.variant] || "Classic");
+  var opp = NX_OPP_LABEL[cfg.opponent] || "";
+  var t = cfg.comp ? "ranked clocks" : (cfg.timer > 0 ? cfg.timer + "s timer" : "no timer");
+  var s = cfg.stake > 0 ? fmtCoins(cfg.stake) + " stake" : "no stake";
+  return modeName + " · " + opp + " · " + t + " · " + s;
+}
+function nxDefaultConfig(){
+  return { opponent: "ai", category: "classic", modeId: "normal", variant: "normal", comp: null, timer: 60, stake: 0, allIn: false, aiDiff: "medium", hordeSide: "w" };
+}
+function nxExecConfig(cfg){
+  setPendingVariant(VARIANT_LABELS[cfg.variant] ? cfg.variant : "normal");
+  G.pendingTimerSec = (cfg.timer === 30 || cfg.timer === 60 || cfg.timer === 90 || cfg.timer === 0) ? cfg.timer : 60;
+  syncTimerUI();
+  setPendingStake(cfg.stake || 0, !!cfg.allIn);
+  if (AI_DIFF_LABELS[cfg.aiDiff]){ G.pendingAiDifficulty = cfg.aiDiff; if (typeof syncAiDiffUI === "function") syncAiDiffUI(); }
+  G.pendingHordeSide = cfg.hordeSide === "b" ? "b" : "w";
+  syncVariantUI();
+  NX.activeConfig = cfg;
+  nxSaveLast(cfg);
+  if (cfg.comp){ compQueueSend(cfg.comp.kind, cfg.comp.pool || "duel"); return; }
+  if (cfg.opponent === "ai" || cfg.opponent === "local"){
+    NX.opponent = cfg.opponent;
+    openSetup(cfg.opponent);
+    nxApplyNames();
+    startFromSetup();
+    return;
+  }
+  if (cfg.opponent === "online"){ qpStartQuickPlay("casual"); return; }
+  NX.friendsReturn = "menu";
+  nxShowFriends();
+}
+function nxRunConfig(cfgIn){
+  if (!cfgIn) return;
+  var cfg = JSON.parse(JSON.stringify(cfgIn));
+  var changes = [];
+  if (cfg.comp && !(typeof acctSignedIn === "function" && acctSignedIn())){
+    changes.push("You're signed out, so ranked play is unavailable — switched to a casual Classic match vs the Computer.");
+    cfg = nxDefaultConfig();
+    cfg.timer = cfgIn.timer || 60;
+  }
+  if (cfg.opponent === "online" && cfg.variant !== "normal" && cfg.variant !== "hill"){
+    changes.push("Online matchmaking covers Classic and King of the Hill — the mode was switched to Classic.");
+    cfg.variant = "normal";
+  }
+  var bal = lowerBalance();
+  if ((cfg.stake || 0) > bal){
+    changes.push("Stake lowered to " + fmtCoins(bal) + " coins — that's your available balance.");
+    cfg.stake = bal; cfg.allIn = false;
+  }
+  if (cfg.opponent === "online" && (cfg.stake || 0) > 0 && !cfg.comp){
+    changes.push("Online matchmaking is unstaked — no coins will be taken for this match.");
+  }
+  var lines = changes.slice();
+  if (cfg.comp) lines.push("Ranked — rating will change.");
+  else if ((cfg.stake || 0) > 0 && cfg.opponent !== "online") lines.push("Stake: " + fmtCoins(cfg.stake) + " coins each — pot " + fmtCoins(cfg.stake * 2) + ".");
+  if (lines.length){
+    nxConfirmShow("Start this match?", lines, "Start", function(){ nxExecConfig(cfg); });
+  } else {
+    nxExecConfig(cfg);
+  }
+}
+function nxQuickPlay(){
+  var cfg = nxLsGet(NX_KEYS.last) || nxDefaultConfig();
+  nxRunConfig(cfg);
+}
+/* ---------- presets ---------- */
+function nxGetPresets(){ var p = nxLsGet(NX_KEYS.presets); return Array.isArray(p) ? p.slice(0, 3) : []; }
+function nxRenderPresets(){
+  var wrap = nxEl("nxPresets");
+  if (!wrap) return;
+  wrap.innerHTML = "";
+  nxGetPresets().forEach(function(p, i){
+    var row = document.createElement("div");
+    row.className = "nx-preset";
+    row.setAttribute("role", "button");
+    row.innerHTML = '<span class="nx-p-main"><span class="nx-p-name">' + escHtml(nxCfgSummary(p)) + '</span><span class="nx-p-sub">Preset ' + (i + 1) + ' — tap to play</span></span>';
+    var x = document.createElement("button");
+    x.type = "button"; x.className = "nx-p-x"; x.textContent = "✕"; x.setAttribute("aria-label", "Delete preset " + (i + 1));
+    x.addEventListener("click", function(e){
+      e.stopPropagation();
+      var all = nxGetPresets();
+      all.splice(i, 1);
+      nxLsSet(NX_KEYS.presets, all);
+      nxRenderPresets();
+      toast("Preset deleted");
+    });
+    row.appendChild(x);
+    row.addEventListener("click", function(){ nxRunConfig(p); });
+    wrap.appendChild(row);
+  });
+  var last = nxLsGet(NX_KEYS.last);
+  var sub = nxEl("nxQpSub");
+  if (sub) sub.textContent = last ? "Last setup: " + nxCfgSummary(last) : "Your last setup, one tap — Classic vs Computer to start";
+  nxSyncRepeatBtn();
+}
+function nxSyncRepeatBtn(){
+  var b = nxEl("nxRepeatBtn");
+  if (!b) return;
+  if (NX.lastCompleted){
+    b.style.display = "";
+    b.textContent = "↻ Repeat Last Match — " + nxCfgSummary(NX.lastCompleted);
+  } else b.style.display = "none";
+}
+/* ---------- post-match: record + Repeat / Rematch buttons ---------- */
+function nxIsServerQuickPlay(){
+  if (typeof SRV === "undefined" || !SRV.active || SRV.isPrivate || !SRV.roomCode) return false;
+  if (typeof TRN !== "undefined" && TRN && TRN.game && TRN.gameRoomCode === SRV.roomCode) return false;
+  if (SRV.lastState && (SRV.lastState.seriesId || SRV.lastState.mirrorId)) return false;
+  return true;
+}
+function nxInjectPostMatchButtons(cfg){
+  var box = nxEl("modalBox");
+  if (!box) return;
+  var acts = box.querySelector(".pm-actions");
+  if (!acts || nxEl("nxPmRepeat")) return;
+  if (cfg){
+    var rb = document.createElement("button");
+    rb.type = "button"; rb.id = "nxPmRepeat"; rb.className = "ghost";
+    rb.textContent = "↻ Repeat Last Match";
+    rb.addEventListener("click", function(){ closeModal(); nxRunConfig(cfg); });
+    acts.appendChild(rb);
+  }
+  if (nxIsServerQuickPlay()){
+    var mb = document.createElement("button");
+    mb.type = "button"; mb.id = "nxPmRematch";
+    mb.textContent = "Rematch";
+    mb.addEventListener("click", function(){
+      mb.disabled = true; mb.textContent = "Rematch offer sent…";
+      if (!srvSendRaw({ type: "rematchRequest" })){ mb.disabled = false; mb.textContent = "Rematch"; toast("Couldn't send the rematch offer — connection dropped."); }
+    });
+    acts.appendChild(mb);
+  }
+}
+(function nxQpInit(){
+  nxEl("nxQpBtn").addEventListener("click", nxQuickPlay);
+  nxEl("nxRepeatBtn").addEventListener("click", function(){ if (NX.lastCompleted) nxRunConfig(NX.lastCompleted); });
+  nxEl("nxPresetSave").addEventListener("click", function(){
+    var all = nxGetPresets();
+    if (all.length >= 3){ toast("You can keep 3 presets — delete one first."); return; }
+    var cfg = NX.activeConfig || nxSnapshotFromG(true);
+    all.push(cfg);
+    nxLsSet(NX_KEYS.presets, all);
+    nxRenderPresets();
+    toast("Preset saved: " + nxCfgSummary(cfg));
+  });
+  nxRenderPresets();
+  var _nxStartFromSetup = startFromSetup;
+  startFromSetup = function(){
+    NX.activeConfig = nxSnapshotFromG(true);
+    _nxStartFromSetup();
+  };
+  var _nxQpStartQuickPlay = qpStartQuickPlay;
+  qpStartQuickPlay = function(qc){
+    NX.activeConfig = {
+      opponent: "online", category: srvServerMode() === "hill" ? "arcade" : "classic", modeId: srvServerMode(),
+      variant: srvServerMode(), comp: qc === "ranked" ? { kind: "pool", pool: "duel" } : null,
+      timer: G.pendingTimerSec, stake: 0, allIn: false, aiDiff: G.pendingAiDifficulty, hordeSide: G.pendingHordeSide
+    };
+    nxSaveLast(NX.activeConfig);
+    _nxQpStartQuickPlay(qc);
+  };
+  var _nxShowGameOver = showGameOver;
+  showGameOver = function(title, msg){
+    _nxShowGameOver(title, msg);
+    try{
+      if (!G.over) return;
+      var cfg = NX.activeConfig || nxSnapshotFromG(false);
+      if (cfg){ NX.lastCompleted = cfg; nxLsSet(NX_KEYS.lastPlayed, cfg); nxSyncRepeatBtn(); }
+      setTimeout(function(){ nxInjectPostMatchButtons(cfg); }, 90);
+      setTimeout(function(){ nxInjectPostMatchButtons(cfg); }, 650);
+      setTimeout(function(){ nxInjectPostMatchButtons(cfg); }, 1900);
+    }catch(e){}
+  };
+})();
+</script>
+
+<script>
+/* ============================================================
+   PLAY FLOW REDESIGN (3/3) — COMPETITIVE WIRING.
+   The server is authoritative and already live: ranked queues
+   answer with a versus gate (matchPending), series/mirror have
+   their own gates and state pushes, clocked games carry a clock
+   block in every state, and quick-play rematches are offers.
+   This script answers those messages — previously the client
+   never did, so ranked hung on the versus gate.
+   ============================================================ */
+function compOpenQueue(m){
+  if (!(typeof acctSignedIn === "function" && acctSignedIn())){ showRankedGate(); return; }
+  COMP.pendingKind = m.kind;
+  COMP.pendingPool = m.pool || "duel";
+  var title = nxEl("cqTitle"), desc = nxEl("cqDesc"), note = nxEl("cqNote"), poolRow = nxEl("cqPoolRow");
+  if (m.kind === "series"){
+    title.textContent = "Best of Three";
+    desc.textContent = "Ranked series — first to 2 game wins. One rating update for the whole series.";
+    poolRow.style.display = "none";
+    note.textContent = "10-minute clocks, colours alternate. Both players confirm before Game 1 and between games.";
+  } else if (m.kind === "mirror"){
+    title.textContent = "Mirror Dice";
+    desc.textContent = "Ranked pair — the same committed dice sequences, played from both colours.";
+    poolRow.style.display = "none";
+    note.textContent = "Games run on 10-minute clocks. Mirror Dice balances dice-sequence exposure, not every strategic consequence of a roll.";
+  } else {
+    title.textContent = COMP.pendingPool === "blitz" ? "Blitz Royale" : "Royal Duel";
+    desc.textContent = "Ranked Classic — rating will change.";
+    poolRow.style.display = "";
+    note.textContent = "Both players confirm on a versus screen before the clock starts. Declining matches too often pauses the queue.";
+  }
+  compSyncPoolBtns();
+  nxEl("compQueueOverlay").classList.add("on");
+}
+function compSyncPoolBtns(){
+  document.querySelectorAll("[data-cq-pool]").forEach(function(b){
+    b.classList.toggle("on", b.getAttribute("data-cq-pool") === COMP.pendingPool);
+  });
+  if (COMP.pendingKind === "pool"){
+    nxEl("cqTitle").textContent = COMP.pendingPool === "blitz" ? "Blitz Royale" : (COMP.pendingPool === "bullet" ? "Bullet" : "Royal Duel");
+  }
+}
+function compQueueSend(kind, pool){
+  if (!(typeof acctSignedIn === "function" && acctSignedIn())){ showRankedGate(); return; }
+  nxEl("compQueueOverlay").classList.remove("on");
+  QP.quick = false; QP.queueClass = "ranked"; QP.oppName = null; QP.strictSec = 20; QP.maxSearchSec = 120;
+  qpOpenSearch("connecting");
+  var payload;
+  if (kind === "series") payload = { type: "queue", mode: "normal", specials: true, series: true };
+  else if (kind === "mirror") payload = { type: "queue", mode: "normal", specials: true, mirror: true };
+  else payload = { type: "queue", mode: "normal", specials: true, queueClass: "ranked", pool: pool || "duel" };
+  SRV.queueInfo = { queueClass: "ranked", mode: "normal", specials: true };
+  COMP.pendingKind = kind; COMP.pendingPool = pool || "duel";
+  NX.activeConfig = {
+    opponent: "online", category: "competitive",
+    modeId: kind === "series" ? "bo3" : kind === "mirror" ? "mirror" : ((pool || "duel") === "blitz" ? "blitz" : "duel"),
+    variant: "normal", comp: { kind: kind, pool: pool || "duel" },
+    timer: 60, stake: 0, allIn: false, aiDiff: G.pendingAiDifficulty, hordeSide: G.pendingHordeSide
+  };
+  nxSaveLast(NX.activeConfig);
+  srvConnect(function(){
+    if (!srvSendRaw(payload)) qpShowNotice("failed", "Couldn't reach the server", "The connection dropped before your search started. Try again.");
+  });
+}
+/* ---------- versus / ready gate ---------- */
+function compShowVersus(msg){
+  COMP.versus = msg; COMP.vsYouReady = false; COMP.vsOppReady = false;
+  if (typeof qpClose === "function") qpClose();
+  var poolName = msg.pool === "blitz" ? "Blitz Royale" : (msg.pool === "bullet" ? "Bullet" : "Royal Duel");
+  nxEl("vsTitle").textContent = poolName + " — Match Found";
+  var tc = msg.timeControlMs ? (Math.round(msg.timeControlMs / 60000) + ":00") : "";
+  nxEl("vsSub").textContent = "Ranked Classic" + (tc ? " · " + tc + " clocks" : "") + " · both players must confirm";
+  var youName = (typeof ACCT !== "undefined" && ACCT.account && ACCT.account.username) || (typeof PROFILE_NAME !== "undefined" && PROFILE_NAME) || "You";
+  nxEl("vsYouName").textContent = youName;
+  nxEl("vsYouMeta").textContent = "That's you";
+  nxEl("vsYouColor").textContent = "You play " + (msg.color === "b" ? "Black" : "White");
+  var opp = msg.opponent || {};
+  nxEl("vsOppName").textContent = opp.name || "Opponent";
+  nxEl("vsOppMeta").textContent = opp.rating != null
+    ? (opp.rating + (opp.tier ? " · " + opp.tier.name : "") + (opp.provisional ? " · Provisional" : ""))
+    : "Provisional";
+  nxEl("vsOppColor").textContent = "Plays " + (msg.color === "b" ? "White" : "Black");
+  compVersusReady(false, false);
+  var rb = nxEl("vsReadyBtn");
+  rb.disabled = false; rb.textContent = "Ready";
+  nxEl("compVersus").classList.add("on");
+  var deadline = Date.now() + (msg.readyTimeoutMs || 30000);
+  if (COMP.versusTimer) clearInterval(COMP.versusTimer);
+  var tick = function(){
+    var left = Math.max(0, Math.ceil((deadline - Date.now()) / 1000));
+    nxEl("vsCount").textContent = left > 0 ? "Confirm within " + left + "s — no clock runs until both players are ready" : "";
+    if (left <= 0 && COMP.versusTimer){ clearInterval(COMP.versusTimer); COMP.versusTimer = null; }
+  };
+  tick();
+  COMP.versusTimer = setInterval(tick, 250);
+}
+function compVersusReady(you, oppR){
+  COMP.vsYouReady = !!you; COMP.vsOppReady = !!oppR;
+  nxEl("vsYouSide").classList.toggle("ready", !!you);
+  nxEl("vsOppSide").classList.toggle("ready", !!oppR);
+  nxEl("vsYouReady").textContent = you ? "Ready ✓" : "Not ready";
+  nxEl("vsOppReady").textContent = oppR ? "Ready ✓" : "Not ready";
+  if (you){ var rb = nxEl("vsReadyBtn"); rb.disabled = true; rb.textContent = "Waiting for opponent…"; }
+}
+function compHideVersus(){
+  nxEl("compVersus").classList.remove("on");
+  COMP.versus = null;
+  if (COMP.versusTimer){ clearInterval(COMP.versusTimer); COMP.versusTimer = null; }
+}
+/* ---------- series / mirror contest overlay ---------- */
+function compShowContest(){ nxEl("compContest").classList.add("on"); }
+function compHideContest(){
+  nxEl("compContest").classList.remove("on");
+  if (COMP.contestTimer){ clearInterval(COMP.contestTimer); COMP.contestTimer = null; }
+}
+function compContestCountdown(deadline, label){
+  if (COMP.contestTimer){ clearInterval(COMP.contestTimer); COMP.contestTimer = null; }
+  if (!deadline){ nxEl("ccCount").textContent = ""; return; }
+  var tick = function(){
+    var left = Math.max(0, Math.ceil((deadline - Date.now()) / 1000));
+    nxEl("ccCount").textContent = left > 0 ? label + " " + left + "s" : "";
+    if (left <= 0 && COMP.contestTimer){ clearInterval(COMP.contestTimer); COMP.contestTimer = null; }
+  };
+  tick();
+  COMP.contestTimer = setInterval(tick, 250);
+}
+function compScoreHtml(view, key){
+  var ps = (view && view.players) || [];
+  if (ps.length < 2) return "";
+  return '<div class="comp-score">' + escHtml(ps[0].username) + ' ' + (ps[0][key] || 0) + ' — ' + (ps[1][key] || 0) + ' ' + escHtml(ps[1].username) + '</div>';
+}
+function compResultLine(lr){
+  if (!lr) return "";
+  return lr.winner ? (lr.winner + " won that game" + (lr.reason ? " (" + lr.reason + ")" : "") + ".") : "That game was a draw.";
+}
+function compRenderContestFromState(){
+  var kind = COMP.contest;
+  if (!kind) return;
+  var view = kind === "series" ? COMP.seriesState : COMP.mirrorState;
+  if (!view || view.status !== "live") return;
+  if (view.phase === "playing"){ compHideContest(); closeModal(); return; }
+  var isSeries = kind === "series";
+  nxEl("ccTitle").textContent = isSeries ? "Best of Three" : "Mirror Dice";
+  nxEl("ccSub").textContent = isSeries ? "First to 2 wins · 10:00 clocks · Duel pool · ranked" : "Two games, colours swapped · same dice both ways · Mirror pool · ranked";
+  nxEl("ccVerify").style.display = "none";
+  nxEl("ccVerifyBtn").style.display = "none";
+  nxEl("ccCloseBtn").style.display = "none";
+  var leave = nxEl("ccLeaveBtn");
+  leave.style.display = "";
+  leave.textContent = isSeries ? "Leave series" : "Leave match";
+  var main = nxEl("ccMainBtn");
+  main.style.display = "";
+  var body = compScoreHtml(view, isSeries ? "wins" : "points");
+  if (view.phase === "ready"){
+    var ng = view.nextGame;
+    var gn = isSeries ? ("Game " + (ng ? ng.gameNumber : 1)) : ("Game " + (ng ? ng.game : "A"));
+    body += '<p class="comp-note">' + gn + (ng ? ' — you play <b>' + (ng.yourColor === "b" ? "Black" : "White") + '</b>' : "") + ". Both players confirm to start.</p>";
+    if (view.interrupted) body += '<p class="comp-note">This contest was restored after a server restart.</p>';
+    main.disabled = !!view.youContinued;
+    main.textContent = view.youContinued ? "Waiting for opponent…" : "Ready — start " + gn;
+    compContestCountdown(view.gateEndsAt || null, "Confirm within");
+  } else if (view.phase === "intermission"){
+    if (COMP.lastResult) body += '<p class="comp-note">' + escHtml(compResultLine(COMP.lastResult)) + '</p>';
+    var ng2 = view.nextGame;
+    if (ng2) body += '<p class="comp-note">Next: ' + escHtml(ng2.white) + ' (White) vs ' + escHtml(ng2.black) + ' (Black)' + (ng2.yourColor ? ' — you play <b>' + (ng2.yourColor === "b" ? "Black" : "White") + '</b>' : "") + ".</p>";
+    main.disabled = !!view.youContinued;
+    main.textContent = view.youContinued ? "Waiting for opponent…" : "Continue — next game";
+    compContestCountdown(view.intermissionEndsAt || null, "Next game in");
+  }
+  nxEl("ccBody").innerHTML = body;
+  compShowContest();
+}
+function compRenderGameResult(msg, isSeries){
+  COMP.lastResult = msg;
+  var view = isSeries ? COMP.seriesState : COMP.mirrorState;
+  nxEl("ccTitle").textContent = isSeries ? "Best of Three" : "Mirror Dice";
+  nxEl("ccSub").textContent = isSeries ? "First to 2 wins · Duel pool · ranked" : "Two games, colours swapped · Mirror pool · ranked";
+  var body = "";
+  if (view) body += compScoreHtml(view, isSeries ? "wins" : "points");
+  body += '<p class="comp-note">' + escHtml(compResultLine(msg)) + '</p>';
+  var live = isSeries ? (msg.seriesStatus === "live") : (msg.matchStatus === "live");
+  if (live && msg.nextGame) body += '<p class="comp-note">Next: ' + escHtml(msg.nextGame.white) + ' (White) vs ' + escHtml(msg.nextGame.black) + ' (Black).</p>';
+  if (!live) body += '<p class="comp-note">That was the last game — the final result follows.</p>';
+  nxEl("ccBody").innerHTML = body;
+  var main = nxEl("ccMainBtn");
+  main.style.display = "";
+  main.disabled = !live;
+  main.textContent = live ? "Continue — next game" : "Waiting for the final result…";
+  nxEl("ccLeaveBtn").style.display = "";
+  nxEl("ccCloseBtn").style.display = "none";
+  compContestCountdown(live ? (msg.intermissionsEndsAt || msg.intermissionEndsAt || null) : null, "Next game in");
+  compShowContest();
+}
+function compRenderEnded(msg, isSeries){
+  var view = isSeries ? COMP.seriesState : COMP.mirrorState;
+  var youId = null;
+  if (view && view.players) view.players.forEach(function(p){ if (p.isYou) youId = p.accountId; });
+  var won = !!(msg.winnerId && youId && msg.winnerId === youId);
+  nxEl("ccTitle").textContent = !msg.winnerId ? (isSeries ? "Series Drawn" : "Mirror Match Drawn") : (won ? (isSeries ? "You Win the Series!" : "You Win the Mirror Match!") : (isSeries ? "Series Lost" : "Mirror Match Lost"));
+  nxEl("ccSub").textContent = (isSeries ? "Best of Three" : "Mirror Dice") + " · final result";
+  var body = "";
+  if (view) body += compScoreHtml(view, isSeries ? "wins" : "points");
+  body += '<p class="comp-note">' + (msg.winner ? escHtml(msg.winner) + (isSeries ? " takes the series." : " wins the match.") : "It ends level — rated as a draw.") + '</p>';
+  if (msg.rating) body += '<div class="comp-ratingline">Rating ' + msg.rating.ratingBefore + ' → ' + msg.rating.ratingAfter + ' (' + (msg.rating.delta >= 0 ? "+" : "") + msg.rating.delta + ')' + (msg.rating.tierAfter ? ' · ' + escHtml(msg.rating.tierAfter.name) : '') + '</div>';
+  nxEl("ccBody").innerHTML = body;
+  nxEl("ccCount").textContent = "";
+  if (COMP.contestTimer){ clearInterval(COMP.contestTimer); COMP.contestTimer = null; }
+  nxEl("ccMainBtn").style.display = "none";
+  nxEl("ccLeaveBtn").style.display = "none";
+  nxEl("ccVerifyBtn").style.display = isSeries ? "none" : "";
+  nxEl("ccCloseBtn").style.display = "";
+  compShowContest();
+}
+/* ---------- mirror fairness verification ---------- */
+function compSha256Hex(str){
+  try{
+    if (window.crypto && crypto.subtle && crypto.subtle.digest){
+      return crypto.subtle.digest("SHA-256", new TextEncoder().encode(str)).then(function(buf){
+        return Array.prototype.map.call(new Uint8Array(buf), function(b){ return ("0" + b.toString(16)).slice(-2); }).join("");
+      }).catch(function(){ return null; });
+    }
+  }catch(e){}
+  return Promise.resolve(null);
+}
+function compShowVerify(){
+  var v = nxEl("ccVerify");
+  v.style.display = "";
+  var r = COMP.reveal;
+  if (!r){ v.innerHTML = '<p class="comp-note">The reveal arrives with the end of the match — check again in a moment.</p>'; return; }
+  v.innerHTML = '<p class="comp-note">Checking the revealed sequences against the commitment shown before the match…</p>';
+  var canonical = r.mirrorId + "|" + r.salt + "|" + JSON.stringify({ w: r.whiteSequence, b: r.blackSequence });
+  compSha256Hex(canonical).then(function(hex){
+    var commit = COMP.commitment || r.commitment || "";
+    var ok = hex ? (hex === commit) : (r.verified === true);
+    var html = '<p class="comp-note" style="font-size:14px;">' + (ok
+      ? "✓ <b>Verified</b> — the revealed dice sequences hash exactly to the commitment made before the match. The dice were fixed in advance and never changed."
+      : "✗ <b>Mismatch</b> — the revealed sequences do not hash to the pre-match commitment.") + '</p>';
+    if (r.sequenceExhausted) html += '<p class="comp-note">Note: part of a game fell back to live rolls — the pre-committed sequence ran out, so those rolls were not covered by the commitment.</p>';
+    if (commit) html += '<p class="comp-note" style="word-break:break-all;">Commitment: ' + escHtml(commit) + '</p>';
+    v.innerHTML = html;
+  });
+}
+/* ---------- match clocks ---------- */
+function compOnStateClock(s){
+  if (typeof SPEC !== "undefined" && SPEC && (SPEC.active || SPEC.pending)) return;
+  if (s && s.clock){
+    COMP.clock = { w: s.clock.remainingMs.w, b: s.clock.remainingMs.b, active: s.clock.active, running: !!s.clock.running, at: Date.now() };
+    if (G.timerSec !== 0) G.timerSec = 0; /* clocked games never use the casual per-turn timer */
+    if (typeof ttUpdateChip === "function") ttUpdateChip();
+    compRenderClocks();
+    if (!COMP.clockTimer) COMP.clockTimer = setInterval(compRenderClocks, 200);
+  } else if (COMP.clock){
+    COMP.clock = null;
+    compRenderClocks();
+  }
+}
+function compClockMs(color){
+  var c = COMP.clock;
+  if (!c) return 0;
+  var ms = c[color];
+  if (c.running && c.active === color && document.body.classList.contains("playing")) ms -= (Date.now() - c.at);
+  return Math.max(0, ms);
+}
+function compFmtClock(ms){
+  ms = Math.max(0, Math.round(ms));
+  var s = Math.floor(ms / 1000);
+  var str = Math.floor(s / 60) + ":" + ("0" + (s % 60)).slice(-2);
+  if (ms < 10000) str += "." + Math.floor((ms % 1000) / 100);
+  return str;
+}
+function compRenderClocks(){
+  var el = nxEl("compClocks");
+  if (!el) return;
+  var show = !!COMP.clock && document.body.classList.contains("playing");
+  el.classList.toggle("on", show);
+  if (!show) return;
+  var my = G.myColor || "w";
+  var html = "";
+  ["w", "b"].forEach(function(col){
+    var ms = compClockMs(col);
+    var name = (typeof playerName === "function") ? playerName(col) : (col === "w" ? "White" : "Black");
+    html += '<span class="cc-chip' + (COMP.clock.active === col && COMP.clock.running ? " active" : "") + (ms < 20000 ? " low" : "") + '"><span class="cc-name">' + (col === "w" ? "♔ " : "♚ ") + escHtml(name) + (col === my ? " (you)" : "") + '</span><span class="cc-time">' + compFmtClock(ms) + '</span></span>';
+  });
+  el.innerHTML = html;
+}
+/* ---------- quick-play rematch offers ---------- */
+function compOnRematchOffered(msg){
+  nxEl("croText").textContent = (msg.from || "Your opponent") + " wants a rematch — colours swap." + (msg.queueClass === "ranked" ? " Ranked — rating will change." : "");
+  nxEl("compRematchOffer").classList.add("on");
+  var deadline = Date.now() + (msg.expiresInMs || 30000);
+  if (COMP.rematchOfferTimer) clearInterval(COMP.rematchOfferTimer);
+  var tick = function(){
+    var left = Math.max(0, Math.ceil((deadline - Date.now()) / 1000));
+    nxEl("croCount").textContent = left > 0 ? "Offer expires in " + left + "s" : "";
+    if (left <= 0) compHideRematchOffer();
+  };
+  tick();
+  COMP.rematchOfferTimer = setInterval(tick, 250);
+}
+function compHideRematchOffer(){
+  nxEl("compRematchOffer").classList.remove("on");
+  if (COMP.rematchOfferTimer){ clearInterval(COMP.rematchOfferTimer); COMP.rematchOfferTimer = null; }
+}
+function compOnRematchClosed(msg){
+  compHideRematchOffer();
+  var b = nxEl("nxPmRematch");
+  if (b){ b.disabled = false; b.textContent = "Rematch"; }
+  var r = msg && msg.reason;
+  toast(r === "expired" ? "The rematch offer expired." : r === "declined" ? "Rematch declined." : r === "unavailable" ? "That rematch is no longer available." : "Rematch closed.");
+}
+/* ---------- ranked dashboard pools + result pool label ---------- */
+function compLabelRankedPanel(){
+  var msg = COMP.lastRanked;
+  if (!msg) return;
+  var t = document.querySelector("#rankedResultPanel .pm-ranked-title");
+  if (t && !t.getAttribute("data-pool")){
+    t.setAttribute("data-pool", "1");
+    t.textContent = "Ranked · " + (msg.pool === "blitz" ? "Blitz" : msg.pool === "bullet" ? "Bullet" : msg.pool === "mirror" ? "Mirror" : "Duel");
+  }
+}
+/* ---------- server message routing (wraps the existing handler) ---------- */
+var _compSrvOnMessage = srvOnMessage;
+srvOnMessage = function(msg){
+  if (!msg || !msg.type){ _compSrvOnMessage(msg); return; }
+  switch (msg.type){
+    case "matchPending": compShowVersus(msg); return;
+    case "matchPendingStatus": if (COMP.versus) compVersusReady(msg.youReady, msg.opponentReady); return;
+    case "matchDissolved": {
+      compHideVersus();
+      toast(msg.reason === "declined" ? "Match declined — no game was started." : msg.reason === "timeout" ? "A player didn't confirm in time — the match was dissolved." : "The match was dissolved.");
+      return;
+    }
+    case "seriesFound": COMP.contest = "series"; COMP.found = msg; COMP.lastResult = null; compShowContest(); if (COMP.seriesState) compRenderContestFromState(); return;
+    case "seriesState": COMP.seriesState = msg.series; if (msg.series && msg.series.status === "live"){ COMP.contest = "series"; compRenderContestFromState(); } return;
+    case "seriesGameResult": COMP.contest = "series"; compRenderGameResult(msg, true); return;
+    case "seriesEnded": COMP.contest = "series"; compRenderEnded(msg, true); return;
+    case "seriesDissolved": compHideContest(); COMP.contest = null; toast("The series was cancelled before it started — no rating change."); return;
+    case "mirrorFound": COMP.contest = "mirror"; COMP.found = msg; COMP.commitment = msg.commitment || COMP.commitment; COMP.lastResult = null; compShowContest(); if (COMP.mirrorState) compRenderContestFromState(); return;
+    case "mirrorState": COMP.mirrorState = msg.mirror; if (msg.mirror && msg.mirror.status === "live"){ COMP.contest = "mirror"; compRenderContestFromState(); } return;
+    case "mirrorGameResult": COMP.contest = "mirror"; compRenderGameResult(msg, false); return;
+    case "mirrorEnded": COMP.contest = "mirror"; compRenderEnded(msg, false); return;
+    case "mirrorDissolved": compHideContest(); COMP.contest = null; toast("The Mirror Dice match was cancelled before it started — no rating change."); return;
+    case "mirrorReveal": COMP.reveal = msg; if (COMP.contest === "mirror" && nxEl("ccVerify").style.display !== "none") compShowVerify(); return;
+    case "rematchOffered": compOnRematchOffered(msg); return;
+    case "rematchOfferSent": toast("Rematch offer sent"); return;
+    case "rematchClosed": compOnRematchClosed(msg); return;
+    case "error": {
+      if (msg.code === "QUEUE_COOLDOWN"){
+        var secs = Math.max(1, Math.ceil((msg.retryAfterMs || 0) / 1000));
+        if (typeof qpClose === "function") qpClose();
+        nxConfirmShow("Ranked queue paused", ["Too many declined or abandoned matches — you can queue again in " + secs + "s."], "OK", null);
+        return;
+      }
+      break;
+    }
+    case "matched": compHideVersus(); break;
+  }
+  _compSrvOnMessage(msg);
+  if (msg.type === "state"){ try{ compOnStateClock(msg); }catch(e){} }
+};
+var _compRankedOnResult = rankedOnResult;
+rankedOnResult = function(msg){
+  COMP.lastRanked = msg;
+  _compRankedOnResult(msg);
+  setTimeout(compLabelRankedPanel, 120);
+  setTimeout(compLabelRankedPanel, 700);
+};
+var _compRankedOnDashboard = rankedOnDashboard;
+rankedOnDashboard = function(msg){
+  _compRankedOnDashboard(msg);
+  try{
+    var d = msg && msg.dashboard, b = nxEl("srvRankedBody");
+    if (!d || !b || !d.pools || !d.pools.length || b.querySelector(".srk-pools")) return;
+    var html = '<div class="srk-pools" style="margin-top:10px;border-top:1px solid var(--line);padding-top:8px;">' + d.pools.map(function(p){
+      return '<div class="srk-sub">' + escHtml(p.name || p.pool) + ': <b>' + p.rating + '</b>' + (p.tier ? ' · ' + escHtml(p.tier.name) : '') + (p.record ? ' · ' + (p.record.wins || 0) + 'W ' + (p.record.losses || 0) + 'L ' + (p.record.draws || 0) + 'D' : '') + '</div>';
+    }).join("") + '</div>';
+    b.insertAdjacentHTML("beforeend", html);
+  }catch(e){}
+};
+/* ---------- competitive UI bindings ---------- */
+(function compInit(){
+  document.querySelectorAll("[data-cq-pool]").forEach(function(b){
+    b.addEventListener("click", function(){
+      COMP.pendingPool = b.getAttribute("data-cq-pool");
+      compSyncPoolBtns();
+    });
+  });
+  nxEl("cqFindBtn").addEventListener("click", function(){ compQueueSend(COMP.pendingKind, COMP.pendingPool); });
+  nxEl("cqCancelBtn").addEventListener("click", function(){ nxEl("compQueueOverlay").classList.remove("on"); });
+  nxEl("vsReadyBtn").addEventListener("click", function(){
+    if (srvSendRaw({ type: "matchReady" })) compVersusReady(true, COMP.vsOppReady);
+  });
+  nxEl("vsDeclineBtn").addEventListener("click", function(){
+    srvSendRaw({ type: "matchDecline" });
+    compHideVersus();
+    toast("Match declined.");
+  });
+  nxEl("ccMainBtn").addEventListener("click", function(){
+    var t = COMP.contest === "mirror" ? "mirrorContinue" : "seriesContinue";
+    if (srvSendRaw({ type: t })){
+      var b = nxEl("ccMainBtn");
+      b.disabled = true; b.textContent = "Waiting for opponent…";
+      closeModal();
+    }
+  });
+  nxEl("ccLeaveBtn").addEventListener("click", function(){
+    srvSendRaw({ type: COMP.contest === "mirror" ? "mirrorAbandon" : "seriesAbandon" });
+    compHideContest();
+    closeModal();
+    COMP.contest = null;
+    toast("You left the contest.");
+  });
+  nxEl("ccCloseBtn").addEventListener("click", function(){ compHideContest(); COMP.contest = null; });
+  nxEl("ccVerifyBtn").addEventListener("click", compShowVerify);
+  nxEl("croAcceptBtn").addEventListener("click", function(){ srvSendRaw({ type: "rematchAccept" }); compHideRematchOffer(); });
+  nxEl("croDeclineBtn").addEventListener("click", function(){ srvSendRaw({ type: "rematchDecline" }); compHideRematchOffer(); });
+  document.querySelectorAll("[data-comp-motion]").forEach(function(b){
+    b.classList.toggle("on", (b.getAttribute("data-comp-motion") === "on") === COMP.reduceMotion);
+    b.addEventListener("click", function(){
+      COMP.reduceMotion = b.getAttribute("data-comp-motion") === "on";
+      nxLsSet(NX_KEYS.compMotion, COMP.reduceMotion);
+      document.documentElement.classList.toggle("comp-reduce", COMP.reduceMotion);
+      document.querySelectorAll("[data-comp-motion]").forEach(function(x){ x.classList.toggle("on", x === b); });
+      toast(COMP.reduceMotion ? "Reduced motion in competitive games: on" : "Reduced motion in competitive games: off");
+    });
+  });
+  var _compGoToMainMenu = goToMainMenu;
+  goToMainMenu = function(){
+    _compGoToMainMenu();
+    compHideVersus();
+    compHideContest();
+    compHideRematchOffer();
+    nxEl("compQueueOverlay").classList.remove("on");
+    COMP.clock = null;
+    compRenderClocks();
+  };
 })();
 </script>
 
