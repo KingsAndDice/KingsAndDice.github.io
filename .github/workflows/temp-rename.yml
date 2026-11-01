@@ -1,0 +1,22 @@
+name: temp-rename
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/temp-rename.yml']
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  rename:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Move new build to index.html
+        run: |
+          if [ ! -f kings-and-dice-index.html ]; then echo 'no temp file'; exit 0; fi
+          git config user.name 'github-actions[bot]'
+          git config user.email 'github-actions[bot]@users.noreply.github.com'
+          git rm -q index.html
+          git mv kings-and-dice-index.html index.html
+          git commit -m 'Update Kings & Dice — board line fix and radio cleanup'
+          git push
