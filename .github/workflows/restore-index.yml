@@ -1,0 +1,22 @@
+name: Restore index
+on:
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  restore:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Copy dice-chess.html to index.html
+        run: |
+          cp dice-chess.html index.html
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          if git diff --cached --quiet; then
+            echo "index.html already matches dice-chess.html"
+          else
+            git commit -m "Restore index.html from dice-chess.html"
+            git push
+          fi
