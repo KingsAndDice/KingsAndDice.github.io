@@ -2712,6 +2712,63 @@ html.reduce-motion .boardroll.trn-shimmer::after{animation:none;display:none;}
 .blk-list li{display:flex;align-items:center;gap:10px;padding:8px 0;border-top:1px solid var(--line);font-size:13.5px;}
 .blk-list .blk-name{flex:1;min-width:0;font-weight:700;color:var(--ink);overflow-wrap:anywhere;}
 </style>
+<style id="kd-spectate-replay">
+/* ===== Spectator mode + match replays + Allow spectators ===== */
+#watchDrawer,#replaysDrawer{z-index:60;}
+.spec-code-input{text-transform:uppercase;}
+.rpl-list{list-style:none;margin:10px 0 0;padding:0;}
+.rpl-row{display:flex;align-items:center;gap:10px;width:100%;text-align:left;padding:11px 12px;margin-bottom:8px;border:1px solid var(--line-strong);border-radius:12px;background:var(--panel-2);cursor:pointer;color:var(--ink);}
+.rpl-row:hover{border-color:var(--gold-bright);}
+.rpl-row-main{flex:1;min-width:0;}
+.rpl-row-names{font-weight:800;font-size:14.5px;overflow-wrap:anywhere;}
+.rpl-row-meta{font-size:12px;color:var(--ink-soft);line-height:1.5;font-variant-numeric:tabular-nums;}
+.rpl-row-side{display:flex;flex-direction:column;align-items:flex-end;gap:3px;flex-shrink:0;font-size:11.5px;color:var(--ink-faint);font-variant-numeric:tabular-nums;white-space:nowrap;}
+/* locked match view (spectating / replay): no play controls, no chat */
+body.spec-on #rollBtn,body.rpl-on #rollBtn,
+body.spec-on #endTurnBtn,body.rpl-on #endTurnBtn,
+body.spec-on #guardRerollBtn,body.rpl-on #guardRerollBtn,
+body.spec-on #srvDrawBtn,body.rpl-on #srvDrawBtn,
+body.spec-on #srvResignBtn,body.rpl-on #srvResignBtn,
+body.spec-on #srvRematchBtn,body.rpl-on #srvRematchBtn,
+body.spec-on #srvLobbyBtn,body.rpl-on #srvLobbyBtn,
+body.spec-on #chatBubble,body.rpl-on #chatBubble,
+body.spec-on #chatFab,body.rpl-on #chatFab,
+body.spec-on #quickRow,body.rpl-on #quickRow,
+body.spec-on #voiceChatBtn,body.rpl-on #voiceChatBtn,
+body.spec-on #vcBtn,body.rpl-on #vcBtn,
+body.spec-on .barplus,body.rpl-on .barplus,
+body.spec-on #specialsBtn,body.rpl-on #specialsBtn,
+body.spec-on #codeBtn,body.rpl-on #codeBtn{display:none !important;}
+body.spec-on #board,body.rpl-on #board{pointer-events:none;}
+body.spec-on .playbar .die,body.rpl-on .playbar .die,
+body.spec-on .dicezone .die,body.rpl-on .dicezone .die{pointer-events:none;}
+body.playing.spec-on .boardframe{width:min(calc(100vw - 20px),calc(100dvh - 452px));}
+body.playing.rpl-on .boardframe{width:min(calc(100vw - 20px),calc(100dvh - 545px));min-width:min(215px,calc(100vw - 20px));}
+/* spectator / replay dock bar */
+.watchbar{position:fixed;left:0;right:0;bottom:0;z-index:47;display:none;background:var(--panel);border-top:1.5px solid var(--gold);padding:8px 12px calc(8px + env(safe-area-inset-bottom));box-shadow:0 -6px 22px rgba(0,0,0,.45);}
+body.spec-on .watchbar#specBar{display:block;}
+body.rpl-on .watchbar#rplBar{display:block;}
+.wb-row{display:flex;align-items:center;gap:9px;flex-wrap:wrap;}
+.wb-badge{font-weight:900;font-size:13.5px;color:var(--brass);white-space:nowrap;}
+.wb-count{font-size:12.5px;font-weight:800;color:var(--ink);background:var(--panel-2);border:1px solid var(--line-strong);border-radius:999px;padding:3px 9px;white-space:nowrap;}
+.wb-turn{font-size:12.5px;color:var(--ink-soft);font-variant-numeric:tabular-nums;}
+.wb-clocks{font-size:12.5px;color:var(--ink-soft);font-variant-numeric:tabular-nums;}
+.wb-stop{margin-left:auto;min-height:38px;padding:7px 14px;border-radius:10px;border:1px solid var(--line-strong);background:var(--panel-2);color:var(--ink);font-size:13px;font-weight:800;cursor:pointer;}
+.wb-x{min-height:38px;min-width:38px;border-radius:10px;border:1px solid var(--line-strong);background:var(--panel-2);color:var(--ink);font-size:14px;font-weight:800;cursor:pointer;}
+.wb-lost{display:flex;align-items:center;gap:10px;margin-top:7px;font-size:13px;font-weight:700;color:var(--danger);}
+.wb-lost button{min-height:34px;padding:5px 12px;border-radius:9px;border:1px solid var(--line-strong);background:var(--panel-2);color:var(--ink);font-weight:800;cursor:pointer;}
+.rpl-result{margin-top:7px;font-size:13.5px;font-weight:800;color:var(--ink);line-height:1.45;}
+.rpl-controls{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-top:8px;}
+.rpl-controls button{min-height:40px;padding:7px 12px;border-radius:10px;border:1px solid var(--line-strong);background:var(--panel-2);color:var(--ink);font-size:13.5px;font-weight:800;cursor:pointer;}
+.rpl-controls button:disabled{opacity:.45;cursor:default;}
+.rpl-controls button:hover:not(:disabled){border-color:var(--gold-bright);}
+.rpl-progress{font-size:12.5px;color:var(--ink-soft);font-variant-numeric:tabular-nums;white-space:nowrap;}
+.rpl-moves{display:flex;flex-wrap:wrap;gap:4px;max-height:64px;overflow-y:auto;margin-top:8px;}
+.rpl-mv{font-size:12px;font-weight:700;padding:3px 8px;border-radius:7px;border:1px solid var(--line);background:var(--panel-2);color:var(--ink-soft);cursor:pointer;font-variant-numeric:tabular-nums;}
+.rpl-mv.cur{background:var(--gold);border-color:var(--gold);color:#14100a;}
+.rpl-empty-note{font-size:12.5px;color:var(--ink-faint);padding:2px 0;}
+@media (prefers-color-scheme: dark){.rpl-mv.cur{color:#14100a;}}
+</style>
 </head>
 <body class="show-menu">
 <div class="wrap">
@@ -2778,6 +2835,8 @@ html.reduce-motion .boardroll.trn-shimmer::after{animation:none;display:none;}
       <button class="menu-opt minimal" type="button" data-menu-mode="live"><span class="mo-title">Live</span></button>
       <button class="menu-opt minimal" type="button" data-menu-mode="link"><span class="mo-title">Friend</span></button>
       <button class="menu-opt minimal" type="button" id="trnOpenBtn"><span class="mo-title">🏆 Tournaments</span></button>
+      <button class="menu-opt minimal" type="button" id="specOpenBtn"><span class="mo-title">👁 Watch a game</span></button>
+      <button class="menu-opt minimal" type="button" id="rplOpenBtn"><span class="mo-title">🎞 Replays</span></button>
     </div>
     <div class="srv-menu-note"><b>Live now runs on the Kings &amp; Dice server</b> for <b>Normal</b> and <b>King of the Hill</b> — the server rolls the dice, validates every move, and holds your seat for 60 seconds if a connection drops. Other match types still use Friend (P2P) rooms, and turn codes always work as a backup.</div>
     <div class="about-sec srv-history-sec" id="onlineHistorySec" style="display:none;">
@@ -3327,6 +3386,10 @@ html.reduce-motion .boardroll.trn-shimmer::after{animation:none;display:none;}
           <div class="row">
             <button id="srvBrowseBtn" type="button" class="ghost">Browse Games — open rooms</button>
           </div>
+          <div class="row">
+            <button id="specOpenBtn2" type="button" class="ghost">👁 Watch a game</button>
+            <button id="rplOpenBtn2" type="button" class="ghost">🎞 Replays</button>
+          </div>
           <label for="srvCreatePassword" style="font-size:13px;font-weight:700;">Private match — set it up above (match type and stake), then create your room</label>
           <input class="srv-pw-field" id="srvCreatePassword" type="password" placeholder="Room password (optional)" autocomplete="off" maxlength="32" />
           <div class="row">
@@ -3511,6 +3574,65 @@ html.reduce-motion .boardroll.trn-shimmer::after{animation:none;display:none;}
   </div>
 </div>
 
+<div class="sheetdrawer" id="watchDrawer" aria-label="Watch a game">
+  <div class="sheetcard">
+    <div class="chathead"><span class="ch-title">👁 Watch a game</span><button class="chatclose" id="watchCloseBtn" type="button" aria-label="Close watch a game">✕</button></div>
+    <p class="panelnote">Enter the room code of a live server game to watch it. Watching is read-only — you can't move, chat or affect the game in any way.</p>
+    <div class="lb-searchrow">
+      <input class="spec-code-input" id="watchCodeInput" type="text" maxlength="12" placeholder="Room code, e.g. K7QX2" autocomplete="off" autocapitalize="characters" spellcheck="false" />
+      <button id="watchGoBtn" type="button">Watch</button>
+    </div>
+    <div class="acct-error" id="watchError" role="alert"></div>
+    <div class="acct-note" id="watchNote" role="status"></div>
+    <p class="panelnote">Watching a tournament match? Enter its room code here.</p>
+  </div>
+</div>
+
+<div class="sheetdrawer" id="replaysDrawer" aria-label="Replays">
+  <div class="sheetcard">
+    <div class="chathead"><span class="ch-title">Replays</span><button class="chatclose" id="replaysCloseBtn" type="button" aria-label="Close replays">✕</button></div>
+    <p class="panelnote">Finished public online matches, newest first. Tap one to watch it back move by move.</p>
+    <div id="replaysBody"></div>
+    <div class="lb-pager" id="replaysPager" style="display:none;">
+      <button class="utilbtn" id="replaysPrevBtn" type="button">← Prev</button>
+      <span class="lb-pageinfo" id="replaysPageInfo"></span>
+      <button class="utilbtn" id="replaysNextBtn" type="button">Next →</button>
+    </div>
+    <div class="acct-error" id="replaysError" role="alert"></div>
+  </div>
+</div>
+
+<div class="watchbar" id="specBar" aria-label="Spectator controls">
+  <div class="wb-row">
+    <span class="wb-badge">👁 Watching</span>
+    <span class="wb-count" id="specCount">1 watching</span>
+    <span class="wb-turn" id="specTurn"></span>
+    <span class="wb-clocks" id="specClocks"></span>
+    <button class="wb-stop" id="specStopBtn" type="button">Stop watching</button>
+    <button class="wb-x" id="specExitBtn" type="button" aria-label="Stop watching">✕</button>
+  </div>
+  <div class="wb-lost" id="specLost" style="display:none;"><span>Connection lost — rejoin by entering the room code again.</span><button id="specLeaveBtn" type="button">Leave</button></div>
+</div>
+
+<div class="watchbar" id="rplBar" aria-label="Replay controls">
+  <div class="wb-row">
+    <span class="wb-badge">🎞 Replay</span>
+    <span class="wb-turn" id="rplTitle"></span>
+    <button class="wb-x" id="rplExitBtn" type="button" aria-label="Close replay" style="margin-left:auto;">✕</button>
+  </div>
+  <div class="rpl-result" id="rplResult" style="display:none;"></div>
+  <div class="rpl-controls">
+    <button id="rplRestartBtn" type="button" aria-label="Restart replay">⏮ Restart</button>
+    <button id="rplPrevBtn" type="button" aria-label="Previous move">◀ Prev</button>
+    <button id="rplPlayBtn" type="button" aria-label="Play or pause replay">⏯ Play</button>
+    <button id="rplNextBtn" type="button" aria-label="Next move">Next ▶</button>
+    <button id="rplSpeedBtn" type="button" aria-label="Replay speed">1×</button>
+    <span class="rpl-progress" id="rplProgress">Move 0 of 0</span>
+    <button id="rplShareBtn" type="button">Share replay</button>
+  </div>
+  <div class="rpl-moves" id="rplMoves"></div>
+</div>
+
 <div class="sheetdrawer" id="trnAdminSheet" aria-label="Tournament admin">
   <div class="sheetcard">
     <div class="chathead"><span class="ch-title">🏆 Tournament Admin</span><button class="chatclose" id="trnAdminCloseBtn" type="button" aria-label="Close tournament admin">✕</button></div>
@@ -3635,6 +3757,13 @@ html.reduce-motion .boardroll.trn-shimmer::after{animation:none;display:none;}
           <div class="acct-error" id="acctEmailError" role="alert"></div>
           <div class="acct-note" id="acctEmailNote" role="status"></div>
           <div class="acct-btnrow"><button class="acct-btn-primary" id="acctEmailBtn" type="button">Add email</button></div>
+        </div>
+        <div class="acct-email-block" id="specAllowBlock">
+          <div class="acct-lab" style="margin-top:0;">Spectators &amp; replays</div>
+          <label class="acct-stay" for="specAllowToggle" style="margin-top:2px;"><input type="checkbox" id="specAllowToggle" checked /><span>Allow spectators</span></label>
+          <p class="panelnote" style="margin-bottom:2px;">When off, your public games can't be watched and your matches don't appear in Replays.</p>
+          <div class="acct-error" id="specAllowError" role="alert"></div>
+          <div class="acct-note" id="specAllowNote" role="status"></div>
         </div>
         <label class="acct-stay" for="acctStayLoggedIn2"><input type="checkbox" id="acctStayLoggedIn2" checked /><span>Stay logged in on this device</span></label>
         <p class="panelnote" id="acctStayNote" style="margin-bottom:2px;"></p>
@@ -14781,8 +14910,18 @@ function trnOnAdminOk(msg){
   var br = document.getElementById("boardRoll");
   if (br && window.MutationObserver){
     var mo = new MutationObserver(function(){
-      if (br.classList.contains("on") && trnIsFinalGame()) br.classList.add("trn-shimmer");
-      else br.classList.remove("trn-shimmer");
+      /* Only touch the class list when the shimmer state actually
+         changes. An unconditional add/remove here re-mutates the very
+         class attribute this observer watches, so the callback
+         re-triggers itself in an endless microtask loop that hard-
+         freezes the page the first time #boardRoll's class changes —
+         which is hideRollOverlayNow() inside resetGameOnly(), i.e.
+         the moment a game is started. Guarded, the follow-up callback
+         sees the state already correct and does nothing. */
+      var want = br.classList.contains("on") && trnIsFinalGame();
+      var has = br.classList.contains("trn-shimmer");
+      if (want && !has) br.classList.add("trn-shimmer");
+      else if (!want && has) br.classList.remove("trn-shimmer");
     });
     mo.observe(br, { attributes:true, attributeFilter:["class"] });
   }
@@ -15323,6 +15462,988 @@ function lbHandleError(msg){
   }
   lbRender();
   lbRenderBlocked();
+})();
+</script>
+
+<script>
+/* ============================================================
+   SPECTATOR MODE + MATCH REPLAYS + ALLOW-SPECTATORS SETTING —
+   client for the live server messages spectateRoom /
+   leaveSpectate / spectateJoined / spectateLeft /
+   spectatorCount / setSpectatingAllowed /
+   spectatingAllowedSet / replayList / replayGet / replay.
+   Payloads are consumed exactly per the server contract; no
+   fields are invented. All sends reuse the existing srvConnect /
+   srvSendRaw plumbing with pending-state guards and timeouts,
+   like the leaderboard and tournament features. Spectating is
+   read-only: the match screen is rendered from `state`
+   broadcasts exactly as a player's is, but the view is locked
+   (no roll / move / end-turn / resign / draw controls, no chat
+   at all) and this client never sends a game action while
+   spectating. Replays are rebuilt from initial.fen by stepping
+   the recorded event log through the client's own engine
+   helpers (legalMoves / applyOnBoard / notationFor).
+   ============================================================ */
+
+/* ---------- shared helpers ---------- */
+function specFmtClock(v){
+  if (typeof v!=="number" || !isFinite(v) || v<0) return null;
+  var sec = v>100000 ? Math.round(v/1000) : (v>1000 ? Math.round(v/1000) : Math.round(v));
+  if (v>1000) sec = Math.round(v/1000);
+  var m = Math.floor(sec/60), s = sec%60;
+  return m + ":" + ("0"+s).slice(-2);
+}
+function specClockText(s){
+  if (!s) return "";
+  function pick(o){
+    if (!o) return null;
+    var keys = ["clockMs","timeMs","remainingMs","clockLeftMs","msLeft"];
+    for (var i=0;i<keys.length;i++) if (typeof o[keys[i]]==="number") return o[keys[i]];
+    return null;
+  }
+  var cw = null, cb = null;
+  if (s.clocks){ cw = pick(s.clocks.w ? {clockMs:s.clocks.w} : null); if (typeof s.clocks.w==="number") cw = s.clocks.w; if (typeof s.clocks.b==="number") cb = s.clocks.b; }
+  if (cw===null && s.players && s.players.w) cw = pick(s.players.w);
+  if (cb===null && s.players && s.players.b) cb = pick(s.players.b);
+  if (cw===null && cb===null) return "";
+  var fw = specFmtClock(cw), fb = specFmtClock(cb);
+  if (!fw && !fb) return "";
+  return "⏱ " + (fw || "—") + " · " + (fb || "—");
+}
+function specReasonTitleMsg(res, s){
+  var winner = res && res.winner;
+  var wn = winner ? nameWithColour(winner) : "";
+  var ln = winner ? nameWithColour(opp(winner)) : "";
+  switch (res && res.reason){
+    case "king-capture": return { title:"King Killed!", msg: wn + " killed the King and wins the game — king captured." };
+    case "hill": return { title:"King of the Hill!", msg: wn + " wins — their King reached the hill." };
+    case "resignation": return { title:"Resignation", msg: wn + " wins — " + ln + " resigned." };
+    case "disconnect":
+      if (res.outcome==="abandoned") return { title:"Game abandoned", msg:"Both players disconnected — the game was abandoned." };
+      return { title:"Forfeit — disconnected", msg: wn + " wins — " + ln + " didn't return in time." };
+    case "no-moves": return { title:"Draw", msg:"No legal move at all — the game is a draw." };
+    case "draw-agreement": return { title:"Draw agreed", msg:"Both players agreed to a draw." };
+    case "time": case "timeout": case "flag": return { title:"Time out", msg: wn + " wins on time." };
+    default:
+      if (res && res.outcome==="abandoned") return { title:"Game abandoned", msg:"The game was abandoned." };
+      if (winner) return { title:"Game over", msg: wn + " wins." };
+      return { title:"Draw", msg:"The game ended in a draw." };
+  }
+}
+function viewsExitToOnline(){
+  closeModal();
+  document.body.classList.remove("playing");
+  document.body.classList.add("show-menu");
+  closeInfoScreens();
+  document.body.classList.add("show-online");
+  try{ resetGameOnly(); }catch(e){}
+  try{ var b = document.getElementById("board"); if (b) b.inert = false; }catch(e){}
+  window.scrollTo(0,0);
+  try{ renderBoard(); }catch(e){}
+}
+
+/* ============================================================
+   1. WATCH LIVE (spectating)
+   ============================================================ */
+var SPEC = {
+  active: false, pending: false, code: null, count: 0,
+  lastState: null, prevState: null, over: false, overKey: null,
+  lost: false, joinTimer: null, leavePending: false,
+  cancelledCode: null, swallowCode: null
+};
+var SPEC_ERR_TEXT = {
+  ROOM_NOT_FOUND: "No game with that code.",
+  SPECTATE_NOT_ALLOWED: "This game can't be watched.",
+  ALREADY_IN_GAME: "You're in a game right now."
+};
+function specSetError(t){ var e = document.getElementById("watchError"); if (e) e.textContent = t || ""; }
+function specSetNote(t){ var e = document.getElementById("watchNote"); if (e) e.textContent = t || ""; }
+function specOpenSheet(){
+  specSetError(""); specSetNote("");
+  openSheet("watchDrawer");
+  setTimeout(function(){ var i = document.getElementById("watchCodeInput"); if (i){ try{ i.focus({ preventScroll:true }); }catch(e){} } }, 80);
+}
+function specCancelPending(){
+  if (SPEC.joinTimer){ clearTimeout(SPEC.joinTimer); SPEC.joinTimer = null; }
+  if (SPEC.pending && SPEC.code) SPEC.cancelledCode = SPEC.code;
+  SPEC.pending = false;
+  var go = document.getElementById("watchGoBtn"); if (go) go.disabled = false;
+}
+function specCloseSheet(){
+  specCancelPending();
+  closeSheet("watchDrawer");
+}
+function specWatch(){
+  if (SPEC.pending) return;
+  var inp = document.getElementById("watchCodeInput");
+  var code = inp ? String(inp.value || "").trim().toUpperCase() : "";
+  if (!code){ specSetError("Enter a room code first."); return; }
+  SPEC.pending = true; SPEC.code = code; SPEC.cancelledCode = null;
+  specSetError(""); specSetNote("Joining…");
+  var go = document.getElementById("watchGoBtn"); if (go) go.disabled = true;
+  if (SPEC.joinTimer) clearTimeout(SPEC.joinTimer);
+  SPEC.joinTimer = setTimeout(function(){
+    if (SPEC.pending) specFailJoin("Couldn't reach the server.");
+  }, 45000);
+  srvConnect(function(){
+    if (!SPEC.pending) return;
+    if (!srvSendRaw({ type:"spectateRoom", code: code })) specFailJoin("Couldn't reach the server.");
+  });
+}
+function specFailJoin(text){
+  if (SPEC.joinTimer){ clearTimeout(SPEC.joinTimer); SPEC.joinTimer = null; }
+  SPEC.pending = false;
+  var go = document.getElementById("watchGoBtn"); if (go) go.disabled = false;
+  specSetError(text); specSetNote("");
+}
+function specHandleError(msg){
+  if (!msg || !msg.code) return false;
+  if (SPEC.pending && SPEC_ERR_TEXT[msg.code]){ specFailJoin(SPEC_ERR_TEXT[msg.code]); return true; }
+  if (SPEC.leavePending && msg.code==="NOT_SPECTATING"){ SPEC.leavePending = false; return true; }
+  return false;
+}
+function specOnJoined(msg){
+  if (SPEC.cancelledCode && msg.code===SPEC.cancelledCode){
+    SPEC.cancelledCode = null; SPEC.swallowCode = msg.code;
+    srvSendRaw({ type:"leaveSpectate" });
+    return;
+  }
+  if (!SPEC.pending && !SPEC.active) return;
+  SPEC.code = msg.code || SPEC.code;
+  if (typeof msg.spectatorCount==="number") SPEC.count = msg.spectatorCount;
+  specRenderChrome();
+}
+function specOnCount(msg){
+  if (!SPEC.active && !SPEC.pending) return;
+  if (msg.code && SPEC.code && msg.code!==SPEC.code) return;
+  if (typeof msg.count==="number") SPEC.count = msg.count;
+  specRenderChrome();
+}
+function specEnterView(){
+  if (SPEC.active) return;
+  SPEC.active = true; SPEC.over = false; SPEC.overKey = null; SPEC.lost = false; SPEC.prevState = null;
+  closeModal();
+  G.mode = "live"; G.myColor = "w"; G.orientation = "w"; G.timerSec = 0;
+  try{ if (typeof ttResetClock==="function") ttResetClock(); }catch(e){}
+  document.body.classList.add("spec-on");
+  enterGameView();
+  try{ var b = document.getElementById("board"); if (b) b.inert = true; }catch(e){}
+  specRenderChrome();
+}
+function specOnState(s){
+  if (!s) return;
+  if (SPEC.pending){
+    if (SPEC.joinTimer){ clearTimeout(SPEC.joinTimer); SPEC.joinTimer = null; }
+    SPEC.pending = false;
+    var go = document.getElementById("watchGoBtn"); if (go) go.disabled = false;
+    specSetNote("");
+    closeSheet("watchDrawer");
+    specEnterView();
+  }
+  if (!SPEC.active) specEnterView();
+  SPEC.lastState = s;
+  specApplyState(s);
+}
+function specApplyState(s){
+  var prevLastMoveText = G.lastMove ? (G.lastMove.fr + "," + G.lastMove.fc + ">" + G.lastMove.tr + "," + G.lastMove.tc) : "";
+  if (s.board){
+    var bd = [];
+    for (var r=0;r<8;r++){ var row = []; for (var c=0;c<8;c++){
+      var cell = s.board[(7-r)*8 + c];
+      row.push(cell ? { t: cell[1].toLowerCase(), c: cell[0] } : null);
+    } bd.push(row); }
+    G.st.board = bd;
+  }
+  if (s.fen){
+    var parts = String(s.fen).split(/\s+/);
+    var cast = parts[2] || "-";
+    G.st.castling = { wK: cast.indexOf("K")>=0, wQ: cast.indexOf("Q")>=0, bK: cast.indexOf("k")>=0, bQ: cast.indexOf("q")>=0 };
+    if (parts[3] && parts[3]!=="-"){ var epSq = srvSquareToRC(parts[3]); G.st.ep = epSq; } else G.st.ep = null;
+  }
+  G.st.turn = s.turn || "w";
+  G.variant = s.mode==="hill" ? "hill" : "normal";
+  G.pendingVariant = G.variant;
+  G.specialsOn = true; G.pendingSpecials = true;
+  G.shield = null; G.shieldRain = null;
+  if (s.shields){
+    var shW = s.shields.w ? srvSquareToRC(s.shields.w) : null;
+    var shB = s.shields.b ? srvSquareToRC(s.shields.b) : null;
+    if (shW && shB) G.shieldRain = { w: shW, b: shB };
+    else if (shW) G.shield = { r: shW.r, c: shW.c, owner: "w" };
+    else if (shB) G.shield = { r: shB.r, c: shB.c, owner: "b" };
+  }
+  G.dice = (s.dice || []).map(function(d){ return d.kind==="special" ? d.special : d.face; });
+  while (G.dice.length<3) G.dice.push(null);
+  G.diceUsed = (s.dice || []).map(function(d){ return !!d.used; });
+  while (G.diceUsed.length<G.dice.length) G.diceUsed.push(false);
+  G.activeDie = null; G.roll = null; G.rollMoves = []; G.selected = null; G.specialMode = null; G.swapFirst = null;
+  if (s.players){
+    if (s.players.w) G.names.w = String(s.players.w.name || "").slice(0,20);
+    if (s.players.b) G.names.b = String(s.players.b.name || "").slice(0,20);
+    if (s.players.w && typeof s.players.w.balance==="number") SRV.balances.w = s.players.w.balance;
+    if (s.players.b && typeof s.players.b.balance==="number") SRV.balances.b = s.players.b.balance;
+  }
+  G.log = [];
+  (s.moveLog || []).forEach(function(e){
+    var txt = String(e.text || "");
+    if (G.log.length && G.log._lastColor===e.color){ G.log[G.log.length-1] += " · " + txt; }
+    else G.log.push(txt);
+    G.log._lastColor = e.color;
+  });
+  delete G.log._lastColor;
+  G.turnLog = [];
+  var lmEntry = null;
+  (s.moveLog || []).forEach(function(e){ if (/^[a-h][1-8][a-h][1-8]/.test(String(e.text||""))) lmEntry = e; });
+  if (lmEntry){
+    var fSq = srvSquareToRC(lmEntry.text.slice(0,2)), tSq = srvSquareToRC(lmEntry.text.slice(2,4));
+    if (fSq && tSq){
+      var key = fSq.r + "," + fSq.c + ">" + tSq.r + "," + tSq.c;
+      var movedPiece = s.board ? s.board[(7-tSq.r)*8 + tSq.c] : null;
+      var castleKind = null;
+      if (movedPiece && movedPiece[1]==="K" && Math.abs(tSq.c - fSq.c)===2) castleKind = tSq.c===6 ? "K" : "Q";
+      G.lastMove = { fr:fSq.r, fc:fSq.c, tr:tSq.r, tc:tSq.c, at: key!==prevLastMoveText ? Date.now() : ((G.lastMove && G.lastMove.at) || Date.now()), cap: 0, castle: castleKind };
+    }
+  } else if (!s.moveLog || !s.moveLog.length) G.lastMove = null;
+  G.stake = s.stake || 0; G.pot = s.phase==="finished" ? 0 : (s.pot || 0);
+  syncVariantUI(); syncSpecialsUI();
+  if (s.phase==="waiting"){
+    G.phase = "await-roll"; G.over = false; G.winner = null;
+    setStatus("<b>Server room " + escHtml(SPEC.code || s.code || "") + "</b> — waiting for the game to start. You're watching.");
+  } else if (s.phase==="playing"){
+    G.over = false; G.winner = null; G.phase = "await-roll";
+    if (s.turnPhase==="move"){
+      var left = (s.dice || []).filter(function(d){ return !d.used; }).length;
+      setStatus("<b>" + escHtml(playerName(s.turn)) + "</b> is playing — " + left + (left===1 ? " die" : " dice") + " left in their turn. You're watching.");
+    } else {
+      setStatus("<b>" + escHtml(playerName(s.turn)) + "</b> to move — about to roll. You're watching.");
+    }
+  } else if (s.phase==="finished"){
+    G.over = true; G.phase = "over";
+    var res0 = s.result || {};
+    G.winner = res0.winner || ((res0.outcome==="draw" || res0.outcome==="abandoned") ? "draw" : null);
+    var tm0 = specReasonTitleMsg(res0, s);
+    setStatus("<b>" + escHtml(tm0.title) + ".</b> " + escHtml(tm0.msg));
+  }
+  renderBoard();
+  specPostBars(s);
+  specRenderChrome();
+  SPEC.prevState = s;
+  if (s.phase==="finished" && s.result) specShowResult(s.result, s);
+}
+function specPostBars(s){
+  if (!s || !s.players) return;
+  [["barTop", opp(G.orientation)], ["barBottom", G.orientation]].forEach(function(pair){
+    var bar = document.getElementById(pair[0]); if (!bar) return;
+    var coin = bar.querySelector(".coinbal"); if (!coin) return;
+    var p = s.players[pair[1]];
+    if (p && typeof p.balance==="number") coin.textContent = "● " + fmtCoins(p.balance) + " Server Coins";
+    else coin.style.display = "none";
+  });
+}
+function specRenderChrome(){
+  var cnt = document.getElementById("specCount");
+  if (cnt) cnt.textContent = SPEC.count + (SPEC.count===1 ? " watching" : " watching");
+  var turn = document.getElementById("specTurn");
+  if (turn){
+    var s = SPEC.lastState;
+    if (SPEC.lost) turn.textContent = "";
+    else if (!s) turn.textContent = "Joining…";
+    else if (s.phase==="finished") turn.textContent = "Game over";
+    else if (s.phase==="waiting") turn.textContent = "Waiting to start";
+    else turn.textContent = playerName(s.turn) + " (" + colourWord(s.turn) + ") to move";
+  }
+  var ck = document.getElementById("specClocks");
+  if (ck) ck.textContent = SPEC.lastState ? specClockText(SPEC.lastState) : "";
+  var lost = document.getElementById("specLost");
+  if (lost) lost.style.display = SPEC.lost ? "" : "none";
+}
+function specShowResult(res, s){
+  if (!res) return;
+  var key = (SPEC.code || "") + ":" + (res.reason || "") + ":" + (res.winner || "");
+  if (SPEC.overKey===key) return;
+  SPEC.overKey = key; SPEC.over = true;
+  var tm = specReasonTitleMsg(res, s);
+  var box = document.getElementById("modalBox");
+  if (!box) return;
+  box.innerHTML = "";
+  box.classList.toggle("victory", !!(res.winner));
+  var big = document.createElement("div"); big.className = "big"; big.textContent = res.winner ? "♚" : "½–½";
+  var h = document.createElement("h2"); h.textContent = tm.title;
+  var p = document.createElement("p"); p.textContent = tm.msg;
+  var note = document.createElement("p"); note.textContent = "You were watching — this result is read-only.";
+  var b1 = document.createElement("button"); b1.type = "button"; b1.textContent = "Stop watching";
+  b1.addEventListener("click", function(){ specExit(); });
+  var b2 = document.createElement("button"); b2.type = "button"; b2.className = "ghost"; b2.textContent = "Look at the board";
+  b2.addEventListener("click", closeModal);
+  box.appendChild(big); box.appendChild(h); box.appendChild(p); box.appendChild(note); box.appendChild(b1); box.appendChild(b2);
+  document.getElementById("overlay").classList.add("on");
+  specRenderChrome();
+}
+function specOnGameOver(msg){
+  if (!SPEC.active && !SPEC.pending) return;
+  var res = (msg && msg.result) || (SPEC.lastState && SPEC.lastState.result) || null;
+  if (res) specShowResult(res, SPEC.lastState);
+  else {
+    SPEC.over = true;
+    setStatus("<b>Game over.</b>");
+    specRenderChrome();
+  }
+}
+function specExit(){
+  if (SPEC.joinTimer){ clearTimeout(SPEC.joinTimer); SPEC.joinTimer = null; }
+  if ((SPEC.pending || SPEC.active) && SRV.ws && SRV.ws.readyState===1 && SRV.welcomed){
+    SPEC.leavePending = true;
+    srvSendRaw({ type:"leaveSpectate" });
+  }
+  SPEC.active = false; SPEC.pending = false; SPEC.code = null;
+  SPEC.lastState = null; SPEC.prevState = null; SPEC.lost = false; SPEC.over = false; SPEC.overKey = null;
+  document.body.classList.remove("spec-on");
+  viewsExitToOnline();
+}
+
+/* ============================================================
+   2. REPLAYS — list + viewer
+   Stepping choice: one step = one move / shield / swap action.
+   roll, bonus and endTurn events are applied automatically as
+   they are passed (a bonus die lands with the step whose move
+   earned it; an endTurn rides with the last action of its turn,
+   or forms its own step for a turn with no action).
+   ============================================================ */
+var RPL = {
+  active: false, page: 1, data: null, failed: false,
+  listPending: false, listTimer: null,
+  pendingGet: null, getTimer: null, deep: false,
+  record: null, steps: [], cursor: 0, sim: null,
+  playing: false, playTimer: null, speed: 1
+};
+var RPL_TIMEOUT = 20000;
+function rplModeLabel(m){ return m==="normal" ? "Classic" : (VARIANT_LABELS[m] || String(m || "")); }
+function rplReasonText(reason){
+  return { "king-capture":"king captured", "hill":"King reached the hill", "resignation":"resignation",
+    "disconnect":"disconnect forfeit", "no-moves":"no legal moves", "draw-agreement":"draw agreed",
+    "time":"time ran out", "timeout":"time ran out" }[reason] || (reason ? String(reason).replace(/-/g," ") : "");
+}
+function rplEntryResultText(e){
+  if (!e) return "";
+  if (e.result==="draw") return "Draw";
+  if (e.result==="abandoned") return "Abandoned";
+  var wn = e.winner==="w" ? e.whiteName : e.winner==="b" ? e.blackName : null;
+  if (wn){
+    var rt = rplReasonText(e.reason);
+    return wn + " won" + (rt ? " — " + rt : "");
+  }
+  return e.result==="white" ? (e.whiteName + " won") : e.result==="black" ? (e.blackName + " won") : "";
+}
+function rplRecordResultText(rec){
+  if (!rec) return "";
+  var rt = rplReasonText(rec.reason);
+  if (rec.result==="draw") return "Draw" + (rt ? " — " + rt : "") + " · " + (rec.white.name || "White") + " vs " + (rec.black.name || "Black");
+  if (rec.result==="abandoned") return "Abandoned · " + (rec.white.name || "White") + " vs " + (rec.black.name || "Black");
+  var wn = rec.winner==="w" ? rec.white.name : rec.winner==="b" ? rec.black.name : null;
+  if (wn) return wn + " won" + (rt ? " — " + rt : "") + " · " + (rec.white.name || "White") + " vs " + (rec.black.name || "Black") + " · " + rplModeLabel(rec.mode);
+  return rplModeLabel(rec.mode);
+}
+function rplFmtDur(ms){
+  if (typeof ms!=="number" || !isFinite(ms) || ms<0) return "";
+  var sec = Math.round(ms/1000);
+  if (sec<60) return sec + "s";
+  return Math.floor(sec/60) + "m " + ("0"+(sec%60)).slice(-2) + "s";
+}
+function rplFmtDate(iso){
+  try{ var d = new Date(iso); if (isNaN(d.getTime())) return ""; return d.toLocaleDateString("en-US", { month:"short", day:"numeric", year:"numeric" }) + " · " + d.toLocaleTimeString([], { hour:"numeric", minute:"2-digit" }); }catch(e){ return ""; }
+}
+function rplOpenSheet(){
+  openSheet("replaysDrawer");
+  var err = document.getElementById("replaysError"); if (err) err.textContent = "";
+  if (!RPL.data && !RPL.listPending) rplRequest(1);
+  else rplRenderList();
+}
+function rplRequest(page){
+  if (RPL.listPending) return;
+  RPL.page = page; RPL.failed = false; RPL.listPending = true;
+  rplRenderList();
+  if (RPL.listTimer) clearTimeout(RPL.listTimer);
+  RPL.listTimer = setTimeout(function(){ if (RPL.listPending) rplListFailed(); }, RPL_TIMEOUT);
+  srvConnect(function(){
+    if (!RPL.listPending) return;
+    if (!srvSendRaw({ type:"replayList", page: page, pageSize: 20 })) rplListFailed();
+  });
+}
+function rplListFailed(){
+  if (RPL.listTimer){ clearTimeout(RPL.listTimer); RPL.listTimer = null; }
+  RPL.listPending = false; RPL.failed = true;
+  rplRenderList();
+}
+function rplOnList(msg){
+  if (!msg || !RPL.listPending) return;
+  if (typeof msg.page==="number" && msg.page!==RPL.page) return;
+  if (RPL.listTimer){ clearTimeout(RPL.listTimer); RPL.listTimer = null; }
+  RPL.listPending = false; RPL.failed = false;
+  RPL.data = msg;
+  if (typeof msg.page==="number") RPL.page = msg.page;
+  rplRenderList();
+}
+function rplRenderList(){
+  var body = document.getElementById("replaysBody");
+  var pager = document.getElementById("replaysPager");
+  if (!body) return;
+  body.innerHTML = "";
+  if (pager) pager.style.display = "none";
+  if (RPL.listPending && !RPL.data){
+    body.innerHTML = '<p class="lb-state">Loading replays…</p>';
+    return;
+  }
+  if (RPL.failed || !RPL.data){
+    var d = document.createElement("div"); d.className = "lb-state";
+    d.appendChild(document.createTextNode("Couldn't reach the server."));
+    d.appendChild(document.createElement("br"));
+    var rb = document.createElement("button"); rb.type = "button"; rb.className = "utilbtn"; rb.textContent = "Retry";
+    rb.addEventListener("click", function(){ RPL.failed = false; rplRequest(RPL.page); });
+    d.appendChild(rb);
+    body.appendChild(d);
+    return;
+  }
+  var entries = RPL.data.entries || [];
+  if (!entries.length){
+    var p = document.createElement("p"); p.className = "lb-state";
+    p.textContent = "No public replays yet — finished online matches will show up here.";
+    body.appendChild(p);
+  } else {
+    var ul = document.createElement("ul"); ul.className = "rpl-list";
+    entries.forEach(function(e){
+      var li = document.createElement("li");
+      var btn = document.createElement("button"); btn.type = "button"; btn.className = "rpl-row";
+      var main = document.createElement("span"); main.className = "rpl-row-main";
+      var nm = document.createElement("div"); nm.className = "rpl-row-names";
+      nm.textContent = (e.whiteName || "White") + " vs " + (e.blackName || "Black");
+      var meta = document.createElement("div"); meta.className = "rpl-row-meta";
+      meta.textContent = rplModeLabel(e.mode) + " · " + rplEntryResultText(e);
+      main.appendChild(nm); main.appendChild(meta);
+      var side = document.createElement("span"); side.className = "rpl-row-side";
+      var when = rplFmtDate(e.finishedAt);
+      if (when){ var w1 = document.createElement("span"); w1.textContent = when; side.appendChild(w1); }
+      var dur = rplFmtDur(e.durationMs);
+      if (dur){ var w2 = document.createElement("span"); w2.textContent = dur; side.appendChild(w2); }
+      btn.appendChild(main); btn.appendChild(side);
+      btn.addEventListener("click", function(){ rplOpenReplay(e.matchId, null); });
+      li.appendChild(btn); ul.appendChild(li);
+    });
+    body.appendChild(ul);
+  }
+  var totalPages = RPL.data.totalPages || 1;
+  if (pager && (RPL.data.total || 0) > 0){
+    pager.style.display = "";
+    var info = document.getElementById("replaysPageInfo");
+    if (info) info.textContent = "Page " + (RPL.data.page || RPL.page) + " of " + totalPages;
+    var pv = document.getElementById("replaysPrevBtn"); if (pv) pv.disabled = (RPL.data.page || RPL.page) <= 1;
+    var nx = document.getElementById("replaysNextBtn"); if (nx) nx.disabled = (RPL.data.page || RPL.page) >= totalPages;
+  }
+}
+function rplOpenReplay(matchId, opts){
+  if (!matchId || RPL.pendingGet) return;
+  RPL.pendingGet = matchId;
+  RPL.deep = !!(opts && opts.deep);
+  var err = document.getElementById("replaysError");
+  if (err && !RPL.deep) err.textContent = "Loading replay…";
+  if (RPL.getTimer) clearTimeout(RPL.getTimer);
+  RPL.getTimer = setTimeout(function(){ if (RPL.pendingGet) rplGetFailed(); }, 45000);
+  srvConnect(function(){
+    if (RPL.pendingGet!==matchId) return;
+    if (!srvSendRaw({ type:"replayGet", matchId: matchId })) rplGetFailed();
+  });
+}
+function rplGetFailed(){
+  if (RPL.getTimer){ clearTimeout(RPL.getTimer); RPL.getTimer = null; }
+  var wasDeep = RPL.deep;
+  RPL.pendingGet = null; RPL.deep = false;
+  if (wasDeep){ toast("Couldn't reach the server."); return; }
+  var err = document.getElementById("replaysError");
+  if (err) err.textContent = "Couldn't reach the server.";
+}
+function rplHandleError(msg){
+  if (!msg || !msg.code) return false;
+  if (msg.code==="REPLAY_NOT_FOUND" && RPL.pendingGet){
+    if (RPL.getTimer){ clearTimeout(RPL.getTimer); RPL.getTimer = null; }
+    var wasDeep = RPL.deep;
+    RPL.pendingGet = null; RPL.deep = false;
+    if (wasDeep){
+      toast("That replay isn't available.");
+      if (!document.body.classList.contains("show-menu") && !document.body.classList.contains("playing")){
+        document.body.classList.add("show-menu");
+      }
+    } else {
+      var err = document.getElementById("replaysError");
+      if (err) err.textContent = "That replay isn't available.";
+    }
+    return true;
+  }
+  return false;
+}
+function rplOnReplay(msg){
+  var rec = msg && msg.record;
+  if (!rec) return;
+  if (RPL.pendingGet && rec.matchId && rec.matchId!==RPL.pendingGet) return;
+  if (RPL.getTimer){ clearTimeout(RPL.getTimer); RPL.getTimer = null; }
+  var wasDeep = RPL.deep;
+  RPL.pendingGet = null; RPL.deep = false;
+  if (rec.rulesetVersion!==1){
+    var t = "This replay is from an older version of the game and can't be played back.";
+    if (wasDeep) toast(t);
+    else { var err = document.getElementById("replaysError"); if (err) err.textContent = t; }
+    return;
+  }
+  closeSheet("replaysDrawer");
+  rplStartViewer(rec);
+}
+/* ----- replay reconstruction (client engine semantics) ----- */
+function rplParseFen(fen){
+  var out = { board: [], turn: "w", castling: { wK:false, wQ:false, bK:false, bQ:false }, ep: null };
+  for (var r=0;r<8;r++) out.board.push([null,null,null,null,null,null,null,null]);
+  var parts = String(fen || "").split(/\s+/);
+  var rows = String(parts[0] || "").split("/");
+  for (var rr=0; rr<8 && rr<rows.length; rr++){
+    var cc = 0;
+    for (var i=0;i<rows[rr].length && cc<8;i++){
+      var ch = rows[rr][i];
+      if (/\d/.test(ch)) cc += parseInt(ch, 10);
+      else {
+        out.board[rr][cc] = { t: ch.toLowerCase(), c: ch===ch.toUpperCase() ? "w" : "b" };
+        cc++;
+      }
+    }
+  }
+  if (parts[1]==="b") out.turn = "b";
+  var cast = parts[2] || "-";
+  out.castling = { wK: cast.indexOf("K")>=0, wQ: cast.indexOf("Q")>=0, bK: cast.indexOf("k")>=0, bQ: cast.indexOf("q")>=0 };
+  if (parts[3] && parts[3]!=="-") out.ep = srvSquareToRC(parts[3]);
+  return out;
+}
+function rplDieFace(d){
+  if (!d) return null;
+  return d.kind==="special" ? String(d.special || "").toUpperCase() : d.face;
+}
+function rplBuildSteps(rec){
+  var evs = rec.events || [];
+  var ends = [], seenAction = false;
+  evs.forEach(function(ev, i){
+    if (!ev) return;
+    if (ev.t==="move" || ev.t==="shield" || ev.t==="swap"){ ends.push(i+1); seenAction = true; }
+    else if (ev.t==="bonus"){ if (ends.length && ends[ends.length-1]===i) ends[ends.length-1] = i+1; }
+    else if (ev.t==="endTurn"){
+      if (seenAction && ends.length){ ends[ends.length-1] = i+1; seenAction = false; }
+      else ends.push(i+1);
+    }
+  });
+  if (!ends.length) ends = [evs.length];
+  else if (ends[ends.length-1] < evs.length) ends[ends.length-1] = evs.length;
+  return ends;
+}
+function rplStripCastleForMove(S, piece, m){
+  if (piece.t==="k" && m.fc===4 && (m.fr===7 || m.fr===0)){
+    if (piece.c==="w"){ S.castling.wK = false; S.castling.wQ = false; } else { S.castling.bK = false; S.castling.bQ = false; }
+  }
+  if (piece.t==="r"){
+    if (m.fr===7&&m.fc===0) S.castling.wQ = false;
+    if (m.fr===7&&m.fc===7) S.castling.wK = false;
+    if (m.fr===0&&m.fc===0) S.castling.bQ = false;
+    if (m.fr===0&&m.fc===7) S.castling.bK = false;
+  }
+  if (m.tr===7&&m.tc===0) S.castling.wQ = false;
+  if (m.tr===7&&m.tc===7) S.castling.wK = false;
+  if (m.tr===0&&m.tc===0) S.castling.bQ = false;
+  if (m.tr===0&&m.tc===7) S.castling.bK = false;
+}
+function rplApplyEvent(S, ev){
+  if (!ev) return;
+  var i, die;
+  if (ev.t==="roll"){
+    S.dice = (ev.dice || []).map(function(d){ return { id: d.id, face: rplDieFace(d), used: false }; });
+    if (ev.color) S.turn = ev.color;
+    S.turnHadEvents = true;
+  }
+  else if (ev.t==="bonus"){
+    if (ev.die) S.dice.push({ id: ev.die.id, face: rplDieFace(ev.die), used: false });
+  }
+  else if (ev.t==="move"){
+    for (i=0;i<S.dice.length;i++) if (S.dice[i].id===ev.dieId){ S.dice[i].used = true; break; }
+    var from = srvSquareToRC(ev.from), to = srvSquareToRC(ev.to);
+    if (!from || !to) return;
+    var piece = S.board[from.r][from.c];
+    if (!piece) return;
+    var before = { board: cloneBoard(S.board), turn: S.turn, castling: JSON.parse(JSON.stringify(S.castling)), ep: S.ep ? { r:S.ep.r, c:S.ep.c } : null };
+    var cands = [];
+    try{ cands = legalMoves(before, piece.c, null).filter(function(x){ return x.fr===from.r && x.fc===from.c && x.tr===to.r && x.tc===to.c; }); }catch(e){}
+    var m = null;
+    for (i=0;i<cands.length;i++) if ((cands[i].promo || null)===(ev.promotion || null)){ m = cands[i]; break; }
+    if (!m) for (i=0;i<cands.length;i++) if (cands[i].promo==="q"){ m = cands[i]; break; }
+    if (!m) m = cands[0] || null;
+    if (!m){
+      var destP = S.board[to.r][to.c];
+      m = { fr:from.r, fc:from.c, tr:to.r, tc:to.c, piece: piece.t,
+        capture: destP ? destP.t : ((piece.t==="p" && from.c!==to.c) ? "p" : null),
+        promo: ev.promotion || null,
+        castle: (piece.t==="k" && Math.abs(to.c-from.c)===2) ? (to.c===6 ? "K" : "Q") : null,
+        ep: piece.t==="p" && from.c!==to.c && !destP,
+        dbl: piece.t==="p" && Math.abs(to.r-from.r)===2 };
+    }
+    rplStripCastleForMove(S, piece, m);
+    S.pendingEp = m.dbl ? { r:(m.fr+m.tr)/2, c:m.fc } : null;
+    applyOnBoard(S.board, m);
+    if (S.shields[piece.c] && S.shields[piece.c]===ev.from) S.shields[piece.c] = ev.to;
+    S.lastMove = { fr:m.fr, fc:m.fc, tr:m.tr, tc:m.tc, at: 0, cap: m.capture ? 1 : 0, castle: m.castle || null };
+    var after = { board: S.board, turn: before.turn, castling: S.castling, ep: S.ep };
+    var note;
+    try{ note = notationFor(before, m, after); }catch(e){ note = ev.from + ev.to; }
+    S.notes.push(note); S.stepNotes.push(note);
+  }
+  else if (ev.t==="shield"){
+    for (i=0;i<S.dice.length;i++) if (S.dice[i].id===ev.dieId){ S.dice[i].used = true; break; }
+    S.shields[ev.color] = ev.square;
+    var sq = srvSquareToRC(ev.square);
+    var sp = sq ? S.board[sq.r][sq.c] : null;
+    var sNote = "🛡" + (sp ? NAME_FOR[sp.t] : "") + " " + ev.square;
+    S.notes.push(sNote); S.stepNotes.push(sNote);
+  }
+  else if (ev.t==="swap"){
+    for (i=0;i<S.dice.length;i++) if (S.dice[i].id===ev.dieId){ S.dice[i].used = true; break; }
+    var a = srvSquareToRC(ev.a), b = srvSquareToRC(ev.b);
+    if (!a || !b) return;
+    var pa = S.board[a.r][a.c], pb = S.board[b.r][b.c];
+    if (!pa || !pb) return;
+    S.board[a.r][a.c] = pb; S.board[b.r][b.c] = pa;
+    [[pa, a], [pb, b]].forEach(function(x){
+      var p = x[0], pos = x[1];
+      if (p.t==="k"){ if (p.c==="w"){ S.castling.wK = false; S.castling.wQ = false; } else { S.castling.bK = false; S.castling.bQ = false; } }
+      if (p.t==="r"){
+        if (pos.r===7&&pos.c===0) S.castling.wQ = false;
+        if (pos.r===7&&pos.c===7) S.castling.wK = false;
+        if (pos.r===0&&pos.c===0) S.castling.bQ = false;
+        if (pos.r===0&&pos.c===7) S.castling.bK = false;
+      }
+    });
+    if (S.shields[pa.c]===ev.a) S.shields[pa.c] = ev.b;
+    else if (S.shields[pa.c]===ev.b) S.shields[pa.c] = ev.a;
+    S.lastMove = { fr:a.r, fc:a.c, tr:b.r, tc:b.c, at: 0, noGlide: 1 };
+    var wNote = "⇄" + ev.a + "↔" + ev.b;
+    S.notes.push(wNote); S.stepNotes.push(wNote);
+  }
+  else if (ev.t==="endTurn"){
+    if (S.notes.length){ S.logEntries.push(S.notes.join(" · ")); S.notes = []; }
+    else if (S.turnHadEvents){ S.logEntries.push("—"); }
+    S.turnHadEvents = false;
+    S.ep = S.pendingEp ? { r:S.pendingEp.r, c:S.pendingEp.c } : null;
+    S.pendingEp = null;
+    S.turn = opp(ev.color);
+    S.shields[S.turn] = null;
+    S.dice = [];
+  }
+}
+function rplSimTo(rec, stepCount){
+  var init = rplParseFen(rec.initial && rec.initial.fen);
+  var S = {
+    board: init.board, turn: init.turn, castling: init.castling, ep: init.ep,
+    pendingEp: null, shields: { w: null, b: null }, dice: [],
+    notes: [], logEntries: [], stepNotes: [], lastMove: null, turnHadEvents: false
+  };
+  var endIdx = stepCount<=0 ? 0 : RPL.steps[Math.min(stepCount, RPL.steps.length)-1];
+  var evs = rec.events || [];
+  for (var i=0;i<endIdx && i<evs.length;i++) rplApplyEvent(S, evs[i]);
+  return S;
+}
+function rplStartViewer(rec){
+  RPL.record = rec;
+  RPL.steps = rplBuildSteps(rec);
+  RPL.cursor = 0; RPL.speed = 1;
+  rplStopPlay();
+  var sb = document.getElementById("rplSpeedBtn"); if (sb) sb.textContent = "1×";
+  RPL.active = true;
+  G.mode = "live"; G.myColor = "w"; G.orientation = "w"; G.timerSec = 0;
+  try{ if (typeof ttResetClock==="function") ttResetClock(); }catch(e){}
+  document.body.classList.add("rpl-on");
+  enterGameView();
+  try{ var b = document.getElementById("board"); if (b) b.inert = true; }catch(e){}
+  rplRenderAt(0);
+  setStatus("<b>Replay.</b> Step through the recorded game — it plays back exactly as it was played.");
+}
+function rplRenderAt(cursor){
+  var rec = RPL.record; if (!rec) return;
+  cursor = Math.max(0, Math.min(cursor, RPL.steps.length));
+  RPL.cursor = cursor;
+  var S = rplSimTo(rec, cursor);
+  RPL.sim = S;
+  G.st.board = cloneBoard(S.board);
+  G.st.turn = S.turn;
+  G.st.castling = JSON.parse(JSON.stringify(S.castling));
+  G.st.ep = S.ep ? { r:S.ep.r, c:S.ep.c } : null;
+  G.variant = rec.mode==="hill" ? "hill" : "normal";
+  G.pendingVariant = G.variant;
+  G.specialsOn = true; G.pendingSpecials = true;
+  G.names.w = (rec.white && rec.white.name) || "";
+  G.names.b = (rec.black && rec.black.name) || "";
+  G.dice = S.dice.map(function(d){ return d.face; });
+  while (G.dice.length<3) G.dice.push(null);
+  G.diceUsed = S.dice.map(function(d){ return !!d.used; });
+  while (G.diceUsed.length<G.dice.length) G.diceUsed.push(false);
+  G.shield = null; G.shieldRain = null;
+  var shW = S.shields.w ? srvSquareToRC(S.shields.w) : null;
+  var shB = S.shields.b ? srvSquareToRC(S.shields.b) : null;
+  if (shW && shB) G.shieldRain = { w: shW, b: shB };
+  else if (shW) G.shield = { r: shW.r, c: shW.c, owner: "w" };
+  else if (shB) G.shield = { r: shB.r, c: shB.c, owner: "b" };
+  G.log = S.logEntries.slice();
+  if (S.notes.length) G.log.push(S.notes.join(" · "));
+  G.turnLog = [];
+  G.lastMove = S.lastMove ? JSON.parse(JSON.stringify(S.lastMove)) : null;
+  G.phase = "await-roll";
+  G.over = cursor>=RPL.steps.length;
+  G.winner = G.over ? (rec.winner || (rec.result==="draw" || rec.result==="abandoned" ? "draw" : null)) : null;
+  G.selected = null; G.activeDie = null; G.roll = null; G.rollMoves = []; G.specialMode = null; G.swapFirst = null;
+  renderBoard();
+  rplRenderChrome(S);
+}
+function rplRenderChrome(S){
+  var rec = RPL.record; if (!rec) return;
+  var title = document.getElementById("rplTitle");
+  if (title) title.textContent = ((rec.white && rec.white.name) || "White") + " vs " + ((rec.black && rec.black.name) || "Black") + " · " + rplModeLabel(rec.mode);
+  var total = (typeof rec.moveCount==="number" && rec.moveCount>=RPL.steps.length) ? rec.moveCount : RPL.steps.length;
+  var prog = document.getElementById("rplProgress");
+  if (prog) prog.textContent = "Move " + RPL.cursor + " of " + total;
+  var res = document.getElementById("rplResult");
+  if (res){
+    if (RPL.cursor>=RPL.steps.length){ res.textContent = rplRecordResultText(rec); res.style.display = ""; }
+    else res.style.display = "none";
+  }
+  var mv = document.getElementById("rplMoves");
+  if (mv){
+    mv.innerHTML = "";
+    if (!S.stepNotes.length){
+      var en = document.createElement("span"); en.className = "rpl-empty-note"; en.textContent = "No moves applied yet — tap Next ▶.";
+      mv.appendChild(en);
+    }
+    S.stepNotes.forEach(function(note, idx){
+      var chip = document.createElement("button"); chip.type = "button";
+      chip.className = "rpl-mv" + (idx===RPL.cursor-1 ? " cur" : "");
+      chip.textContent = (idx+1) + ". " + note;
+      chip.addEventListener("click", function(){ rplStopPlay(); rplRenderAt(idx+1); });
+      mv.appendChild(chip);
+    });
+  }
+  var pv = document.getElementById("rplPrevBtn"); if (pv) pv.disabled = RPL.cursor<=0;
+  var rs = document.getElementById("rplRestartBtn"); if (rs) rs.disabled = RPL.cursor<=0;
+  var nx = document.getElementById("rplNextBtn"); if (nx) nx.disabled = RPL.cursor>=RPL.steps.length;
+  var pl = document.getElementById("rplPlayBtn"); if (pl) pl.textContent = RPL.playing ? "⏸ Pause" : "⏯ Play";
+}
+function rplStopPlay(){
+  RPL.playing = false;
+  if (RPL.playTimer){ clearInterval(RPL.playTimer); RPL.playTimer = null; }
+  var pl = document.getElementById("rplPlayBtn"); if (pl && RPL.record) pl.textContent = "⏯ Play";
+}
+function rplTogglePlay(){
+  if (!RPL.record) return;
+  if (RPL.playing){ rplStopPlay(); rplRenderChrome(RPL.sim); return; }
+  if (RPL.cursor>=RPL.steps.length) rplRenderAt(0);
+  RPL.playing = true;
+  var pl = document.getElementById("rplPlayBtn"); if (pl) pl.textContent = "⏸ Pause";
+  if (RPL.playTimer) clearInterval(RPL.playTimer);
+  RPL.playTimer = setInterval(function(){
+    if (!RPL.record || RPL.cursor>=RPL.steps.length){ rplStopPlay(); if (RPL.sim) rplRenderChrome(RPL.sim); return; }
+    rplRenderAt(RPL.cursor+1);
+    if (RPL.cursor>=RPL.steps.length) rplStopPlay();
+  }, Math.round(1400 / RPL.speed));
+}
+function rplCycleSpeed(){
+  RPL.speed = RPL.speed===1 ? 2 : RPL.speed===2 ? 4 : 1;
+  var sb = document.getElementById("rplSpeedBtn"); if (sb) sb.textContent = RPL.speed + "×";
+  if (RPL.playing){ var was = true; rplStopPlay(); RPL.playing = false; if (was) rplTogglePlay(); }
+}
+function rplShare(){
+  if (!RPL.record) return;
+  var base = location.href.split("#")[0].split("?")[0];
+  var url = base + "?replay=" + encodeURIComponent(RPL.record.matchId);
+  if (typeof srvCopyText==="function") srvCopyText(url, "Replay link copied");
+  else if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(url).then(function(){ toast("Replay link copied"); }, function(){ toast("Couldn't copy the link"); });
+}
+function rplExit(){
+  rplStopPlay();
+  RPL.active = false; RPL.record = null; RPL.sim = null; RPL.steps = []; RPL.cursor = 0;
+  document.body.classList.remove("rpl-on");
+  viewsExitToOnline();
+}
+
+/* ============================================================
+   3. ALLOW SPECTATORS (Profile → Account, signed-in only)
+   ============================================================ */
+var SPEC_ALLOW = { value: true, pending: false, timer: null };
+function specAllowSync(){
+  var cb = document.getElementById("specAllowToggle");
+  if (cb){ cb.checked = SPEC_ALLOW.value; cb.disabled = !!SPEC_ALLOW.pending; }
+}
+function specAllowFail(text){
+  if (SPEC_ALLOW.timer){ clearTimeout(SPEC_ALLOW.timer); SPEC_ALLOW.timer = null; }
+  SPEC_ALLOW.pending = false;
+  specAllowSync();
+  var e = document.getElementById("specAllowError");
+  if (e) e.textContent = text;
+}
+function specAllowToggleChanged(){
+  var cb = document.getElementById("specAllowToggle");
+  if (!cb) return;
+  if (SPEC_ALLOW.pending){ cb.checked = SPEC_ALLOW.value; return; }
+  var want = !!cb.checked;
+  var err = document.getElementById("specAllowError"); if (err) err.textContent = "";
+  var note = document.getElementById("specAllowNote"); if (note) note.textContent = "";
+  SPEC_ALLOW.pending = true;
+  specAllowSync();
+  if (SPEC_ALLOW.timer) clearTimeout(SPEC_ALLOW.timer);
+  SPEC_ALLOW.timer = setTimeout(function(){ if (SPEC_ALLOW.pending) specAllowFail("Couldn't reach the server — the setting wasn't changed."); }, RPL_TIMEOUT);
+  var sent = false;
+  function send(){
+    if (sent) return; sent = true;
+    if (!srvSendRaw({ type:"setSpectatingAllowed", allowed: want })) specAllowFail("Couldn't reach the server — the setting wasn't changed.");
+  }
+  if (SRV.ws && SRV.ws.readyState===1 && SRV.welcomed) send();
+  else srvConnect(send);
+}
+function specAllowOnSet(msg){
+  if (SPEC_ALLOW.timer){ clearTimeout(SPEC_ALLOW.timer); SPEC_ALLOW.timer = null; }
+  SPEC_ALLOW.pending = false;
+  SPEC_ALLOW.value = !!(msg && msg.allowed);
+  var err = document.getElementById("specAllowError"); if (err) err.textContent = "";
+  specAllowSync();
+}
+function specAllowHandleError(msg){
+  if (!msg || !SPEC_ALLOW.pending) return false;
+  if (msg.code==="NOT_AUTHENTICATED"){ specAllowFail("You're not signed in right now — the setting wasn't changed."); return true; }
+  if (msg.code==="BAD_REQUEST"){ specAllowFail("The server didn't accept that — the setting wasn't changed."); return true; }
+  return false;
+}
+
+/* ---------- server message routing (wraps the existing handler) ---------- */
+var _specSrvOnMessage = srvOnMessage;
+srvOnMessage = function(msg){
+  if (!msg || !msg.type){ _specSrvOnMessage(msg); return; }
+  if ((msg.type==="welcome" || msg.type==="authOk") && "spectatingAllowed" in msg){
+    SPEC_ALLOW.value = msg.spectatingAllowed!==false;
+    specAllowSync();
+  }
+  switch (msg.type){
+    case "spectateJoined": specOnJoined(msg); return;
+    case "spectateLeft": SPEC.leavePending = false; return;
+    case "spectatorCount": specOnCount(msg); return;
+    case "spectatingAllowedSet": specAllowOnSet(msg); return;
+    case "replayList": rplOnList(msg); return;
+    case "replay": rplOnReplay(msg); return;
+    case "state":
+      if (SPEC.swallowCode && msg.code===SPEC.swallowCode){ SPEC.swallowCode = null; return; }
+      if (SPEC.pending || SPEC.active){ specOnState(msg); return; }
+      break;
+    case "gameOver":
+      if (SPEC.pending || SPEC.active){ specOnGameOver(msg); return; }
+      break;
+    case "error":
+      if (specAllowHandleError(msg)) return;
+      if (specHandleError(msg)) return;
+      if (rplHandleError(msg)) return;
+      break;
+  }
+  _specSrvOnMessage(msg);
+};
+var _specSrvOnSocketDrop = srvOnSocketDrop;
+srvOnSocketDrop = function(){
+  _specSrvOnSocketDrop();
+  if (SPEC.active){
+    SPEC.lost = true;
+    specRenderChrome();
+    setStatus("<b>Connection lost.</b> Rejoin by entering the room code again.");
+  }
+};
+var _specSrvConnectFailed = srvConnectFailed;
+srvConnectFailed = function(msg){
+  _specSrvConnectFailed(msg);
+  if (SPEC.pending) specFailJoin("Couldn't reach the server.");
+  if (RPL.listPending) rplListFailed();
+  if (RPL.pendingGet) rplGetFailed();
+  if (SPEC_ALLOW.pending) specAllowFail("Couldn't reach the server — the setting wasn't changed.");
+};
+/* Profile re-renders keep the toggle in sync with the server's value. */
+if (typeof acctRender==="function"){
+  var _specAcctRender = acctRender;
+  acctRender = function(){
+    _specAcctRender();
+    try{ specAllowSync(); }catch(e){}
+  };
+}
+/* Locked-view input guard: in the spectator / replay view the board,
+   dice and every play or chat control are inert (capture phase, so
+   the game's own handlers never see the tap). The ✕ (home) button
+   leaves the view instead of opening the leave-match confirm. */
+document.addEventListener("click", function(e){
+  if (!SPEC.active && !RPL.active) return;
+  var t = e.target;
+  if (!t || !t.closest) return;
+  if (t.closest("#homeBtn")){
+    e.preventDefault(); e.stopPropagation();
+    if (SPEC.active) specExit(); else rplExit();
+    return;
+  }
+  var block = t.closest("#board, #rollBtn, #endTurnBtn, #guardRerollBtn, #srvDrawBtn, #srvResignBtn, #srvRematchBtn, #srvLobbyBtn, #chatBubble, #quickChatBtn, #chatFab, #voiceChatBtn, #vcBtn, .playbar .die, .dicezone .die");
+  if (block){ e.preventDefault(); e.stopPropagation(); }
+}, true);
+
+/* ---------- bindings ---------- */
+(function specRplBind(){
+  [["specOpenBtn"],["specOpenBtn2"]].forEach(function(pair){
+    var b = document.getElementById(pair[0]);
+    if (b) b.addEventListener("click", specOpenSheet);
+  });
+  [["rplOpenBtn"],["rplOpenBtn2"]].forEach(function(pair){
+    var b = document.getElementById(pair[0]);
+    if (b) b.addEventListener("click", rplOpenSheet);
+  });
+  var wc = document.getElementById("watchCloseBtn");
+  if (wc) wc.addEventListener("click", specCloseSheet);
+  var wg = document.getElementById("watchGoBtn");
+  if (wg) wg.addEventListener("click", specWatch);
+  var wi = document.getElementById("watchCodeInput");
+  if (wi) wi.addEventListener("keydown", function(e){ if (e.key==="Enter"){ e.preventDefault(); specWatch(); } });
+  var rc = document.getElementById("replaysCloseBtn");
+  if (rc) rc.addEventListener("click", function(){ closeSheet("replaysDrawer"); });
+  var pv = document.getElementById("replaysPrevBtn");
+  if (pv) pv.addEventListener("click", function(){ if (RPL.page>1) rplRequest(RPL.page-1); });
+  var nx = document.getElementById("replaysNextBtn");
+  if (nx) nx.addEventListener("click", function(){ if (RPL.data && RPL.page < (RPL.data.totalPages || 1)) rplRequest(RPL.page+1); });
+  var ss = document.getElementById("specStopBtn");
+  if (ss) ss.addEventListener("click", specExit);
+  var sx = document.getElementById("specExitBtn");
+  if (sx) sx.addEventListener("click", specExit);
+  var sl = document.getElementById("specLeaveBtn");
+  if (sl) sl.addEventListener("click", specExit);
+  var rr = document.getElementById("rplRestartBtn");
+  if (rr) rr.addEventListener("click", function(){ rplStopPlay(); rplRenderAt(0); });
+  var rp = document.getElementById("rplPrevBtn");
+  if (rp) rp.addEventListener("click", function(){ rplStopPlay(); rplRenderAt(RPL.cursor-1); });
+  var rn = document.getElementById("rplNextBtn");
+  if (rn) rn.addEventListener("click", function(){ rplStopPlay(); rplRenderAt(RPL.cursor+1); });
+  var rpl = document.getElementById("rplPlayBtn");
+  if (rpl) rpl.addEventListener("click", rplTogglePlay);
+  var rsp = document.getElementById("rplSpeedBtn");
+  if (rsp) rsp.addEventListener("click", rplCycleSpeed);
+  var rsh = document.getElementById("rplShareBtn");
+  if (rsh) rsh.addEventListener("click", rplShare);
+  var rx = document.getElementById("rplExitBtn");
+  if (rx) rx.addEventListener("click", rplExit);
+  var tg = document.getElementById("specAllowToggle");
+  if (tg) tg.addEventListener("change", specAllowToggleChanged);
+  specAllowSync();
+  /* ?replay=<matchId> deep link: route straight into the viewer. */
+  try{
+    var m = /[?&]replay=([^&#]+)/.exec(location.search || "");
+    if (m){
+      var np = document.getElementById("namePopup");
+      if (np) np.classList.remove("on");
+      rplOpenReplay(decodeURIComponent(m[1]), { deep: true });
+    }
+  }catch(e){}
 })();
 </script>
 
