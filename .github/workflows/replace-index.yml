@@ -16,6 +16,7 @@ jobs:
           fi
           git config user.name "MadPanda3ds"
           git config user.email "Inaam_1996@hotmail.com"
+          git rm -q index.html
           git mv kings-and-dice-index.html index.html
           git commit -m "Update Kings & Dice — shop, locker, match re-skin, rewards modal"
           git push
