@@ -2506,6 +2506,10 @@ html.reduce-motion .turntimer.low{animation:none !important;}
 .acct-line{font-size:13.5px;color:var(--ink-soft);line-height:1.5;margin-top:3px;}
 .acct-line b{color:var(--brass);font-variant-numeric:tabular-nums;}
 .acct-logout{width:100%;min-height:48px;font-size:14.5px;font-weight:800;padding:12px;border-radius:10px;cursor:pointer;margin-top:10px;}
+.acct-note{color:var(--accent);font-size:13.5px;font-weight:650;line-height:1.45;margin:8px 0 0;}
+.acct-note:empty{display:none;}
+.acct-forgot{display:block;margin:10px auto 0;padding:8px 12px;background:none;border:none;color:var(--brass);font-size:14px;font-weight:750;text-decoration:underline;cursor:pointer;min-height:40px;}
+.acct-email-block{margin-top:14px;padding-top:12px;border-top:1px solid var(--line);}
 </style>
 <style>
 /* ---------- ranked result panel (post-match) + Server Ranked (Profile) + Browse Games ---------- */
@@ -3449,8 +3453,9 @@ html.reduce-motion .boardroll.trn-shimmer::after{animation:none;display:none;}
           <button class="acct-btn-ghost" id="acctLoginBtn" type="button">Log in</button>
         </div>
         <div class="acct-status" id="acctStatus" role="status"></div>
+        <div class="acct-note" id="acctLoginNote" role="status"></div>
+        <button class="acct-forgot" id="acctForgotBtn" type="button">Forgot password?</button>
         <p class="panelnote">Free account — saves your coins, rating and ranked access on the server. Guests can still play casual.</p>
-        <p class="panelnote">No password reset yet — keep it safe.</p>
       </div>
       <div id="acctSignedIn" style="display:none;">
         <div class="acct-card">
@@ -3460,10 +3465,43 @@ html.reduce-motion .boardroll.trn-shimmer::after{animation:none;display:none;}
           <div class="acct-line" id="acctRecordLine"></div>
           <div class="acct-line" id="acctBalanceLine" style="display:none;"></div>
         </div>
+        <div class="acct-email-block">
+          <div class="acct-lab" style="margin-top:0;">Recovery email</div>
+          <div class="acct-line" id="acctEmailState"></div>
+          <p class="panelnote" style="margin-bottom:2px;">Used only to recover your account if you forget your password. Never shown to other players.</p>
+          <label class="acct-lab" for="acctEmailInput">Email</label>
+          <input class="acct-input" id="acctEmailInput" type="email" placeholder="you@example.com" autocomplete="email" autocapitalize="none" spellcheck="false" />
+          <label class="acct-lab" for="acctEmailPassword">Current password</label>
+          <input class="acct-input" id="acctEmailPassword" type="password" autocomplete="current-password" />
+          <div class="acct-error" id="acctEmailError" role="alert"></div>
+          <div class="acct-note" id="acctEmailNote" role="status"></div>
+          <div class="acct-btnrow"><button class="acct-btn-primary" id="acctEmailBtn" type="button">Add email</button></div>
+        </div>
         <label class="acct-stay" for="acctStayLoggedIn2"><input type="checkbox" id="acctStayLoggedIn2" checked /><span>Stay logged in on this device</span></label>
         <p class="panelnote" id="acctStayNote" style="margin-bottom:2px;"></p>
         <button class="acct-btn-ghost acct-logout" id="acctLogoutBtn" type="button">Log out</button>
         <div class="acct-status" id="acctLogoutStatus" role="status"></div>
+      </div>
+      <div id="recFlow" style="display:none;">
+        <div class="acct-lab" style="margin-top:0;">Forgot your password?</div>
+        <div id="recStep1">
+          <label class="acct-lab" for="recIdentifier">Username or email</label>
+          <input class="acct-input" id="recIdentifier" type="text" autocomplete="username" autocapitalize="none" spellcheck="false" />
+          <div class="acct-error" id="recError1" role="alert"></div>
+          <div class="acct-btnrow"><button class="acct-btn-primary" id="recSendBtn" type="button">Send reset code</button></div>
+        </div>
+        <div id="recStep2" style="display:none;">
+          <p class="panelnote" style="margin-top:2px;">If that account has a recovery email, we've sent a 6-digit code. It expires in 30 minutes.</p>
+          <label class="acct-lab" for="recUsername">Username</label>
+          <input class="acct-input" id="recUsername" type="text" maxlength="20" autocomplete="username" autocapitalize="none" spellcheck="false" />
+          <label class="acct-lab" for="recCode">6-digit code</label>
+          <input class="acct-input" id="recCode" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" />
+          <label class="acct-lab" for="recNewPassword">New password</label>
+          <input class="acct-input" id="recNewPassword" type="password" autocomplete="new-password" placeholder="8+ characters" />
+          <div class="acct-error" id="recError2" role="alert"></div>
+          <div class="acct-btnrow"><button class="acct-btn-primary" id="recConfirmBtn" type="button">Set new password</button></div>
+        </div>
+        <button class="acct-forgot" id="recBackBtn" type="button">Back to log in</button>
       </div>
     </div>
     <div class="setrow" id="srvRankedSection">
@@ -10246,6 +10284,18 @@ function srvOnMessage(msg){
       if (typeof acctOnAuthError==="function") acctOnAuthError(msg);
       break;
     }
+    case "accountEmailSet": {
+      if (typeof acctOnEmailSet==="function") acctOnEmailSet(msg);
+      break;
+    }
+    case "passwordResetRequested": {
+      if (typeof recOnRequested==="function") recOnRequested(msg);
+      break;
+    }
+    case "passwordResetConfirmed": {
+      if (typeof recOnConfirmed==="function") recOnConfirmed(msg);
+      break;
+    }
     case "roomCreated": {
       SRV.active = true; SRV.roomCode = msg.code; SRV.mySrvColor = msg.color;
       SRV.phase = "waiting"; SRV.nextSeq = 1; SRV.enteredGame = false; SRV.overShownFor = null;
@@ -10516,6 +10566,17 @@ function srvHandleRejected(msg){
    ============================================================ */
 var ACCT_KEY = "dicechess-account";
 var ACCT = { account: null, error: "", busy: false, action: null, timer: null, statusTimer: null, pendingCred: null };
+/* Email recovery state. ACCT.email is the signed-in owner's own
+   recovery address, carried as a TOP-LEVEL `email` field on the
+   welcome and authOk messages (null for guests / accounts without
+   one) and updated when accountEmailSet arrives. It is kept in
+   memory only — the stored display copy stays the public profile,
+   which never contains it. EML tracks the set/change-email form;
+   REC tracks the signed-out forgot-password flow (step 1: request
+   a code, step 2: confirm with the code and a new password). */
+ACCT.email = null; ACCT.emailKnown = false; ACCT.loginNote = "";
+var EML = { pending: false, error: "", note: "" };
+var REC = { open: false, step: 1, pending: false, action: null, identifier: "", error1: "", error2: "" };
 try{
   var _acctSaved = JSON.parse(localStorage.getItem(ACCT_KEY) || "null");
   if (!(_acctSaved && typeof _acctSaved==="object" && _acctSaved.username)){
@@ -10587,8 +10648,22 @@ function acctRender(){
   if (snote) snote.textContent = stay
     ? "Stay logged in is on: you're signed back in automatically when you open the game on this device."
     : "Stay logged in is off: you'll be signed out when this tab or app closes.";
-  out.style.display = signed ? "none" : "";
+  var recShow = REC.open && !signed;
+  out.style.display = (signed || recShow) ? "none" : "";
   inn.style.display = signed ? "" : "none";
+  var flow = document.getElementById("recFlow");
+  if (flow){
+    flow.style.display = recShow ? "" : "none";
+    var rs1 = document.getElementById("recStep1"), rs2 = document.getElementById("recStep2");
+    if (rs1) rs1.style.display = REC.step===1 ? "" : "none";
+    if (rs2) rs2.style.display = REC.step===2 ? "" : "none";
+    var re1 = document.getElementById("recError1"); if (re1) re1.textContent = REC.error1 || "";
+    var re2 = document.getElementById("recError2"); if (re2) re2.textContent = REC.error2 || "";
+    var rsb = document.getElementById("recSendBtn"); if (rsb) rsb.disabled = !!REC.pending;
+    var rcb = document.getElementById("recConfirmBtn"); if (rcb) rcb.disabled = !!REC.pending;
+  }
+  var ln = document.getElementById("acctLoginNote");
+  if (ln) ln.textContent = ACCT.loginNote || "";
   var err = document.getElementById("acctError");
   if (err) err.textContent = ACCT.error || "";
   var st = document.getElementById("acctStatus");
@@ -10620,6 +10695,14 @@ function acctRender(){
         bl.innerHTML = "Server coins: <b>" + fmtCoins(SRV.balance) + "</b>";
       } else bl.style.display = "none";
     }
+    var es = document.getElementById("acctEmailState");
+    if (es) es.textContent = !ACCT.emailKnown ? "" : (ACCT.email ? ACCT.email : "No recovery email set");
+    var eb = document.getElementById("acctEmailBtn");
+    if (eb){ eb.textContent = ACCT.email ? "Change email" : "Add email"; eb.disabled = !!EML.pending; }
+    var ee = document.getElementById("acctEmailError");
+    if (ee) ee.textContent = EML.error || "";
+    var en = document.getElementById("acctEmailNote");
+    if (en) en.textContent = EML.note || "";
   }
 }
 /* welcome carries the account (null for guests): it is the
@@ -10627,6 +10710,7 @@ function acctRender(){
    from it and a stale display copy is corrected by it. */
 function acctApplyWelcome(msg){
   ACCT.account = (msg && msg.account && msg.account.username) ? msg.account : null;
+  if (msg && "email" in msg){ ACCT.email = msg.email || null; ACCT.emailKnown = true; }
   acctSaveDisplay();
   acctSyncChip();
   acctRender();
@@ -10636,6 +10720,8 @@ function acctOnAuthOk(msg){
   if (ACCT.pendingCred){ ACCT.pendingCred.password = ""; ACCT.pendingCred = null; }
   acctSetBusy(false);
   ACCT.error = "";
+  if (msg && "email" in msg){ ACCT.email = msg.email || null; ACCT.emailKnown = true; }
+  REC.open = false; REC.step = 1; REC.error1 = ""; REC.error2 = ""; ACCT.loginNote = "";
   if (msg && msg.playerToken) SRV.token = msg.playerToken; // rotated token — the only valid one from now on
   if (msg && typeof msg.balance==="number") SRV.balance = msg.balance;
   srvSaveSession();
@@ -10656,6 +10742,28 @@ function acctOnAuthOk(msg){
   toast(msg && msg.action==="register" ? "Account created — you're signed in." : "Signed in — welcome back.");
 }
 function acctOnAuthError(msg){
+  /* Email-recovery sends in flight own their errors: the set-email
+     form and the reset flow show the server's message in place
+     instead of the login form's error line. */
+  if (EML.pending || REC.pending){
+    var rCode = msg && msg.code;
+    var rMessage = (msg && msg.message) || "Something went wrong — try again.";
+    if (rCode==="AUTH_RATE_LIMITED" && !/minute|wait/i.test(rMessage)) rMessage = "Too many attempts — wait a minute, then try again.";
+    if (EML.pending){
+      EML.pending = false;
+      var epw = document.getElementById("acctEmailPassword"); if (epw) epw.value = "";
+      EML.note = "";
+      EML.error = rMessage;
+    } else {
+      var recAction = REC.action;
+      REC.pending = false; REC.action = null;
+      if (recAction==="confirm" && rCode==="INVALID_OR_EXPIRED_CODE") REC.error2 = "That code is invalid or has expired.";
+      else if (recAction==="confirm") REC.error2 = rMessage;
+      else REC.error1 = rMessage;
+    }
+    acctRender();
+    return;
+  }
   acctClearPassword();
   if (ACCT.pendingCred){ ACCT.pendingCred.password = ""; ACCT.pendingCred = null; }
   var wasLogout = ACCT.action==="logout";
@@ -10684,6 +10792,7 @@ function acctAttempt(action){
   var cred = { password: pEl ? pEl.value : "" };
   if (pEl) pEl.value = ""; // the field is cleared on every attempt, before anything else can happen
   ACCT.error = "";
+  ACCT.loginNote = "";
   if (!username || !cred.password){
     cred.password = "";
     ACCT.error = "Enter a username and a password.";
@@ -10712,7 +10821,20 @@ function acctAttempt(action){
 /* srvConnectFailed hook: a pending auth send never fired (it sat in
    the ready queue), so fail the attempt cleanly instead of hanging. */
 function acctOnConnectFailed(){
-  if (!ACCT.busy) return;
+  var recDirty = false;
+  if (EML.pending){
+    EML.pending = false;
+    EML.error = "Couldn't reach the server — give it a few seconds and try again.";
+    recDirty = true;
+  }
+  if (REC.pending){
+    REC.pending = false;
+    if (REC.action==="confirm") REC.error2 = "Couldn't reach the server — give it a few seconds and try again.";
+    else REC.error1 = "Couldn't reach the server — give it a few seconds and try again.";
+    REC.action = null;
+    recDirty = true;
+  }
+  if (!ACCT.busy){ if (recDirty) acctRender(); return; }
   if (ACCT.pendingCred){ ACCT.pendingCred.password = ""; ACCT.pendingCred = null; }
   acctSetBusy(false);
   ACCT.error = "Couldn't reach the server — give it a few seconds and try again.";
@@ -10735,6 +10857,141 @@ function acctLogout(){
   }
   if (SRV.ws && SRV.ws.readyState===1 && SRV.welcomed) send();
   else srvConnect(send);
+}
+/* ---------- email recovery ----------
+   All three sends ride the existing game WebSocket after the usual
+   hello, through the same send-or-connect pattern the account forms
+   use — no second connection. Passwords are read from their field,
+   sent once, and the field is cleared on every attempt; they are
+   never stored. */
+function acctSendOrConnect(obj, onFail){
+  var sent = false;
+  function send(){
+    if (sent) return; sent = true;
+    if (!srvSendRaw(obj) && onFail) onFail();
+  }
+  if (SRV.ws && SRV.ws.readyState===1 && SRV.welcomed) send();
+  else srvConnect(send); // reuses the existing connect/wake flow; welcome flushes the queue
+}
+function acctEmailSubmit(){
+  if (EML.pending || !acctSignedIn()) return;
+  var eEl = document.getElementById("acctEmailInput"), pEl = document.getElementById("acctEmailPassword");
+  var email = eEl ? eEl.value.trim() : "";
+  var password = pEl ? pEl.value : "";
+  if (pEl) pEl.value = ""; // cleared on every attempt, like the login password
+  EML.error = ""; EML.note = "";
+  var at = email.indexOf("@");
+  if (!email || at<1 || at===email.length-1 || /\s/.test(email)){
+    EML.error = "Enter a valid email address.";
+    acctRender();
+    return;
+  }
+  if (!password){
+    EML.error = "Enter your current password to save the email.";
+    acctRender();
+    return;
+  }
+  EML.pending = true;
+  acctRender();
+  acctSendOrConnect({ type:"setAccountEmail", email: email, password: password }, function(){
+    EML.pending = false;
+    EML.error = "Server isn't connected right now — try again in a moment.";
+    acctRender();
+  });
+}
+function acctOnEmailSet(msg){
+  EML.pending = false;
+  EML.error = "";
+  if (msg && typeof msg.email==="string" && msg.email){ ACCT.email = msg.email; ACCT.emailKnown = true; }
+  var pEl = document.getElementById("acctEmailPassword"); if (pEl) pEl.value = "";
+  EML.note = "Recovery email saved.";
+  acctRender();
+  toast("Recovery email saved.");
+}
+function recOpen(){
+  REC.open = true; REC.step = 1; REC.error1 = ""; REC.error2 = "";
+  ACCT.error = ""; ACCT.loginNote = "";
+  acctRender();
+  setTimeout(function(){
+    var i = document.getElementById("recIdentifier");
+    if (i){ try{ i.focus({ preventScroll:true }); }catch(e){} }
+  }, 80);
+}
+function recClose(){
+  REC.open = false; REC.step = 1; REC.error1 = ""; REC.error2 = "";
+  acctRender();
+}
+function recRequest(){
+  if (REC.pending || REC.step!==1) return;
+  var iEl = document.getElementById("recIdentifier");
+  var identifier = iEl ? iEl.value.trim() : "";
+  REC.error1 = "";
+  if (!identifier){
+    REC.error1 = "Enter your username or email.";
+    acctRender();
+    return;
+  }
+  REC.identifier = identifier;
+  REC.pending = true; REC.action = "request";
+  acctRender();
+  acctSendOrConnect({ type:"requestPasswordReset", identifier: identifier }, function(){
+    REC.pending = false; REC.action = null;
+    REC.error1 = "Server isn't connected right now — try again in a moment.";
+    acctRender();
+  });
+}
+function recOnRequested(msg){
+  /* The reply is identical whether or not anything matched, so the
+     flow always advances to step 2 with the same neutral wording
+     (the step-2 note in the markup) — it never reveals whether the
+     account or its recovery email exists. */
+  REC.pending = false; REC.action = null;
+  REC.error1 = ""; REC.error2 = "";
+  REC.step = 2;
+  var uEl = document.getElementById("recUsername");
+  if (uEl) uEl.value = REC.identifier.indexOf("@")<0 ? REC.identifier : "";
+  acctRender();
+}
+function recConfirm(){
+  if (REC.pending || REC.step!==2) return;
+  var uEl = document.getElementById("recUsername"), cEl = document.getElementById("recCode"), pEl = document.getElementById("recNewPassword");
+  var username = uEl ? uEl.value.trim() : "";
+  var code = cEl ? cEl.value.trim() : "";
+  var newPassword = pEl ? pEl.value : "";
+  if (pEl) pEl.value = ""; // cleared on every attempt; the code field stays, so the same code can be resubmitted after fixing the password
+  REC.error2 = "";
+  /* Local check first: the same 8–72 character rule as registration.
+     A failure here sends nothing, so the code is not spent. */
+  if (newPassword.length<8 || newPassword.length>72){
+    REC.error2 = "Password must be 8–72 characters.";
+    acctRender();
+    return;
+  }
+  if (!username){
+    REC.error2 = "Enter your username.";
+    acctRender();
+    return;
+  }
+  if (!code){
+    REC.error2 = "Enter the 6-digit code.";
+    acctRender();
+    return;
+  }
+  REC.pending = true; REC.action = "confirm";
+  acctRender();
+  acctSendOrConnect({ type:"confirmPasswordReset", username: username, code: code, newPassword: newPassword }, function(){
+    REC.pending = false; REC.action = null;
+    REC.error2 = "Server isn't connected right now — try again in a moment.";
+    acctRender();
+  });
+}
+function recOnConfirmed(){
+  REC.pending = false; REC.action = null;
+  REC.open = false; REC.step = 1; REC.error1 = ""; REC.error2 = ""; REC.identifier = "";
+  var cEl = document.getElementById("recCode"); if (cEl) cEl.value = "";
+  ACCT.error = "";
+  ACCT.loginNote = "Password updated — log in with your new password. All other sessions were signed out.";
+  acctRender();
 }
 /* ---------- ranked gate prompt ---------- */
 function showRankedGate(serverMsg){
@@ -10779,6 +11036,26 @@ function openAccountSection(){
   var u = document.getElementById("acctUsername");
   if (u) u.addEventListener("keydown", function(e){
     if (e.key==="Enter"){ e.preventDefault(); var pw = document.getElementById("acctPassword"); if (pw) pw.focus(); }
+  });
+  var eb = document.getElementById("acctEmailBtn");
+  if (eb) eb.addEventListener("click", acctEmailSubmit);
+  var ep = document.getElementById("acctEmailPassword");
+  if (ep) ep.addEventListener("keydown", function(e){ if (e.key==="Enter"){ e.preventDefault(); acctEmailSubmit(); } });
+  var fb = document.getElementById("acctForgotBtn");
+  if (fb) fb.addEventListener("click", recOpen);
+  var rb = document.getElementById("recBackBtn");
+  if (rb) rb.addEventListener("click", recClose);
+  var rsb = document.getElementById("recSendBtn");
+  if (rsb) rsb.addEventListener("click", recRequest);
+  var rcb = document.getElementById("recConfirmBtn");
+  if (rcb) rcb.addEventListener("click", recConfirm);
+  var ri = document.getElementById("recIdentifier");
+  if (ri) ri.addEventListener("keydown", function(e){ if (e.key==="Enter"){ e.preventDefault(); recRequest(); } });
+  var rpw = document.getElementById("recNewPassword");
+  if (rpw) rpw.addEventListener("keydown", function(e){ if (e.key==="Enter"){ e.preventDefault(); recConfirm(); } });
+  var rcd = document.getElementById("recCode");
+  if (rcd) rcd.addEventListener("keydown", function(e){
+    if (e.key==="Enter"){ e.preventDefault(); var np = document.getElementById("recNewPassword"); if (np) np.focus(); }
   });
   var g1 = document.getElementById("rankedGateProfileBtn");
   if (g1) g1.addEventListener("click", openAccountSection);
