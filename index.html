@@ -124,7 +124,7 @@
   .sq.last::after{content:"";position:absolute;inset:0;background:var(--sq-last);opacity:.48;pointer-events:none;}
   .sq.sel{box-shadow:inset 0 0 0 100px rgba(247,215,116,.52);}
   .sq.sel::before{content:"";position:absolute;inset:0;box-shadow:inset 0 0 0 3px rgba(180,140,20,.55);z-index:3;pointer-events:none;}
-  .sq .piece{position:relative;z-index:2;font-size:clamp(28px,7.4vw,54px);line-height:1;pointer-events:none;transform:translateY(-1px);}
+  .sq .piece{position:relative;z-index:2;font-size:clamp(28px,7.4vw,54px);font-size:8.6cqw;line-height:1;pointer-events:none;transform:translateY(-1px);}
   .piece.pw{color:#fffef8;text-shadow:0 1px 0 rgba(30,30,20,.85),0 0 3px rgba(30,30,20,.75),0 3px 4px rgba(20,20,10,.35),-1px 0 1px rgba(30,30,20,.6),1px 0 1px rgba(30,30,20,.6);}
   .piece.pb{color:#1b1b17;text-shadow:0 1px 0 rgba(255,255,240,.28),0 2px 3px rgba(0,0,0,.35);}
   .sq .coord{position:absolute;font-size:10px;font-weight:700;z-index:1;pointer-events:none;opacity:.9;letter-spacing:.02em;}
@@ -227,7 +227,7 @@
 
 
   /* board dice roll overlay + dock */
-  .boardwrap{position:relative;}
+  .boardwrap{position:relative;container-type:inline-size;}
   .boardroll{position:absolute;inset:0;z-index:20;display:none;pointer-events:none;overflow:hidden;border-radius:12px;background:rgba(14,20,14,.20);opacity:1;transition:opacity .28s ease;}
   .boardroll.on{display:block;}
   .boardroll.leaving{opacity:0;}
@@ -1305,7 +1305,7 @@
   /* --- BOARD: full phone width, readable coordinates --- */
   body.playing .boardframe{grid-template-columns:20px minmax(0,1fr);grid-template-rows:minmax(0,1fr) 18px;column-gap:2px;padding:8px 10px 7px 7px;width:min(calc(100vw - 12px),calc(100dvh - 352px));min-width:0;border-radius:14px;}
   .frameranks span,.framefiles span{font-size:12px;font-weight:900;color:#ffe98a;text-shadow:0 1px 3px rgba(0,0,0,.95),0 0 6px rgba(232,193,90,.35);}
-  body.playing .sq .piece{font-size:clamp(29px,9.4vw,56px);}
+  body.playing .sq .piece{font-size:clamp(29px,9.4vw,56px);font-size:8.8cqw;}
   body.playing .piece.pw{color:#ffffff;-webkit-text-stroke:.6px rgba(23,42,99,.55);text-shadow:-1.2px 0 0 rgba(23,42,99,.95),1.2px 0 0 rgba(23,42,99,.95),0 -1.2px 0 rgba(23,42,99,.9),0 1px 0 rgba(120,90,20,.55),0 0 7px rgba(96,165,250,1),0 0 16px rgba(59,130,246,.6),0 3px 4px rgba(2,6,20,.7);}
   body.playing .piece.pb{color:#0b0b10;-webkit-text-stroke:.6px rgba(255,190,190,.38);text-shadow:-1.2px 0 0 rgba(0,0,0,.97),1.2px 0 0 rgba(0,0,0,.97),0 -1.2px 0 rgba(255,210,210,.5),0 1px 0 rgba(0,0,0,.95),0 0 6px rgba(255,120,120,.95),0 0 15px rgba(220,38,38,.65),0 3px 4px rgba(0,0,0,.75);}
   body.playing .sq .hint{width:31%;height:31%;background:rgba(232,193,90,.88);box-shadow:0 0 0 2px rgba(10,15,30,.45),0 0 12px 3px rgba(59,130,246,.65);}
@@ -1487,6 +1487,26 @@
   .p2pbox{border-top:1px solid var(--line);padding-top:12px;}
   #srvResignBtn.on,#srvDrawBtn.on{display:block;}
   #srvResignBtn{border-color:var(--danger);color:var(--danger);}
+
+  /* ============================================================
+     FULL-BOARD GUARANTEE — the whole 8×8 must always be visible,
+     including both back ranks (rook on each corner). Pieces are
+     sized in cqw (a fraction of the board's own width, via the
+     .boardwrap container above), so a glyph always fits inside
+     its square and can never spill past the board's clipped edge
+     and swallow a corner rook. On very short viewports the old
+     fixed dvh-minus-428px sizing shrank the board far below the
+     phone's width; now the board keeps a playable floor and the
+     playing screen scrolls instead of clipping, so no rank or
+     file can ever be cut off by the locked 100dvh layout.
+     ============================================================ */
+  @media (max-height:640px){
+    body.playing{overflow-y:auto;height:auto;min-height:100dvh;}
+    body.playing .wrap{height:auto;max-height:none;overflow:visible;min-height:100dvh;}
+    body.playing .layout{flex:0 0 auto;}
+    body.playing .layout>section{height:auto;}
+    body.playing .boardframe{width:min(calc(100vw - 12px),calc(100dvh - 272px));min-width:min(232px,calc(100vw - 12px));}
+  }
 </style>
 </head>
 <body class="show-menu">
@@ -1506,7 +1526,7 @@
     <div class="radiobar" id="radioBar" aria-label="Game radio">
       <span class="radio-ic" aria-hidden="true">📻</span>
       <button class="radio-nav" id="radioPrev" type="button" aria-label="Previous radio station">◀</button>
-      <button class="radio-name" id="radioName" type="button" aria-label="Open radio station list">Kings FM</button>
+      <button class="radio-name" id="radioName" type="button" aria-label="Open radio station list">Shanty FM</button>
       <span class="radio-live-dot off" id="radioDot" aria-hidden="true"></span>
       <button class="radio-nav" id="radioNext" type="button" aria-label="Next radio station">▶</button>
       <button class="musicbtn" id="musicBtn" type="button" aria-label="Toggle radio on or off" title="Radio on/off">🔊</button>
@@ -1646,13 +1666,13 @@
 
     <div class="about-sec">
       <h3>Radio &amp; voice</h3>
-      <p><b>Radio:</b> the menu 📻 bar tunes six stations — <b>Kings FM</b> (calm royal pads), <b>Pool Party</b> (dreamy chill plucks), <b>War Drums</b> (tense drums for matches) and <b>Lo-Fi Court</b> (mellow chords with vinyl crackle), all generated live by the game itself, plus <b>Shanty FM</b> (medieval adventure) and <b>House FM</b> (house grooves), which stream real tracks from the game's own site (they need internet) — plus Off. Your station is saved on this device, plays on menu and setup screens, and in a match only if you turn it on from the in-game 📻 button. It is purely local and never syncs to your friend.</p>
+      <p><b>Radio:</b> the menu 📻 bar tunes two stations — <b>Shanty FM</b> (medieval adventure) and <b>House FM</b> (house grooves) — plus Off. Both stations stream real tracks from the game's own site, so they need internet. Your station is saved on this device, plays on menu and setup screens, and in a match only if you turn it on from the in-game 📻 button. It is purely local and never syncs to your friend.</p>
       <p><b>Voice:</b> in Live Online rooms (server rooms and Friend rooms alike), the 🎤 button starts an audio-only <b>voice chat</b> with your friend — the mic only opens when you tap, nothing is recorded, and headphones are recommended. <b>Voice Controls</b> (Settings, off by default) add a 🎙 button in any match: tap it and say “roll”, “knight”, “e2 to e4”, “end turn”, “undo” or “flip board” — listening only starts on your tap and nothing is stored by the game.</p>
     </div>
 
     <div class="about-sec">
       <h3>Music credits</h3>
-      <p>The four generated stations are composed live by the game itself. The two streaming stations play real tracks by independent composers, trimmed or looped and converted to OGG for the game:</p>
+      <p>The two streaming stations play real tracks by independent composers, trimmed or looped and converted to OGG for the game:</p>
       <p><b>Shanty FM</b></p>
       <ul>
         <li><b>Newbie Rhapsody</b> — “Medieval: Exploration” by RandomMind · <a href="https://creativecommons.org/publicdomain/zero/1.0/" target="_blank" rel="noopener">CC0 1.0</a> · <a href="https://opengameart.org/content/medieval-exploration" target="_blank" rel="noopener">Source</a></li>
@@ -1698,7 +1718,7 @@
       <li><span class="ls-title">Stakes and the pot</span><span class="ls-body">Before a match, both players stake the <b>same</b> number of virtual coins. The <b>pot is both stakes together</b> — winner takes the pot, a draw gives both stakes back. Virtual coins only, no real money.</span></li>
       <li><span class="ls-title">Try the other match types</span><span class="ls-body">The setup screen offers 9 match types. <b>Chaos</b> forces specials on at 50% with a random Fate every 3rd round. <b>Double Kings</b> — capture BOTH enemy Kings. <b>Horde</b> — White is 24 pawns; every die moves a pawn. <b>Random Royals</b> — shuffled back rank, and <b>castling is disabled</b>. <b>Shrinking Board</b> — the edge burns after every 5 rounds; get your King off the ring. <b>Zombie</b> — spend a WILD die to resurrect a captured piece onto your first two ranks. <b>Royal Guard</b> — the classic check rules: your King must be protected, giving check ends your turn, a checked player may reroll useless dice once to find an escape, and checkmate wins. Every mode works vs Computer, 2 Players, by turn code and in Live rooms.</span></li>
       <li><span class="ls-title">Join a friend</span><span class="ls-body"><b>Live:</b> one of you taps <b>Create Room</b> and sends the other the <b>room code</b>; they enter it under Join Room and you're playing live. Once connected, tap <b>Chat</b> to message each other in the room. <b>Backup:</b> use <b>Play a Friend</b> — after your move, send the <b>turn code</b> by message; your friend pastes it in, moves, and sends a code back.</span></li>
-      <li><span class="ls-title">Tune the radio — and try voice</span><span class="ls-body">The <b>📻 radio bar</b> on the menu switches between <b>Kings FM, Pool Party, War Drums, Lo-Fi Court, Shanty FM and House FM</b> — the first four are original loops generated by the game; Shanty FM and House FM stream real tracks. In a Live room, tap <b>🎤</b> for voice chat with your friend (mic opens only on your tap; headphones recommended). Turn on <b>Voice Controls</b> in Settings and a <b>🎙 button</b> appears in matches: tap it and say <b>“roll”</b>, <b>“knight”</b>, <b>“e2 to e4”</b> or <b>“end turn”</b> to play hands-free.</span></li>
+      <li><span class="ls-title">Tune the radio — and try voice</span><span class="ls-body">The <b>📻 radio bar</b> on the menu switches between <b>Shanty FM and House FM</b> — both stream real tracks from the game's site (they need internet) — plus Off. In a Live room, tap <b>🎤</b> for voice chat with your friend (mic opens only on your tap; headphones recommended). Turn on <b>Voice Controls</b> in Settings and a <b>🎙 button</b> appears in matches: tap it and say <b>“roll”</b>, <b>“knight”</b>, <b>“e2 to e4”</b> or <b>“end turn”</b> to play hands-free.</span></li>
     </ol>
 
     <div class="screen-foot"><button class="backbtn backtomenu" type="button">← Back to Main Menu</button></div>
@@ -2095,14 +2115,10 @@
     <div class="chathead"><span class="ch-title">Settings</span><button class="chatclose" type="button" data-close-panel aria-label="Close settings">✕</button></div>
     <div class="setrow"><span class="setlabel">Theme</span><div class="varianttoggle setseg" role="group" aria-label="Theme"><button type="button" data-theme-set="auto" class="on">Auto</button><button type="button" data-theme-set="light">Light</button><button type="button" data-theme-set="dark">Dark</button></div></div>
     <div class="setrow"><span class="setlabel">Radio station</span><div class="radio-station-list" role="group" aria-label="Radio station">
-      <button type="button" data-radio-station="kings"><b>📻 Kings FM</b><small>Calm royal pads — the original menu loop</small><span class="rs-dot">On air</span></button>
-      <button type="button" data-radio-station="pool"><b>📻 Pool Party</b><small>Dreamy chill plucks, soft pulse &amp; warm bass</small><span class="rs-dot">On air</span></button>
-      <button type="button" data-radio-station="war"><b>📻 War Drums</b><small>Tense war drums &amp; dark strings for matches</small><span class="rs-dot">On air</span></button>
-      <button type="button" data-radio-station="lofi"><b>📻 Lo-Fi Court</b><small>Mellow chords, lazy beat &amp; vinyl crackle</small><span class="rs-dot">On air</span></button>
       <button type="button" data-radio-station="shanty"><b>📻 Shanty FM</b><small>Whimsical medieval adventure — streamed tracks, needs internet</small><span class="rs-dot">On air</span></button>
       <button type="button" data-radio-station="house"><b>🎧 House FM</b><small>House grooves — streamed tracks, needs internet</small><span class="rs-dot">On air</span></button>
       <button type="button" data-radio-station="off"><b>📻 Off</b><small>Silence</small><span class="rs-dot">On air</span></button>
-    </div><p class="panelnote">Kings FM, Pool Party, War Drums and Lo-Fi Court are original loops generated live by the game itself. Shanty FM and House FM stream real tracks from the game's own site, so they need internet. Music credits for the streamed tracks are listed in About. Your station is saved on this device and is purely local: it never syncs to your friend. In a match the radio stays off unless you turn it on with the 📻 button (then it plays quietly).</p></div>
+    </div><p class="panelnote">Shanty FM and House FM stream real tracks from the game's own site, so they need internet. Music credits for the streamed tracks are listed in About. Your station is saved on this device and is purely local: it never syncs to your friend. In a match the radio stays off unless you turn it on with the 📻 button (then it plays quietly).</p></div>
     <div class="setrow"><span class="setlabel">Voice Controls</span><div class="varianttoggle setseg" role="group" aria-label="Voice controls"><button type="button" data-vc-set="on">On</button><button type="button" data-vc-set="off" class="on">Off</button></div><p class="panelnote" id="vcNote">Off. When on, a 🎙 button appears in matches — tap it, then say “roll”, a piece name like “knight”, “e2 to e4”, “end turn”, “undo” or “flip board”. Listening only ever starts when you tap; nothing is recorded or stored by the game.</p></div>
     <div class="setrow"><span class="setlabel">Animations</span><div class="varianttoggle setseg" role="group" aria-label="Animations"><button type="button" data-motion-set="full" class="on">Full</button><button type="button" data-motion-set="reduced">Reduced</button></div></div>
     <div class="setrow"><span class="setlabel">Sound FX</span><div class="varianttoggle setseg" role="group" aria-label="Sound effects"><button type="button" data-sfx-set="on" class="on">On</button><button type="button" data-sfx-set="off">Off</button></div><p class="panelnote">Subtle game sounds — dice rattle, moves, captures, check warnings and victory — made by the game itself (no audio files). Separate from the radio. Your choice is saved on this device.</p></div>
@@ -2114,10 +2130,6 @@
   <div class="sheetcard">
     <div class="chathead"><span class="ch-title">📻 Radio</span><button class="chatclose" type="button" data-close-panel aria-label="Close radio">✕</button></div>
     <div class="radio-station-list" role="group" aria-label="Choose a radio station">
-      <button type="button" data-radio-station="kings"><b>Kings FM</b><small>Calm royal pads</small><span class="rs-dot">On air</span></button>
-      <button type="button" data-radio-station="pool"><b>Pool Party</b><small>Dreamy chill plucks &amp; soft pulse</small><span class="rs-dot">On air</span></button>
-      <button type="button" data-radio-station="war"><b>War Drums</b><small>Tense drums &amp; dark strings</small><span class="rs-dot">On air</span></button>
-      <button type="button" data-radio-station="lofi"><b>Lo-Fi Court</b><small>Mellow chords &amp; vinyl crackle</small><span class="rs-dot">On air</span></button>
       <button type="button" data-radio-station="shanty"><b>Shanty FM</b><small>Medieval adventure — streamed tracks</small><span class="rs-dot">On air</span></button>
       <button type="button" data-radio-station="house"><b>House FM</b><small>House grooves — streamed tracks</small><span class="rs-dot">On air</span></button>
       <button type="button" data-radio-station="off"><b>Off</b><small>Silence</small><span class="rs-dot">On air</span></button>
@@ -2550,6 +2562,27 @@ function buildStartBoard(){
   }
   return bd;
 }
+/* FULL-BOARD GUARANTEE: a fresh start must always be a complete
+   8×8 with the rooks where the match type puts them — both back
+   ranks present, a rook on each corner for every standard-start
+   mode (Double Kings swaps only the queenside knights, never a
+   rook), Black's rooks on a8/h8 in Horde, and exactly two rooks
+   per back rank in Random Royals. If a built start board ever
+   fails this check, it is rebuilt once from scratch rather than
+   letting a game begin with a line of the board missing. */
+function startBoardIntact(bd){
+  if (!bd || bd.length!==8) return false;
+  for (var r=0;r<8;r++) if (!bd[r] || bd[r].length!==8) return false;
+  function is(r,c,t,col){ var p=bd[r][c]; return !!p && p.t===t && p.c===col; }
+  if (G.variant==="horde") return is(0,0,"r","b") && is(0,7,"r","b") && countPieces(bd,"w",null)===24 && countPieces(bd,"b",null)===16;
+  if (G.variant==="random"){
+    var rw=0, rb=0;
+    for (var c=0;c<8;c++){ if (is(7,c,"r","w")) rw++; if (is(0,c,"r","b")) rb++; }
+    return rw===2 && rb===2 && countPieces(bd,"w",null)===16 && countPieces(bd,"b",null)===16;
+  }
+  return is(7,0,"r","w") && is(7,7,"r","w") && is(0,0,"r","b") && is(0,7,"r","b")
+      && countPieces(bd,"w",null)===16 && countPieces(bd,"b",null)===16;
+}
 function applyVariantStart(){
   G.roundCount = 0; G.shrinkLevel = 0; G.fateRound = 0;
   G.extraNext = { w:false, b:false }; G.wildNext = { w:false, b:false };
@@ -2559,6 +2592,7 @@ function applyVariantStart(){
   G.aiColor = (G.mode==="ai" && G.variant==="horde" && G.hordeSide==="b") ? "w" : "b";
   if (G.variant==="random") G.backRank = genBackRank();
   G.st.board = buildStartBoard();
+  if (!startBoardIntact(G.st.board)) G.st.board = buildStartBoard();
   if (G.variant==="random") G.st.castling = { wK:false, wQ:false, bK:false, bQ:false };
   syncSpecialsUI();
 }
@@ -6479,205 +6513,35 @@ function renderPanels(){
 }
 applyCosmetics();
 
-/* ---------- menu music: original Web Audio pad loop, menu only ---------- */
-var MUSIC = { ctx:null, master:null, timer:null, on:true, unlocked:false, nextChord:0, idx:0,
-  station:"kings", prevStation:"kings", inGameOn:false, gen:0, step:0, nextTime:0, noiseBuf:null, switchTimer:null };
+/* ---------- radio: streaming stations only (Shanty FM / House FM) ---------- */
+var MUSIC = { on:true, unlocked:false,
+  station:"shanty", prevStation:"shanty", inGameOn:false };
 var RADIO_STATIONS = [
-  { id:"kings", name:"Kings FM" },
-  { id:"pool",  name:"Pool Party" },
-  { id:"war",   name:"War Drums" },
-  { id:"lofi",  name:"Lo-Fi Court" },
   { id:"shanty", name:"Shanty FM" },
   { id:"house", name:"House FM" },
   { id:"off",   name:"Off" }
 ];
-function radioStationName(id){ for (var i=0;i<RADIO_STATIONS.length;i++) if (RADIO_STATIONS[i].id===id) return RADIO_STATIONS[i].name; return "Kings FM"; }
+function radioStationName(id){ for (var i=0;i<RADIO_STATIONS.length;i++) if (RADIO_STATIONS[i].id===id) return RADIO_STATIONS[i].name; return "Shanty FM"; }
 try{
   var savedStation = localStorage.getItem("dicechess-radio");
-  if (savedStation && radioStationName(savedStation) && ["kings","pool","war","lofi","shanty","house","off"].indexOf(savedStation)>=0){
-    MUSIC.station = savedStation;
-    if (savedStation!=="off") MUSIC.prevStation = savedStation;
-    MUSIC.on = savedStation!=="off";
+  if (savedStation){
+    // Migration: stations removed in this build (kings/pool/war/lofi) fall back to Shanty FM.
+    if (["kings","pool","war","lofi"].indexOf(savedStation)>=0) savedStation = "shanty";
+    if (["shanty","house","off"].indexOf(savedStation)>=0){
+      MUSIC.station = savedStation;
+      if (savedStation!=="off") MUSIC.prevStation = savedStation;
+      MUSIC.on = savedStation!=="off";
+      try{ localStorage.setItem("dicechess-radio", savedStation); }catch(e){}
+    }
   }
 }catch(e){}
-var MUSIC_CHORDS = [
-  [110.00, 164.81, 220.00, 261.63],  // Am
-  [87.31, 174.61, 220.00, 261.63],   // F
-  [130.81, 164.81, 196.00, 261.63],  // C
-  [98.00, 146.83, 196.00, 246.94]    // G
-];
-function musicInit(){
-  if (MUSIC.ctx) return true;
-  try{
-    var AC = window.AudioContext || window.webkitAudioContext;
-    if (!AC) return false;
-    MUSIC.ctx = new AC();
-    MUSIC.master = MUSIC.ctx.createGain();
-    MUSIC.master.gain.value = 0;
-    MUSIC.master.connect(MUSIC.ctx.destination);
-    return true;
-  }catch(e){ return false; }
-}
-function musicChord(freqs, t, dur){
-  try{
-    var ctx = MUSIC.ctx;
-    freqs.forEach(function(f, i){
-      var o = ctx.createOscillator();
-      o.type = i===0 ? "sine" : "triangle";
-      o.frequency.value = f;
-      var peak = i===0 ? 0.050 : 0.026;
-      var g = ctx.createGain();
-      g.gain.setValueAtTime(0, t);
-      g.gain.linearRampToValueAtTime(peak, t + 1.3);
-      g.gain.setValueAtTime(peak, t + dur - 1.5);
-      g.gain.linearRampToValueAtTime(0, t + dur);
-      o.connect(g); g.connect(MUSIC.master);
-      o.start(t); o.stop(t + dur + 0.1);
-    });
-    // very gentle high arpeggio notes
-    [2, 3].forEach(function(k, j){
-      var o = ctx.createOscillator();
-      o.type = "sine"; o.frequency.value = freqs[k] * 2;
-      var g = ctx.createGain();
-      var tt = t + 1.4 + j * 2.0;
-      g.gain.setValueAtTime(0, tt);
-      g.gain.linearRampToValueAtTime(0.011, tt + 0.15);
-      g.gain.exponentialRampToValueAtTime(0.0008, tt + 1.7);
-      o.connect(g); g.connect(MUSIC.master);
-      o.start(tt); o.stop(tt + 1.9);
-    });
-  }catch(e){}
-}
-function musicSchedule(){
-  if (!MUSIC.ctx) return;
-  var ahead = MUSIC.ctx.currentTime + 0.8;
-  while (MUSIC.nextChord < ahead){
-    var t = Math.max(MUSIC.nextChord, MUSIC.ctx.currentTime + 0.05);
-    musicChord(MUSIC_CHORDS[MUSIC.idx % MUSIC_CHORDS.length], t, 4.8);
-    MUSIC.idx++;
-    MUSIC.nextChord = t + 4.0;
-  }
-}
 
-/* ---------- radio stations: all-original Web Audio loops ---------- */
-function radioNoiseBuffer(){
-  if (MUSIC.noiseBuf) return MUSIC.noiseBuf;
-  var ctx = MUSIC.ctx, len = ctx.sampleRate * 1.2, buf = ctx.createBuffer(1, len, ctx.sampleRate);
-  var d = buf.getChannelData(0);
-  for (var i=0;i<len;i++) d[i] = Math.random()*2-1;
-  MUSIC.noiseBuf = buf;
-  return buf;
-}
-function tone(o){
-  try{
-    var ctx = MUSIC.ctx, t = o.t;
-    var osc = ctx.createOscillator();
-    osc.type = o.type || "sine";
-    osc.frequency.setValueAtTime(o.f, t);
-    if (o.fEnd) osc.frequency.exponentialRampToValueAtTime(Math.max(20,o.fEnd), t + (o.d||0.3));
-    var g = ctx.createGain();
-    var a = (o.a==null ? 0.01 : o.a), peak = o.peak || 0.03, dur = o.d || 0.3;
-    g.gain.setValueAtTime(0, t);
-    g.gain.linearRampToValueAtTime(peak, t + a);
-    g.gain.exponentialRampToValueAtTime(0.0008, t + dur);
-    var node = osc;
-    if (o.flt){ var fl = ctx.createBiquadFilter(); fl.type="lowpass"; fl.frequency.value = o.flt; osc.connect(fl); node = fl; }
-    node.connect(g); g.connect(MUSIC.master);
-    osc.start(t); osc.stop(t + dur + 0.1);
-  }catch(e){}
-}
-function noiseHit(o){
-  try{
-    var ctx = MUSIC.ctx, t = o.t;
-    var src = ctx.createBufferSource();
-    src.buffer = radioNoiseBuffer();
-    src.loop = true;
-    try{ src.loopStart = Math.random()*0.6; }catch(e){}
-    var fl = ctx.createBiquadFilter();
-    fl.type = o.ftype || "lowpass"; fl.frequency.value = o.ffreq || 800; if (o.q) fl.Q.value = o.q;
-    var g = ctx.createGain();
-    g.gain.setValueAtTime(0, t);
-    g.gain.linearRampToValueAtTime(o.peak || 0.05, t + (o.a==null?0.004:o.a));
-    g.gain.exponentialRampToValueAtTime(0.0008, t + (o.d || 0.15));
-    src.connect(fl); fl.connect(g); g.connect(MUSIC.master);
-    src.start(t, Math.random()*0.5); src.stop(t + (o.d || 0.15) + 0.1);
-  }catch(e){}
-}
-function padChord(freqs, t, dur, peak, type){
-  freqs.forEach(function(f, i){
-    tone({ f:f, t:t, d:dur, type:type || (i===0 ? "sine" : "triangle"), peak:(i===0 ? peak : peak*0.7), a:0.7 });
-  });
-}
-function drumHit(t, scale, base){
-  tone({ f:base || 150, fEnd:46, t:t, d:0.30, type:"sine", peak:0.34*(scale||1), a:0.004 });
-  noiseHit({ t:t, d:0.09, peak:0.05*(scale||1), ffreq:420 });
-}
-/* Pool Party — dreamy chill: plucked arpeggio, soft pulse bass, airy pads */
-var POOL_CHORDS = [
-  [261.63, 329.63, 392.00, 493.88],
-  [220.00, 261.63, 329.63, 392.00],
-  [174.61, 220.00, 261.63, 349.23],
-  [196.00, 246.94, 293.66, 392.00]
-];
-var POOL_BASS = [65.41, 55.00, 43.65, 49.00];
-var POOL_MEL = [3, 1, 2, 0, 3, 2, 1, 2];
-function poolStep(i, t){
-  var bar = Math.floor(i/8) % 4, s = i % 8, ch = POOL_CHORDS[bar];
-  if (s===0) padChord(ch, t, 3.4, 0.016, "triangle");
-  if (s===0 || s===5) tone({ f:POOL_BASS[bar], t:t, d:0.55, type:"sine", peak:0.055, a:0.02 });
-  if (s===3) tone({ f:POOL_BASS[bar]*1.5, t:t, d:0.3, type:"sine", peak:0.022, a:0.02 });
-  var f = ch[POOL_MEL[s]] * 2;
-  tone({ f:f, t:t, d:0.42, type:"triangle", peak:(s%2 ? 0.026 : 0.038), a:0.005 });
-  tone({ f:f, t:t, d:0.22, type:"sine", peak:0.012, a:0.005 });
-  if (s===2 || s===6) noiseHit({ t:t, d:0.03, peak:0.006, ftype:"highpass", ffreq:7000 });
-}
-/* War Drums — low drum pulse, dark minor pads, tense string ticks */
-var WAR_CHORDS = [
-  [55.00, 110.00, 130.81, 164.81],
-  [55.00, 110.00, 130.81, 164.81],
-  [43.65, 87.31, 110.00, 174.61],
-  [49.00, 98.00, 123.47, 164.81]
-];
-var WAR_ROOTS = [220.00, 220.00, 174.61, 196.00];
-function warStep(i, t){
-  var bar = Math.floor(i/8) % 4, s = i % 8, ch = WAR_CHORDS[bar];
-  if (s===0) padChord(ch, t, 3.6, 0.020, "sine");
-  if (s===0) drumHit(t, 1.0, 140);
-  if (s===3) drumHit(t, 0.65, 130);
-  if (s===4) drumHit(t, 0.85, 135);
-  if (s===6) drumHit(t, 0.6, 125);
-  if (s===2 || s===5 || s===7) tone({ f:WAR_ROOTS[bar], t:t, d:0.16, type:"sawtooth", peak:0.010, a:0.008, flt:620 });
-  if (s===7 && bar%2===1) drumHit(t+0.21, 0.5, 120);
-}
-/* Lo-Fi Court — jazzy chords, lazy boom-bap, generated vinyl crackle */
-var LOFI_CHORDS = [
-  [174.61, 220.00, 261.63, 329.63],
-  [164.81, 196.00, 246.94, 293.66],
-  [146.83, 174.61, 220.00, 261.63],
-  [130.81, 164.81, 196.00, 246.94]
-];
-var LOFI_BASS = [43.65, 41.20, 36.71, 32.70];
-var LOFI_MEL = [null, 3, null, 2, null, null, 1, null];
-function lofiStep(i, t){
-  var bar = Math.floor(i/8) % 4, s = i % 8, ch = LOFI_CHORDS[bar];
-  if (s===0){ padChord(ch, t, 3.9, 0.020, "triangle"); tone({ f:LOFI_BASS[bar]*2, t:t, d:0.7, type:"sine", peak:0.045, a:0.02 }); }
-  if (s===7) tone({ f:LOFI_BASS[bar]*2, t:t, d:0.35, type:"sine", peak:0.028, a:0.02 });
-  if (s===0 || s===5) drumHit(t, 0.38, 120);
-  if (s===2 || s===6) noiseHit({ t:t, d:0.13, peak:0.055, ftype:"bandpass", ffreq:1800, q:0.8 });
-  if (s%2===1) noiseHit({ t:t, d:0.025, peak:0.010, ftype:"highpass", ffreq:8000 });
-  var mi = LOFI_MEL[s];
-  if (mi!==null && mi!==undefined) tone({ f:ch[mi]*2, t:t, d:0.55, type:"sine", peak:0.026, a:0.01 });
-  for (var k=0;k<3;k++){
-    if (Math.random() < 0.75) noiseHit({ t:t + Math.random()*0.4, d:0.012, peak:0.004 + Math.random()*0.010, ftype:"highpass", ffreq:2800 });
-  }
-}
-/* Streaming stations -- Shanty FM and House FM are STREAMING
-   stations (the other four are generated live by the game): real
+/* Streaming stations -- Shanty FM and House FM stream real
    tracks hosted on the game's own site, played in rotation
    through one HTMLAudio element per station -- when a track ends,
    the next begins. If a track cannot load (device offline, file
    missing), that station falls back to silence with a one-time
-   explanation and never blocks the other stations. */
+   explanation and never blocks the other station. */
 var SHANTY_TRACKS = [
   { title:"Newbie Rhapsody", url:"https://madpanda3ds.github.io/music/shanty-overworld.ogg" },
   { title:"Salty Dice Reel", url:"https://madpanda3ds.github.io/music/shanty-sea.ogg" },
@@ -6754,20 +6618,6 @@ function streamFail(id){
   }
   radioRenderUI();
 }
-var RADIO_STEP = { pool:{ dur:0.36, fn:poolStep }, war:{ dur:0.42, fn:warStep }, lofi:{ dur:0.46, fn:lofiStep } };
-function radioSchedule(){
-  if (!MUSIC.ctx) return;
-  if (MUSIC.station==="kings"){ musicSchedule(); return; }
-  var spec = RADIO_STEP[MUSIC.station];
-  if (!spec) return;
-  var ahead = MUSIC.ctx.currentTime + 0.9;
-  while (MUSIC.nextTime < ahead){
-    var t = Math.max(MUSIC.nextTime, MUSIC.ctx.currentTime + 0.04);
-    try{ spec.fn(MUSIC.step, t); }catch(e){}
-    MUSIC.step++;
-    MUSIC.nextTime = t + spec.dur;
-  }
-}
 function radioVolume(){
   return document.body.classList.contains("playing") ? 0.26 : 0.5;
 }
@@ -6775,41 +6625,13 @@ function radioShouldPlay(){
   return MUSIC.unlocked && MUSIC.station!=="off" &&
     (!document.body.classList.contains("playing") || MUSIC.inGameOn);
 }
-function radioStartScheduler(){
-  if (STREAM_DEFS[MUSIC.station]){ streamPlay(); return; }
-  streamPauseAll();
-  if (!MUSIC.ctx) return;
-  if (MUSIC.timer){ clearInterval(MUSIC.timer); MUSIC.timer = null; }
-  MUSIC.nextChord = MUSIC.ctx.currentTime + 0.08;
-  MUSIC.idx = 0;
-  MUSIC.nextTime = MUSIC.ctx.currentTime + 0.06;
-  MUSIC.step = 0;
-  MUSIC.timer = setInterval(radioSchedule, 320);
-  radioSchedule();
-  MUSIC.master.gain.cancelScheduledValues(MUSIC.ctx.currentTime);
-  MUSIC.master.gain.setTargetAtTime(radioVolume(), MUSIC.ctx.currentTime, 0.55);
-}
 function musicPlay(){
   if (MUSIC.station==="off" || !MUSIC.unlocked) return;
-  if (STREAM_DEFS[MUSIC.station]){ streamPlay(); return; }
-  if (!musicInit()) return;
-  try{
-    if (MUSIC.ctx.state === "suspended") MUSIC.ctx.resume();
-    if (!MUSIC.timer) radioStartScheduler();
-    else {
-      MUSIC.master.gain.cancelScheduledValues(MUSIC.ctx.currentTime);
-      MUSIC.master.gain.setTargetAtTime(radioVolume(), MUSIC.ctx.currentTime, 0.55);
-    }
-  }catch(e){}
+  if (!radioShouldPlay()) return;
+  streamPlay();
 }
 function musicStop(){
   streamPauseAll();
-  if (!MUSIC.ctx) return;
-  try{
-    MUSIC.master.gain.cancelScheduledValues(MUSIC.ctx.currentTime);
-    MUSIC.master.gain.setTargetAtTime(0, MUSIC.ctx.currentTime, 0.35);
-    if (MUSIC.timer){ clearInterval(MUSIC.timer); MUSIC.timer = null; }
-  }catch(e){}
 }
 function musicSync(){
   if (document.body.classList.contains("playing") && !MUSIC.inGameOn) musicStop();
@@ -6856,7 +6678,8 @@ function radioRenderUI(){
 }
 function radioSetStation(id, opts){
   opts = opts || {};
-  if (["kings","pool","war","lofi","shanty","house","off"].indexOf(id)<0) id = "kings";
+  if (["kings","pool","war","lofi"].indexOf(id)>=0) id = "shanty"; // removed stations migrate to Shanty FM
+  if (["shanty","house","off"].indexOf(id)<0) id = "shanty";
   var changed = id !== MUSIC.station;
   MUSIC.station = id;
   if (STREAM_DEFS[id] && changed) STREAM[id].failed = false; // a fresh pick retries the stream
@@ -6866,28 +6689,13 @@ function radioSetStation(id, opts){
   radioRenderUI();
   if (opts.toast!==false && changed) toast(id==="off" ? "📻 Radio off" : "📻 " + radioStationName(id));
   if (!MUSIC.unlocked) return;
-  if (id==="off"){ MUSIC.gen++; if (MUSIC.switchTimer){ clearTimeout(MUSIC.switchTimer); MUSIC.switchTimer=null; } musicStop(); return; }
-  if (!radioShouldPlay()){ MUSIC.gen++; musicStop(); return; }
-  if (!musicInit()) return;
-  try{ if (MUSIC.ctx.state==="suspended") MUSIC.ctx.resume(); }catch(e){}
-  if (!MUSIC.timer){ musicPlay(); return; }
-  // Crossfade: dip the master, swap the scheduler, fade back — one
-  // timer and one context throughout, so loops never stack.
-  var gen = ++MUSIC.gen;
-  try{
-    MUSIC.master.gain.cancelScheduledValues(MUSIC.ctx.currentTime);
-    MUSIC.master.gain.setTargetAtTime(0, MUSIC.ctx.currentTime, 0.13);
-  }catch(e){}
-  if (MUSIC.timer){ clearInterval(MUSIC.timer); MUSIC.timer = null; }
-  if (MUSIC.switchTimer) clearTimeout(MUSIC.switchTimer);
-  MUSIC.switchTimer = setTimeout(function(){
-    MUSIC.switchTimer = null;
-    if (gen!==MUSIC.gen || !radioShouldPlay()) return;
-    radioStartScheduler();
-  }, 420);
+  if (id==="off"){ musicStop(); return; }
+  if (!radioShouldPlay()){ musicStop(); return; }
+  streamPauseAll();
+  musicPlay();
 }
 function radioToggleSpeaker(){
-  if (MUSIC.station==="off") radioSetStation(MUSIC.prevStation || "kings");
+  if (MUSIC.station==="off") radioSetStation(MUSIC.prevStation || "shanty");
   else radioSetStation("off");
 }
 function radioStepStation(dir){
@@ -6899,7 +6707,7 @@ function radioStepStation(dir){
 function setMusic(on){
   // Backwards-compatible wrapper (older Settings wiring): on = resume
   // the last station, off = silence.
-  if (on){ MUSIC.unlocked = true; radioSetStation(MUSIC.prevStation || "kings", { toast:false }); }
+  if (on){ MUSIC.unlocked = true; radioSetStation(MUSIC.prevStation || "shanty", { toast:false }); }
   else radioSetStation("off", { toast:false });
 }
 document.addEventListener("pointerdown", function(){
@@ -6930,7 +6738,7 @@ document.querySelectorAll("[data-radio-station]").forEach(function(btn){
   var ron = document.getElementById("radioInGameOn"), roff = document.getElementById("radioInGameOff");
   if (ron) ron.addEventListener("click", function(){
     MUSIC.inGameOn = true; MUSIC.unlocked = true;
-    if (MUSIC.station==="off") radioSetStation(MUSIC.prevStation || "kings", { toast:false });
+    if (MUSIC.station==="off") radioSetStation(MUSIC.prevStation || "shanty", { toast:false });
     radioRenderUI(); musicPlay();
     toast("📻 " + radioStationName(MUSIC.station) + " — playing quietly in this match");
   });
