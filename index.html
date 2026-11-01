@@ -449,6 +449,39 @@
   .learnsteps .ls-body{display:block;font-size:13.5px;line-height:1.55;color:var(--ink-soft);margin-top:3px;}
   .learnsteps .ls-body b{color:var(--ink);}
   .screen-foot{margin-top:16px;text-align:center;}
+  /* match-type grouping (display only) */
+  .variantgroup-label{font-size:11px;font-weight:850;letter-spacing:.09em;text-transform:uppercase;color:var(--brass);margin:10px 2px 5px;}
+  .variantgroup-label:first-of-type{margin-top:2px;}
+  .about-group{font-size:11.5px;font-weight:850;letter-spacing:.09em;text-transform:uppercase;color:var(--brass);margin:12px 0 5px;}
+  .about-group:first-of-type{margin-top:2px;}
+  /* interactive tutorial */
+  .tut-entry{display:flex;align-items:center;gap:12px;flex-wrap:wrap;background:var(--panel);border:2px solid var(--gold);border-radius:16px;padding:14px 16px;box-shadow:var(--shadow-sm);margin-bottom:14px;text-align:left;}
+  .tut-playbtn{border:0;cursor:pointer;font-weight:800;font-size:16.5px;padding:13px 20px;border-radius:12px;background:var(--accent);color:var(--accent-ink);box-shadow:0 4px 14px rgba(20,30,20,.22);}
+  .tut-playbtn:hover{filter:brightness(1.08);}
+  .tut-done-tag{font-size:14px;font-weight:800;color:var(--accent);}
+  .tut-entry .tut-entry-sub{flex:1 1 180px;font-size:13px;color:var(--ink-soft);line-height:1.45;min-width:150px;}
+  .tut-coach{display:none;background:var(--panel);border:2px solid var(--gold);border-radius:14px;padding:10px 12px;margin:0 0 10px;height:132px;flex-direction:column;gap:5px;box-shadow:var(--shadow-sm);overflow:hidden;}
+  body.tut-on .tut-coach{display:flex;}
+  .tut-top{display:flex;align-items:center;gap:8px;flex-wrap:nowrap;}
+  .tut-step{flex:0 0 auto;font-size:11px;font-weight:850;letter-spacing:.06em;text-transform:uppercase;background:var(--accent);color:var(--accent-ink);padding:4px 8px;border-radius:999px;white-space:nowrap;}
+  .tut-title{flex:1;min-width:0;font-weight:800;font-size:15px;letter-spacing:-.01em;line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .tut-actions{flex:0 0 auto;display:flex;gap:6px;}
+  .tut-actions button{border:1px solid var(--line-strong);background:var(--panel-2);color:var(--ink);font-size:12.5px;font-weight:750;padding:6px 10px;border-radius:999px;cursor:pointer;}
+  .tut-actions button:hover{border-color:var(--gold);}
+  .tut-text{flex:1;overflow-y:auto;font-size:13.5px;line-height:1.5;color:var(--ink-soft);}
+  .tut-text b{color:var(--ink);}
+  .tut-hint{flex:0 0 auto;font-size:12.5px;font-weight:700;color:var(--brass);min-height:16px;line-height:1.35;}
+  .tut-coach .dicemap{margin:2px 0 0;}
+  .tut-coach .dicemap[hidden]{display:none;}
+  body.tut-on .captured,body.tut-on .coinbal,body.tut-on .barplus{display:none !important;}
+  @keyframes tutPulse{0%,100%{box-shadow:0 0 0 2px rgba(212,160,23,.55),0 0 0 rgba(212,160,23,0);}50%{box-shadow:0 0 0 3px rgba(212,160,23,.95),0 0 16px rgba(212,160,23,.65);}}
+  .tut-pulse{animation:tutPulse 1.1s ease-in-out infinite !important;outline:3px solid var(--gold-bright) !important;outline-offset:1px;}
+  .sq.tut-target{box-shadow:inset 0 0 0 3px var(--gold-bright),inset 0 0 22px rgba(212,160,23,.55) !important;}
+  .tut-recap{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:0 0 16px;}
+  .tut-recap span{background:var(--panel-2);border:1px solid var(--line);border-radius:999px;padding:6px 10px;font-size:12.5px;font-weight:700;color:var(--ink);}
+  @media (prefers-reduced-motion: reduce){.tut-pulse{animation:none !important;}}
+  html.reduce-motion .tut-pulse{animation:none !important;}
+  @media (max-width:560px){.tut-coach{height:142px;padding:9px 10px;}.tut-title{font-size:14px;}.tut-text{font-size:13px;}}
   @media (max-width:560px){.screen-title{font-size:27px;}.learnbtn{font-size:12.5px;padding:7px 11px 7px 8px;}.learnsteps li{padding:12px 13px 12px 52px;}.learnsteps li::before{left:12px;top:12px;}}
 
   /* live room chat */
@@ -2828,8 +2861,12 @@ html.reduce-motion .boardroll.trn-shimmer::after{animation:none;display:none;}
 
     <div class="about-sec">
       <h3>Match types</h3>
+      <div class="about-group">Classic</div>
       <ul>
-        <li><b>Normal:</b> win by capturing (killing) the enemy King.</li>
+        <li><b>Classic:</b> Normal dice chess — the original game. Win by capturing (killing) the enemy King.</li>
+      </ul>
+      <div class="about-group">Arcade Modes</div>
+      <ul>
         <li><b>King of the Hill:</b> as well as killing the King, a player wins immediately by legally moving their own King — with a King (6) die — onto any of the four hill squares <b>d4, d5, e4, e5</b>, marked on the board in that variant. The game ends at once, even mid-turn, and it counts as a full win for the coin pot.</li>
       </ul>
       <p>Match type, names and stake are all chosen on the <b>setup screen before the game starts</b> — the game screen itself only shows read-only chips for them. Special Dice are always on. In Live rooms and Friend turn codes, the setup travels with the game so both players play by the same choices.</p>
@@ -2837,7 +2874,7 @@ html.reduce-motion .boardroll.trn-shimmer::after{animation:none;display:none;}
     </div>
 
     <div class="about-sec">
-      <h3>The seven extra match types</h3>
+      <h3>Arcade Modes in detail</h3>
       <p><b>Chaos:</b> Special Dice come up half the time (50%). At the start of every 3rd round a random <b>Fate</b> hits both players: <b>Wild Surge</b> (your next roll is guaranteed a WILD die), <b>Shield Rain</b> (both Kings are shielded until their owner's next turn), <b>Extra Dice</b> (your next roll has 4 dice) or <b>Swap Storm</b> (two of each player's own non-King pieces swap places at random). No Fate in round 1.</p>
       <p><b>Double Kings:</b> each side starts with <b>two Kings</b> — the queenside Knight is replaced by a second King. Only the original e-file King may castle. Capturing the first enemy King does <b>not</b> end the game ("One King down! One to go.") — you win by capturing <b>both</b>. The red <b>!</b> marker appears on either King that is under attack.</p>
       <p><b>Horde:</b> White is the Horde — <b>24 pawns</b> filling the first three ranks and no King. Black is the standard army. For the Horde, <b>every rolled die counts as a Pawn die</b>; pawns promote on the last rank as usual, and a promoted piece then moves only on its own matching die. Pawns double-step only from the second rank. <b>The Army wins by capturing every Horde piece; the Horde wins by capturing the Army's King.</b> Against the Computer you choose which side to play.</p>
@@ -2891,6 +2928,12 @@ html.reduce-motion .boardroll.trn-shimmer::after{animation:none;display:none;}
     <div class="screen-top"><button class="backbtn backtomenu" type="button">← Back to Main Menu</button></div>
     <h2 class="screen-title">Learn to <span>Play</span></h2>
     <p class="screen-sub">Short steps, in the order you'll actually do them.</p>
+
+    <div class="tut-entry">
+      <button class="tut-playbtn" id="tutPlayBtn" type="button">▶ Play the tutorial</button>
+      <span class="tut-done-tag" id="tutDoneTag" style="display:none;">Tutorial completed ✓</span>
+      <span class="tut-entry-sub">A short guided match on a small board — real dice, real moves, a coach beside you. No coins, no stats, skip anytime.</span>
+    </div>
 
     <ol class="learnsteps">
       <li><span class="ls-title">Pick a mode and start</span><span class="ls-body">Choose <b>Online</b> or <b>Offline</b> on the main menu, pick <b>Normal</b> or <b>King of the Hill</b>, then set your <b>name and stake</b> in the setup panel next to the board.</span></li>
@@ -3035,6 +3078,47 @@ html.reduce-motion .boardroll.trn-shimmer::after{animation:none;display:none;}
     </div>
   </header>
 
+  <div class="tut-coach" id="tutCoach" aria-label="Tutorial coach">
+    <div class="tut-top">
+      <span class="tut-step" id="tutStep">Step 1 of 9</span>
+      <span class="tut-title" id="tutTitle">Roll your dice</span>
+      <span class="tut-actions">
+        <button type="button" id="tutSkipBtn">Skip</button>
+        <button type="button" id="tutExitBtn" aria-label="Exit tutorial">✕</button>
+      </span>
+    </div>
+    <div class="tut-text" id="tutText" role="status" aria-live="polite"></div>
+    <div class="dicemap" id="tutChips" aria-label="Dice to piece mapping" hidden><span>1 · Pawn</span><span>2 · Knight</span><span>3 · Bishop</span><span>4 · Rook</span><span>5 · Queen</span><span>6 · King</span></div>
+    <div class="tut-hint" id="tutHint" role="note"></div>
+  </div>
+
+  <div class="overlay" id="tutDone" role="dialog" aria-modal="true" aria-label="Tutorial complete">
+    <div class="modal">
+      <div class="big" aria-hidden="true">♛</div>
+      <h2>Tutorial complete!</h2>
+      <p>You played a real Kings &amp; Dice match — dice, stuck dice, a special die and a King capture. Here's what you learned:</p>
+      <div class="tut-recap">
+        <span>Dice pick your pieces</span>
+        <span>Pieces can move again and again</span>
+        <span>Stuck dice wait</span>
+        <span>Special dice in every game</span>
+        <span>Capture the King to win</span>
+      </div>
+      <button type="button" id="tutPlayAiBtn">Play vs Computer</button>
+      <button type="button" class="ghost" id="tutMenuBtn">Back to menu</button>
+      <button type="button" class="ghost" id="tutReplayBtn">Replay tutorial</button>
+    </div>
+  </div>
+
+  <div class="overlay" id="tutExitConfirm" role="dialog" aria-modal="true" aria-label="Exit tutorial">
+    <div class="modal">
+      <h2>Exit the tutorial?</h2>
+      <p>Your lesson progress in this match will be lost. You can replay the tutorial anytime from Learn to Play.</p>
+      <button type="button" id="tutExitYesBtn">Exit tutorial</button>
+      <button type="button" class="ghost" id="tutExitNoBtn">Keep learning</button>
+    </div>
+  </div>
+
   <div class="quickrow" id="quickRow">
     <button class="quickchatbtn" id="quickChatBtn" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="quickPanel"><svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true" focusable="false"><path fill="currentColor" d="M12 3C6.5 3 2 6.9 2 11.7c0 2.7 1.4 5.1 3.7 6.7-.1 1-.5 2.3-1.2 3.3 0 .1 0 .2.1.3.1 0 .1.1.2.1 2-.1 3.9-.8 5.3-1.7.6.1 1.3.2 1.9.2 5.5 0 10-3.9 10-8.7S17.5 3 12 3z"/></svg><span>Quick Chat</span></button>
   </div>
@@ -3077,7 +3161,7 @@ html.reduce-motion .boardroll.trn-shimmer::after{animation:none;display:none;}
         <div class="statusline">
           <span class="turnchip"><span class="swatch w" id="turnSwatch"></span><span id="turnLabel">White to move</span></span>
           <span class="potchip" id="potChip">Pot: 0</span>
-          <span class="variantchip matchchip on" id="matchChip">Normal</span>
+          <span class="variantchip matchchip on" id="matchChip">Classic</span>
           <span class="variantchip matchchip on spec-on" id="specialsChip">Specials: Always On</span>
           <span class="variantchip matchchip" id="aiChip" style="display:none;">AI · Medium</span>
           <span class="variantchip matchchip" id="timerChip" style="display:none;">⏱ 60s per turn</span>
@@ -3127,10 +3211,14 @@ html.reduce-motion .boardroll.trn-shimmer::after{animation:none;display:none;}
         </div>
 
         <div class="variantbox" id="variantBox" aria-label="Match type">
-          <div class="vtitle">Match type <span id="variantSummary" style="color:var(--ink-soft);font-weight:650;">· This match: Normal</span></div>
+          <div class="vtitle">Match type <span id="variantSummary" style="color:var(--ink-soft);font-weight:650;">· This match: Classic</span></div>
           <div class="vdesc">Pick one — it locks in when you tap Start, and travels with turn codes and Live rooms so both players play the same mode.</div>
-          <div class="varianttoggle variantgrid" role="group" aria-label="Choose match type for the next match">
-            <button type="button" data-variant="normal" class="on"><b>Normal</b><small>Kill the enemy King to win.</small></button>
+          <div class="variantgroup-label" aria-hidden="true">Classic</div>
+          <div class="varianttoggle variantgrid" role="group" aria-label="Classic match type">
+            <button type="button" data-variant="normal" class="on"><b>Classic</b><small>Normal dice chess — the original game</small></button>
+          </div>
+          <div class="variantgroup-label" aria-hidden="true">Arcade Modes</div>
+          <div class="varianttoggle variantgrid" role="group" aria-label="Choose an Arcade match type for the next match">
             <button type="button" data-variant="hill"><b>King of the Hill</b><small>Also win by moving your King onto d4, d5, e4 or e5.</small></button>
             <button type="button" data-variant="chaos"><b>Chaos</b><small>Specials at 50% — plus a random Fate every 3rd round.</small></button>
             <button type="button" data-variant="double"><b>Double Kings</b><small>Two Kings per side — you must capture BOTH to win.</small></button>
@@ -3267,9 +3355,15 @@ html.reduce-motion .boardroll.trn-shimmer::after{animation:none;display:none;}
               <div id="srvWaitSettingsHost" style="display:none;">
                 <div class="srv-setrow">
                   <span class="srv-setlabel">Match type</span>
-                  <div class="varianttoggle" role="group" aria-label="Waiting room match type">
-                    <button type="button" data-srv-mode="normal">Normal</button>
-                    <button type="button" data-srv-mode="hill">King of the Hill</button>
+                  <div>
+                    <div class="variantgroup-label" aria-hidden="true">Classic</div>
+                    <div class="varianttoggle" role="group" aria-label="Waiting room Classic match type">
+                      <button type="button" data-srv-mode="normal">Classic</button>
+                    </div>
+                    <div class="variantgroup-label" aria-hidden="true">Arcade Modes</div>
+                    <div class="varianttoggle" role="group" aria-label="Waiting room Arcade match type">
+                      <button type="button" data-srv-mode="hill">King of the Hill</button>
+                    </div>
                   </div>
                 </div>
                 <div class="srv-setrow">
@@ -4140,7 +4234,7 @@ try{
 }catch(e){}
 function isHillSquare(r,c){ return (r===3||r===4) && (c===3||c===4); } // d5,e5,d4,e4
 function hillDist(r,c){ var best=99; [[3,3],[3,4],[4,3],[4,4]].forEach(function(s){ var d=Math.abs(r-s[0])+Math.abs(c-s[1]); if(d<best) best=d; }); return best; }
-var VARIANT_LABELS = { normal:"Normal", hill:"King of the Hill", chaos:"Chaos", double:"Double Kings", horde:"Horde", random:"Random Royals", shrink:"Shrinking Board", zombie:"Zombie", guard:"Royal Guard" };
+var VARIANT_LABELS = { normal:"Classic", hill:"King of the Hill", chaos:"Chaos", double:"Double Kings", horde:"Horde", random:"Random Royals", shrink:"Shrinking Board", zombie:"Zombie", guard:"Royal Guard" };
 var VARIANT_NOTES = {
   normal: "",
   hill: "",
@@ -5141,6 +5235,7 @@ function renderStatus(){
   renderCoins();
   refreshCallout();
   if (typeof ttUpdateChip==="function"){ ttUpdateChip(); ttPaint(); }
+  if (typeof TUT!=="undefined" && TUT.active) TUT.decorate();
 }
 function isHumanTurn(){
   if (typeof SRV!=="undefined" && SRV.active) return SRV.status==="connected" && SRV.phase==="playing" && G.st.turn===G.myColor && !G.over;
@@ -5325,6 +5420,7 @@ function startTurn(){
     CALL_OVERRIDE = { glyph:"🔥", kind:"lost", title:"The edge burns after this round!", sub:"The outer ring turns to lava when this round ends. Any piece still standing on it — <b>including a King</b> — is removed. Move your pieces inward now." };
   }
   renderBoard();
+  if (typeof TUT!=="undefined" && TUT.active) TUT.onTurnStart();
   if (G.mode==="ai" && G.st.turn===(G.aiColor||"b") && !G.over) later(aiTakeTurn, 900);
 }
 /* ---------- Chaos Fate (start of every 3rd round) ---------- */
@@ -5714,12 +5810,14 @@ function rollDice(){
   if (_finaleActive) return; /* king finale playing — no new roll until the modal */
   if (G.phase!=="await-roll" || G.over) return;
   if (!isHumanTurn()) return;
+  if (typeof TUT!=="undefined" && TUT.active && !TUT.gateRoll()) return;
   if (typeof SRV!=="undefined" && SRV.active){ srvRequestRoll(); return; }
   sfxTap();
   G.history.push(snapshot());
   G.phase="rolling";
   renderBoard();
   var faces = genFaces();
+  if (typeof TUT!=="undefined" && TUT.active && TUT.forcedQueue && TUT.forcedQueue.length){ faces = TUT.forcedQueue.shift().slice(); }
   // Broadcast BEFORE the local animation / state update so the other
   // player in a Live room plays the same tumble and settles on these
   // exact faces — not a locally re-randomised roll.
@@ -5741,6 +5839,7 @@ function settleRolls(faces){
   broadcastState();
   if (G.variant==="guard" && G.guardTurnInCheck) guardAfterRoll();
   else checkDicePlayable();
+  if (typeof TUT!=="undefined" && TUT.active) TUT.onRollSettled(faces);
 }
 function anyDiePlayable(){
   for (var i=0;i<G.dice.length;i++){
@@ -5849,6 +5948,7 @@ function endTurnGate(){
   return { ok:false, reason:"End Turn unlocks on your last die" };
 }
 function endTurnManually(){
+  if (typeof TUT!=="undefined" && TUT.active && !TUT.scriptCall){ TUT.nudgeEndTurn(); return false; }
   var gate = endTurnGate();
   if (!gate.ok){ toast(gate.reason); return false; }
   if (typeof SRV!=="undefined" && SRV.active){ srvEndTurn(); return true; }
@@ -6023,6 +6123,7 @@ function ttUpdateChip(){
 }
 function selectDie(i){
   if (_finaleActive) return; /* king finale playing — dice locked until the modal */
+  if (typeof TUT!=="undefined" && TUT.active && !TUT.gateDie(i)) return;
   if (G.phase!=="await-move" || G.over) return;
   if (!isHumanTurn()) return;
   if (typeof SRV!=="undefined" && SRV.active && SRV.pendingAction) return;
@@ -6161,6 +6262,7 @@ function offerZombieChoice(i){
 /* Shared wrap-up after a die is spent by a non-move action (Shield / Swap)
    or by a move that didn't end the game. */
 function afterDieSpent(noteText){
+  if (typeof TUT!=="undefined" && TUT.active) TUT.onMoveDone();
   renderBoard();
   broadcastState();
   if (G.over) return;
@@ -6296,6 +6398,7 @@ function onSquare(r,c){
   if (G.phase!=="await-move" || G.over) return;
   if (!isHumanTurn()) return;
   if (typeof SRV!=="undefined" && SRV.active && SRV.pendingAction) return; // one server intent at a time — no duplicate moves
+  if (typeof TUT!=="undefined" && TUT.active && !TUT.gateSquare(r,c)) return;
   revalidateActiveDie(); // a tap never acts on a move list the live board no longer offers
   if (G.activeDie===null){
     /* TAP-A-PIECE: with no die chosen yet, tapping one of your own
@@ -6535,6 +6638,7 @@ function showGameOver(title, msg){
      instead, and the finale's finish() flushes it only AFTER the full
      sequence has played. The player always sees the finale first. */
   if (_finaleActive){ _queuedGameOver = { title:title, msg:msg }; return; }
+  if (typeof TUT!=="undefined" && TUT.active){ TUT.onGameOver(); return; }
   if (typeof recordSessionResult==="function") recordSessionResult();
   var box=document.getElementById("modalBox");
   box.innerHTML="";
@@ -8141,6 +8245,7 @@ function syncNameUI(){
 
 /* ---------- controls ---------- */
 function newGame(mode){
+  if (typeof TUT!=="undefined" && TUT.active) TUT.cleanup();
   readNameInputs();
   if ((mode || G.mode)==="live" && typeof SRV!=="undefined" && SRV.active && SRV.roomCode){
     if (SRV.phase==="finished"){
@@ -8410,7 +8515,7 @@ document.getElementById("overlay").addEventListener("click", function(e){
 document.querySelectorAll("[data-variant]").forEach(function(btn){
   btn.addEventListener("click", function(){
     setPendingVariant(btn.getAttribute("data-variant"));
-    toast(G.pendingVariant==="hill" ? "King of the Hill for the next match — King to d4/d5/e4/e5 also wins" : "Normal match type for the next match");
+    toast(G.pendingVariant==="hill" ? "King of the Hill for the next match — King to d4/d5/e4/e5 also wins" : G.pendingVariant==="normal" ? "Classic for the next match — Normal dice chess, the original game" : pendingVariantLabel() + " for the next match");
   });
 });
 /* Special Dice have no toggle — they are always on (owner ruling). */
@@ -8510,6 +8615,7 @@ document.querySelectorAll(".backtomenu").forEach(function(btn){
   btn.addEventListener("click", function(){ closeInfoScreens(); window.scrollTo(0,0); });
 });
 function goToMainMenu(){
+  if (typeof TUT!=="undefined" && TUT.active) TUT.cleanup();
   // Refund an abandoned staked pot exactly like starting a new game does:
   // resetGameOnly returns both stakes when a pot is unsettled.
   if (G.mode==="live" && LIVE.status!=="off") liveTeardown();
@@ -8768,7 +8874,7 @@ function renderPanels(){
 applyCosmetics();
 
 /* ---------- radio: one station — House ("Nothing" by RetroBlue, on loop) ---------- */
-var HOUSE_TRACK_URL = "https://madpanda3ds.github.io/music/retroblue-nothing.mp3";
+var HOUSE_TRACK_URL = "https://kingsanddice.github.io/music/retroblue-nothing.mp3";
 var HOUSE_TRACK_TITLE = "Nothing — RetroBlue";
 var MUSIC = { on:true, unlocked:false,
   station:"house", prevStation:"house", inGameOn:false };
@@ -15217,6 +15323,359 @@ function lbHandleError(msg){
   }
   lbRender();
   lbRenderBlocked();
+})();
+</script>
+
+<script>
+"use strict";
+/* ============================================================
+   INTERACTIVE TUTORIAL — a guided lesson match on the real board,
+   real dice UI and real move engine. Fully offline/on-device:
+   mode is "local", no stake, timer off, result recording is
+   suppressed (G.resultRecorded is set before play), and no server,
+   online, ranked, tournament, shop or account code is touched.
+   Dice are scripted through TUT.forcedQueue, consumed by the normal
+   rollDice path; the opponent's moves are scripted steps applied
+   through the normal selectDie / onSquare pipeline (never the AI).
+   ============================================================ */
+var TUT = {
+  active: false, step: 1, expect: "roll", sub: null,
+  expFace: null, expFrom: null, expTo: null, expName: "", expPieceName: "",
+  forcedQueue: [], scriptCall: false, oppTurn: 0, oppRunning: false,
+  timers: [], completed: false,
+
+  later: function(fn, ms){ var id = setTimeout(fn, ms); this.timers.push(id); return id; },
+  clearTimers: function(){ this.timers.forEach(clearTimeout); this.timers = []; },
+
+  hint: function(msg){
+    var h = document.getElementById("tutHint");
+    if (h) h.textContent = msg || "";
+  },
+  nudge: function(msg){
+    this.hint(msg);
+    this.decorate();
+    try{ toast(msg); }catch(e){}
+  },
+  setCoach: function(step, expect, coach){
+    this.step = step; this.expect = expect;
+    var st = document.getElementById("tutStep");
+    if (st) st.textContent = "Step " + step + " of 9";
+    var ti = document.getElementById("tutTitle");
+    if (ti) ti.textContent = coach.title;
+    var tx = document.getElementById("tutText");
+    if (tx) tx.innerHTML = coach.text;
+    var chips = document.getElementById("tutChips");
+    if (chips) chips.hidden = step !== 1;
+    this.hint("");
+    var self = this;
+    this.later(function(){ self.decorate(); }, 30);
+  },
+  startMoveStep: function(step, face, from, to, pieceName, coach){
+    this.expFace = face; this.expFrom = from; this.expTo = to;
+    this.expPieceName = pieceName;
+    this.expName = face === "WILD" ? "WILD" : pieceName;
+    this.setCoach(step, "die", coach);
+  },
+
+  /* ---------- gates (called from the normal input paths) ---------- */
+  gateRoll: function(){
+    if (this.scriptCall) return true;
+    if (G.st.turn !== "w"){ this.nudge("It's your opponent's turn — just watch."); return false; }
+    if (this.expect !== "roll"){ this.nudge("No roll yet — follow the coach step above."); return false; }
+    return true;
+  },
+  gateDie: function(i){
+    if (this.scriptCall) return true;
+    if (G.st.turn !== "w"){ this.nudge("Watch — Black is playing this turn."); return false; }
+    if (!G.dice || G.dice[i] === null || G.dice[i] === undefined || G.diceUsed[i]) return true;
+    var face = G.dice[i];
+    if (this.expect === "bishopStuck"){
+      if (face === 3){
+        var self = this;
+        this.expect = "bishopStuckSeen"; this.sub = "pawn";
+        this.later(function(){
+          if (!self.active || self.expect !== "bishopStuckSeen") return;
+          self.startMoveStep(6, 1, {r:6,c:3}, {r:5,c:3}, "Pawn",
+            { title: "The Bishop die waits",
+              text: "See? It isn't lost — it <b>waits</b>. Free it: tap the <b>Pawn die</b>, then the pawn on <b>d2</b>, then <b>d3</b>." });
+        }, 200);
+        return true;
+      }
+      this.nudge("Tap the Bishop die first — see what a stuck die does.");
+      return false;
+    }
+    if (this.expect === "die" || this.expect === "piece"){
+      if (face === this.expFace){ this.expect = "piece"; this.hint(""); return true; }
+      this.nudge("That die isn't the one — tap the " + this.expName + " die (it pulses).");
+      return false;
+    }
+    if (this.expect === "dest"){ this.nudge("You've picked the piece — now tap the pulsing destination square."); return false; }
+    this.nudge("Roll first — tap the Roll button (it pulses).");
+    return false;
+  },
+  gateSquare: function(r, c){
+    if (this.scriptCall) return true;
+    if (G.st.turn !== "w"){ this.nudge("Watch — Black is playing this turn."); return false; }
+    if (this.expect === "piece"){
+      if (this.expFrom && r === this.expFrom.r && c === this.expFrom.c){ this.expect = "dest"; this.hint(""); return true; }
+      this.nudge("Tap your " + this.expPieceName + " on " + sqName(this.expFrom.r, this.expFrom.c) + " — it pulses.");
+      return false;
+    }
+    if (this.expect === "dest"){
+      if (this.expTo && r === this.expTo.r && c === this.expTo.c) return true;
+      this.nudge("That square isn't the lesson move — tap " + sqName(this.expTo.r, this.expTo.c) + ", the pulsing square.");
+      return false;
+    }
+    if (this.expect === "die"){ this.nudge("Tap the " + this.expName + " die first — then its piece."); return false; }
+    this.nudge("Follow the coach step above.");
+    return false;
+  },
+  nudgeEndTurn: function(){
+    var left = (typeof diceLeft === "function") ? diceLeft() : 0;
+    if (left === 1) this.nudge("End Turn is lit because this is your last die — but play it to finish the lesson.");
+    else this.nudge("End Turn only lights up on your last die — you still have " + left + " dice to play.");
+  },
+
+  /* ---------- engine notifications ---------- */
+  onRollSettled: function(faces){
+    if (!this.active) return;
+    if (G.st.turn === "b"){ this.runOppMoves(); return; }
+    if (this.step === 1 && this.expect === "roll"){
+      this.startMoveStep(2, 1, {r:6,c:4}, {r:5,c:4}, "Pawn",
+        { title: "A die moves only its piece",
+          text: "You rolled <b>Pawn, Pawn, Knight</b>. Tap a <b>Pawn die</b>, then your pawn on <b>e2</b>, then the glowing square <b>e3</b>." });
+    } else if (this.step === 6 && this.expect === "roll"){
+      this.sub = "bishopStuck";
+      this.setCoach(6, "bishopStuck",
+        { title: "A stuck die waits",
+          text: "You rolled <b>Bishop, Pawn, Rook</b>. Your Bishop on c1 is blocked by its own pawns. A die whose piece can't move <b>yet</b> isn't lost — it waits. Tap the <b>Bishop die</b> and see." });
+    } else if (this.step === 8 && this.expect === "roll"){
+      this.startMoveStep(8, "WILD", {r:7,c:3}, {r:3,c:7}, "Queen",
+        { title: "WILD — move any piece",
+          text: "There's a <b>★ WILD</b> special die! Tap it, then your <b>Queen on d1</b>, then <b>h5</b> — closing in on the black King." });
+    }
+    this.decorate();
+  },
+  onMoveDone: function(){
+    if (!this.active || G.st.turn === "b" || !G.lastMove) return;
+    if (this.step === 2){
+      this.startMoveStep(3, 1, {r:5,c:4}, {r:4,c:4}, "Pawn",
+        { title: "Same piece twice? Yes!",
+          text: "<b>Same piece twice? Yes</b> — if the dice say so, a piece can move again and again. That's the heart of Kings &amp; Dice. Use your second <b>Pawn die</b> on the <b>same pawn</b>: e3 to <b>e4</b>." });
+    } else if (this.step === 3){
+      this.startMoveStep(4, 2, {r:7,c:6}, {r:5,c:7}, "Knight",
+        { title: "Your last die — and End Turn",
+          text: "One die left: the <b>Knight</b>. Notice <b>End Turn only lights up on your last die</b> — you could pass this die with it, but let's play it: Knight <b>g1 to h3</b>." });
+    } else if (this.step === 4){
+      this.oppTurn = 1;
+      this.setCoach(5, "opp",
+        { title: "Your opponent's turn",
+          text: "<b>Your opponent rolls and moves the same way.</b> Watch Black: a pawn, a knight, then the same pawn again." });
+    } else if (this.step === 6 && this.sub === "pawn"){
+      this.sub = "bishop";
+      this.startMoveStep(6, 3, {r:7,c:2}, {r:6,c:3}, "Bishop",
+        { title: "The Bishop die un-stuck!",
+          text: "The pawn moved — the diagonal is open and the <b>Bishop die works now</b>. Tap it, then your Bishop on <b>c1</b>, then <b>d2</b>." });
+    } else if (this.step === 6 && this.sub === "bishop"){
+      this.sub = "rook";
+      this.startMoveStep(7, 4, {r:7,c:0}, {r:5,c:0}, "Rook",
+        { title: "Last die again",
+          text: "The <b>Rook die is your last die</b> this turn — End Turn is lit again. Play it: Rook <b>a1 to a3</b>." });
+    } else if (this.step === 7){
+      this.oppTurn = 2;
+      this.setCoach(8, "opp",
+        { title: "Black plays again",
+          text: "One more turn for Black — watch the knight hop around. Then comes your special-die lesson." });
+    } else if (this.step === 8){
+      this.startMoveStep(9, 5, {r:3,c:7}, {r:0,c:4}, "Queen",
+        { title: "Capture the King",
+          text: "<b>One rule to win them all: capture the King.</b> Tap the <b>Queen die</b>, then your Queen on <b>h5</b>, then take the black King on <b>e8</b>!" });
+    }
+  },
+  onTurnStart: function(){
+    if (!this.active || G.st.turn !== "b" || this.oppRunning) return;
+    if ((this.step === 5 && this.oppTurn === 1) || (this.step === 8 && this.oppTurn === 2)){
+      this.oppRunning = true;
+      var self = this;
+      this.later(function(){
+        if (!self.active) return;
+        self.scriptCall = true;
+        try{ rollDice(); }catch(e){}
+        self.scriptCall = false;
+      }, 900);
+    }
+  },
+  runOppMoves: function(){
+    if (!this.active || G.st.turn !== "b") return;
+    var moves = this.oppTurn === 1
+      ? [ {face:1, from:[1,4], to:[2,4]}, {face:2, from:[0,6], to:[2,5]}, {face:1, from:[2,4], to:[3,4]} ]
+      : [ {face:2, from:[2,5], to:[4,6]}, {face:2, from:[4,6], to:[5,4]}, {face:2, from:[5,4], to:[3,3]} ];
+    var self = this, idx = 0;
+    function next(){
+      if (!self.active) return;
+      if (idx >= moves.length){
+        self.later(function(){
+          if (!self.active) return;
+          self.oppRunning = false;
+          if (self.oppTurn === 1){
+            self.oppTurn = 0;
+            self.setCoach(6, "roll",
+              { title: "Roll again — the stuck die",
+                text: "Your turn again. <b>Tap Roll</b> — this roll teaches the stuck die." });
+          } else if (self.oppTurn === 2){
+            self.oppTurn = 0;
+            self.setCoach(8, "roll",
+              { title: "Special dice — always on",
+                text: "<b>Tap Roll.</b> Special dice appear in every game — about <b>1 roll in 7</b>. Special Dice are <b>always on in every mode</b> — there is no off switch." });
+          }
+        }, 800);
+        return;
+      }
+      var m = moves[idx++];
+      var di = -1;
+      for (var i = 0; i < G.dice.length; i++){ if (G.dice[i] === m.face && !G.diceUsed[i]){ di = i; break; } }
+      if (di < 0){ next(); return; }
+      self.scriptCall = true;
+      try{ selectDie(di); }catch(e){}
+      self.scriptCall = false;
+      self.later(function(){
+        if (!self.active) return;
+        self.scriptCall = true;
+        try{ onSquare(m.from[0], m.from[1]); }catch(e){}
+        self.scriptCall = false;
+        self.later(function(){
+          if (!self.active) return;
+          self.scriptCall = true;
+          try{ onSquare(m.to[0], m.to[1]); }catch(e){}
+          self.scriptCall = false;
+          self.later(next, 700);
+        }, 450);
+      }, 550);
+    }
+    this.later(next, 350);
+  },
+  onGameOver: function(){
+    this.completed = true;
+    try{ localStorage.setItem("dicechess-tutorial-done", "1"); }catch(e){}
+    tutSyncDoneTag();
+    var d = document.getElementById("tutDone");
+    if (d) d.classList.add("on");
+  },
+
+  /* ---------- guidance pulses (static outlines under reduced motion) ---------- */
+  decorate: function(){
+    if (!this.active) return;
+    document.querySelectorAll(".tut-pulse").forEach(function(el){ el.classList.remove("tut-pulse"); });
+    document.querySelectorAll(".sq.tut-target").forEach(function(el){ el.classList.remove("tut-target"); });
+    if (G.st.turn !== "w" || G.over) return;
+    function pulseDie(face){
+      for (var i = 0; i < G.dice.length; i++){
+        if (G.dice[i] === face && !G.diceUsed[i]){
+          ["ddie", "die"].forEach(function(p){ var el = document.getElementById(p + i); if (el) el.classList.add("tut-pulse"); });
+        }
+      }
+    }
+    function targetSq(pos){
+      var board = document.getElementById("board");
+      if (!board || !pos) return;
+      var idx = G.orientation === "w" ? (pos.r * 8 + pos.c) : ((7 - pos.r) * 8 + (7 - pos.c));
+      var el = board.children[idx];
+      if (el) el.classList.add("tut-target");
+    }
+    if (this.expect === "roll"){
+      var rb = document.getElementById("rollBtn");
+      if (rb) rb.classList.add("tut-pulse");
+    } else if (this.expect === "bishopStuck" || this.expect === "bishopStuckSeen"){
+      pulseDie(3);
+    } else if ((this.expect === "die" || this.expect === "piece") && this.expFace !== null && this.expFace !== undefined){
+      pulseDie(this.expFace);
+    }
+    if (this.expect === "piece") targetSq(this.expFrom);
+    if (this.expect === "dest") targetSq(this.expTo);
+    if ((this.step === 4 || this.step === 7) && typeof diceLeft === "function" && diceLeft() === 1){
+      var et = document.getElementById("endTurnBtn");
+      if (et) et.classList.add("tut-pulse");
+    }
+  },
+
+  cleanup: function(){
+    this.active = false; this.scriptCall = false; this.oppRunning = false; this.oppTurn = 0;
+    this.clearTimers();
+    document.body.classList.remove("tut-on");
+    ["tutDone", "tutExitConfirm"].forEach(function(id){ var el = document.getElementById(id); if (el) el.classList.remove("on"); });
+    document.querySelectorAll(".tut-pulse").forEach(function(el){ el.classList.remove("tut-pulse"); });
+    document.querySelectorAll(".sq.tut-target").forEach(function(el){ el.classList.remove("tut-target"); });
+  }
+};
+
+function tutBoard(){
+  var b = [];
+  for (var r = 0; r < 8; r++){ var row = []; for (var c = 0; c < 8; c++) row.push(null); b.push(row); }
+  function put(r, c, t, col){ b[r][c] = { t: t, c: col }; }
+  put(7,4,"k","w"); put(7,3,"q","w"); put(7,0,"r","w"); put(7,2,"b","w"); put(7,6,"n","w");
+  put(6,1,"p","w"); put(6,3,"p","w"); put(6,4,"p","w"); put(6,6,"p","w");
+  put(0,4,"k","b"); put(0,6,"n","b"); put(1,4,"p","b");
+  return b;
+}
+function tutSyncDoneTag(){
+  var done = false;
+  try{ done = localStorage.getItem("dicechess-tutorial-done") === "1"; }catch(e){}
+  var tag = document.getElementById("tutDoneTag");
+  if (tag) tag.style.display = done ? "" : "none";
+}
+function tutStart(){
+  TUT.cleanup();
+  var np = document.getElementById("namePopup");
+  if (np) np.classList.remove("on");
+  G.mode = "local";
+  resetGameOnly();
+  G.variant = "normal";
+  G.st.board = tutBoard();
+  G.st.turn = "w";
+  G.st.castling = { wK:false, wQ:false, bK:false, bQ:false };
+  G.st.ep = null; G.st.half = 0;
+  G.orientation = "w"; G.myColor = "w";
+  G.timerSec = 0; G.stake = 0; G.pot = 0; G.coinsSettled = true;
+  G.resultRecorded = true; G.kingKillWin = false;
+  G.names.w = "You"; G.names.b = "";
+  G.history = []; G.log = []; G.lastMove = null;
+  TUT.active = true; TUT.completed = false; TUT.oppTurn = 0; TUT.oppRunning = false; TUT.sub = null;
+  TUT.forcedQueue = [[1,1,2], [1,2,1], [3,1,4], [2,2,2], ["WILD",5,1]];
+  document.body.classList.add("tut-on");
+  enterGameView();
+  TUT.setCoach(1, "roll",
+    { title: "Roll your dice",
+      text: "<b>Tap Roll</b> — the dice choose which pieces you may move. Each number is a piece:" });
+  setStatus("<b>Tutorial.</b> Follow the coach above the board — tap Roll to begin.");
+  renderBoard();
+}
+function tutShowDone(){
+  TUT.completed = true;
+  try{ localStorage.setItem("dicechess-tutorial-done", "1"); }catch(e){}
+  tutSyncDoneTag();
+  var d = document.getElementById("tutDone");
+  if (d) d.classList.add("on");
+}
+(function tutBind(){
+  var play = document.getElementById("tutPlayBtn");
+  if (play) play.addEventListener("click", tutStart);
+  var learn = document.getElementById("learnBtn");
+  if (learn) learn.addEventListener("click", tutSyncDoneTag);
+  var skip = document.getElementById("tutSkipBtn");
+  if (skip) skip.addEventListener("click", tutShowDone);
+  var exit = document.getElementById("tutExitBtn");
+  if (exit) exit.addEventListener("click", function(){ var x = document.getElementById("tutExitConfirm"); if (x) x.classList.add("on"); });
+  var exitYes = document.getElementById("tutExitYesBtn");
+  if (exitYes) exitYes.addEventListener("click", function(){ TUT.cleanup(); goToMainMenu(); });
+  var exitNo = document.getElementById("tutExitNoBtn");
+  if (exitNo) exitNo.addEventListener("click", function(){ var x = document.getElementById("tutExitConfirm"); if (x) x.classList.remove("on"); });
+  var pai = document.getElementById("tutPlayAiBtn");
+  if (pai) pai.addEventListener("click", function(){ TUT.cleanup(); openSetup("ai"); });
+  var menu = document.getElementById("tutMenuBtn");
+  if (menu) menu.addEventListener("click", function(){ TUT.cleanup(); goToMainMenu(); });
+  var replay = document.getElementById("tutReplayBtn");
+  if (replay) replay.addEventListener("click", function(){ var d = document.getElementById("tutDone"); if (d) d.classList.remove("on"); tutStart(); });
+  tutSyncDoneTag();
 })();
 </script>
 
