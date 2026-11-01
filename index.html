@@ -2644,6 +2644,41 @@ html.reduce-motion .boardroll.trn-shimmer::after{animation:none;display:none;}
 .trn-path li:last-child{border-bottom:0;}
 .trn-path b{color:#ffe98a;}
 </style>
+<style id="kd-leaderboards">
+/* ===== Server leaderboards + player profiles + blocked list ===== */
+.lb-sec-head{font-size:12px;font-weight:850;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);margin:20px 0 8px;padding-top:14px;border-top:1px solid var(--line);}
+.lb-season-line{font-size:12.5px;color:var(--ink-soft);margin-top:8px;font-variant-numeric:tabular-nums;}
+.lb-searchrow{display:flex;gap:8px;margin-top:10px;}
+.lb-searchrow input{flex:1;min-width:0;min-height:44px;padding:10px 12px;font-size:15px;border-radius:10px;border:1.5px solid var(--line-strong);background:var(--panel-2);color:var(--ink);}
+.lb-searchrow button{min-height:44px;padding:10px 16px;border-radius:10px;border:1px solid var(--line-strong);background:var(--panel);color:var(--ink);font-size:13.5px;font-weight:800;cursor:pointer;}
+.lb-searchrow button:hover{border-color:var(--gold-bright);}
+.lb-list{list-style:none;margin:10px 0 0;padding:0;}
+.lb-row{display:flex;align-items:center;gap:10px;width:100%;text-align:left;padding:10px 12px;margin-bottom:7px;border:1px solid var(--line-strong);border-radius:12px;background:var(--panel-2);cursor:pointer;color:var(--ink);}
+.lb-row:hover{border-color:var(--gold-bright);}
+.lb-rank{font-weight:900;font-size:14px;color:var(--brass);min-width:34px;font-variant-numeric:tabular-nums;}
+.lb-main{flex:1;min-width:0;}
+.lb-name{font-weight:800;font-size:14.5px;overflow-wrap:anywhere;}
+.lb-meta{font-size:12px;color:var(--ink-soft);line-height:1.5;font-variant-numeric:tabular-nums;}
+.lb-prov{display:inline-block;font-size:10.5px;font-weight:800;letter-spacing:.03em;text-transform:uppercase;color:#8a6d1b;border:1px solid #c9a227;border-radius:6px;padding:1px 5px;margin-left:6px;vertical-align:1px;}
+.lb-myrank{margin-top:10px;}
+.lb-myrank-label{font-size:11.5px;font-weight:850;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:5px;}
+.lb-myrank .lb-row{border-color:var(--gold);margin-bottom:0;}
+.lb-pager{display:flex;align-items:center;gap:10px;margin-top:10px;}
+.lb-pager .utilbtn{flex:1;}
+.lb-pager .utilbtn:disabled{opacity:.45;cursor:default;}
+.lb-pageinfo{font-size:12.5px;color:var(--ink-soft);font-variant-numeric:tabular-nums;white-space:nowrap;}
+.lb-state{font-size:13.5px;color:var(--ink-soft);line-height:1.55;padding:14px 2px 4px;}
+.lb-state .utilbtn{margin-top:8px;}
+#playerProfileDrawer{z-index:60;}
+.pp-tierline{font-size:15px;font-weight:800;color:var(--ink);margin-top:2px;}
+.pp-line{font-size:13px;color:var(--ink-soft);line-height:1.55;margin-top:3px;}
+.pp-line b{color:var(--ink);}
+.pp-actrow{display:flex;gap:8px;margin-top:14px;}
+.pp-actrow .utilbtn{flex:1;min-height:44px;}
+.blk-list{list-style:none;margin:6px 0 0;padding:0;}
+.blk-list li{display:flex;align-items:center;gap:10px;padding:8px 0;border-top:1px solid var(--line);font-size:13.5px;}
+.blk-list .blk-name{flex:1;min-width:0;font-weight:700;color:var(--ink);overflow-wrap:anywhere;}
+</style>
 </head>
 <body class="show-menu">
 <div class="wrap">
@@ -3352,6 +3387,36 @@ html.reduce-motion .boardroll.trn-shimmer::after{animation:none;display:none;}
   </div>
 </div>
 
+<div class="sheetdrawer" id="playerProfileDrawer" aria-label="Player profile">
+  <div class="sheetcard">
+    <div class="chathead"><span class="ch-title" id="ppTitle">Player</span><button class="chatclose" id="ppCloseBtn" type="button" aria-label="Close player profile">✕</button></div>
+    <div id="ppBody"></div>
+    <div id="ppActions" style="display:none;">
+      <div class="pp-actrow">
+        <button class="utilbtn" id="ppBlockBtn" type="button">Block</button>
+        <button class="utilbtn" id="ppReportBtn" type="button">Report</button>
+      </div>
+      <p class="panelnote">You won't be matched with them or be able to join each other's rooms. Tournament brackets are fixed, so blocking doesn't change those.</p>
+      <div class="acct-note" id="ppBlockNote" role="status"></div>
+      <div class="acct-error" id="ppActionError" role="alert"></div>
+      <div id="ppReportBox" style="display:none;">
+        <div class="setlabel" style="margin:10px 0 6px;">Report this player</div>
+        <div id="ppReportForm">
+          <div class="varianttoggle setseg" role="group" aria-label="Report reason">
+            <button type="button" data-rpt-reason="Abusive name">Abusive name</button>
+            <button type="button" data-rpt-reason="Cheating">Cheating</button>
+            <button type="button" data-rpt-reason="Other">Other</button>
+          </div>
+          <input class="acct-input" id="ppReportOther" type="text" maxlength="500" placeholder="Short reason" autocomplete="off" style="display:none;" />
+          <div class="acct-btnrow"><button class="acct-btn-primary" id="ppReportSendBtn" type="button">Send report</button></div>
+        </div>
+        <div class="acct-note" id="ppReportNote" role="status"></div>
+        <div class="acct-error" id="ppReportError" role="alert"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="sheetdrawer" id="trnAdminSheet" aria-label="Tournament admin">
   <div class="sheetcard">
     <div class="chathead"><span class="ch-title">🏆 Tournament Admin</span><button class="chatclose" id="trnAdminCloseBtn" type="button" aria-label="Close tournament admin">✕</button></div>
@@ -3510,6 +3575,11 @@ html.reduce-motion .boardroll.trn-shimmer::after{animation:none;display:none;}
         <p class="panelnote">Sign in and connect to see your server ranked stats.</p>
       </div>
     </div>
+    <div class="setrow" id="blockedSection" style="display:none;">
+      <span class="setlabel">Blocked players</span>
+      <div id="blockedBody"></div>
+      <p class="panelnote" style="margin-bottom:2px;">Tournament brackets are fixed, so blocking doesn't change those.</p>
+    </div>
     <div class="setrow"><span class="setlabel">Avatar</span><div class="avatargrid" id="avatarGrid" role="group" aria-label="Choose your avatar emblem">
       <button type="button" class="avbtn" data-avatar="knight" aria-label="Knight avatar">♞</button>
       <button type="button" class="avbtn" data-avatar="crown" aria-label="Crown avatar">♛</button>
@@ -3571,7 +3641,23 @@ html.reduce-motion .boardroll.trn-shimmer::after{animation:none;display:none;}
 <div class="sheetdrawer navpanel" id="panelLeaderboard" aria-label="Leaderboard">
   <div class="sheetcard">
     <div class="chathead"><span class="ch-title">Leaderboard</span><button class="chatclose" type="button" data-close-panel aria-label="Close leaderboard">✕</button></div>
-    <p class="panelnote">A global leaderboard needs the online server — there's no server yet, so no world rankings or other players are shown (never fake ones). Here is your own persistent record on this device:</p>
+    <div class="varianttoggle setseg" role="group" aria-label="Leaderboard board">
+      <button type="button" id="lbTabGlobal" class="on">Global</button>
+      <button type="button" id="lbTabSeason">Season</button>
+    </div>
+    <div class="lb-season-line" id="lbSeasonLine" style="display:none;"></div>
+    <div class="lb-searchrow">
+      <input id="lbSearch" type="text" maxlength="20" placeholder="Search by username…" autocomplete="off" autocapitalize="none" spellcheck="false" />
+      <button id="lbSearchBtn" type="button">Search</button>
+    </div>
+    <p class="panelnote" id="lbGuestNote" style="display:none;margin-top:8px;">You're viewing as a guest — ranked play needs an account. Sign in from Profile to join the boards.</p>
+    <div id="srvLbBody"></div>
+    <div class="lb-pager" id="lbPager" style="display:none;">
+      <button class="utilbtn" id="lbPrevBtn" type="button">← Prev</button>
+      <span class="lb-pageinfo" id="lbPageInfo"></span>
+      <button class="utilbtn" id="lbNextBtn" type="button">Next →</button>
+    </div>
+    <div class="lb-sec-head">On this device</div>
     <div class="rankline" style="margin-bottom:10px;"><b id="lbRankTitle">Squire</b><span id="lbRankPoints">0 ranking points</span></div>
     <div class="recordgrid" id="sessionRecord">
       <div><b id="recPlayed">0</b><small>Played</small></div>
@@ -10431,6 +10517,26 @@ function srvOnMessage(msg){
       if (typeof brwOnRoomList==="function") brwOnRoomList(msg);
       break;
     }
+    case "leaderboard": {
+      if (typeof lbOnLeaderboard==="function") lbOnLeaderboard(msg);
+      break;
+    }
+    case "playerProfile": {
+      if (typeof lbOnProfile==="function") lbOnProfile(msg);
+      break;
+    }
+    case "playerReported": {
+      if (typeof lbOnReported==="function") lbOnReported(msg);
+      break;
+    }
+    case "playerBlocked": case "playerUnblocked": {
+      if (typeof lbOnBlockChanged==="function") lbOnBlockChanged(msg);
+      break;
+    }
+    case "blockedList": {
+      if (typeof lbOnBlockedList==="function") lbOnBlockedList(msg);
+      break;
+    }
     case "tournamentLobby": {
       if (typeof trnOnLobby==="function") trnOnLobby(msg);
       break;
@@ -10478,6 +10584,7 @@ function srvOnMessage(msg){
       }
       if (typeof trnHandleError==="function" && trnHandleError(msg)) break;
       if (typeof brwHandleError==="function" && brwHandleError(msg)) break;
+      if (typeof lbHandleError==="function" && lbHandleError(msg)) break;
       if (msg.code==="RANKED_REQUIRES_ACCOUNT"){
         if (typeof QP!=="undefined" && QP && QP.open && typeof qpClose==="function") qpClose();
         srvNote(msg.message || "Ranked play requires an account — register or log in first.", true);
@@ -14610,6 +14717,506 @@ function trnOnAdminOk(msg){
       }
     }catch(e){}
   };
+})();
+</script>
+<script>
+/* ============================================================
+   SERVER LEADERBOARDS + PLAYER PROFILES + REPORT / BLOCK —
+   client for the live server messages leaderboard /
+   playerProfile / playerReported / playerBlocked /
+   playerUnblocked / blockedList. Payloads are consumed exactly
+   per the server contract; no fields are invented and nothing
+   is rendered from local data. Requests reuse the existing
+   srvConnect / srvSendRaw plumbing with pending-state guards
+   and timeouts, like the ranked dashboard and tournaments.
+   ============================================================ */
+var LB = {
+  board: "global", page: 1, search: "",
+  data: null, loading: false, failed: false,
+  reqSeq: 0, pendingReq: null, timer: null, searchTimer: null,
+  profileUser: null, profile: null, profileLoading: false, profileTimer: null,
+  blocked: [], blockedKnown: false,
+  rptChoice: null, rptPending: false, rptTimer: null,
+  blockPending: false, blockTimer: null
+};
+var LB_TIMEOUT = 20000;
+
+function lbOwnName(){ return (typeof acctSignedIn==="function" && acctSignedIn() && ACCT.account) ? ACCT.account.username : null; }
+function lbSameName(a, b){ return !!a && !!b && String(a).toLowerCase()===String(b).toLowerCase(); }
+function lbIsBlocked(username){
+  if (!LB.blockedKnown) return false;
+  for (var i=0;i<LB.blocked.length;i++) if (lbSameName(LB.blocked[i], username)) return true;
+  return false;
+}
+function lbFmtDate(iso){
+  try{ var d = new Date(iso); if (isNaN(d.getTime())) return ""; return d.toLocaleDateString("en-US", { month:"short", day:"numeric", year:"numeric" }); }catch(e){ return ""; }
+}
+
+/* ---------- (1) Leaderboard ---------- */
+function lbRequest(){
+  if (!document.getElementById("srvLbBody")) return;
+  LB.loading = true; LB.failed = false;
+  var req = { board: LB.board, page: LB.page, search: LB.search };
+  LB.pendingReq = req;
+  var seq = ++LB.reqSeq;
+  lbRender();
+  if (LB.timer) clearTimeout(LB.timer);
+  LB.timer = setTimeout(function(){
+    if (LB.reqSeq===seq && LB.loading){ LB.loading = false; LB.failed = true; LB.pendingReq = null; lbRender(); }
+  }, LB_TIMEOUT);
+  srvConnect(function(){
+    if (LB.reqSeq!==seq) return;
+    if (!srvSendRaw({ type:"leaderboard", board:req.board, page:req.page, pageSize:20, search:req.search })){
+      if (LB.timer) clearTimeout(LB.timer);
+      LB.loading = false; LB.failed = true; LB.pendingReq = null; lbRender();
+    }
+  });
+}
+function lbOnLeaderboard(msg){
+  if (!msg || !LB.pendingReq) return;
+  if (msg.board!==LB.pendingReq.board) return;
+  if (typeof msg.page==="number" && msg.page!==LB.pendingReq.page) return;
+  if (LB.timer) clearTimeout(LB.timer);
+  LB.loading = false; LB.failed = false; LB.pendingReq = null;
+  LB.data = msg;
+  if (typeof msg.page==="number") LB.page = msg.page;
+  lbRender();
+}
+function lbSyncChrome(){
+  var g = document.getElementById("lbTabGlobal"), s = document.getElementById("lbTabSeason");
+  if (g) g.classList.toggle("on", LB.board==="global");
+  if (s) s.classList.toggle("on", LB.board==="season");
+  var gn = document.getElementById("lbGuestNote");
+  if (gn) gn.style.display = (typeof acctSignedIn==="function" && acctSignedIn()) ? "none" : "";
+  var sl = document.getElementById("lbSeasonLine");
+  if (sl){
+    if (LB.board==="season" && LB.data && LB.data.season){
+      var a = lbFmtDate(LB.data.season.startsAt), b = lbFmtDate(LB.data.season.endsAt);
+      sl.textContent = "Season: " + a + (b ? " – " + b : "");
+      sl.style.display = "";
+    } else sl.style.display = "none";
+  }
+}
+function lbRowEl(e, board){
+  var btn = document.createElement("button");
+  btn.type = "button"; btn.className = "lb-row";
+  var rk = document.createElement("span"); rk.className = "lb-rank"; rk.textContent = "#" + e.rank;
+  var main = document.createElement("span"); main.className = "lb-main";
+  var nm = document.createElement("div"); nm.className = "lb-name"; nm.textContent = e.username || "";
+  if (board==="season" && e.provisional){
+    var pv = document.createElement("span"); pv.className = "lb-prov"; pv.textContent = "Provisional";
+    nm.appendChild(pv);
+  }
+  var meta = document.createElement("div"); meta.className = "lb-meta";
+  var bits = [];
+  if (board==="global" && e.tier && e.tier.name) bits.push(e.tier.name);
+  bits.push(String(e.rating));
+  bits.push((e.wins || 0) + "W " + (e.losses || 0) + "L " + (e.draws || 0) + "D");
+  if (board==="season") bits.push((e.points || 0) + " pts");
+  meta.textContent = bits.join(" · ");
+  main.appendChild(nm); main.appendChild(meta);
+  btn.appendChild(rk); btn.appendChild(main);
+  btn.addEventListener("click", function(){ lbOpenProfile(e.username); });
+  return btn;
+}
+function lbRender(){
+  lbSyncChrome();
+  var body = document.getElementById("srvLbBody");
+  var pager = document.getElementById("lbPager");
+  if (!body) return;
+  body.innerHTML = "";
+  if (pager) pager.style.display = "none";
+  if (LB.loading || !LB.data && !LB.failed){
+    body.innerHTML = '<p class="lb-state">Loading the leaderboard…</p>';
+    return;
+  }
+  if (LB.failed || !LB.data){
+    var d = document.createElement("div"); d.className = "lb-state";
+    d.appendChild(document.createTextNode("Couldn't reach the server."));
+    d.appendChild(document.createElement("br"));
+    var rb = document.createElement("button"); rb.type = "button"; rb.className = "utilbtn"; rb.textContent = "Retry";
+    rb.addEventListener("click", lbRequest);
+    d.appendChild(rb);
+    body.appendChild(d);
+    return;
+  }
+  var entries = LB.data.entries || [];
+  if (!entries.length){
+    var p = document.createElement("p"); p.className = "lb-state";
+    p.textContent = LB.search ? "No players match that search." : "No ranked players yet — be the first.";
+    body.appendChild(p);
+  } else {
+    var ul = document.createElement("ul"); ul.className = "lb-list";
+    entries.forEach(function(e){
+      var li = document.createElement("li");
+      li.appendChild(lbRowEl(e, LB.board));
+      ul.appendChild(li);
+    });
+    body.appendChild(ul);
+  }
+  var mr = LB.data.myRank;
+  if (mr && (typeof acctSignedIn==="function" && acctSignedIn())){
+    var onPage = false;
+    entries.forEach(function(e){ if (lbSameName(e.username, mr.username)) onPage = true; });
+    if (!onPage){
+      var wrap = document.createElement("div"); wrap.className = "lb-myrank";
+      var lab = document.createElement("div"); lab.className = "lb-myrank-label"; lab.textContent = "Your rank";
+      wrap.appendChild(lab);
+      wrap.appendChild(lbRowEl(mr, LB.board));
+      body.appendChild(wrap);
+    }
+  }
+  var totalPages = LB.data.totalPages || 1;
+  if (pager && (LB.data.total || 0) > 0){
+    pager.style.display = "";
+    var cur = LB.data.page || LB.page;
+    var info = document.getElementById("lbPageInfo");
+    if (info) info.textContent = "Page " + cur + " of " + totalPages;
+    var pv = document.getElementById("lbPrevBtn"); if (pv) pv.disabled = cur <= 1;
+    var nx = document.getElementById("lbNextBtn"); if (nx) nx.disabled = cur >= totalPages;
+  }
+}
+
+/* ---------- (2) Player profile sheet ---------- */
+function lbProfileState(txt){
+  var b = document.getElementById("ppBody");
+  if (b) b.innerHTML = '<p class="panelnote">' + escHtml(txt) + '</p>';
+  var act = document.getElementById("ppActions"); if (act) act.style.display = "none";
+}
+function lbOpenProfile(username){
+  if (!username) return;
+  LB.profileUser = username; LB.profile = null; LB.profileLoading = true;
+  LB.rptChoice = null; LB.rptPending = false;
+  var t = document.getElementById("ppTitle"); if (t) t.textContent = username;
+  var b = document.getElementById("ppBody");
+  if (b) b.innerHTML = '<p class="panelnote">Loading profile…</p>';
+  var act = document.getElementById("ppActions"); if (act) act.style.display = "none";
+  var rbox = document.getElementById("ppReportBox"); if (rbox) rbox.style.display = "none";
+  var rform = document.getElementById("ppReportForm"); if (rform) rform.style.display = "";
+  var rn = document.getElementById("ppReportNote"); if (rn) rn.textContent = "";
+  var re = document.getElementById("ppReportError"); if (re) re.textContent = "";
+  var ae = document.getElementById("ppActionError"); if (ae) ae.textContent = "";
+  var bn = document.getElementById("ppBlockNote"); if (bn) bn.textContent = "";
+  var oi = document.getElementById("ppReportOther"); if (oi){ oi.value = ""; oi.style.display = "none"; }
+  document.querySelectorAll("[data-rpt-reason]").forEach(function(btn){ btn.classList.remove("on"); });
+  openSheet("playerProfileDrawer");
+  if (LB.profileTimer) clearTimeout(LB.profileTimer);
+  LB.profileTimer = setTimeout(function(){
+    if (LB.profileLoading){ LB.profileLoading = false; lbProfileState("Couldn't reach the server."); }
+  }, LB_TIMEOUT);
+  srvConnect(function(){
+    if (!srvSendRaw({ type:"playerProfile", username: username })){
+      if (LB.profileTimer) clearTimeout(LB.profileTimer);
+      LB.profileLoading = false;
+      lbProfileState("Couldn't reach the server.");
+    }
+  });
+  if ((typeof acctSignedIn==="function" && acctSignedIn()) && !LB.blockedKnown) lbRequestBlocked();
+}
+function lbOnProfile(msg){
+  var p = msg && msg.profile;
+  if (!p || !LB.profileLoading) return;
+  if (!lbSameName(p.username, LB.profileUser)) return;
+  if (LB.profileTimer) clearTimeout(LB.profileTimer);
+  LB.profileLoading = false; LB.profile = p;
+  lbRenderProfile();
+}
+/* Same row format as the Server Ranked history rows in Profile. */
+function lbHistHtml(list){
+  return '<ul class="srk-hist">' + list.map(function(h){
+    var r = String(h.result || "").toLowerCase();
+    var label = r==="win" ? "Win" : r==="loss" ? "Loss" : "Draw";
+    var cls = r==="win" ? "w" : r==="loss" ? "l" : "d";
+    var date = "";
+    try{ var dt = new Date(h.playedAt); if (!isNaN(dt.getTime())) date = dt.toLocaleDateString("en-US", { month:"short", day:"numeric", year:"numeric" }); }catch(e){}
+    var tc = h.timeControl ? '<span class="srk-date">' + escHtml(String(h.timeControl)) + '</span>' : '';
+    return '<li><span class="srk-opp">' + escHtml(h.opponent || "") + '</span>' +
+      '<span class="srk-res ' + cls + '">' + label + '</span>' +
+      '<span class="srk-delta">' + rankedSigned(h.delta) + '</span>' + tc +
+      '<span class="srk-date">' + escHtml(date) + '</span></li>';
+  }).join("") + '</ul>';
+}
+function lbRenderProfile(){
+  var p = LB.profile; if (!p) return;
+  var t = document.getElementById("ppTitle");
+  if (t) t.textContent = p.displayName || p.username || "Player";
+  var b = document.getElementById("ppBody"); if (!b) return;
+  var html = "";
+  if (p.displayName && p.username && p.displayName!==p.username)
+    html += '<div class="pp-line">@' + escHtml(p.username) + '</div>';
+  var tierName = p.provisional ? "Provisional" : (p.tier && p.tier.name ? p.tier.name : "");
+  html += '<div class="pp-tierline">' + (tierName ? escHtml(tierName) + " · " : "") + "Rating " + p.rating + '</div>';
+  var joined = lbFmtDate(p.createdAt);
+  if (joined) html += '<div class="pp-line">Joined ' + escHtml(joined) + '</div>';
+  if (p.record)
+    html += '<div class="pp-line"><b>' + (p.record.wins || 0) + "W · " + (p.record.losses || 0) + "L · " + (p.record.draws || 0) + 'D</b> — ' + (p.record.matches || 0) + " matches · " + Number(p.winPct || 0).toFixed(1) + "% wins</div>";
+  html += '<div class="pp-line">Current streak: <b>' + (p.currentStreak || 0) + '</b> · Best streak: <b>' + (p.bestStreak || 0) + '</b></div>';
+  if (p.highestRating!=null)
+    html += '<div class="pp-line">Highest: <b>' + (p.highestTier && p.highestTier.name ? escHtml(p.highestTier.name) + " · " : "") + p.highestRating + '</b></div>';
+  if (p.tournaments){
+    html += '<div class="pp-line">Tournament wins: <b>' + (p.tournaments.wins || 0) + '</b></div>';
+    html += '<div class="pp-line">Runner-up finishes: <b>' + (p.tournaments.runnerUps || 0) + '</b></div>';
+    html += '<div class="pp-line">Finals reached: <b>' + (p.tournaments.finals || 0) + '</b></div>';
+  }
+  if (p.history && p.history.length){
+    html += '<div class="lb-sec-head" style="margin-top:14px;">Recent rated matches</div>';
+    html += lbHistHtml(p.history);
+  }
+  b.innerHTML = html;
+  lbSyncProfileActions();
+}
+function lbSyncProfileActions(){
+  var act = document.getElementById("ppActions");
+  if (!act || !LB.profile) return;
+  var own = lbOwnName();
+  var show = !!(own && !lbSameName(own, LB.profile.username));
+  act.style.display = show ? "" : "none";
+  if (!show) return;
+  var bb = document.getElementById("ppBlockBtn");
+  if (bb){ bb.textContent = lbIsBlocked(LB.profile.username) ? "Unblock" : "Block"; bb.disabled = !!LB.blockPending; }
+  var rb = document.getElementById("ppReportBtn"); if (rb) rb.disabled = !!LB.rptPending;
+  var ps = document.getElementById("ppReportSendBtn"); if (ps) ps.disabled = !!LB.rptPending;
+}
+
+/* ---------- (3) Report + block on the profile sheet ---------- */
+function lbReportToggle(){
+  var box = document.getElementById("ppReportBox");
+  if (!box) return;
+  box.style.display = box.style.display!=="none" ? "none" : "";
+}
+function lbReportChoose(choice){
+  LB.rptChoice = choice;
+  document.querySelectorAll("[data-rpt-reason]").forEach(function(btn){
+    btn.classList.toggle("on", btn.getAttribute("data-rpt-reason")===choice);
+  });
+  var inp = document.getElementById("ppReportOther");
+  if (inp){
+    inp.style.display = choice==="Other" ? "" : "none";
+    if (choice==="Other"){ try{ inp.focus({ preventScroll:true }); }catch(e){} }
+  }
+  var err = document.getElementById("ppReportError"); if (err) err.textContent = "";
+}
+function lbReportSend(){
+  if (LB.rptPending || !LB.profile) return;
+  var err = document.getElementById("ppReportError");
+  var reason = "";
+  if (LB.rptChoice==="Other"){
+    var inp = document.getElementById("ppReportOther");
+    reason = inp ? inp.value.trim() : "";
+  } else if (LB.rptChoice) reason = LB.rptChoice;
+  if (!reason){ if (err) err.textContent = "Pick a reason, or choose Other and write a short one."; return; }
+  if (err) err.textContent = "";
+  var note = document.getElementById("ppReportNote"); if (note) note.textContent = "";
+  LB.rptPending = true;
+  lbSyncProfileActions();
+  var target = LB.profile.username;
+  if (LB.rptTimer) clearTimeout(LB.rptTimer);
+  LB.rptTimer = setTimeout(function(){
+    if (LB.rptPending){
+      LB.rptPending = false;
+      var e2 = document.getElementById("ppReportError");
+      if (e2) e2.textContent = "Couldn't reach the server — the report wasn't sent.";
+      lbSyncProfileActions();
+    }
+  }, LB_TIMEOUT);
+  srvConnect(function(){
+    if (!srvSendRaw({ type:"reportPlayer", username: target, reason: reason.slice(0, 500) })){
+      if (LB.rptTimer) clearTimeout(LB.rptTimer);
+      LB.rptPending = false;
+      var e3 = document.getElementById("ppReportError");
+      if (e3) e3.textContent = "Couldn't reach the server — the report wasn't sent.";
+      lbSyncProfileActions();
+    }
+  });
+}
+function lbOnReported(msg){
+  if (!LB.rptPending) return;
+  if (msg && msg.username && LB.profile && !lbSameName(msg.username, LB.profile.username)) return;
+  if (LB.rptTimer) clearTimeout(LB.rptTimer);
+  LB.rptPending = false;
+  var form = document.getElementById("ppReportForm"); if (form) form.style.display = "none";
+  var note = document.getElementById("ppReportNote");
+  if (note) note.textContent = "Report sent. Thanks — reports are reviewed by the game owner.";
+  var err = document.getElementById("ppReportError"); if (err) err.textContent = "";
+  lbSyncProfileActions();
+}
+function lbToggleBlock(){
+  if (LB.blockPending || !LB.profile) return;
+  var target = LB.profile.username;
+  var un = lbIsBlocked(target);
+  var err = document.getElementById("ppActionError"); if (err) err.textContent = "";
+  LB.blockPending = true;
+  lbSyncProfileActions();
+  if (LB.blockTimer) clearTimeout(LB.blockTimer);
+  LB.blockTimer = setTimeout(function(){
+    if (LB.blockPending){
+      LB.blockPending = false;
+      var e = document.getElementById("ppActionError");
+      if (e) e.textContent = "Couldn't reach the server — try again.";
+      lbSyncProfileActions();
+    }
+  }, LB_TIMEOUT);
+  srvConnect(function(){
+    if (!srvSendRaw({ type: un ? "unblockPlayer" : "blockPlayer", username: target })){
+      if (LB.blockTimer) clearTimeout(LB.blockTimer);
+      LB.blockPending = false;
+      var e2 = document.getElementById("ppActionError");
+      if (e2) e2.textContent = "Couldn't reach the server — try again.";
+      lbSyncProfileActions();
+    }
+  });
+}
+function lbOnBlockChanged(msg){
+  if (LB.blockTimer) clearTimeout(LB.blockTimer);
+  LB.blockPending = false;
+  if (msg && Array.isArray(msg.blocked)){ LB.blocked = msg.blocked.slice(); LB.blockedKnown = true; }
+  var e = document.getElementById("ppActionError"); if (e) e.textContent = "";
+  lbSyncProfileActions();
+  lbRenderBlocked();
+  if (msg && msg.username) toast(msg.type==="playerBlocked" ? ("Blocked " + msg.username) : ("Unblocked " + msg.username));
+}
+
+/* ---------- (4) Blocked list in Profile ---------- */
+function lbRequestBlocked(){
+  if (!(typeof acctSignedIn==="function" && acctSignedIn())) return;
+  srvConnect(function(){ srvSendRaw({ type:"blockedList" }); });
+}
+function lbOnBlockedList(msg){
+  if (!msg) return;
+  LB.blocked = Array.isArray(msg.blocked) ? msg.blocked.slice() : [];
+  LB.blockedKnown = true;
+  lbRenderBlocked();
+  lbSyncProfileActions();
+}
+function lbRenderBlocked(){
+  var sec = document.getElementById("blockedSection");
+  var body = document.getElementById("blockedBody");
+  if (!sec || !body) return;
+  var signed = (typeof acctSignedIn==="function" && acctSignedIn());
+  sec.style.display = signed ? "" : "none";
+  if (!signed) return;
+  body.innerHTML = "";
+  if (!LB.blockedKnown){
+    body.innerHTML = '<p class="panelnote">Loading…</p>';
+    return;
+  }
+  if (!LB.blocked.length){
+    body.innerHTML = '<p class="panelnote">You haven\'t blocked anyone.</p>';
+    return;
+  }
+  var ul = document.createElement("ul"); ul.className = "blk-list";
+  LB.blocked.forEach(function(name){
+    var li = document.createElement("li");
+    var nm = document.createElement("span"); nm.className = "blk-name"; nm.textContent = name;
+    var ub = document.createElement("button"); ub.type = "button"; ub.className = "utilbtn"; ub.textContent = "Unblock";
+    ub.addEventListener("click", function(){
+      srvConnect(function(){ srvSendRaw({ type:"unblockPlayer", username: name }); });
+    });
+    li.appendChild(nm); li.appendChild(ub);
+    ul.appendChild(li);
+  });
+  body.appendChild(ul);
+}
+
+/* ---------- errors for the new message types ---------- */
+var LB_ERR_TEXT = {
+  USER_NOT_FOUND: "No player with that name.",
+  CANNOT_REPORT_SELF: "You can't report yourself.",
+  BAD_REASON: "That reason wasn't accepted — pick one or write a short plain reason.",
+  REPORT_RATE_LIMITED: "You've sent too many reports recently — try again later.",
+  CANNOT_BLOCK_SELF: "You can't block yourself."
+};
+function lbHandleError(msg){
+  if (!msg || !msg.code) return false;
+  var code = msg.code;
+  if (LB.rptPending && (LB_ERR_TEXT[code] || code==="NOT_AUTHENTICATED")){
+    if (LB.rptTimer) clearTimeout(LB.rptTimer);
+    LB.rptPending = false;
+    var e = document.getElementById("ppReportError");
+    if (e) e.textContent = code==="NOT_AUTHENTICATED" ? "You need to sign in to report a player." : (LB_ERR_TEXT[code] || "The report couldn't be sent.");
+    lbSyncProfileActions();
+    return true;
+  }
+  if (LB.blockPending && (code==="NOT_AUTHENTICATED" || code==="USER_NOT_FOUND" || code==="CANNOT_BLOCK_SELF")){
+    if (LB.blockTimer) clearTimeout(LB.blockTimer);
+    LB.blockPending = false;
+    var e2 = document.getElementById("ppActionError");
+    if (e2) e2.textContent = code==="NOT_AUTHENTICATED" ? "You need to sign in to block a player." : (LB_ERR_TEXT[code] || "That couldn't be done.");
+    lbSyncProfileActions();
+    return true;
+  }
+  if (LB.profileLoading && code==="USER_NOT_FOUND"){
+    if (LB.profileTimer) clearTimeout(LB.profileTimer);
+    LB.profileLoading = false;
+    lbProfileState("No player with that name.");
+    return true;
+  }
+  if (LB.loading){
+    /* An error reply while a board request is in flight: show the
+       plain unreachable state instead of the generic server note. */
+    if (LB.timer) clearTimeout(LB.timer);
+    LB.loading = false; LB.failed = true; LB.pendingReq = null;
+    lbRender();
+    return true;
+  }
+  return false;
+}
+
+/* ---------- bindings ---------- */
+(function lbBind(){
+  var tg = document.getElementById("lbTabGlobal"), ts = document.getElementById("lbTabSeason");
+  if (tg) tg.addEventListener("click", function(){ if (LB.board!=="global"){ LB.board = "global"; LB.page = 1; lbRequest(); } });
+  if (ts) ts.addEventListener("click", function(){ if (LB.board!=="season"){ LB.board = "season"; LB.page = 1; lbRequest(); } });
+  var si = document.getElementById("lbSearch");
+  function doSearch(){
+    var v = si ? si.value.trim() : "";
+    if (v!==LB.search){ LB.search = v; LB.page = 1; }
+    lbRequest();
+  }
+  var sb = document.getElementById("lbSearchBtn");
+  if (sb) sb.addEventListener("click", doSearch);
+  if (si){
+    si.addEventListener("keydown", function(e){ if (e.key==="Enter"){ e.preventDefault(); doSearch(); } });
+    si.addEventListener("input", function(){
+      if (LB.searchTimer) clearTimeout(LB.searchTimer);
+      LB.searchTimer = setTimeout(doSearch, 450);
+    });
+  }
+  var pv = document.getElementById("lbPrevBtn"), nx = document.getElementById("lbNextBtn");
+  if (pv) pv.addEventListener("click", function(){ if (LB.page>1){ LB.page--; lbRequest(); } });
+  if (nx) nx.addEventListener("click", function(){ if (LB.data && LB.page < (LB.data.totalPages || 1)){ LB.page++; lbRequest(); } });
+  var pc = document.getElementById("ppCloseBtn");
+  if (pc) pc.addEventListener("click", function(){ closeSheet("playerProfileDrawer"); });
+  var pb = document.getElementById("ppBlockBtn");
+  if (pb) pb.addEventListener("click", lbToggleBlock);
+  var pr = document.getElementById("ppReportBtn");
+  if (pr) pr.addEventListener("click", lbReportToggle);
+  document.querySelectorAll("[data-rpt-reason]").forEach(function(btn){
+    btn.addEventListener("click", function(){ lbReportChoose(btn.getAttribute("data-rpt-reason")); });
+  });
+  var ps = document.getElementById("ppReportSendBtn");
+  if (ps) ps.addEventListener("click", lbReportSend);
+  /* Panel opened → fetch the current board / blocked list (same
+     observer pattern as the Server Ranked section). */
+  function watchPanel(id, fn){
+    var el = document.getElementById(id);
+    if (el && window.MutationObserver){
+      var mo = new MutationObserver(function(){ if (el.classList.contains("on")) fn(); });
+      mo.observe(el, { attributes:true, attributeFilter:["class"] });
+    }
+  }
+  watchPanel("panelLeaderboard", function(){ lbRequest(); });
+  watchPanel("panelProfile", function(){ lbRenderBlocked(); lbRequestBlocked(); });
+  /* Sign-in state can change while Profile is already open. */
+  if (typeof acctRender==="function"){
+    var prevAcctRender = acctRender;
+    acctRender = function(){
+      prevAcctRender();
+      try{ lbRenderBlocked(); if (typeof acctSignedIn==="function" && acctSignedIn()) lbRequestBlocked(); }catch(e){}
+    };
+  }
+  lbRender();
+  lbRenderBlocked();
 })();
 </script>
 
