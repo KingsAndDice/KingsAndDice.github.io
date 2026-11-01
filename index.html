@@ -343,7 +343,11 @@
   .endturnbtn.guardreroll{border-color:#8a6d2f;color:#ffd968;background:rgba(212,175,55,.14);font-weight:800;}
   .endturnbtn.guardreroll.on{display:block;}
   .endturnbtn.on{display:block;}
-  .endturnbtn:hover{border-color:var(--danger);color:var(--danger);}
+  .endturnbtn:hover:not(:disabled){border-color:var(--danger);color:var(--danger);}
+  .endturnbtn:disabled{opacity:.45;cursor:not-allowed;filter:grayscale(.55);}
+  .endturnhint{display:none;font-size:12px;line-height:1.45;color:var(--ink-soft);text-align:center;margin-top:5px;padding:0 6px;}
+  .endturnhint.on{display:block;}
+  body.playing .endturnhint{order:7;}
   .variantbox{border:1px solid var(--line);background:var(--panel-2);border-radius:12px;padding:12px;margin-bottom:12px;}
   .variantbox .vtitle{font-size:13px;font-weight:800;margin-bottom:3px;}
   .variantbox .vdesc{font-size:12.5px;color:var(--ink-soft);line-height:1.45;margin-bottom:9px;}
@@ -967,6 +971,17 @@
   .panelbtn{width:100%;margin-top:12px;padding:11px;}
   .setlabel{font-size:12px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-soft);display:block;margin-bottom:6px;}
   .setrow{margin-top:14px;}
+  .volrow{display:flex;align-items:center;gap:10px;margin-top:9px;}
+  .volrow label{flex:0 0 92px;font-size:13px;font-weight:700;color:var(--ink);white-space:nowrap;}
+  .volrow input[type="range"]{flex:1;min-width:0;accent-color:var(--gold-bright);height:28px;cursor:pointer;}
+  .volrow .volval{flex:0 0 42px;text-align:right;font-size:13px;font-weight:750;color:var(--ink-soft);font-variant-numeric:tabular-nums;}
+  .tunerow{display:flex;align-items:center;gap:8px;background:var(--panel-2);border:1px solid var(--line);border-radius:10px;padding:7px 8px 7px 11px;margin-bottom:6px;}
+  .tunerow .tname{flex:1;min-width:0;font-size:13.5px;font-weight:650;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .tunerow .tunedel{flex:0 0 auto;width:30px;height:30px;border-radius:50%;border:1px solid var(--line-strong);background:var(--panel);color:var(--ink-soft);font-size:13px;cursor:pointer;display:grid;place-items:center;line-height:1;}
+  .tunerow .tunedel:hover{border-color:var(--danger);color:var(--danger);}
+  .tunesbtnrow{display:flex;gap:8px;margin-top:2px;}
+  .tunesbtnrow .utilbtn{flex:1;}
+  .tunesbtnrow .utilbtn:disabled{opacity:.45;cursor:not-allowed;}
   .setseg{display:flex;}
   .achlist{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px;}
   .achlist li{display:flex;align-items:center;gap:11px;background:var(--panel-2);border:1px solid var(--line);border-radius:12px;padding:10px 12px;opacity:.55;}
@@ -1422,7 +1437,10 @@
      crown instead. One overlay layer above the board; purely
      presentational — game state and settlement never wait on it.
      ============================================================ */
-  .ksmash{position:absolute;inset:0;z-index:30;pointer-events:none;overflow:hidden;border-radius:12px;}
+  .ksmash{position:absolute;inset:0;z-index:40;pointer-events:none;overflow:hidden;border-radius:12px;}
+  /* while a king finale plays, the board and turn controls are locked
+     so no tap can cut the sequence short or raise the result modal early */
+  body.finale-lock .boardwrap,body.finale-lock .playbar,body.finale-lock .utilrow,body.finale-lock #endTurnBtn,body.finale-lock #guardRerollBtn{pointer-events:none !important;}
   .kveil{position:absolute;inset:0;z-index:1;opacity:0;}
   .kpiece{position:absolute;z-index:2;display:grid;place-items:center;line-height:1;transform:translateY(-1px);}
   .kpiece.pw{color:#fffef8;text-shadow:0 1px 0 rgba(30,30,20,.85),0 0 3px rgba(30,30,20,.75),0 3px 4px rgba(20,20,10,.35),-1px 0 1px rgba(30,30,20,.6),1px 0 1px rgba(30,30,20,.6);}
@@ -1666,13 +1684,13 @@
 
     <div class="about-sec">
       <h3>Radio &amp; voice</h3>
-      <p><b>Radio:</b> the menu 📻 bar tunes two stations — <b>Shanty FM</b> (medieval adventure) and <b>House FM</b> (house grooves) — plus Off. Both stations stream real tracks from the game's own site, so they need internet. Your station is saved on this device, plays on menu and setup screens, and in a match only if you turn it on from the in-game 📻 button. It is purely local and never syncs to your friend.</p>
+      <p><b>Radio:</b> the menu 📻 bar tunes <b>Shanty FM</b> (medieval adventure), <b>House FM</b> (house grooves), <b>Deep FM</b> (vocal deep house) and <b>Your Tunes</b> (your own songs, added in Settings) — plus Off. The three FM stations stream real tracks from the game's own site, so they need internet; Your Tunes plays files from this device only and never uploads them. Your station is saved on this device, plays on menu and setup screens, and in a match only if you turn it on from the in-game 📻 button. It is purely local and never syncs to your friend.</p>
       <p><b>Voice:</b> in Live Online rooms (server rooms and Friend rooms alike), the 🎤 button starts an audio-only <b>voice chat</b> with your friend — the mic only opens when you tap, nothing is recorded, and headphones are recommended. <b>Voice Controls</b> (Settings, off by default) add a 🎙 button in any match: tap it and say “roll”, “knight”, “e2 to e4”, “end turn”, “undo” or “flip board” — listening only starts on your tap and nothing is stored by the game.</p>
     </div>
 
     <div class="about-sec">
       <h3>Music credits</h3>
-      <p>The two streaming stations play real tracks by independent composers, trimmed or looped and converted to OGG for the game:</p>
+      <p>The three streaming stations play real tracks by independent composers, trimmed or looped and converted to OGG for the game:</p>
       <p><b>Shanty FM</b></p>
       <ul>
         <li><b>Newbie Rhapsody</b> — “Medieval: Exploration” by RandomMind · <a href="https://creativecommons.org/publicdomain/zero/1.0/" target="_blank" rel="noopener">CC0 1.0</a> · <a href="https://opengameart.org/content/medieval-exploration" target="_blank" rel="noopener">Source</a></li>
@@ -1685,6 +1703,12 @@
         <li><b>Kitchen Groove</b> — “Subtlety” by sdacfn · <a href="https://creativecommons.org/publicdomain/zero/1.0/" target="_blank" rel="noopener">CC0 1.0</a> · <a href="https://opengameart.org/node/195907" target="_blank" rel="noopener">Source</a></li>
         <li><b>Deep Dish</b> — “Atmospheric House I” by Bogart VGM (<a href="https://www.facebook.com/BogartVGM/" target="_blank" rel="noopener">Facebook</a>) · <a href="https://creativecommons.org/licenses/by/3.0/" target="_blank" rel="noopener">CC-BY 3.0</a> · <a href="https://opengameart.org/content/atmospheric-house-i" target="_blank" rel="noopener">Source</a></li>
         <li><b>Funky Butler</b> — “Funky House” by Of Far Different Nature, Fupi &amp; congusbongus · <a href="https://creativecommons.org/publicdomain/zero/1.0/" target="_blank" rel="noopener">CC0 1.0</a> · <a href="https://opengameart.org/content/funky-house-of-far-different-nature-fupi-congusbongus" target="_blank" rel="noopener">Source</a></li>
+      </ul>
+      <p><b>Deep FM</b> — all three tracks are CC-BY, so attribution is required and given here in full:</p>
+      <ul>
+        <li><b>Deep Gaze</b> — “deepgaze (Full Size)” by Akira Sora · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a> · <a href="https://freemusicarchive.org/music/akira-sora/single/deepgaze-full-size/" target="_blank" rel="noopener">Source</a></li>
+        <li><b>Deeper</b> — “Deeper” by LiQWYD (<a href="https://www.liqwydmusic.com" target="_blank" rel="noopener">liqwydmusic.com</a>) · <a href="https://creativecommons.org/licenses/by/3.0/" target="_blank" rel="noopener">CC BY 3.0</a> · <a href="https://www.free-stock-music.com/liqwyd-deeper.html" target="_blank" rel="noopener">Source</a></li>
+        <li><b>Asteroid Drift</b> — “Asteroid” by KV (<a href="https://www.youtube.com/c/KVmusicprod" target="_blank" rel="noopener">YouTube</a>) · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a> · <a href="https://www.free-stock-music.com/kv-asteroid.html" target="_blank" rel="noopener">Source</a></li>
       </ul>
     </div>
 
@@ -1718,7 +1742,7 @@
       <li><span class="ls-title">Stakes and the pot</span><span class="ls-body">Before a match, both players stake the <b>same</b> number of virtual coins. The <b>pot is both stakes together</b> — winner takes the pot, a draw gives both stakes back. Virtual coins only, no real money.</span></li>
       <li><span class="ls-title">Try the other match types</span><span class="ls-body">The setup screen offers 9 match types. <b>Chaos</b> forces specials on at 50% with a random Fate every 3rd round. <b>Double Kings</b> — capture BOTH enemy Kings. <b>Horde</b> — White is 24 pawns; every die moves a pawn. <b>Random Royals</b> — shuffled back rank, and <b>castling is disabled</b>. <b>Shrinking Board</b> — the edge burns after every 5 rounds; get your King off the ring. <b>Zombie</b> — spend a WILD die to resurrect a captured piece onto your first two ranks. <b>Royal Guard</b> — the classic check rules: your King must be protected, giving check ends your turn, a checked player may reroll useless dice once to find an escape, and checkmate wins. Every mode works vs Computer, 2 Players, by turn code and in Live rooms.</span></li>
       <li><span class="ls-title">Join a friend</span><span class="ls-body"><b>Live:</b> one of you taps <b>Create Room</b> and sends the other the <b>room code</b>; they enter it under Join Room and you're playing live. Once connected, tap <b>Chat</b> to message each other in the room. <b>Backup:</b> use <b>Play a Friend</b> — after your move, send the <b>turn code</b> by message; your friend pastes it in, moves, and sends a code back.</span></li>
-      <li><span class="ls-title">Tune the radio — and try voice</span><span class="ls-body">The <b>📻 radio bar</b> on the menu switches between <b>Shanty FM and House FM</b> — both stream real tracks from the game's site (they need internet) — plus Off. In a Live room, tap <b>🎤</b> for voice chat with your friend (mic opens only on your tap; headphones recommended). Turn on <b>Voice Controls</b> in Settings and a <b>🎙 button</b> appears in matches: tap it and say <b>“roll”</b>, <b>“knight”</b>, <b>“e2 to e4”</b> or <b>“end turn”</b> to play hands-free.</span></li>
+      <li><span class="ls-title">Tune the radio — and try voice</span><span class="ls-body">The <b>📻 radio bar</b> on the menu switches between <b>Shanty FM, House FM and Deep FM</b> — all three stream real tracks from the game's site (they need internet) — <b>Your Tunes</b> (your own songs from this device), plus Off. In a Live room, tap <b>🎤</b> for voice chat with your friend (mic opens only on your tap; headphones recommended). Turn on <b>Voice Controls</b> in Settings and a <b>🎙 button</b> appears in matches: tap it and say <b>“roll”</b>, <b>“knight”</b>, <b>“e2 to e4”</b> or <b>“end turn”</b> to play hands-free.</span></li>
     </ol>
 
     <div class="screen-foot"><button class="backbtn backtomenu" type="button">← Back to Main Menu</button></div>
@@ -1818,6 +1842,7 @@
         <p id="statusMsg">Roll the dice to start your turn.</p>
       </div>
       <button class="endturnbtn" id="endTurnBtn" type="button">End Turn — pass remaining dice</button>
+      <div class="endturnhint" id="endTurnHint" role="note"></div>
       <button class="endturnbtn guardreroll" id="guardRerollBtn" type="button">♚ Reroll useless dice — find an escape</button>
       <button class="endturnbtn" id="srvDrawBtn" type="button">Offer draw</button>
       <button class="endturnbtn" id="srvResignBtn" type="button">Resign this server match</button>
@@ -2117,11 +2142,28 @@
     <div class="setrow"><span class="setlabel">Radio station</span><div class="radio-station-list" role="group" aria-label="Radio station">
       <button type="button" data-radio-station="shanty"><b>📻 Shanty FM</b><small>Whimsical medieval adventure — streamed tracks, needs internet</small><span class="rs-dot">On air</span></button>
       <button type="button" data-radio-station="house"><b>🎧 House FM</b><small>House grooves — streamed tracks, needs internet</small><span class="rs-dot">On air</span></button>
+      <button type="button" data-radio-station="deep"><b>🌊 Deep FM</b><small>Vocal deep house — streamed tracks, needs internet</small><span class="rs-dot">On air</span></button>
+      <button type="button" data-radio-station="tunes"><b>🎵 Your Tunes</b><small>Your own songs from this device — added below, never uploaded</small><span class="rs-dot">On air</span></button>
       <button type="button" data-radio-station="off"><b>📻 Off</b><small>Silence</small><span class="rs-dot">On air</span></button>
-    </div><p class="panelnote">Shanty FM and House FM stream real tracks from the game's own site, so they need internet. Music credits for the streamed tracks are listed in About. Your station is saved on this device and is purely local: it never syncs to your friend. In a match the radio stays off unless you turn it on with the 📻 button (then it plays quietly).</p></div>
+    </div><p class="panelnote">Shanty FM, House FM and Deep FM stream real tracks from the game's own site, so they need internet. Music credits for the streamed tracks are listed in About. Your Tunes plays songs stored on this device only. Your station is saved on this device and is purely local: it never syncs to your friend. In a match the radio stays off unless you turn it on with the 📻 button (then it plays quietly).</p></div>
+    <div class="setrow"><span class="setlabel">Your Tunes</span>
+      <p class="panelnote" style="margin:0 0 8px;">The Your Tunes station plays songs you pick from this device. Your files stay on this device and are never uploaded. While Your Tunes is playing, the radio bar's ◀ ▶ skip between your songs.</p>
+      <div id="tunesList"></div>
+      <div class="tunesbtnrow">
+        <button class="utilbtn" id="tunesAddBtn" type="button">Add Tracks</button>
+        <button class="utilbtn" id="tunesClearBtn" type="button" disabled>Clear All</button>
+      </div>
+      <input type="file" id="tunesFileInput" accept="audio/*" multiple hidden>
+      <p class="panelnote" id="tunesPersistNote"></p>
+    </div>
     <div class="setrow"><span class="setlabel">Voice Controls</span><div class="varianttoggle setseg" role="group" aria-label="Voice controls"><button type="button" data-vc-set="on">On</button><button type="button" data-vc-set="off" class="on">Off</button></div><p class="panelnote" id="vcNote">Off. When on, a 🎙 button appears in matches — tap it, then say “roll”, a piece name like “knight”, “e2 to e4”, “end turn”, “undo” or “flip board”. Listening only ever starts when you tap; nothing is recorded or stored by the game.</p></div>
     <div class="setrow"><span class="setlabel">Animations</span><div class="varianttoggle setseg" role="group" aria-label="Animations"><button type="button" data-motion-set="full" class="on">Full</button><button type="button" data-motion-set="reduced">Reduced</button></div></div>
     <div class="setrow"><span class="setlabel">Sound FX</span><div class="varianttoggle setseg" role="group" aria-label="Sound effects"><button type="button" data-sfx-set="on" class="on">On</button><button type="button" data-sfx-set="off">Off</button></div><p class="panelnote">Subtle game sounds — dice rattle, moves, captures, check warnings and victory — made by the game itself (no audio files). Separate from the radio. Your choice is saved on this device.</p></div>
+    <div class="setrow"><span class="setlabel">Volume</span>
+      <div class="volrow"><label for="volMusic">🎵 Music</label><input type="range" id="volMusic" min="0" max="100" step="1" value="100" aria-label="Music volume"><span class="volval" id="volMusicVal">100%</span></div>
+      <div class="volrow"><label for="volSfx">🔊 Sound FX</label><input type="range" id="volSfx" min="0" max="100" step="1" value="100" aria-label="Sound effects volume"><span class="volval" id="volSfxVal">100%</span></div>
+      <div class="volrow"><label for="volVoice">🎤 Voice chat</label><input type="range" id="volVoice" min="0" max="100" step="1" value="100" aria-label="Voice chat volume"><span class="volval" id="volVoiceVal">100%</span></div>
+      <p class="panelnote">Saved on this device. Music drives the radio stations (Shanty FM / House FM / Deep FM / Your Tunes) and changes live while a track plays; Sound FX drives the game's own sounds; Voice chat drives how loud your friend sounds in Live matches.</p></div>
     <button class="utilbtn panelbtn" id="settingsResetBtn" type="button">Reset coins to 1,000 (free)</button>
   </div>
 </div>
@@ -2132,6 +2174,8 @@
     <div class="radio-station-list" role="group" aria-label="Choose a radio station">
       <button type="button" data-radio-station="shanty"><b>Shanty FM</b><small>Medieval adventure — streamed tracks</small><span class="rs-dot">On air</span></button>
       <button type="button" data-radio-station="house"><b>House FM</b><small>House grooves — streamed tracks</small><span class="rs-dot">On air</span></button>
+      <button type="button" data-radio-station="deep"><b>Deep FM</b><small>Vocal deep house — streamed tracks</small><span class="rs-dot">On air</span></button>
+      <button type="button" data-radio-station="tunes"><b>Your Tunes</b><small>Your own songs — add them in Settings → Your Tunes</small><span class="rs-dot">On air</span></button>
       <button type="button" data-radio-station="off"><b>Off</b><small>Silence</small><span class="rs-dot">On air</span></button>
     </div>
     <div class="ingame-only">
@@ -3418,7 +3462,21 @@ function renderStatus(){
   if (etb){
     var showEnd = G.phase==="await-move" && diceLeft()>0 && humanTurn && !G.over;
     etb.classList.toggle("on", showEnd);
-    etb.textContent = "End Turn — pass remaining " + diceLeft() + (diceLeft()===1 ? " die (it is lost)" : " dice (they are lost)");
+    var eth = document.getElementById("endTurnHint");
+    if (showEnd){
+      var gate = endTurnGate();
+      etb.disabled = !gate.ok;
+      etb.textContent = gate.ok
+        ? "End Turn — pass remaining " + diceLeft() + (diceLeft()===1 ? " die (it is lost)" : " dice (they are lost)")
+        : "End Turn — unlocks on your last die";
+      if (eth){
+        eth.classList.toggle("on", !gate.ok);
+        eth.textContent = gate.ok ? "" : gate.reason + " — it unlocks when one die is left, or if every remaining die is stuck.";
+      }
+    } else {
+      etb.disabled = false;
+      if (eth){ eth.classList.remove("on"); eth.textContent = ""; }
+    }
   }
   var grb = document.getElementById("guardRerollBtn");
   if (grb){
@@ -3455,6 +3513,53 @@ function isHumanTurn(){
 var audioCtx = null;
 var SFX = { on: true };
 try{ SFX.on = localStorage.getItem("dicechess-sfx") !== "0"; }catch(e){ SFX.on = true; }
+/* ---------- volume levels (Settings sliders, persisted on-device) ----------
+   Three independent 0–100 levels. Defaults are 100 = the levels the
+   game shipped with: radio base volume unchanged, SFX master gain 1,
+   voice-chat element volume 1. Keys sit alongside the other
+   dicechess-* settings. */
+var VOL = { music:100, sfx:100, voice:100 };
+(function(){
+  try{
+    [["music","dicechess-vol-music"],["sfx","dicechess-vol-sfx"],["voice","dicechess-vol-voice"]].forEach(function(pair){
+      var v = parseInt(localStorage.getItem(pair[1]), 10);
+      if (!isNaN(v)) VOL[pair[0]] = Math.max(0, Math.min(100, v));
+    });
+  }catch(e){}
+})();
+function volSave(){
+  try{
+    localStorage.setItem("dicechess-vol-music", String(VOL.music));
+    localStorage.setItem("dicechess-vol-sfx", String(VOL.sfx));
+    localStorage.setItem("dicechess-vol-voice", String(VOL.voice));
+  }catch(e){}
+}
+/* One master gain node for every synthesised game sound: sfxTone and
+   sfxNoise both route through it, so the Sound FX slider drives dice,
+   moves, captures, the check sting, the king-smash crash and victory
+   alike, live (the gain is re-read on every sound and on slider moves
+   via applyVolumes). */
+var _sfxMasterNode = null, _sfxMasterCtx = null;
+function sfxMaster(ctx){
+  if (_sfxMasterNode && _sfxMasterCtx===ctx) { try{ _sfxMasterNode.gain.value = VOL.sfx/100; }catch(e){} return _sfxMasterNode; }
+  var g = ctx.createGain();
+  g.gain.value = VOL.sfx/100;
+  g.connect(ctx.destination);
+  _sfxMasterNode = g; _sfxMasterCtx = ctx;
+  return g;
+}
+function applyVolumes(){
+  // radio streams: re-apply the (base × slider) volume to any live element
+  if (typeof STREAM!=="undefined"){
+    for (var id in STREAM){ var a = STREAM[id].audio; if (a){ try{ a.volume = radioVolume(); }catch(e){} } }
+  }
+  // your tunes: the device's own song element, if it has been built
+  if (typeof TUNES!=="undefined" && TUNES.audio){ try{ TUNES.audio.volume = radioVolume(); }catch(e){} }
+  // voice chat: the remote caller's element, if a call has built one
+  if (typeof VOICE!=="undefined" && VOICE.remoteAudio){ try{ VOICE.remoteAudio.volume = VOL.voice/100; }catch(e){} }
+  // sfx: push the level into the master gain right away
+  if (_sfxMasterNode){ try{ _sfxMasterNode.gain.value = VOL.sfx/100; }catch(e){} }
+}
 function sfxCtx(){
   if (!SFX.on) return null;
   try{
@@ -3473,7 +3578,7 @@ function sfxTone(freq, dur, type, vol, delay, slideTo){
     g.gain.setValueAtTime(0.0001, t0);
     g.gain.exponentialRampToValueAtTime(vol||0.05, t0+0.012);
     g.gain.exponentialRampToValueAtTime(0.0001, t0+dur);
-    o.connect(g); g.connect(ctx.destination);
+    o.connect(g); g.connect(sfxMaster(ctx));
     o.start(t0); o.stop(t0+dur+0.03);
   }catch(e){}
 }
@@ -3490,7 +3595,7 @@ function sfxNoise(dur, vol, delay, freq){
     var g = ctx.createGain();
     g.gain.setValueAtTime(vol||0.04, t0);
     g.gain.exponentialRampToValueAtTime(0.0001, t0+dur);
-    src.connect(f); f.connect(g); g.connect(ctx.destination);
+    src.connect(f); f.connect(g); g.connect(sfxMaster(ctx));
     src.start(t0);
   }catch(e){}
 }
@@ -3864,6 +3969,7 @@ function handleRemoteRoll(data){
   }, faces, rollerCol);
 }
 function rollDice(){
+  if (_finaleActive) return; /* king finale playing — no new roll until the modal */
   if (G.phase!=="await-roll" || G.over) return;
   if (!isHumanTurn()) return;
   if (typeof SRV!=="undefined" && SRV.active){ srvRequestRoll(); return; }
@@ -3974,9 +4080,36 @@ function rerollGuardDice(){
   }, faces, G.st.turn);
   return true;
 }
+/* END TURN GATE — End Turn may only be spent on the LAST die:
+   · exactly one die left → allowed (playable or stuck — passing it is
+     the player's choice);
+   · 2+ dice left but NONE of them can move at all → allowed anyway
+     (anti-soft-lock safety valve: a player is never trapped holding
+     unusable dice and a dead button; the automatic all-stuck pass in
+     checkDicePlayable normally ends such turns first);
+   · otherwise → not allowed, with the reason the button shows.
+   One gate drives the button state, the tap handler and voice
+   control, in every mode (for server games it is a client-side UI
+   rule only — the endTurn intent itself is unchanged). */
+function endTurnGate(){
+  if (_finaleActive) return { ok:false, reason:"The king finale is playing — one moment." };
+  if (G.over) return { ok:false, reason:"The game is over." };
+  if (G.phase!=="await-move") return { ok:false, reason:"Roll first — End Turn works once your dice have landed." };
+  if (!isHumanTurn()) return { ok:false, reason:"It's not your turn." };
+  var left = diceLeft();
+  if (!left) return { ok:false, reason:"No dice left — the turn passes on its own." };
+  if (left===1) return { ok:true };
+  if (!anyDiePlayable()) return { ok:true }; /* all remaining dice are stuck — safety valve */
+  if (typeof SRV!=="undefined" && SRV.active && SRV.lastState && SRV.lastState.dice){
+    var un = SRV.lastState.dice.filter(function(d){ return !d.used; });
+    if (un.length && un.every(function(d){ return d.status==="stuck"; })) return { ok:true }; /* the server itself marks them all stuck */
+  }
+  return { ok:false, reason:"End Turn unlocks on your last die" };
+}
 function endTurnManually(){
-  if (typeof SRV!=="undefined" && SRV.active){ if (!G.over && isHumanTurn()) srvEndTurn(); return; }
-  if (G.phase!=="await-move" || G.over || !isHumanTurn() || !diceLeft()) return;
+  var gate = endTurnGate();
+  if (!gate.ok){ toast(gate.reason); return false; }
+  if (typeof SRV!=="undefined" && SRV.active){ srvEndTurn(); return true; }
   for (var i=0;i<G.dice.length;i++){
     if (G.dice[i] && !G.diceUsed[i]){ G.diceUsed[i]=true; G.turnLog.push("🎲" + dieLabel(G.dice[i]) + " ✕ passed"); }
   }
@@ -3985,8 +4118,10 @@ function endTurnManually(){
   renderBoard();
   broadcastState();
   finishTurn();
+  return true;
 }
 function selectDie(i){
+  if (_finaleActive) return; /* king finale playing — dice locked until the modal */
   if (G.phase!=="await-move" || G.over) return;
   if (!isHumanTurn()) return;
   if (typeof SRV!=="undefined" && SRV.active && SRV.pendingAction) return;
@@ -4253,6 +4388,7 @@ function dieForPieceTap(r, c, p){
   return -1;
 }
 function onSquare(r,c){
+  if (_finaleActive) return; /* king finale playing — board input locked until the modal */
   if (G.phase!=="await-move" || G.over) return;
   if (!isHumanTurn()) return;
   if (typeof SRV!=="undefined" && SRV.active && SRV.pendingAction) return; // one server intent at a time — no duplicate moves
@@ -4487,6 +4623,12 @@ function insufficientMaterial(){
   return false;
 }
 function showGameOver(title, msg){
+  /* FINALE GATE: while a king finale (smash / kneel) is playing, the
+     result modal must NOT rise — a second caller (a duplicate finished
+     packet, a state re-apply, any fallback path) queues its modal here
+     instead, and the finale's finish() flushes it only AFTER the full
+     sequence has played. The player always sees the finale first. */
+  if (_finaleActive){ _queuedGameOver = { title:title, msg:msg }; return; }
   if (typeof recordSessionResult==="function") recordSessionResult();
   var box=document.getElementById("modalBox");
   box.innerHTML="";
@@ -4544,6 +4686,33 @@ function showGameOver(title, msg){
    never captured there). Reduced motion collapses both to a simple
    gold flash on the King's square, then the modal. */
 var _finaleToken = 0;
+/* Finale gate state: _finaleActive is true from the first frame of a
+   king smash / kneel until its finish() runs. While it is true,
+   showGameOver queues instead of showing (see its gate), board and
+   turn input is locked (body.finale-lock CSS + handler guards), so
+   nothing — a duplicate server packet, a stray tap, a fallback
+   finish — can raise the result popup over the animation. */
+var _finaleActive = false, _finaleLockToken = 0, _queuedGameOver = null;
+function finaleBegin(my){
+  _finaleActive = true; _finaleLockToken = my;
+  document.body.classList.add("finale-lock");
+}
+function finaleEnd(my){
+  if (_finaleLockToken===my){
+    _finaleActive = false; _finaleLockToken = 0;
+    document.body.classList.remove("finale-lock");
+  }
+}
+function finaleFlush(my, done){
+  var q = _queuedGameOver; _queuedGameOver = null;
+  if (my===_finaleToken && G.over && done) done();
+  else if (q && G.over) showGameOver(q.title, q.msg);
+}
+function finaleResetLocks(){
+  _queuedGameOver = null;
+  if (_finaleLockToken){ _finaleActive = false; _finaleLockToken = 0; }
+  document.body.classList.remove("finale-lock");
+}
 function fxReducedMotion(){
   return document.documentElement.classList.contains("reduce-motion") || (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
 }
@@ -4580,15 +4749,18 @@ function finaleFlashSquare(r, c, ms){
   setTimeout(function(){ sq.style.boxShadow = ""; }, ms || 450);
 }
 function playKingSmash(o, done){
-  var my = ++_finaleToken, finished = false, timers = [];
+  var my = ++_finaleToken, finished = false, timers = [], realPieceRef = null;
   function at(fn, ms){ timers.push(setTimeout(fn, ms)); }
   function finish(){
     if (finished) return; finished = true;
     timers.forEach(clearTimeout);
     var wrap = boardEl.parentElement, layer = wrap.querySelector(".ksmash");
     if (layer) layer.remove();
-    if (my===_finaleToken && G.over) done();
+    if (realPieceRef){ try{ realPieceRef.style.visibility = ""; }catch(e){} realPieceRef = null; }
+    finaleEnd(my);
+    finaleFlush(my, done);
   }
+  finaleBegin(my);
   try{
     if (fxReducedMotion()){ finaleFlashSquare(o.kr, o.kc, 450); at(finish, 480); return; }
     var layer = finaleLayer();
@@ -4598,7 +4770,7 @@ function playKingSmash(o, done){
     // hide it; a clone in the layer performs the strike from its origin.
     var destSq = finaleSquareEl(o.kr, o.kc);
     var realPiece = destSq ? destSq.querySelector(".piece") : null;
-    if (realPiece) realPiece.style.visibility = "hidden";
+    if (realPiece){ realPiece.style.visibility = "hidden"; realPieceRef = realPiece; }
     // slow-motion veil: the board dims, the doomed King stays lit
     var veil = document.createElement("div"); veil.className = "kveil";
     veil.style.background = "radial-gradient(circle at " + (kp.x+6.25) + "% " + (kp.y+6.25) + "%, rgba(0,0,0,0) 0 9%, rgba(4,5,12,.52) 36%)";
@@ -4706,7 +4878,13 @@ function playKingSmash(o, done){
       ], { duration:260, fill:"forwards", easing:"ease-out", composite:"add" });
     }, 700);
     at(finish, 1620);
-  }catch(e){ finish(); }
+  }catch(e){
+    /* Never slam the modal in the same frame as the capture: even if
+       the staged animation failed to build, hold a gold flash on the
+       King's square for a beat, then finish (which raises the modal). */
+    try{ finaleFlashSquare(o.kr, o.kc, 320); }catch(e2){}
+    at(finish, 350);
+  }
 }
 /* ROYAL GUARD finale: the mated King is never captured — it kneels,
    bows, and its crown drops beside it and fades. Then the modal. */
@@ -4718,8 +4896,10 @@ function playKingKneel(loserColor, done){
     timers.forEach(clearTimeout);
     var wrap = boardEl.parentElement, layer = wrap.querySelector(".ksmash");
     if (layer) layer.remove();
-    if (my===_finaleToken && G.over) done();
+    finaleEnd(my);
+    finaleFlush(my, done);
   }
+  finaleBegin(my);
   try{
     var ksq = findKing(G.st.board, loserColor);
     if (!ksq){ finish(); return; }
@@ -4751,7 +4931,11 @@ function playKingKneel(loserColor, done){
     }
     at(function(){ sfxTone(1180, 0.07, "triangle", 0.028); }, 950); /* the crown lands */
     at(finish, 1300);
-  }catch(e){ finish(); }
+  }catch(e){
+    /* Same rule as the smash: a beat of gold flash, never an instant modal. */
+    try{ var ksqF = findKing(G.st.board, loserColor); if (ksqF) finaleFlashSquare(ksqF.r, ksqF.c, 320); }catch(e2){}
+    at(finish, 350);
+  }
 }
 
 /* ---------- computer player ---------- */
@@ -5994,6 +6178,7 @@ function newGame(mode){
   var switching = mode && mode!==G.mode;
   if (switching && G.mode==="live") liveTeardown();
   _finaleToken++; /* a pending king-smash/kneel finale must not modal over the new game */
+  finaleResetLocks(); /* and its modal gate / input lock must not stick to the new game */
   var staleSmash = document.querySelector(".ksmash"); if (staleSmash) staleSmash.remove();
   clearTimers(); closeModal();
   G.mode = mode || G.mode;
@@ -6267,6 +6452,8 @@ function goToMainMenu(){
   if (G.mode==="live" && LIVE.status!=="off") liveTeardown();
   if (typeof SRV!=="undefined" && (SRV.active || SRV.ws)) srvTeardown();
   clearTimers(); closeModal();
+  _finaleToken++; finaleResetLocks(); /* a finale in flight must not gate or modal over the menu */
+  var staleSmashM = document.querySelector(".ksmash"); if (staleSmashM) staleSmashM.remove();
   resetGameOnly();
   G.variant = G.pendingVariant; syncVariantUI();
   document.body.classList.remove("playing");
@@ -6513,12 +6700,14 @@ function renderPanels(){
 }
 applyCosmetics();
 
-/* ---------- radio: streaming stations only (Shanty FM / House FM) ---------- */
+/* ---------- radio: streaming stations (Shanty FM / House FM / Deep FM) + Your Tunes ---------- */
 var MUSIC = { on:true, unlocked:false,
   station:"shanty", prevStation:"shanty", inGameOn:false };
 var RADIO_STATIONS = [
   { id:"shanty", name:"Shanty FM" },
   { id:"house", name:"House FM" },
+  { id:"deep", name:"Deep FM" },
+  { id:"tunes", name:"Your Tunes" },
   { id:"off",   name:"Off" }
 ];
 function radioStationName(id){ for (var i=0;i<RADIO_STATIONS.length;i++) if (RADIO_STATIONS[i].id===id) return RADIO_STATIONS[i].name; return "Shanty FM"; }
@@ -6527,7 +6716,7 @@ try{
   if (savedStation){
     // Migration: stations removed in this build (kings/pool/war/lofi) fall back to Shanty FM.
     if (["kings","pool","war","lofi"].indexOf(savedStation)>=0) savedStation = "shanty";
-    if (["shanty","house","off"].indexOf(savedStation)>=0){
+    if (["shanty","house","deep","tunes","off"].indexOf(savedStation)>=0){
       MUSIC.station = savedStation;
       if (savedStation!=="off") MUSIC.prevStation = savedStation;
       MUSIC.on = savedStation!=="off";
@@ -6536,12 +6725,12 @@ try{
   }
 }catch(e){}
 
-/* Streaming stations -- Shanty FM and House FM stream real
+/* Streaming stations -- Shanty FM, House FM and Deep FM stream real
    tracks hosted on the game's own site, played in rotation
    through one HTMLAudio element per station -- when a track ends,
    the next begins. If a track cannot load (device offline, file
    missing), that station falls back to silence with a one-time
-   explanation and never blocks the other station. */
+   explanation and never blocks the other stations. */
 var SHANTY_TRACKS = [
   { title:"Newbie Rhapsody", url:"https://madpanda3ds.github.io/music/shanty-overworld.ogg" },
   { title:"Salty Dice Reel", url:"https://madpanda3ds.github.io/music/shanty-sea.ogg" },
@@ -6553,13 +6742,20 @@ var HOUSE_TRACKS = [
   { title:"Deep Dish",      url:"https://madpanda3ds.github.io/music/house-deep.ogg" },
   { title:"Funky Butler",   url:"https://madpanda3ds.github.io/music/house-funk.ogg" }
 ];
+var DEEP_TRACKS = [
+  { title:"Deep Gaze",      url:"https://madpanda3ds.github.io/music/deep-vocal.ogg" },
+  { title:"Deeper",         url:"https://madpanda3ds.github.io/music/deep-soul.ogg" },
+  { title:"Asteroid Drift", url:"https://madpanda3ds.github.io/music/deep-night.ogg" }
+];
 var STREAM_DEFS = {
   shanty:{ tracks:SHANTY_TRACKS, fail:"Shanty FM needs internet for its real-instrument tracks" },
-  house:{ tracks:HOUSE_TRACKS, fail:"House FM needs internet for its streamed tracks" }
+  house:{ tracks:HOUSE_TRACKS, fail:"House FM needs internet for its streamed tracks" },
+  deep:{ tracks:DEEP_TRACKS, fail:"Deep FM needs internet for its streamed tracks" }
 };
 var STREAM = {
   shanty:{ audio:null, idx:0, failed:false, noticeShown:false },
-  house:{ audio:null, idx:0, failed:false, noticeShown:false }
+  house:{ audio:null, idx:0, failed:false, noticeShown:false },
+  deep:{ audio:null, idx:0, failed:false, noticeShown:false }
 };
 function streamAudioEl(id){
   var S = STREAM[id];
@@ -6593,6 +6789,7 @@ function streamPauseAll(){
     var a = STREAM[id].audio;
     if (a){ try{ a.pause(); }catch(e){} }
   }
+  if (typeof TUNES!=="undefined" && TUNES.audio){ try{ TUNES.audio.pause(); }catch(e){} }
 }
 function streamAdvance(id){
   var S = STREAM[id], def = STREAM_DEFS[id];
@@ -6619,7 +6816,9 @@ function streamFail(id){
   radioRenderUI();
 }
 function radioVolume(){
-  return document.body.classList.contains("playing") ? 0.26 : 0.5;
+  // base level (quieter in a match) scaled by the Music volume slider;
+  // slider at 100 reproduces the game's original levels exactly.
+  return (document.body.classList.contains("playing") ? 0.26 : 0.5) * (VOL.music/100);
 }
 function radioShouldPlay(){
   return MUSIC.unlocked && MUSIC.station!=="off" &&
@@ -6628,6 +6827,7 @@ function radioShouldPlay(){
 function musicPlay(){
   if (MUSIC.station==="off" || !MUSIC.unlocked) return;
   if (!radioShouldPlay()) return;
+  if (MUSIC.station==="tunes"){ tunesPlay(); return; }
   streamPlay();
 }
 function musicStop(){
@@ -6643,6 +6843,7 @@ function musicSync(){
 function radioRenderUI(){
   var name = radioStationName(MUSIC.station);
   if (STREAM_DEFS[MUSIC.station]) name += " · ♪ " + STREAM_DEFS[MUSIC.station].tracks[STREAM[MUSIC.station].idx].title;
+  else if (MUSIC.station==="tunes" && typeof TUNES!=="undefined" && TUNES.tracks.length) name += " · ♪ " + tunesTitle(TUNES.tracks[TUNES.idx % TUNES.tracks.length]);
   var rn = document.getElementById("radioName");
   if (rn) rn.textContent = MUSIC.station==="off" ? "Radio Off" : name;
   var dot = document.getElementById("radioDot");
@@ -6679,7 +6880,7 @@ function radioRenderUI(){
 function radioSetStation(id, opts){
   opts = opts || {};
   if (["kings","pool","war","lofi"].indexOf(id)>=0) id = "shanty"; // removed stations migrate to Shanty FM
-  if (["shanty","house","off"].indexOf(id)<0) id = "shanty";
+  if (["shanty","house","deep","tunes","off"].indexOf(id)<0) id = "shanty";
   var changed = id !== MUSIC.station;
   MUSIC.station = id;
   if (STREAM_DEFS[id] && changed) STREAM[id].failed = false; // a fresh pick retries the stream
@@ -6710,6 +6911,220 @@ function setMusic(on){
   if (on){ MUSIC.unlocked = true; radioSetStation(MUSIC.prevStation || "shanty", { toast:false }); }
   else radioSetStation("off", { toast:false });
 }
+/* ---------- YOUR TUNES: the player's own songs, from this device ----------
+   Files the player picks in Settings → Your Tunes. The audio data is
+   kept in IndexedDB on THIS device only and played through object
+   URLs — files are never uploaded or sent anywhere. If IndexedDB is
+   unavailable, the picks still play for the session and the Settings
+   note says so. Playback rides the same radio rules as the streaming
+   stations (unlock on first tap, quieter in a match unless turned on,
+   Music volume slider applies); rotation advances on 'ended', and the
+   radio bar's ◀ ▶ skip between the player's songs while it plays. */
+var TUNES = { tracks:[], idx:0, audio:null, url:null, urlFor:null, ready:false, persist:true, noticeShown:false, errStreak:0 };
+function tunesTitle(t){ return t ? String(t.name || "Track").replace(/\.[^/.]+$/, "") : ""; }
+function tunesAudioEl(){
+  if (TUNES.audio) return TUNES.audio;
+  var a = new Audio();
+  a.preload = "auto";
+  a.addEventListener("ended", function(){ tunesAdvance(1); });
+  a.addEventListener("playing", function(){ TUNES.errStreak = 0; });
+  a.addEventListener("error", function(){ tunesSkipBroken(); });
+  TUNES.audio = a;
+  return a;
+}
+function tunesPlay(){
+  if (!radioShouldPlay()) return;
+  if (!TUNES.tracks.length){
+    // Selected with nothing added yet: one friendly pointer to
+    // Settings, then silence — never an error, never a stuck radio.
+    if (TUNES.ready && !TUNES.noticeShown){
+      TUNES.noticeShown = true;
+      toast("🎵 Your Tunes is empty — add your songs in Settings → Your Tunes");
+    }
+    radioRenderUI();
+    return;
+  }
+  try{
+    var a = tunesAudioEl();
+    var t = TUNES.tracks[TUNES.idx % TUNES.tracks.length];
+    TUNES.idx = TUNES.idx % TUNES.tracks.length;
+    if (TUNES.urlFor !== t){
+      if (TUNES.url) URL.revokeObjectURL(TUNES.url);
+      TUNES.url = URL.createObjectURL(t.blob);
+      TUNES.urlFor = t;
+      a.src = TUNES.url;
+    }
+    a.volume = radioVolume();
+    if (a.paused){
+      var pr = a.play();
+      if (pr && pr.catch) pr.catch(function(){});
+    }
+  }catch(e){}
+  radioRenderUI();
+}
+function tunesAdvance(dir){
+  if (!TUNES.tracks.length) return;
+  TUNES.idx = (TUNES.idx + dir + TUNES.tracks.length) % TUNES.tracks.length;
+  TUNES.urlFor = null; // force the new track's object URL
+  if (MUSIC.station==="tunes" && radioShouldPlay()) tunesPlay();
+  radioRenderUI();
+}
+function tunesSkipBroken(){
+  TUNES.errStreak++;
+  if (!TUNES.tracks.length || TUNES.errStreak >= TUNES.tracks.length){
+    if (TUNES.audio){ try{ TUNES.audio.pause(); }catch(e){} }
+    toast("🎵 That song couldn't be played on this device — skipping stopped so the radio doesn't loop.");
+    return;
+  }
+  tunesAdvance(1);
+}
+function tunesStopPlayback(){
+  if (TUNES.url){ try{ URL.revokeObjectURL(TUNES.url); }catch(e){} TUNES.url = null; }
+  TUNES.urlFor = null;
+  if (TUNES.audio){ try{ TUNES.audio.pause(); TUNES.audio.removeAttribute("src"); }catch(e){} }
+}
+/* --- IndexedDB persistence (device-local, never uploaded) --- */
+function tunesDbOpen(){
+  return new Promise(function(res, rej){
+    if (!window.indexedDB){ rej(new Error("IndexedDB unavailable")); return; }
+    var rq = indexedDB.open("dicechess-tunes", 1);
+    rq.onupgradeneeded = function(){ rq.result.createObjectStore("tracks", { autoIncrement:true }); };
+    rq.onsuccess = function(){ res(rq.result); };
+    rq.onerror = function(){ rej(rq.error); };
+  });
+}
+function tunesDbAll(){
+  return tunesDbOpen().then(function(db){
+    return new Promise(function(res, rej){
+      var out = [];
+      var rq = db.transaction("tracks", "readonly").objectStore("tracks").openCursor();
+      rq.onsuccess = function(){
+        var cur = rq.result;
+        if (cur){ out.push({ id:cur.key, name:cur.value.name, blob:cur.value.blob }); cur.continue(); }
+        else res(out);
+      };
+      rq.onerror = function(){ rej(rq.error); };
+    });
+  });
+}
+function tunesDbPut(rec){
+  return tunesDbOpen().then(function(db){
+    return new Promise(function(res, rej){
+      var rq = db.transaction("tracks", "readwrite").objectStore("tracks").add(rec);
+      rq.onsuccess = function(){ res(rq.result); };
+      rq.onerror = function(){ rej(rq.error); };
+    });
+  });
+}
+function tunesDbDelete(id){
+  return tunesDbOpen().then(function(db){
+    return new Promise(function(res, rej){
+      var rq = db.transaction("tracks", "readwrite").objectStore("tracks").delete(id);
+      rq.onsuccess = function(){ res(); };
+      rq.onerror = function(){ rej(rq.error); };
+    });
+  });
+}
+function tunesDbClear(){
+  return tunesDbOpen().then(function(db){
+    return new Promise(function(res, rej){
+      var rq = db.transaction("tracks", "readwrite").objectStore("tracks").clear();
+      rq.onsuccess = function(){ res(); };
+      rq.onerror = function(){ rej(rq.error); };
+    });
+  });
+}
+function tunesInit(){
+  tunesDbAll().then(function(rows){
+    TUNES.tracks = rows;
+    TUNES.persist = true;
+    TUNES.ready = true;
+    tunesRenderList();
+    if (MUSIC.station==="tunes" && radioShouldPlay()) tunesPlay();
+    radioRenderUI();
+  }).catch(function(){
+    // No IndexedDB: session-only playback, labelled as such in Settings.
+    TUNES.persist = false;
+    TUNES.ready = true;
+    tunesRenderList();
+    radioRenderUI();
+  });
+}
+function tunesAddFiles(files){
+  if (!files || !files.length) return;
+  var jobs = [];
+  Array.prototype.forEach.call(files, function(f){
+    var rec = { name: f.name || "Track", blob: f };
+    if (TUNES.persist){
+      jobs.push(tunesDbPut(rec).then(function(id){
+        TUNES.tracks.push({ id:id, name:rec.name, blob:f });
+      }).catch(function(){
+        TUNES.tracks.push({ id:"mem-" + Date.now() + "-" + Math.random(), name:rec.name, blob:f });
+      }));
+    } else {
+      TUNES.tracks.push({ id:"mem-" + Date.now() + "-" + Math.random(), name:rec.name, blob:f });
+      jobs.push(Promise.resolve());
+    }
+  });
+  Promise.all(jobs).then(function(){
+    tunesRenderList();
+    toast("🎵 Added " + files.length + (files.length===1 ? " song" : " songs") + " to Your Tunes");
+    if (MUSIC.station==="tunes" && radioShouldPlay()) tunesPlay();
+    radioRenderUI();
+  });
+}
+function tunesRemove(id){
+  var current = TUNES.tracks[TUNES.idx] || null;
+  TUNES.tracks = TUNES.tracks.filter(function(t){ return t.id!==id; });
+  if (TUNES.persist && typeof id==="number") tunesDbDelete(id).catch(function(){});
+  if (current && TUNES.tracks.indexOf(current)>=0){
+    TUNES.idx = TUNES.tracks.indexOf(current);
+  } else {
+    TUNES.idx = 0;
+    tunesStopPlayback();
+    if (TUNES.tracks.length && MUSIC.station==="tunes" && radioShouldPlay()) tunesPlay();
+  }
+  tunesRenderList();
+  radioRenderUI();
+}
+function tunesClearAll(){
+  TUNES.tracks = [];
+  TUNES.idx = 0;
+  tunesStopPlayback();
+  if (TUNES.persist) tunesDbClear().catch(function(){});
+  tunesRenderList();
+  radioRenderUI();
+  toast("🎵 Your Tunes cleared");
+}
+function tunesRenderList(){
+  var list = document.getElementById("tunesList");
+  if (list){
+    list.innerHTML = "";
+    if (!TUNES.tracks.length){
+      var em = document.createElement("p");
+      em.className = "panelnote";
+      em.style.margin = "2px 0 4px";
+      em.textContent = "No songs added yet — tap Add Tracks to pick audio files from this device.";
+      list.appendChild(em);
+    } else {
+      TUNES.tracks.forEach(function(t){
+        var row = document.createElement("div"); row.className = "tunerow";
+        var nm = document.createElement("span"); nm.className = "tname"; nm.textContent = "🎵 " + t.name;
+        var rm = document.createElement("button"); rm.type = "button"; rm.className = "tunedel"; rm.textContent = "✕";
+        rm.setAttribute("aria-label", "Remove " + t.name);
+        rm.addEventListener("click", function(){ tunesRemove(t.id); });
+        row.appendChild(nm); row.appendChild(rm);
+        list.appendChild(row);
+      });
+    }
+  }
+  var note = document.getElementById("tunesPersistNote");
+  if (note) note.textContent = TUNES.persist
+    ? "Saved in this browser's storage on this device, so your tunes are still here next visit. Your files stay on this device and are never uploaded."
+    : "This browser can't keep files between visits, so your tunes will only play for this session. Your files stay on this device and are never uploaded.";
+  var cb = document.getElementById("tunesClearBtn");
+  if (cb) cb.disabled = !TUNES.tracks.length;
+}
 document.addEventListener("pointerdown", function(){
   if (!MUSIC.unlocked){
     MUSIC.unlocked = true;
@@ -6725,8 +7140,10 @@ document.querySelectorAll("[data-radio-station]").forEach(function(btn){
 });
 (function(){
   var prev = document.getElementById("radioPrev"), next = document.getElementById("radioNext");
-  if (prev) prev.addEventListener("click", function(){ MUSIC.unlocked = true; radioStepStation(-1); });
-  if (next) next.addEventListener("click", function(){ MUSIC.unlocked = true; radioStepStation(1); });
+  // On Your Tunes, ◀ ▶ skip between the player's own songs; on every
+  // other station (and on an empty Your Tunes) they step stations.
+  if (prev) prev.addEventListener("click", function(){ MUSIC.unlocked = true; if (MUSIC.station==="tunes" && TUNES.tracks.length) tunesAdvance(-1); else radioStepStation(-1); });
+  if (next) next.addEventListener("click", function(){ MUSIC.unlocked = true; if (MUSIC.station==="tunes" && TUNES.tracks.length) tunesAdvance(1); else radioStepStation(1); });
   var rn = document.getElementById("radioName");
   if (rn) rn.addEventListener("click", function(){ if (typeof openSheet==="function") openSheet("panelRadio"); });
   var gi = document.getElementById("giRadio");
@@ -6852,6 +7269,7 @@ function voiceWireCall(call){
     voiceClearConnectTimer();
     try{
       if (!VOICE.remoteAudio){ VOICE.remoteAudio = document.createElement("audio"); VOICE.remoteAudio.autoplay = true; VOICE.remoteAudio.setAttribute("playsinline",""); VOICE.remoteAudio.style.display = "none"; document.body.appendChild(VOICE.remoteAudio); }
+      VOICE.remoteAudio.volume = VOL.voice/100;
       VOICE.remoteAudio.srcObject = remote;
       var p = VOICE.remoteAudio.play(); if (p && p.catch) p.catch(function(){ voiceArmAutoplayRetry(); });
     }catch(e){}
@@ -7266,8 +7684,9 @@ function vcHandleCommand(rawInput){
     return;
   }
   if (cmd==="end turn" || cmd==="pass" || cmd==="end" || cmd==="pass turn"){
-    if (G.phase==="await-move" && !G.over && isHumanTurn() && diceLeft()){ vcHeard(raw, "Ending the turn — remaining dice are lost, same as tapping End Turn."); endTurnManually(); }
-    else vcFail(raw, "There's no turn to end right now");
+    var etGate = endTurnGate();
+    if (etGate.ok){ vcHeard(raw, "Ending the turn — remaining dice are lost, same as tapping End Turn."); endTurnManually(); }
+    else vcFail(raw, etGate.reason);
     return;
   }
   if (cmd==="undo"){
@@ -7456,6 +7875,40 @@ document.querySelectorAll("[data-sfx-set]").forEach(function(btn){
   });
 });
 syncSfxUI();
+/* Volume sliders (Settings): restore the saved levels into the inputs,
+   apply every move live, persist on release. The Sound FX slider plays
+   a short sample when released so the new level is audible at once. */
+[["volMusic","music","volMusicVal"],["volSfx","sfx","volSfxVal"],["volVoice","voice","volVoiceVal"]].forEach(function(cfg){
+  var input = document.getElementById(cfg[0]), val = document.getElementById(cfg[2]), key = cfg[1];
+  if (!input) return;
+  input.value = String(VOL[key]);
+  if (val) val.textContent = VOL[key] + "%";
+  input.addEventListener("input", function(){
+    var v = Math.max(0, Math.min(100, parseInt(input.value, 10) || 0));
+    VOL[key] = v;
+    if (val) val.textContent = v + "%";
+    applyVolumes();
+  });
+  input.addEventListener("change", function(){
+    volSave();
+    if (key==="sfx" && SFX.on && VOL.sfx>0) sfxSelect(); /* sample blip at the new level */
+  });
+});
+applyVolumes();
+/* Your Tunes (Settings): file picker wiring + load saved tracks. */
+(function(){
+  var addBtn = document.getElementById("tunesAddBtn");
+  var fileIn = document.getElementById("tunesFileInput");
+  var clearBtn = document.getElementById("tunesClearBtn");
+  if (addBtn && fileIn) addBtn.addEventListener("click", function(){ fileIn.click(); });
+  if (fileIn) fileIn.addEventListener("change", function(){
+    tunesAddFiles(fileIn.files);
+    fileIn.value = "";
+  });
+  if (clearBtn) clearBtn.addEventListener("click", function(){ tunesClearAll(); });
+  tunesRenderList();
+  tunesInit();
+})();
 document.querySelectorAll("[data-aidiff]").forEach(function(btn){
   btn.addEventListener("click", function(){
     var v = btn.getAttribute("data-aidiff");
