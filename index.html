@@ -2925,6 +2925,14 @@ html.reduce-motion .gchatdrawer.on,html.reduce-motion .gchatdrawer.on .gchatcard
 .gchat-status{flex:0 0 auto;font-size:12.5px;color:var(--ink-soft);line-height:1.45;margin-bottom:9px;}
 .gchat-status.on{color:var(--accent);font-weight:650;}
 .gchat-status.err{color:var(--danger);font-weight:650;}
+.gchat-signedout{flex:1 1 auto;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:13px;text-align:center;padding:26px 18px;border:1px solid var(--line);border-radius:12px;background:var(--panel-2);}
+.gchat-signedout[hidden]{display:none;}
+.gchat-so-badge{font-size:30px;line-height:1;}
+.gchat-so-text{margin:0;font-size:14.5px;font-weight:600;line-height:1.55;color:var(--ink);max-width:280px;}
+.gchat-so-btn{border:1px solid #8a6d1b;background:linear-gradient(180deg,#f6d776,#d4a017);color:#171106;font-family:inherit;font-size:14px;font-weight:800;padding:11px 20px;border-radius:999px;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,.35);}
+.gchat-so-btn:hover{filter:brightness(1.06);}
+.gchat-so-btn:active{transform:translateY(1px);}
+.gchat-so-note{margin:0;font-size:12px;line-height:1.45;color:var(--ink-soft);}
 .gchat-list{flex:1 1 auto;min-height:0;overflow-y:auto;overflow-x:hidden;display:flex;flex-direction:column;gap:7px;padding:10px;border:1px solid var(--line);border-radius:12px;background:var(--panel-2);-webkit-overflow-scrolling:touch;overscroll-behavior:contain;touch-action:pan-y;scrollbar-width:thin;scroll-behavior:smooth;}
 .gchat-list .cm-meta{color:#2563eb;}
 @media (prefers-color-scheme: dark){.gchat-list .cm-meta{color:#7db4ff;}}
@@ -4676,6 +4684,12 @@ html.comp-reduce .board.shuffle-reveal .piece,html.comp-reduce .board.shuffle-re
   <div class="gchatcard">
     <div class="chathead"><span class="ch-title">Global Chat</span><span class="gchat-online" id="gchatOnline"></span><button class="chatclose" id="gchatCloseBtn" type="button" aria-label="Close global chat">✕</button></div>
     <div class="gchat-status" id="gchatStatus">Connecting…</div>
+    <div class="gchat-signedout" id="gchatSignedOut" hidden>
+      <div class="gchat-so-badge" aria-hidden="true">🔒</div>
+      <p class="gchat-so-text">Global chat is for signed-in players — log in or create an account to join.</p>
+      <button class="gchat-so-btn" id="gchatLoginBtn" type="button">Log in / Create account</button>
+      <p class="gchat-so-note">In the room, your name is your account username.</p>
+    </div>
     <div class="gchat-list" id="gchatList"><div class="chatempty">Connecting to global chat…</div></div>
     <div class="chatinputrow gchat-inputrow">
       <input id="gchatInput" type="text" maxlength="300" placeholder="Message everyone…" autocomplete="off" disabled />
@@ -12029,6 +12043,7 @@ function srvOnMessage(msg){
       SRV.token = msg.playerToken; SRV.playerId = msg.playerId;
       SRV.balance = (typeof msg.balance==="number") ? msg.balance : SRV.balance;
       if (typeof acctApplyWelcome==="function") acctApplyWelcome(msg);
+      if (window.GLOBAL_CHAT && GLOBAL_CHAT.authChanged){ try{ GLOBAL_CHAT.authChanged(); }catch(e){} }
       if (SRV.status!=="queued") SRV.status = "connected";
       srvSetStatus("Server: connected — you have " + fmtCoins(SRV.balance!=null ? SRV.balance : 0) + " server coins.", "ok");
       srvSaveSession();
@@ -12588,6 +12603,7 @@ function acctOnAuthOk(msg){
     acctSyncChip();
     acctRender();
     srvSyncUI();
+    if (window.GLOBAL_CHAT && GLOBAL_CHAT.authChanged){ try{ GLOBAL_CHAT.authChanged(); }catch(e){} }
     toast("Logged out — you're playing as a guest now.");
     return;
   }
@@ -12603,6 +12619,7 @@ function acctOnAuthOk(msg){
   else if (msg && msg.action==="claimName") toast("Name claimed — you're signed in.");
   else if (msg && msg.action==="google") toast("Signed in with Google — welcome back.");
   else toast("Signed in — welcome back.");
+  if (window.GLOBAL_CHAT && GLOBAL_CHAT.authChanged){ try{ GLOBAL_CHAT.authChanged(); }catch(e){} }
 }
 function acctOnAuthError(msg){
   /* Google sends in flight (redeem / claimName / linkGoogleStart)
@@ -12644,6 +12661,7 @@ function acctOnAuthError(msg){
     acctSyncChip();
     ACCT.error = "";
     acctRender();
+    if (window.GLOBAL_CHAT && GLOBAL_CHAT.authChanged){ try{ GLOBAL_CHAT.authChanged(); }catch(e){} }
     toast("You're signed out.");
     return;
   }
@@ -21194,7 +21212,16 @@ try{ window.KD_SHUFFLE_CHECKS = KD_SHUFFLE_CHECKS; }catch(e){}
 <script>
 /* ============================================================
    GLOBAL CHAT — one room for everyone, on the game server:
-     wss://kings-and-dice-server.onrender.com/chat?name=NAME
+     wss://kings-and-dice-server.onrender.com/chat?token=TOKEN
+   ACCOUNT-LOCKED: the room is for signed-in players only. The
+   token is the account-session token the game socket already
+   holds (SRV.token, delivered by welcome / authOk); it rotates
+   on login/logout, and authSync() — called from those handlers —
+   reconnects the room with the new token when that happens
+   while the panel is open. Guests never open a socket at all:
+   the panel shows a log-in state instead. If the server still
+   refuses (error code CHAT_AUTH_REQUIRED, close code 4401) the
+   panel falls back to that same state — no retry loop.
    Plain WebSocket, no libraries. The socket lives only while
    the side panel is open: a ping goes out every ~25s, a drop
    retries with a short backoff, and closing the panel (the
@@ -21203,7 +21230,7 @@ try{ window.KD_SHUFFLE_CHECKS = KD_SHUFFLE_CHECKS; }catch(e){}
    nothing from the room is ever injected as HTML.
    ============================================================ */
 (function(){
-  var URL_BASE = "wss://kings-and-dice-server.onrender.com/chat?name=";
+  var CHAT_URL = "wss://kings-and-dice-server.onrender.com/chat";
   var tab = document.getElementById("gchatTab");
   var tabCount = document.getElementById("gchatTabCount");
   var drawer = document.getElementById("gchatDrawer");
@@ -21213,22 +21240,43 @@ try{ window.KD_SHUFFLE_CHECKS = KD_SHUFFLE_CHECKS; }catch(e){}
   var input = document.getElementById("gchatInput");
   var sendBtn = document.getElementById("gchatSendBtn");
   var closeBtn = document.getElementById("gchatCloseBtn");
+  var signedOutEl = document.getElementById("gchatSignedOut");
+  var loginBtn = document.getElementById("gchatLoginBtn");
+  var inputRow = drawer ? drawer.querySelector(".gchat-inputrow") : null;
   if (!tab || !drawer || !list || !input || !sendBtn) return;
 
   var GCH = {
     open: false, ws: null, connected: false,
     msgs: [], count: null, myId: null, myName: "",
-    pingTimer: null, reconnectTimer: null, retryMs: 1000
+    pingTimer: null, reconnectTimer: null, retryMs: 1000,
+    signedOut: false, usedToken: null,
+    authBlocked: false, blockedToken: null
   };
 
-  function myName(){
+  /* Account state — read live from the game client every time.
+     The typed/profile display name plays NO part in global chat
+     identity: the server takes the name from the account behind
+     the token and returns it in welcome.name. */
+  function accountName(){
     try{
-      if (typeof PROFILE_NAME !== "undefined" && PROFILE_NAME && String(PROFILE_NAME).trim()) return String(PROFILE_NAME).trim().slice(0, 24);
+      if (typeof ACCT !== "undefined" && ACCT && ACCT.account && ACCT.account.username) return String(ACCT.account.username);
     }catch(e){}
-    try{
-      if (typeof ACCT !== "undefined" && ACCT && ACCT.account && ACCT.account.username) return String(ACCT.account.username).slice(0, 24);
-    }catch(e){}
-    return "Player";
+    return "";
+  }
+  function signedIn(){
+    try{ if (typeof acctSignedIn === "function") return !!acctSignedIn(); }catch(e){}
+    return !!accountName();
+  }
+  function currentToken(){
+    var t = "";
+    try{ if (typeof SRV !== "undefined" && SRV && SRV.token) t = String(SRV.token); }catch(e){}
+    if (!t){
+      try{
+        var s = (typeof srvLoadSession === "function") ? srvLoadSession() : null;
+        if (s && s.token) t = String(s.token);
+      }catch(e){}
+    }
+    return t || null;
   }
   function fmtTime(ts){
     if (typeof chatTime === "function") { try{ return chatTime(ts); }catch(e){} }
@@ -21287,6 +21335,64 @@ try{ window.KD_SHUFFLE_CHECKS = KD_SHUFFLE_CHECKS; }catch(e){}
     input.disabled = !on;
     sendBtn.disabled = !on;
   }
+  function closeSocket(){
+    if (GCH.reconnectTimer){ clearTimeout(GCH.reconnectTimer); GCH.reconnectTimer = null; }
+    stopPing();
+    if (GCH.ws){
+      var ws = GCH.ws; GCH.ws = null;
+      ws.onopen = ws.onmessage = ws.onclose = ws.onerror = null;
+      try{ ws.close(); }catch(e){}
+    }
+    GCH.connected = false;
+    GCH.usedToken = null;
+  }
+  /* Signed-out panel state: no socket, no list, no input — just
+     the explanation and the way into the account form. */
+  function showSignedOut(){
+    closeSocket();
+    GCH.signedOut = true;
+    GCH.msgs = [];
+    GCH.myId = null;
+    GCH.myName = "";
+    GCH.count = null;
+    setInputEnabled(false);
+    syncPresence();
+    if (signedOutEl) signedOutEl.hidden = false;
+    list.style.display = "none";
+    if (inputRow) inputRow.style.display = "none";
+    if (statusEl) statusEl.style.display = "none";
+  }
+  function showChatUI(){
+    GCH.signedOut = false;
+    if (signedOutEl) signedOutEl.hidden = true;
+    list.style.display = "";
+    if (inputRow) inputRow.style.display = "";
+    if (statusEl) statusEl.style.display = "";
+  }
+  /* The server refused this token (CHAT_AUTH_REQUIRED / 4401):
+     fall back to the signed-out state and stay there for this
+     token — no error spam, no reconnect loop. A fresh token
+     (next login) clears the block in connect()/authSync(). */
+  function handleAuthRequired(){
+    GCH.authBlocked = true;
+    GCH.blockedToken = GCH.usedToken || currentToken();
+    showSignedOut();
+  }
+  /* Called by the game socket's welcome / authOk handlers: the
+     account and/or its session token just changed. Only acts
+     while the panel is open; a closed panel reads fresh state
+     on open. */
+  function authSync(){
+    if (!GCH.open) return;
+    var token = currentToken();
+    if (GCH.authBlocked && token && GCH.blockedToken !== token){
+      GCH.authBlocked = false;
+      GCH.blockedToken = null;
+    }
+    if (!signedIn()){ showSignedOut(); return; }
+    if (GCH.signedOut) showChatUI();
+    connect();
+  }
   function stopPing(){
     if (GCH.pingTimer){ clearInterval(GCH.pingTimer); GCH.pingTimer = null; }
   }
@@ -21299,7 +21405,7 @@ try{ window.KD_SHUFFLE_CHECKS = KD_SHUFFLE_CHECKS; }catch(e){}
     }, 25000);
   }
   function scheduleReconnect(){
-    if (!GCH.open) return;
+    if (!GCH.open || GCH.signedOut || GCH.authBlocked) return;
     if (GCH.reconnectTimer) clearTimeout(GCH.reconnectTimer);
     var wait = GCH.retryMs;
     GCH.retryMs = Math.min(GCH.retryMs * 2, 10000);
@@ -21309,15 +21415,39 @@ try{ window.KD_SHUFFLE_CHECKS = KD_SHUFFLE_CHECKS; }catch(e){}
     }, wait);
   }
   function connect(){
-    if (GCH.ws && (GCH.ws.readyState === 0 || GCH.ws.readyState === 1)) return;
+    if (!GCH.open) return;
+    if (!signedIn()){ showSignedOut(); return; }
+    if (GCH.signedOut) showChatUI();
+    var token = currentToken();
+    if (!token){
+      /* Signed in, but the game socket hasn't delivered a session
+         token yet — authSync() connects the room when welcome /
+         authOk lands. Never guess a token, never open a socket
+         without one. */
+      GCH.connected = false;
+      setInputEnabled(false);
+      setStatus("Connecting…", "");
+      render();
+      return;
+    }
+    if (GCH.authBlocked){
+      if (GCH.blockedToken === token){ showSignedOut(); return; }
+      GCH.authBlocked = false;
+      GCH.blockedToken = null;
+    }
+    if (GCH.ws){
+      if ((GCH.ws.readyState === 0 || GCH.ws.readyState === 1) && GCH.usedToken === token) return;
+      closeSocket(); /* token rotated under a live socket — reopen with the new one */
+    }
     GCH.connected = false;
     setInputEnabled(false);
     setStatus("Connecting…", "");
     render();
     var ws;
-    try{ ws = new WebSocket(URL_BASE + encodeURIComponent(myName())); }
+    try{ ws = new WebSocket(CHAT_URL + "?token=" + encodeURIComponent(token)); }
     catch(e){ setStatus("Chat offline — retrying", "err"); scheduleReconnect(); return; }
     GCH.ws = ws;
+    GCH.usedToken = token;
     ws.onopen = function(){
       if (GCH.ws !== ws) return;
       setStatus("Connecting…", "");
@@ -21332,7 +21462,9 @@ try{ window.KD_SHUFFLE_CHECKS = KD_SHUFFLE_CHECKS; }catch(e){}
         GCH.connected = true;
         GCH.retryMs = 1000;
         GCH.myId = (data.id != null) ? data.id : null;
-        GCH.myName = String(data.name || myName());
+        /* welcome.name is the account username behind the token —
+           the only identity global chat ever shows for this player. */
+        GCH.myName = String(data.name || accountName() || "Player");
         if (typeof data.count === "number") GCH.count = data.count;
         GCH.msgs = (Array.isArray(data.history) ? data.history : []).map(function(m){
           return { id: (m && m.id != null) ? m.id : null, name: String((m && m.name) || "Player"), text: String((m && m.text) || ""), ts: Number(m && m.ts) || 0 };
@@ -21340,7 +21472,7 @@ try{ window.KD_SHUFFLE_CHECKS = KD_SHUFFLE_CHECKS; }catch(e){}
         syncPresence();
         render();
         setInputEnabled(true);
-        setStatus("Connected — everyone in this room can see your messages.", "on");
+        setStatus("Connected as " + GCH.myName + " — everyone in this room can see your messages.", "on");
       }
       else if (data.type === "chat"){
         var text = String(data.text || "").slice(0, 300);
@@ -21353,16 +21485,20 @@ try{ window.KD_SHUFFLE_CHECKS = KD_SHUFFLE_CHECKS; }catch(e){}
         if (typeof data.count === "number"){ GCH.count = data.count; syncPresence(); }
       }
       else if (data.type === "error"){
+        if (data.code === "CHAT_AUTH_REQUIRED"){ handleAuthRequired(); return; }
         sysLine(data.message || "Message not sent.");
       }
       /* "pong" and anything unknown need no action */
     };
-    ws.onclose = function(){
+    ws.onclose = function(ev){
       if (GCH.ws === ws) GCH.ws = null;
       stopPing();
       GCH.connected = false;
       setInputEnabled(false);
-      if (GCH.open){
+      /* 4401 = the server refused this (guest / stale) token:
+         same signed-out fallback as the error frame, no retry. */
+      if (ev && ev.code === 4401){ if (GCH.open) handleAuthRequired(); return; }
+      if (GCH.open && !GCH.signedOut && !GCH.authBlocked){
         setStatus("Chat offline — retrying", "err");
         render();
         scheduleReconnect();
@@ -21373,14 +21509,7 @@ try{ window.KD_SHUFFLE_CHECKS = KD_SHUFFLE_CHECKS; }catch(e){}
     };
   }
   function disconnect(){
-    if (GCH.reconnectTimer){ clearTimeout(GCH.reconnectTimer); GCH.reconnectTimer = null; }
-    stopPing();
-    if (GCH.ws){
-      var ws = GCH.ws; GCH.ws = null;
-      ws.onopen = ws.onmessage = ws.onclose = ws.onerror = null;
-      try{ ws.close(); }catch(e){}
-    }
-    GCH.connected = false;
+    closeSocket();
     GCH.count = null;
     GCH.retryMs = 1000;
     setInputEnabled(false);
@@ -21393,8 +21522,10 @@ try{ window.KD_SHUFFLE_CHECKS = KD_SHUFFLE_CHECKS; }catch(e){}
     document.body.classList.add("gchat-open");
     document.documentElement.classList.add("gchat-lock");
     document.body.classList.add("gchat-lock");
-    render();
-    connect();
+    /* Fresh read of account state on every open: signed-out
+       players get the log-in state and no socket is opened;
+       signed-in players connect with the current token. */
+    authSync();
   }
   function closePanel(){
     if (!GCH.open) return;
@@ -21406,6 +21537,7 @@ try{ window.KD_SHUFFLE_CHECKS = KD_SHUFFLE_CHECKS; }catch(e){}
     disconnect();
   }
   function send(){
+    if (GCH.signedOut) return;
     var text = String(input.value || "").trim().slice(0, 300);
     if (!text) return;
     if (!GCH.ws || GCH.ws.readyState !== 1 || !GCH.connected){
@@ -21434,8 +21566,20 @@ try{ window.KD_SHUFFLE_CHECKS = KD_SHUFFLE_CHECKS; }catch(e){}
       if (GCH.open && document.body.classList.contains("playing")) closePanel();
     }).observe(document.body, { attributes: true, attributeFilter: ["class"] });
   }
+  if (loginBtn) loginBtn.addEventListener("click", function(){
+    /* The account form (log in / create account) lives in the
+       Profile panel — close chat and take the same path as the
+       bottom-nav Profile button. */
+    closePanel();
+    var navBtn = document.querySelector("#bottomNav [data-nav=\"profile\"]");
+    if (navBtn){ navBtn.click(); return; }
+    try{
+      if (typeof renderPanels === "function") renderPanels();
+      if (typeof openSheet === "function") openSheet("panelProfile");
+    }catch(e){}
+  });
   syncPresence();
-  window.GLOBAL_CHAT = { open: openPanel, close: closePanel, state: GCH };
+  window.GLOBAL_CHAT = { open: openPanel, close: closePanel, state: GCH, authChanged: authSync };
 })();
 </script>
 
