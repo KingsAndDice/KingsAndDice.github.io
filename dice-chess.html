@@ -3780,6 +3780,7 @@ html.comp-reduce .board.shuffle-reveal .piece,html.comp-reduce .board.shuffle-re
       <button class="giconbtn" id="giRanks" type="button" aria-label="Ranks" title="Ranks">▥</button>
       <button class="giconbtn" id="giSound" type="button" aria-label="Sound on" title="Sound — on (tap to mute effects)">🔊</button>
       <button class="giconbtn" id="giSettings" type="button" aria-label="Settings" title="Settings">⚙</button>
+      <button class="giconbtn board-fs-toggle" id="giBoardFs" type="button" aria-label="Board full screen" aria-pressed="false" title="Board full screen — make the board fill the screen">⛶</button>
       <button class="giconbtn is-off" id="giRadio" type="button" aria-label="Radio" title="Radio — off in this match">📻</button>
       <button class="giconbtn" id="voiceChatBtn" type="button" aria-label="Voice chat" title="Voice chat (Live only)" style="display:none;">🎤</button>
       <button class="giconbtn" id="vcBtn" type="button" aria-label="Voice controls — tap and speak a command" title="Voice controls" style="display:none;">🎙</button>
@@ -3832,7 +3833,7 @@ html.comp-reduce .board.shuffle-reveal .piece,html.comp-reduce .board.shuffle-re
   </div>
 
   <div class="layout">
-    <section aria-label="Chess board">
+    <section aria-label="Chess board" id="boardStage">
       <div class="playerbar" id="barTop"></div>
       <div class="boardframe">
         <div class="frameranks" id="frameRanks" aria-hidden="true"></div>
@@ -3919,9 +3920,11 @@ html.comp-reduce .board.shuffle-reveal .piece,html.comp-reduce .board.shuffle-re
         <div id="utilActions"></div>
         <button class="utilbtn" id="movesBtn" type="button">Moves</button>
         <button class="utilbtn" id="specialsBtn" type="button">✨ Specials</button>
+        <button class="utilbtn board-fs-toggle" id="boardFsBtn" type="button" aria-pressed="false" aria-label="Board full screen — make the board fill the screen" title="Board full screen — make the board fill the screen">⛶ Full screen</button>
         <button class="utilbtn" id="codeBtn" type="button" style="display:none;">Code</button>
       </div>
       <div class="playerbar" id="barBottom"></div>
+      <button class="board-fs-toggle" id="boardFsExitFloat" type="button" aria-label="Exit board full screen">✕ Exit full screen</button>
     </section>
 
     <div>
@@ -21522,14 +21525,46 @@ html.reduce-motion .ts-emblem,html.reduce-motion .ts-title,html.reduce-motion .t
 .topgear.fsbtn{font-size:19px;}
 .topgear.fsbtn.on{color:#f6d776;border-color:rgba(246,215,118,.75);background:rgba(212,175,55,.18);}
 </style>
+<style id="kd-board-fullscreen">
+/* ============================================================
+   BOARD FULL SCREEN (in game) — the ⛶ controls in the match
+   header and the util row put the BOARD STAGE (player bars,
+   board, dice tray + Roll, status, match chat, util row) full
+   screen, not the whole page. Native path: the stage element
+   itself goes fullscreen and the board grows to fill it.
+   Fallback path (fullscreen API unavailable or blocked, e.g.
+   an iframe without permission): body.board-fs-on pins the
+   stage over the page at the same size. In short landscape
+   viewports the status line, match chat and util row hide so
+   the board keeps the height; the util row's Exit control is
+   replaced there by the header-style corner exit below.
+   ============================================================ */
+.board-fs-toggle.on{color:#ffe98a !important;border-color:#ffe98a !important;background:linear-gradient(180deg,#8a6d1b,#5c4a0e 72%) !important;}
+#boardStage:fullscreen{background:#04060d;color:#f3ecd7;overflow-y:auto;overflow-x:hidden;padding:12px 12px calc(12px + env(safe-area-inset-bottom));scrollbar-width:thin;}
+#boardStage:fullscreen .boardframe,
+body.board-fs-on #boardStage .boardframe{width:min(calc(100vw - 24px),calc(100dvh - 330px));min-width:min(240px,calc(100vw - 24px));margin-inline:auto;}
+body.board-fs-on{overflow:hidden;}
+body.board-fs-on #boardStage{position:fixed;inset:0;z-index:96;width:100%;height:100dvh;background:#04060d;color:#f3ecd7;overflow-y:auto;overflow-x:hidden;padding:12px 12px calc(12px + env(safe-area-inset-bottom));display:flex;flex-direction:column;align-items:center;scrollbar-width:thin;}
+body.board-fs-on #boardStage>*{flex:0 0 auto;width:100%;}
+body.board-fs-on #boardStage .boardframe{flex:0 0 auto;}
+#boardFsExitFloat{display:none;}
+body.board-fs-active #boardFsExitFloat{display:block;position:fixed;top:calc(54px + env(safe-area-inset-top));right:12px;z-index:97;border:1.5px solid #c9a227;background:rgba(10,15,30,.92);color:#f6d776;font-size:13px;font-weight:800;padding:9px 13px;border-radius:999px;cursor:pointer;box-shadow:0 6px 18px rgba(0,0,0,.55);}
+@media (orientation:landscape) and (max-height:560px){
+  #boardStage:fullscreen .playstatus,#boardStage:fullscreen .matchchat,#boardStage:fullscreen .utilrow,
+  body.board-fs-on #boardStage .playstatus,body.board-fs-on #boardStage .matchchat,body.board-fs-on #boardStage .utilrow{display:none !important;}
+  #boardStage:fullscreen .boardframe,body.board-fs-on #boardStage .boardframe{width:min(calc(100vw - 24px),calc(100dvh - 208px));}
+  body.board-fs-active #boardFsExitFloat{display:block;}
+}
+</style>
 <script>
 /* ============================================================
-   OPENING SCREEN + FULLSCREEN — the TAP TO PLAY tap is the
-   user gesture that (a) requests fullscreen on the document
-   element, (b) unlocks audio and starts the menu radio if it
-   is enabled, and (c) dismisses the title screen into the
-   existing flow. Fullscreen failures (iframes without the
-   permission, unsupported browsers) are ignored silently.
+   OPENING SCREEN — the TAP TO PLAY tap is the user gesture
+   that (a) unlocks audio and starts the menu radio if it is
+   enabled, and (b) dismisses the title screen into the
+   existing flow. It does NOT force fullscreen: fullscreen is
+   an in-game control for the board (see the board fullscreen
+   script below — the ⛶ buttons in the match header and util
+   row put the board stage full screen, and only that).
    The name pop-up flow is untouched: it is already open
    underneath for guests and never opens for signed-in
    accounts — dismissing the splash simply reveals it.
@@ -21588,7 +21623,6 @@ html.reduce-motion .ts-emblem,html.reduce-motion .ts-title,html.reduce-motion .t
   function dismiss(){
     if (dismissed) return;
     dismissed = true;
-    requestFs();
     unlockAudio();
     document.body.classList.remove("title-open");
     if (!splash) return;
@@ -21601,6 +21635,90 @@ html.reduce-motion .ts-emblem,html.reduce-motion .ts-title,html.reduce-motion .t
     }, reduced ? 200 : 360);
   }
   if (playBtn) playBtn.addEventListener("click", dismiss);
+})();
+</script>
+<script>
+/* ============================================================
+   BOARD FULL SCREEN (in game) — "fullscreen mode" means the
+   board, in a match. The ⛶ controls (match header icon, the
+   util-row "Full screen" button, and the floating exit shown
+   in short landscape) request fullscreen on #boardStage —
+   the board plus the bars, dice tray and controls it needs —
+   never on the whole document. If the Fullscreen API is
+   missing or the request is rejected (e.g. an iframe without
+   permission), the stage is pinned over the page instead
+   (body.board-fs-on) at the same size, so the control always
+   works. Esc / the same buttons exit either path.
+   ============================================================ */
+(function(){
+  var stage = document.getElementById("boardStage");
+  if (!stage) return;
+  var toggles = Array.prototype.slice.call(document.querySelectorAll(".board-fs-toggle"));
+  var labelBtn = document.getElementById("boardFsBtn");
+  function fsElement(){
+    return document.fullscreenElement || document.webkitFullscreenElement || document.msFullscreenElement || null;
+  }
+  function isOn(){
+    return fsElement() === stage || document.body.classList.contains("board-fs-on");
+  }
+  function sync(){
+    var on = isOn();
+    document.body.classList.toggle("board-fs-active", on);
+    for (var i = 0; i < toggles.length; i++){
+      toggles[i].classList.toggle("on", on);
+      toggles[i].setAttribute("aria-pressed", on ? "true" : "false");
+    }
+    var gi = document.getElementById("giBoardFs");
+    if (gi) gi.title = on ? "Exit board full screen" : "Board full screen — make the board fill the screen";
+    if (labelBtn) labelBtn.textContent = on ? "✕ Exit full screen" : "⛶ Full screen";
+  }
+  function useFallback(){
+    document.body.classList.add("board-fs-on");
+    sync();
+  }
+  function enter(){
+    if (isOn()) return;
+    var fn = stage.requestFullscreen || stage.webkitRequestFullscreen || stage.msRequestFullscreen;
+    if (!fn){ useFallback(); return; }
+    try{
+      var r = fn.call(stage);
+      if (r && r.catch) r.catch(function(){ useFallback(); });
+      else if (r && r.then) r.then(function(){ sync(); }, function(){ useFallback(); });
+    }catch(e){ useFallback(); }
+    /* some browsers neither resolve nor reject visibly when an
+       iframe lacks permission — if nothing took effect shortly
+       after the tap, fall back so the tap is never a dead end */
+    setTimeout(function(){
+      if (!isOn() && fsElement() !== stage && !document.body.classList.contains("board-fs-on")) useFallback();
+    }, 350);
+  }
+  function exit(){
+    if (document.body.classList.contains("board-fs-on")){
+      document.body.classList.remove("board-fs-on");
+    }
+    if (fsElement() === stage){
+      var fn = document.exitFullscreen || document.webkitExitFullscreen || document.msExitFullscreen;
+      if (fn){
+        try{ var r = fn.call(document); if (r && r.catch) r.catch(function(){}); }catch(e){}
+      }
+    }
+    sync();
+  }
+  function toggle(){
+    if (isOn()) exit(); else enter();
+  }
+  for (var i = 0; i < toggles.length; i++){
+    toggles[i].addEventListener("click", toggle);
+  }
+  document.addEventListener("fullscreenchange", sync);
+  document.addEventListener("webkitfullscreenchange", sync);
+  document.addEventListener("MSFullscreenChange", sync);
+  document.addEventListener("keydown", function(e){
+    if ((e.key === "Escape" || e.key === "Esc") && document.body.classList.contains("board-fs-on")){
+      exit();
+    }
+  });
+  sync();
 })();
 </script>
 </body>
