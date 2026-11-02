@@ -1557,9 +1557,9 @@
      ============================================================ */
   /* ordinary capture: quick shatter-burst on the capture square */
   .capburst{position:absolute;inset:0;z-index:7;pointer-events:none;}
-  .capburst i{position:absolute;left:50%;top:50%;border-radius:1px;opacity:0;animation:capShardFly .55s cubic-bezier(.25,.6,.35,1) .3s forwards;}
+  .capburst i{position:absolute;left:50%;top:50%;border-radius:1px;opacity:0;animation:capShardFly .8s cubic-bezier(.25,.6,.35,1) .3s forwards;}
   @keyframes capShardFly{0%{transform:translate(-50%,-50%) rotate(0deg) scale(1);opacity:1;}100%{transform:translate(calc(-50% + var(--sex,0px)),calc(-50% + var(--sey,0px))) rotate(var(--srot,200deg)) scale(.6);opacity:0;}}
-  .capburst .capring{position:absolute;inset:6%;border-radius:50%;border:2px solid rgba(246,215,118,.9);opacity:0;animation:capRingPop .45s ease-out .3s forwards;}
+  .capburst .capring{position:absolute;inset:6%;border-radius:50%;border:2px solid rgba(246,215,118,.9);opacity:0;animation:capRingPop .65s ease-out .3s forwards;}
   @keyframes capRingPop{0%{opacity:0;transform:scale(.5);}30%{opacity:.9;}100%{opacity:0;transform:scale(1.25);}}
   /* SHIELD applied: gold shimmer sweep + ring pulse on the piece */
   .sq .fx-shieldpop{position:absolute;inset:0;z-index:7;pointer-events:none;border-radius:inherit;overflow:hidden;animation:fxShieldRing .95s ease-out forwards;}
@@ -2661,6 +2661,13 @@ html.reduce-motion .turntimer.low{animation:none !important;}
 .acct-note:empty{display:none;}
 .acct-forgot{display:block;margin:10px auto 0;padding:8px 12px;background:none;border:none;color:var(--brass);font-size:14px;font-weight:750;text-decoration:underline;cursor:pointer;min-height:40px;}
 .acct-email-block{margin-top:14px;padding-top:12px;border-top:1px solid var(--line);}
+.goog-divider{display:flex;align-items:center;gap:10px;margin:14px 0 10px;color:var(--ink-faint);font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;}
+.goog-divider::before,.goog-divider::after{content:"";flex:1;border-top:1px solid var(--line);}
+.acct-google-btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;min-height:48px;padding:11px 14px;border-radius:10px;border:1px solid var(--line-strong);background:#ffffff;color:#1f1f1f;font-size:14.5px;font-weight:750;cursor:pointer;box-shadow:var(--shadow-sm);}
+.acct-google-btn:hover{border-color:var(--gold-bright);}
+.acct-google-btn svg{flex:0 0 auto;display:block;}
+.goog-linked-line{display:flex;align-items:center;gap:8px;font-size:13.5px;font-weight:700;color:var(--accent);line-height:1.45;}
+.claim-offline{display:block;margin:12px auto 0;padding:8px 12px;background:none;border:none;color:var(--brass);font-size:14px;font-weight:750;text-decoration:underline;cursor:pointer;min-height:40px;}
 </style>
 <style>
 /* ---------- ranked result panel (post-match) + Server Ranked (Profile) + Browse Games ---------- */
@@ -3069,9 +3076,105 @@ body.show-nxplay #nxStartBar.on{display:block;}
 .cc-chip .cc-time{font-weight:900;font-variant-numeric:tabular-nums;font-size:16px;letter-spacing:.02em;}
 .cc-chip.active{border-color:#c9a227;box-shadow:0 0 0 1px rgba(201,162,39,.5),0 0 12px rgba(212,175,55,.25);}
 .cc-chip.low .cc-time{color:var(--danger);}
+/* ---------- Royal Alliance (2v2) ---------- */
+.al-x{position:absolute;top:10px;right:10px;width:34px;height:34px;border-radius:50%;border:1.5px solid rgba(201,162,39,.55);background:rgba(27,39,69,.6);color:#f3ecd7;font-size:15px;font-weight:800;cursor:pointer;line-height:1;}
+.comp-card{position:relative;}
+.al-sec{border-top:1px solid rgba(201,162,39,.25);padding:12px 0 4px;margin-top:12px;text-align:left;}
+.al-sec h3{margin:0 0 4px;font-size:15px;color:#f7f1dc;text-align:left;}
+.al-sec p{margin:0 0 8px;font-size:12.5px;color:#c8bfa4;line-height:1.5;}
+.al-input{width:100%;box-sizing:border-box;background:#0d1425;border:1.5px solid rgba(201,162,39,.4);border-radius:10px;color:#f3ecd7;font-size:14.5px;padding:11px 12px;margin:0 0 8px;min-height:46px;}
+.al-input::placeholder{color:#7d869e;}
+.al-row{display:flex;gap:8px;}
+.al-row .al-input{flex:1;min-width:0;}
+.al-row .comp-primary,.al-row .comp-ghost{flex:1;min-height:46px;padding:10px;}
+.al-status{font-size:13px;color:var(--nx-gold-hi);font-weight:700;min-height:18px;text-align:center;margin-top:8px;line-height:1.45;}
+.al-teams{display:flex;gap:10px;margin:8px 0 4px;}
+.al-teamcard{flex:1;border:1.5px solid rgba(201,162,39,.35);border-radius:14px;padding:10px;background:rgba(27,39,69,.5);min-width:0;}
+.al-teamcard.gold{border-color:rgba(230,190,60,.65);}
+.al-teamcard.shadow{border-color:rgba(140,150,190,.55);}
+.al-teamname{font-weight:850;font-size:13.5px;text-align:center;margin-bottom:8px;letter-spacing:.03em;}
+.al-seat{border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:8px 9px;margin-bottom:7px;background:rgba(10,14,26,.45);}
+.al-seat:last-child{margin-bottom:0;}
+.al-seat .al-seat-name{font-size:14px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.al-seat .al-seat-meta{font-size:11px;color:#9aa3c7;margin-top:1px;}
+.al-seat.you{border-color:var(--nx-gold-hi);}
+.al-seat.ready{border-color:#57c785;}
+.al-seat.empty{opacity:.65;border-style:dashed;}
+.al-seat .al-ready{font-size:11px;font-weight:800;color:#8b93a7;}
+.al-seat.ready .al-ready{color:#7fe0a8;}
+.al-dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#57c785;margin-right:5px;vertical-align:1px;}
+.al-dot.off{background:#c0534a;}
+/* in-game alliance panel */
+#alPanel{display:none;width:100%;max-width:560px;margin:0 auto 8px;text-align:left;}
+#alPanel.on{display:block;}
+.al-rot{display:flex;gap:6px;margin-bottom:8px;}
+.al-rot-seat{flex:1;min-width:0;border:1.5px solid var(--line-strong);border-radius:10px;padding:6px 7px;background:var(--panel);color:var(--ink);font-size:11.5px;text-align:center;}
+.al-rot-seat .al-rot-name{display:block;font-weight:800;font-size:12.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.al-rot-seat .al-rot-team{font-size:10px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;opacity:.75;}
+.al-rot-seat.active{border-color:#c9a227;box-shadow:0 0 0 1px rgba(201,162,39,.5),0 0 10px rgba(212,175,55,.25);}
+.al-rot-seat.you{outline:2px solid rgba(87,199,133,.55);outline-offset:-2px;}
+.al-banner{display:none;border:1.5px solid #c9a227;border-radius:11px;padding:9px 11px;background:rgba(212,175,55,.14);color:var(--ink);font-size:13.5px;font-weight:700;line-height:1.45;margin-bottom:8px;}
+.al-banner.on{display:block;}
+.al-waitline{font-size:13px;font-weight:700;color:var(--ink);margin:0 0 8px;text-align:center;}
+.al-teambox{border:1.5px solid var(--line-strong);border-radius:12px;padding:10px;background:var(--panel);}
+.al-teambox h4{margin:0 0 8px;font-size:13px;color:var(--ink);}
+.al-phrases{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:9px;}
+.al-phrases button{border:1.5px solid rgba(201,162,39,.5);background:transparent;color:var(--ink);border-radius:999px;padding:6px 10px;font-size:12px;font-weight:700;cursor:pointer;}
+.al-phrases button:disabled{opacity:.45;cursor:default;}
+.al-chatlist{max-height:132px;overflow-y:auto;display:flex;flex-direction:column;gap:5px;margin-bottom:8px;}
+.al-chatrow{font-size:12.5px;line-height:1.4;color:var(--ink);background:rgba(127,140,180,.12);border-radius:8px;padding:5px 8px;}
+.al-chatrow.mine{background:rgba(212,175,55,.16);}
+.al-chatrow .al-chat-from{font-weight:800;}
+.al-chatrow .al-chat-time{opacity:.6;font-size:10.5px;margin-left:5px;}
+.al-chatempty{font-size:12px;color:var(--ink-soft);}
+.al-chatrow2{display:flex;gap:7px;}
+.al-chatrow2 input{flex:1;min-width:0;background:var(--bg2,#0d1425);border:1.5px solid var(--line-strong);border-radius:9px;color:var(--ink);font-size:13.5px;padding:9px 10px;}
+.al-chatrow2 button,.al-mini{border:0;cursor:pointer;font-weight:800;font-size:13px;padding:9px 13px;border-radius:9px;background:linear-gradient(160deg,var(--nx-gold-hi),#d4a017);color:#231a02;}
+.al-mini.ghosty{background:transparent;border:1.5px solid rgba(201,162,39,.6);color:var(--ink);}
+.al-mini:disabled{opacity:.45;cursor:default;}
+.al-panel-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:9px;}
+.al-suggest-hint{font-size:12px;color:var(--ink-soft);margin-top:7px;line-height:1.45;min-height:16px;}
+#alPanel.suggesting .al-teambox{border-color:#57c785;}
+.sq.al-sug-from{box-shadow:inset 0 0 0 3px #57c785, inset 0 0 18px rgba(87,199,133,.55);}
+.sq.al-sug-to{box-shadow:inset 0 0 0 3px #ffb340, inset 0 0 18px rgba(255,179,64,.55);}
+#alArrowSvg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:6;}
+.al-result-lines{font-size:13.5px;line-height:1.6;color:#e9e2c8;text-align:left;}
+.al-result-lines b{color:#f7f1dc;}
+.al-result-lines .al-cap{color:var(--nx-gold-hi);font-weight:850;}
 html.comp-reduce .nx-cat,html.comp-reduce .nx-mode,html.comp-reduce .nx-opp,html.comp-reduce .comp-card *{transition:none !important;animation:none !important;}
 @media (max-width:360px){ .nx-title{font-size:24px;} .nx-mode .nx-mode-desc{display:none;} .nx-cat{min-height:84px;padding:12px;} }
 @media (prefers-reduced-motion: reduce){ .nx-cat,.nx-mode,.nx-opp,#nxStartBtn,.nx-iconbtn{transition:none !important;} }
+
+/* ============================================================
+   MATCH CHAT STRIP — the bottom info/instruction banner panel
+   ("Tap a die — it will say which piece to move" + the die list)
+   is gone from the match screen; the space it freed is now the
+   always-visible in-match chat strip, fed by the same CHAT.msgs
+   and sendChat() channel as the room-chat drawer. The board
+   gives back the strip's extra height (54px) in its dvh formula
+   so the match stays one screen, no scroll, board and dice tray
+   unchanged. Hard announcements that used to ride the banner
+   fold into the one-line status under the turn chips.
+   ============================================================ */
+.matchchat{display:none;}
+body.playing .matchchat{display:flex;flex-direction:column;gap:3px;order:5;flex:0 0 auto;width:100%;margin-top:5px;padding:5px 8px 6px;background:linear-gradient(180deg,#131f3d,#0b1120);border:1.5px solid rgba(201,162,39,.55);border-radius:13px;box-shadow:inset 0 1px 0 rgba(255,255,255,.08);}
+.stripnote{font-size:10.5px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;color:#aeb6cc;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.striplist{height:31px;overflow-y:auto;display:flex;flex-direction:column;gap:1px;padding:2px 4px;border-radius:8px;background:rgba(3,6,16,.45);scroll-behavior:smooth;touch-action:pan-y;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;}
+.stripempty{font-size:12px;color:#8b93a8;text-align:center;padding-top:6px;}
+.stripmsg{font-size:12.5px;line-height:1.3;color:#e8e4d2;word-break:break-word;}
+.stripmsg b{color:#ffe98a;font-weight:800;margin-right:4px;}
+.stripmsg.mine b{color:#7db4ff;}
+.stripinputrow{display:flex;gap:6px;}
+.stripinputrow input{flex:1;min-width:0;font-size:13.5px;padding:7px 10px;border-radius:9px;border:1px solid var(--line-strong);background:var(--panel-2);color:var(--ink);}
+.stripinputrow input:focus{border-color:var(--gold-bright);outline:none;}
+.stripinputrow button{border:1px solid #8a6d1b;background:linear-gradient(180deg,#f6d776,#d4a017);color:#171106;font-size:13px;font-weight:800;padding:7px 14px;border-radius:9px;cursor:pointer;white-space:nowrap;}
+.stripinputrow button:disabled,.stripinputrow input:disabled{opacity:.42;cursor:not-allowed;}
+/* the folded one-line status in the turn banner area */
+body.playing .playstatus #statusMsg{display:block !important;font-size:12px;line-height:1.35;margin-top:3px;min-height:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--ink-soft);}
+body.playing .playstatus #statusMsg b{color:var(--ink);}
+/* board gives back the strip's extra height to keep the one-screen fit */
+body.playing .boardframe{width:min(calc(100vw - 12px),calc(100dvh - 420px));}
+@media (max-height:720px){body.playing .boardframe{width:min(calc(100vw - 12px),calc(100dvh - 482px));}}
 </style>
 <body class="show-menu">
 <div class="wrap">
@@ -3588,9 +3691,13 @@ html.comp-reduce .nx-cat,html.comp-reduce .nx-mode,html.comp-reduce .nx-opp,html
         </div>
         <button class="rollbtn" id="rollBtn" type="button">Roll 3 dice</button>
       </div>
-      <div class="movecallout" id="moveCallout" role="status" aria-live="polite">
-        <span class="mc-glyph" id="mcGlyph"></span>
-        <div class="mc-text"><div class="mc-title" id="mcTitle"></div><div class="mc-sub" id="mcSub"></div></div>
+      <div class="matchchat" id="matchChatStrip" aria-label="Match chat">
+        <div class="stripnote" id="stripChatNote">Match chat</div>
+        <div class="striplist" id="stripChatList"><div class="stripempty">No messages yet.</div></div>
+        <div class="stripinputrow">
+          <input id="stripChatInput" type="text" maxlength="300" placeholder="Message…" autocomplete="off" />
+          <button id="stripChatSend" type="button">Send</button>
+        </div>
       </div>
       <div class="playstatus">
         <div class="statusline">
@@ -3605,6 +3712,26 @@ html.comp-reduce .nx-cat,html.comp-reduce .nx-mode,html.comp-reduce .nx-opp,html
         <p id="statusMsg">Roll the dice to start your turn.</p>
       </div>
       <div id="compClocks" aria-label="Match clocks"></div>
+      <div id="alPanel" aria-label="Royal Alliance team panel">
+        <div class="al-rot" id="alRotation" aria-label="Turn rotation"></div>
+        <div class="al-banner" id="alTakeoverBanner" role="status"></div>
+        <p class="al-waitline" id="alWaitLine" role="status"></p>
+        <div class="al-teambox">
+          <h4 id="alTeamTitle">Your team</h4>
+          <div class="al-phrases" id="alPhrases" role="group" aria-label="Quick phrases to your teammate"></div>
+          <div class="al-chatlist" id="alChatList" aria-label="Team chat"></div>
+          <div class="al-chatrow2">
+            <input id="alChatInput" type="text" maxlength="200" placeholder="Message your teammate…" aria-label="Message your teammate" autocomplete="off" />
+            <button id="alChatSend" type="button">Send</button>
+          </div>
+          <div class="al-panel-actions">
+            <button class="al-mini ghosty" id="alSuggestBtn" type="button">Suggest a move</button>
+            <button class="al-mini ghosty" id="alMuteBtn" type="button">Mute teammate</button>
+            <button class="al-mini ghosty" id="alResignBtn" type="button">Resign team</button>
+          </div>
+          <p class="al-suggest-hint" id="alSuggestHint"></p>
+        </div>
+      </div>
       <button class="endturnbtn" id="endTurnBtn" type="button">End Turn — pass remaining dice</button>
       <div class="endturnhint" id="endTurnHint" role="note"></div>
       <button class="endturnbtn guardreroll" id="guardRerollBtn" type="button">♚ Reroll useless dice — find an escape</button>
@@ -4110,6 +4237,11 @@ html.comp-reduce .nx-cat,html.comp-reduce .nx-mode,html.comp-reduce .nx-opp,html
           <button class="acct-btn-primary" id="acctCreateBtn" type="button">Create account</button>
           <button class="acct-btn-ghost" id="acctLoginBtn" type="button">Log in</button>
         </div>
+        <div id="acctGoogleWrap" style="display:none;">
+          <div class="goog-divider"><span>or</span></div>
+          <button class="acct-google-btn" id="acctGoogleBtn" type="button"><svg width="19" height="19" viewBox="0 0 48 48" aria-hidden="true"><path fill="#FFC107" d="M43.6 20.1H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 8 3l5.7-5.7C34.3 6.1 29.3 4 24 4 13 4 4 13 4 24s9 20 20 20 20-9 20-20c0-1.3-.1-2.6-.4-3.9z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 8 3l5.7-5.7C34.3 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-8l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.1H42V20H24v8h11.3c-.8 2.3-2.3 4.3-4.1 5.6l6.2 5.2C36.9 39.2 44 34 44 24c0-1.3-.1-2.6-.4-3.9z"/></svg><span>Continue with Google</span></button>
+          <div class="acct-error" id="acctGoogleError" role="alert"></div>
+        </div>
         <div class="acct-status" id="acctStatus" role="status"></div>
         <div class="acct-note" id="acctLoginNote" role="status"></div>
         <button class="acct-forgot" id="acctForgotBtn" type="button">Forgot password?</button>
@@ -4122,6 +4254,14 @@ html.comp-reduce .nx-cat,html.comp-reduce .nx-mode,html.comp-reduce .nx-opp,html
           <div class="acct-line" id="acctRatingLine"></div>
           <div class="acct-line" id="acctRecordLine"></div>
           <div class="acct-line" id="acctBalanceLine" style="display:none;"></div>
+        </div>
+        <div class="acct-email-block" id="acctGoogleBlock" style="display:none;">
+          <div class="acct-lab" style="margin-top:0;">Google</div>
+          <div class="goog-linked-line" id="acctGoogleLinkedLine" style="display:none;">Google linked — you can sign in with Google on any device.</div>
+          <div class="acct-btnrow" id="acctLinkGoogleRow"><button class="acct-btn-ghost" id="acctLinkGoogleBtn" type="button">Link Google</button></div>
+          <p class="panelnote" style="margin-bottom:2px;">Linking lets you sign in with Google instead of your password. Your in-game name stays the same.</p>
+          <div class="acct-error" id="acctLinkError" role="alert"></div>
+          <div class="acct-note" id="acctLinkNote" role="status"></div>
         </div>
         <div class="acct-email-block">
           <div class="acct-lab" style="margin-top:0;">Recovery email</div>
@@ -4219,6 +4359,20 @@ html.comp-reduce .nx-cat,html.comp-reduce .nx-mode,html.comp-reduce .nx-opp,html
     </div>
     <p class="panelnote">Your profile lives only on this device — name, avatar, stats, rank, achievements and coins are stored in this browser and never sent anywhere.</p>
     <button class="utilbtn panelbtn" id="profileWipeBtn" type="button">Reset profile data (stats &amp; achievements)</button>
+  </div>
+</div>
+
+<div class="sheetdrawer" id="claimNameSheet" aria-label="Choose your in-game name">
+  <div class="sheetcard">
+    <div class="chathead"><span class="ch-title">Choose your in-game name</span></div>
+    <p class="panelnote" style="margin-top:2px;">You're signed in with Google. One last step: pick the public name other players will see in games, rankings and chat. Your Google name and email stay private — nobody sees them.</p>
+    <label class="acct-lab" for="claimNameInput">In-game name</label>
+    <input class="acct-input" id="claimNameInput" type="text" maxlength="20" placeholder="e.g. KnightHawk_7" autocomplete="off" autocapitalize="none" spellcheck="false" />
+    <p class="panelnote" style="margin-bottom:2px;">3–20 characters — letters, numbers or underscore only. Your name must be unique; if it's taken, you'll be asked for another.</p>
+    <div class="acct-error" id="claimNameError" role="alert"></div>
+    <div class="acct-btnrow"><button class="acct-btn-primary" id="claimNameBtn" type="button">Claim name</button></div>
+    <div class="acct-status" id="claimNameStatus" role="status"></div>
+    <button class="claim-offline" id="claimOfflineBtn" type="button">Play offline instead</button>
   </div>
 </div>
 
@@ -4378,6 +4532,10 @@ html.comp-reduce .nx-cat,html.comp-reduce .nx-mode,html.comp-reduce .nx-opp,html
     <p>It shows on the menu, in game setups and to a friend in Live rooms. Just a display name — no account. Your name, stats and coins are saved only on this device. Server-room coins are tracked by the game server for your device session instead.</p>
     <input id="nameInput" type="text" maxlength="16" placeholder="Guest Player" autocomplete="off" style="width:100%;font-size:16px;padding:12px;border-radius:11px;border:1px solid var(--line-strong);background:var(--panel-2);color:var(--ink);text-align:center;margin-bottom:14px;" />
     <div><button id="nameConfirm" type="button">Let's Play</button></div>
+    <div id="nameGoogleWrap" style="display:none;">
+      <div class="goog-divider"><span>or</span></div>
+      <button class="acct-google-btn" id="nameGoogleBtn" type="button"><svg width="19" height="19" viewBox="0 0 48 48" aria-hidden="true"><path fill="#FFC107" d="M43.6 20.1H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 8 3l5.7-5.7C34.3 6.1 29.3 4 24 4 13 4 4 13 4 24s9 20 20 20 20-9 20-20c0-1.3-.1-2.6-.4-3.9z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 8 3l5.7-5.7C34.3 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-8l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.1H42V20H24v8h11.3c-.8 2.3-2.3 4.3-4.1 5.6l6.2 5.2C36.9 39.2 44 34 44 24c0-1.3-.1-2.6-.4-3.9z"/></svg><span>Continue with Google</span></button>
+    </div>
     <div><button id="nameSignIn" type="button" style="margin-top:8px;">Sign In</button></div>
     <div><button id="nameSkip" type="button" class="ghost" style="margin-top:8px;">Skip</button></div>
   </div>
@@ -4538,6 +4696,84 @@ html.comp-reduce .nx-cat,html.comp-reduce .nx-mode,html.comp-reduce .nx-opp,html
       <button class="comp-primary" id="nxcStartBtn" type="button">Start</button>
       <button class="comp-ghost" id="nxcCancelBtn" type="button">Cancel</button>
     </div>
+  </div>
+</div>
+
+<div class="comp-overlay" id="allianceEntry" role="dialog" aria-modal="true" aria-label="Royal Alliance">
+  <div class="comp-card">
+    <button class="al-x" id="alEntryClose" type="button" aria-label="Close Royal Alliance">✕</button>
+    <h2 class="comp-title">Royal Alliance</h2>
+    <p class="comp-sub">2v2 · Casual · one shared army per team<br>Turns rotate Gold A → Shadow C → Gold B → Shadow D. Each team has one 15:00 clock. If the player whose turn it is drops out, their teammate can cover the turn with the dice already rolled.</p>
+    <div class="al-sec">
+      <h3>Queue as a Party</h3>
+      <p>Team up with a friend. Type their username — a party forms only when they also queue naming you.</p>
+      <div class="al-row">
+        <input class="al-input" id="alPartyName" type="text" maxlength="20" placeholder="Friend's username" aria-label="Friend's username" autocomplete="off" />
+        <button class="comp-primary" id="alPartyBtn" type="button">Queue as Party</button>
+      </div>
+    </div>
+    <div class="al-sec">
+      <h3>Queue Solo</h3>
+      <p>Get drafted into a team of two — solo teams are balanced by rating.</p>
+      <button class="comp-primary" id="alSoloBtn" type="button" style="width:100%;">Queue Solo</button>
+    </div>
+    <div class="al-sec">
+      <h3>Private Room</h3>
+      <p>Create a room and share the code, or join with a code. Pick a seat or take the first free one. The match starts when all four seats are filled and everyone has readied.</p>
+      <div class="al-row">
+        <input class="al-input" id="alRoomPw" type="password" maxlength="32" placeholder="Room password (optional)" aria-label="New room password (optional)" autocomplete="off" />
+        <button class="comp-ghost" id="alCreateRoomBtn" type="button">Create Room</button>
+      </div>
+      <div class="al-row">
+        <input class="al-input" id="alJoinCode" type="text" maxlength="8" placeholder="Room code" aria-label="Room code" autocomplete="off" style="text-transform:uppercase;" />
+        <select class="al-input" id="alJoinSeat" aria-label="Seat choice">
+          <option value="">Any seat</option>
+          <option value="gold:0">Gold A</option>
+          <option value="gold:1">Gold B</option>
+          <option value="shadow:0">Shadow C</option>
+          <option value="shadow:1">Shadow D</option>
+        </select>
+      </div>
+      <div class="al-row">
+        <input class="al-input" id="alJoinPw" type="password" maxlength="32" placeholder="Password (if the room has one)" aria-label="Room password" autocomplete="off" />
+        <button class="comp-ghost" id="alJoinRoomBtn" type="button">Join Room</button>
+      </div>
+    </div>
+    <div class="al-status" id="alEntryStatus" role="status"></div>
+    <div class="comp-actions">
+      <button class="comp-ghost" id="alCancelQueueBtn" type="button" style="display:none;">Cancel search</button>
+    </div>
+    <p class="comp-note">Casual play — no rating changes and no stakes. A free account is required.</p>
+  </div>
+</div>
+
+<div class="comp-overlay" id="allianceGate" role="dialog" aria-modal="true" aria-label="Royal Alliance ready gate">
+  <div class="comp-card">
+    <h2 class="comp-title" id="alGateTitle">Royal Alliance — Match Found</h2>
+    <p class="comp-sub" id="alGateSub">Casual 2v2 · 15:00 team clocks · all four players must ready up</p>
+    <p class="comp-sub" id="alGateRoom" style="display:none;font-weight:800;color:var(--nx-gold-hi);"></p>
+    <div class="al-teams" id="alGateTeams"></div>
+    <div class="comp-count" id="alGateCount"></div>
+    <div class="comp-actions">
+      <button class="comp-primary" id="alGateReadyBtn" type="button">Ready</button>
+      <button class="comp-ghost" id="alGateLeaveBtn" type="button">Leave</button>
+    </div>
+    <p class="comp-note" id="alGateNote">Your seat is outlined in gold. The board is shared — you and your teammate move the same army, taking turns in rotation.</p>
+  </div>
+</div>
+
+<div class="comp-overlay" id="allianceResult" role="dialog" aria-modal="true" aria-label="Royal Alliance result">
+  <div class="comp-card">
+    <button class="al-x" id="alResultClose" type="button" aria-label="Close result">✕</button>
+    <h2 class="comp-title" id="alResultTitle">Royal Alliance</h2>
+    <p class="comp-sub" id="alResultSub"></p>
+    <div class="al-result-lines" id="alResultBody"></div>
+    <div class="comp-ratingline" id="alResultRating" style="display:none;"></div>
+    <div class="comp-actions">
+      <button class="comp-primary" id="alResultAgainBtn" type="button">Play again — queue again</button>
+      <button class="comp-ghost" id="alResultLeaveBtn" type="button">Leave</button>
+    </div>
+    <p class="comp-note" id="alResultNote" style="display:none;">Private rooms don't rematch from here — create a new room from the Royal Alliance screen to play again.</p>
   </div>
 </div>
 
@@ -5353,7 +5589,19 @@ function originsList(moves){
 }
 function refreshCallout(){
   var box = document.getElementById("moveCallout");
-  if (!box) return;
+  if (!box){
+    /* The bottom callout panel was removed from the match screen: routine
+       die guidance ("tap a die", the die-meaning list, which piece a tapped
+       die moves) lives only in the dice labels, the dock hint and the board
+       highlights now. A hard announcement (a CALL_OVERRIDE — variant
+       warnings, lost dice, Fate) folds into the one-line status in the
+       turn banner area, never a separate bottom box. */
+    if (CALL_OVERRIDE && CALL_OVERRIDE.title){
+      var t = String(CALL_OVERRIDE.title).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+      setStatus("<b>" + t + "</b>");
+    }
+    return;
+  }
   var glyph = document.getElementById("mcGlyph"), title = document.getElementById("mcTitle"), sub = document.getElementById("mcSub");
   function show(g, t, s, kind){
     glyph.textContent = g || "";
@@ -5731,10 +5979,17 @@ function renderBoard(){
          and spectator boards all burst alike. */
       if (G.lastMove && G.lastMove.cap && G.lastMove.tr===r && G.lastMove.tc===c && G.lastMove.at && (Date.now()-G.lastMove.at)<900 && !G.kingKillWin){
         var capBurstKey = G.lastMove.at + ":" + r + "," + c;
-        if (window._kdCapBurstKey !== capBurstKey){
+        /* Re-spawn whenever the live burst node is gone: the move
+           flow renders the board several times in one chain
+           (doMove, then afterDieSpent), and each render rebuilds
+           the squares — a burst appended by an earlier render is
+           wiped before it can paint. Keying on the element's
+           connection, not just the capture key, keeps exactly one
+           burst alive on the final DOM. */
+        if (window._kdCapBurstKey !== capBurstKey || !window._kdCapBurstEl || !window._kdCapBurstEl.isConnected){
           window._kdCapBurstKey = capBurstKey;
           var capAtkPc = G.st.board[r][c];
-          fxCaptureBurst(sq, capAtkPc ? opp(capAtkPc.c) : "b");
+          window._kdCapBurstEl = fxCaptureBurst(sq, capAtkPc ? opp(capAtkPc.c) : "b") || window._kdCapBurstEl;
         }
       }
     });
@@ -7399,7 +7654,11 @@ function showGameOver(title, msg){
    lunges in and strikes, an impact flash + spider cracks cross the
    King, the board shakes, then the King shatters into shards in its own
    colours with a gold spark burst — and only then does the caller show
-   the victory modal. Game state, the result and coin settlement are
+   the victory modal. STAGING v2: every beat is a CSS keyframe
+   animation (compositor-driven, per-element delays); the earlier
+   WAAPI-only staging painted nothing on phone webviews that throttled
+   or dropped JS-driven animations, which is why the capture could
+   read as "no animation" in real play. Game state, the result and coin settlement are
    committed by the caller BEFORE this runs; nothing here gates them,
    and online clients each play it off the game-over result they already
    receive. Royal Guard checkmates use playKingKneel instead (Kings are
@@ -7464,7 +7723,7 @@ function fxAnimOK(){
    fires on every client that renders the capture — local, P2P,
    server, spectator. CSS-driven; the node removes itself. */
 function fxCaptureBurst(sq, victimColor){
-  if (!sq || !fxAnimOK()) return;
+  if (!sq || !fxAnimOK()) return null;
   try{
     var old = sq.querySelector(".capburst"); if (old) old.remove();
     var burst = document.createElement("div");
@@ -7483,8 +7742,9 @@ function fxCaptureBurst(sq, victimColor){
       burst.appendChild(sh);
     }
     sq.appendChild(burst);
-    setTimeout(function(){ if (burst.parentNode) burst.remove(); }, 1000);
-  }catch(e){}
+    setTimeout(function(){ if (burst.parentNode) burst.remove(); }, 1300);
+    return burst;
+  }catch(e){ return null; }
 }
 /* SHIELD just applied: a gold shimmer sweeps the protected piece's
    square. Fired by whichever path newly places the shield (local
@@ -7706,21 +7966,14 @@ function playKingKneel(loserColor, done){
     crown.style.width = "12.5%"; crown.style.height = "12.5%";
     crown.style.left = kp.x + "%"; crown.style.top = kp.y + "%";
     layer.appendChild(crown);
-    if (pieceEl && pieceEl.animate){
-      pieceEl.animate([
-        { transform:"translateY(-1px) rotate(0deg) scale(1,1)", opacity:1 },
-        { transform:"translateY(4px) rotate(-5deg) scale(.94,.88)", opacity:.92, offset:.55 },
-        { transform:"translateY(7px) rotate(-3deg) scale(.96,.86)", opacity:.88 }
-      ], { duration:820, fill:"forwards", easing:"cubic-bezier(.4,0,.3,1)" });
-    }
-    if (crown.animate){
-      crown.animate([
-        { transform:"translate(4px,-16px) rotate(12deg)", opacity:0 },
-        { transform:"translate(9px,-9px) rotate(20deg)", opacity:1, offset:.3 },
-        { transform:"translate(15px,9px) rotate(38deg)", opacity:.85, offset:.72 },
-        { transform:"translate(19px,17px) rotate(52deg)", opacity:0 }
-      ], { duration:1000, delay:260, fill:"forwards", easing:"cubic-bezier(.5,0,.7,.4)" });
-    }
+    /* CSS staging (same v2 treatment as the smash): the kneel and the
+       crown fall are keyframe animations — .piece.ks-kneel and
+       .kcrown's built-in ksCrownFall — so they play even where WAAPI
+       animations are throttled or unavailable. The class is removed
+       in finish() via the layer teardown + the render that follows
+       the modal; a stale class on the real piece is also cleared by
+       the next renderBoard, which rebuilds every piece element. */
+    if (pieceEl) pieceEl.classList.add("ks-kneel");
     at(function(){ sfxTone(1180, 0.07, "triangle", 0.028); }, 950); /* the crown lands */
     at(finish, 1300);
   }catch(e){
@@ -8486,6 +8739,7 @@ function renderChat(){
     });
   }
   list.scrollTop = list.scrollHeight;
+  renderStripChat();
   updateChatUI();
 }
 function updateChatUI(){
@@ -8523,7 +8777,73 @@ function updateChatUI(){
   var fab = document.getElementById("chatFab");
   if (fab) fab.classList.toggle("on", !!t && document.body.classList.contains("playing") && !CHAT.open);
   if (!t && CHAT.open) closeChatDrawer();
+  if (typeof updateStripChatUI==="function") updateStripChatUI();
   if (typeof updateQuickChatUI==="function") updateQuickChatUI();
+}
+/* ---------- in-match chat strip (always visible under the dice dock) ----------
+   A second surface on the SAME match chat as the drawer: it renders the
+   same CHAT.msgs and sends through sendChat(), so the strip, the drawer
+   and the corner bubble always show one conversation. In games with no
+   live opponent (Vs Computer, turn-code) it follows Quick Chat's honest
+   rule: the message is kept on this device only, credited like a local
+   quick chat, and the strip is labelled "on-device only". */
+function renderStripChat(){
+  var list = document.getElementById("stripChatList");
+  if (!list) return;
+  list.innerHTML = "";
+  if (!CHAT.msgs.length){
+    var empty = document.createElement("div");
+    empty.className = "stripempty";
+    empty.textContent = "No messages yet.";
+    list.appendChild(empty);
+  } else {
+    CHAT.msgs.slice(-40).forEach(function(m){
+      var row = document.createElement("div");
+      row.className = "stripmsg" + (m.mine ? " mine" : "");
+      var who = document.createElement("b");
+      who.textContent = (m.mine && !m.local ? "You" : m.name) + ":";
+      var txt = document.createElement("span");
+      txt.textContent = m.text; // textContent only — chat text is never rendered as HTML
+      row.appendChild(who); row.appendChild(txt);
+      list.appendChild(row);
+    });
+  }
+  list.scrollTop = list.scrollHeight;
+}
+function updateStripChatUI(){
+  var note = document.getElementById("stripChatNote");
+  var inp = document.getElementById("stripChatInput"), send = document.getElementById("stripChatSend");
+  if (!note || !inp || !send) return;
+  var t = chatTransport(), ready = chatReady();
+  if (t==="srv" || t==="p2p"){
+    note.textContent = ready ? "Match chat — live with your opponent in this room" : "Match chat — connects when the match is live";
+    inp.placeholder = "Message your opponent…";
+    inp.disabled = !ready; send.disabled = !ready;
+  } else if (t==="local"){
+    note.textContent = "Match chat — on-device only (shared screen)";
+    inp.placeholder = "Message (stays on this device)…";
+    inp.disabled = false; send.disabled = false;
+  } else {
+    note.textContent = "Match chat — on-device only, no live opponent in this game";
+    inp.placeholder = "Message (stays on this device)…";
+    inp.disabled = false; send.disabled = false;
+  }
+}
+function sendStripChat(raw){
+  var text = String(raw == null ? "" : raw).trim().slice(0, CHAT_MAX);
+  if (!text) return;
+  var t = chatTransport();
+  if (!t){
+    // No live connection in this match (Vs Computer / turn-code game):
+    // nothing is sent anywhere — same honest rule as Quick Chat. The
+    // message stays on this screen and in the session chat history.
+    var col = quickLocalCol();
+    CHAT.msgs.push({ name: chatNameFor(col), text: text, time: Date.now(), mine: true, local: true });
+    renderChat();
+    if (typeof showChatBubble==="function") showChatBubble(bubbleNameFor(col), text, col);
+    return;
+  }
+  sendChat(text);
 }
 function openChatDrawer(){
   if (typeof closeQuickPanel==="function") closeQuickPanel();
@@ -9184,6 +9504,21 @@ document.getElementById("chatInput").addEventListener("keydown", function(e){
     this.value = "";
   }
 });
+document.getElementById("stripChatSend").addEventListener("click", function(){
+  var inp = document.getElementById("stripChatInput");
+  sendStripChat(inp.value);
+  inp.value = "";
+  try{ inp.focus({ preventScroll:true }); }catch(e){}
+});
+document.getElementById("stripChatInput").addEventListener("keydown", function(e){
+  if (e.key === "Enter"){
+    e.preventDefault();
+    sendStripChat(this.value);
+    this.value = "";
+  }
+});
+renderStripChat();
+updateStripChatUI();
 document.querySelectorAll("#chatQuick button").forEach(function(b){
   b.addEventListener("click", function(){ sendChat(b.getAttribute("data-quick")); });
 });
@@ -11298,6 +11633,10 @@ function srvOnMessage(msg){
       if (typeof acctOnAuthError==="function") acctOnAuthError(msg);
       break;
     }
+    case "googleLink": {
+      if (typeof googOnLink==="function") googOnLink(msg);
+      break;
+    }
     case "accountEmailSet": {
       if (typeof acctOnEmailSet==="function") acctOnEmailSet(msg);
       break;
@@ -11510,6 +11849,13 @@ function srvOnMessage(msg){
         srvSyncUI();
         break;
       }
+      if (msg.code==="NEEDS_NAME"){
+        // Server backstop for an unnamed Google account touching a
+        // play surface: route to the blocking name sheet.
+        if (typeof googShowClaimSheet==="function") googShowClaimSheet();
+        srvSyncUI();
+        break;
+      }
       if (typeof trnHandleError==="function" && trnHandleError(msg)) break;
       if (typeof brwHandleError==="function" && brwHandleError(msg)) break;
       if (typeof lbHandleError==="function" && lbHandleError(msg)) break;
@@ -11612,6 +11958,66 @@ var ACCT = { account: null, error: "", busy: false, action: null, timer: null, s
 ACCT.email = null; ACCT.emailKnown = false; ACCT.loginNote = "";
 var EML = { pending: false, error: "", note: "" };
 var REC = { open: false, step: 1, pending: false, action: null, identifier: "", error1: "", error2: "" };
+/* ---------- Google sign-in state ----------
+   The server contract (hidden_files/google-signin-notes.md): the
+   welcome payload carries `googleAuth` (true only when the server
+   has Google configured — the button exists only then). Signing in
+   is a full-page trip to SRV_HTTP + "/auth/google/start"; Google
+   sends the browser back to the game page with ?googleCode=<code>
+   (redeem it over the socket with authGoogleRedeem once the socket
+   is up) or ?googleError=<code> from a closed set. authOk with
+   action "google" is a Google sign-in; an account whose public
+   profile carries needsName:true must claim a name (claimName)
+   before it can play online. The public profile deliberately does
+   NOT expose whether a Google identity is attached (googleSub is
+   server-internal), so the linked state shown in Profile is
+   inferred from the authOk `action` field the contract defines:
+   a session established by a "google" redeem — including the
+   redeem that returns from a link flow — is a Google-linked
+   session, and linkGoogleStart's ALREADY_LINKED reply confirms
+   the same for sessions that arrive by password. The inference is
+   remembered per account id on this device only. */
+var GOOG = {
+  configured: null,        // null = not known yet; boolean from welcome / /health
+  pendingCode: null,       // ?googleCode= captured on load, redeemed on welcome
+  pendingError: null,      // ?googleError= captured on load, shown on welcome
+  errorShown: false,
+  redeemPending: false,
+  needsName: false,
+  claimPending: false,
+  claimError: "",
+  linkPending: false,
+  linkError: "",
+  linkNote: "",
+  linkedId: null           // account id this device has seen Google-linked
+};
+try{ GOOG.linkedId = localStorage.getItem("dicechess-google-linked-id") || null; }catch(e){}
+var GOOG_ERROR_TEXT = {
+  state_invalid: "That Google sign-in link has expired — try Continue with Google again.",
+  exchange_failed: "Google sign-in didn't complete — try again.",
+  already_linked: "That Google account is already linked to a different game account.",
+  link_failed: "Linking that Google account didn't work — try again."
+};
+function googErrorText(code){
+  return GOOG_ERROR_TEXT[code] || "Google sign-in didn't complete — try again.";
+}
+/* Capture the Google return parameters on load and strip them from
+   the address bar at once (the redeem code is single-use and must
+   not linger in history or be re-sent on a manual reload). Other
+   parameters (e.g. ?room= invites) are preserved. */
+(function googCaptureReturn(){
+  try{
+    var params = new URLSearchParams(location.search || "");
+    var code = params.get("googleCode"), err = params.get("googleError");
+    if (!code && !err) return;
+    if (code) GOOG.pendingCode = String(code);
+    if (err) GOOG.pendingError = String(err);
+    params.delete("googleCode"); params.delete("googleError");
+    var qs = params.toString();
+    var clean = location.pathname + (qs ? "?" + qs : "") + (location.hash || "");
+    if (window.history && history.replaceState) history.replaceState(null, "", clean);
+  }catch(e){}
+})();
 try{
   var _acctSaved = JSON.parse(localStorage.getItem(ACCT_KEY) || "null");
   if (!(_acctSaved && typeof _acctSaved==="object" && _acctSaved.username)){
@@ -11739,6 +12145,7 @@ function acctRender(){
     var en = document.getElementById("acctEmailNote");
     if (en) en.textContent = EML.note || "";
   }
+  if (typeof googRender==="function") googRender();
 }
 /* welcome carries the account (null for guests): it is the
    authority on every (re)connect, so signed-in state restores
@@ -11749,6 +12156,7 @@ function acctApplyWelcome(msg){
   acctSaveDisplay();
   acctSyncChip();
   acctRender();
+  if (typeof googOnWelcome==="function") googOnWelcome(msg);
 }
 function acctOnAuthOk(msg){
   acctClearPassword();
@@ -11762,6 +12170,7 @@ function acctOnAuthOk(msg){
   srvSaveSession();
   if (msg && msg.action==="logout"){
     ACCT.account = null;
+    if (typeof googOnLogout==="function") googOnLogout();
     acctSaveDisplay();
     acctSyncChip();
     acctRender();
@@ -11774,9 +12183,18 @@ function acctOnAuthOk(msg){
   acctSyncChip();
   acctRender();
   srvSyncUI();
-  toast(msg && msg.action==="register" ? "Account created — you're signed in." : "Signed in — welcome back.");
+  if (typeof googAfterAuthOk==="function") googAfterAuthOk(msg);
+  if (msg && msg.account && msg.account.needsName){
+    /* The choose-your-name sheet (opened by googAfterAuthOk) is the message. */
+  } else if (msg && msg.action==="register") toast("Account created — you're signed in.");
+  else if (msg && msg.action==="claimName") toast("Name claimed — you're signed in.");
+  else if (msg && msg.action==="google") toast("Signed in with Google — welcome back.");
+  else toast("Signed in — welcome back.");
 }
 function acctOnAuthError(msg){
+  /* Google sends in flight (redeem / claimName / linkGoogleStart)
+     own their errors — plain words in their own places. */
+  if (typeof googOnAuthError==="function" && googOnAuthError(msg)) return;
   /* Email-recovery sends in flight own their errors: the set-email
      form and the reset flow show the server's message in place
      instead of the login form's error line. */
@@ -11856,6 +12274,7 @@ function acctAttempt(action){
 /* srvConnectFailed hook: a pending auth send never fired (it sat in
    the ready queue), so fail the attempt cleanly instead of hanging. */
 function acctOnConnectFailed(){
+  if (typeof googOnConnectFailed==="function") googOnConnectFailed();
   var recDirty = false;
   if (EML.pending){
     EML.pending = false;
@@ -12045,6 +12464,7 @@ function openAccountSection(){
   closePanels();
   renderPanels();
   acctRender();
+  if (typeof googFetchHealth==="function") googFetchHealth();
   openSheet("panelProfile");
   setTimeout(function(){
     var sec = document.getElementById("acctSection");
@@ -12102,6 +12522,327 @@ function openAccountSection(){
   if (ov) ov.addEventListener("click", function(e){ if (e.target===ov) hideRankedGate(); });
   acctRender();
   acctSyncChip();
+})();
+
+/* ============================================================
+   GOOGLE SIGN-IN — client wiring (contract:
+   hidden_files/google-signin-notes.md). All sends ride the
+   existing game WebSocket; the OAuth legs themselves are plain
+   browser navigations to the server's HTTP origin.
+   ============================================================ */
+function googSetLinked(id){
+  if (!id) return;
+  GOOG.linkedId = id;
+  try{ localStorage.setItem("dicechess-google-linked-id", id); }catch(e){}
+}
+function googIsLinked(account){
+  if (!account) return false;
+  /* An explicit flag on the payload, if a future server sends one,
+     wins; the notes' public profile carries none today. */
+  if (account.googleLinked===true || account.hasGoogle===true) return true;
+  if (typeof account.googleSub==="string" && account.googleSub) return true;
+  /* Inferred from the authOk action field (see the GOOG note). */
+  return !!(GOOG.linkedId && account.id && GOOG.linkedId===account.id);
+}
+function googRender(){
+  if (typeof GOOG==="undefined" || !GOOG) return;
+  var signed = (typeof acctSignedIn==="function") && acctSignedIn();
+  var wrap = document.getElementById("acctGoogleWrap");
+  if (wrap) wrap.style.display = (!signed && GOOG.configured===true) ? "" : "none";
+  /* The same button lives on the first-run guest name popup: it
+     follows the same googleAuth flag, appearing when the welcome
+     (or /health) lands even if the popup opened before it. */
+  var nwrap = document.getElementById("nameGoogleWrap");
+  if (nwrap) nwrap.style.display = (!signed && GOOG.configured===true) ? "" : "none";
+  var gErr = document.getElementById("acctGoogleError");
+  if (gErr) gErr.textContent = (!signed && GOOG.pendingError && GOOG.errorShown) ? googErrorText(GOOG.pendingError) : "";
+  var block = document.getElementById("acctGoogleBlock");
+  if (block){
+    var showBlock = !!(signed && GOOG.configured===true);
+    block.style.display = showBlock ? "" : "none";
+    if (showBlock){
+      var linked = googIsLinked(ACCT.account);
+      var line = document.getElementById("acctGoogleLinkedLine");
+      if (line) line.style.display = linked ? "" : "none";
+      var row = document.getElementById("acctLinkGoogleRow");
+      if (row) row.style.display = linked ? "none" : "";
+      var lb = document.getElementById("acctLinkGoogleBtn");
+      if (lb){ lb.disabled = !!GOOG.linkPending; lb.textContent = GOOG.linkPending ? "Opening Google…" : "Link Google"; }
+      var le = document.getElementById("acctLinkError");
+      if (le) le.textContent = GOOG.linkError || "";
+      var ln = document.getElementById("acctLinkNote");
+      if (ln) ln.textContent = GOOG.linkNote || "";
+    }
+  }
+  var ce = document.getElementById("claimNameError");
+  if (ce) ce.textContent = GOOG.claimError || "";
+  var cb = document.getElementById("claimNameBtn");
+  if (cb) cb.disabled = !!GOOG.claimPending;
+  var cs = document.getElementById("claimNameStatus");
+  if (cs) cs.textContent = GOOG.claimPending ? "Checking that name…" : "";
+}
+/* /health carries the same googleAuth flag as welcome — used so the
+   button can appear as soon as the account area opens, before any
+   WebSocket welcome has arrived. */
+function googFetchHealth(){
+  if (GOOG.configured!==null) return;
+  try{
+    fetch(SRV_HTTP + "/health").then(function(r){ return r.json(); }).then(function(h){
+      if (h && typeof h.googleAuth==="boolean" && GOOG.configured===null){
+        GOOG.configured = h.googleAuth;
+        acctRender();
+      }
+    }).catch(function(){});
+  }catch(e){}
+}
+function googShowPendingError(){
+  if (!GOOG.pendingError || GOOG.errorShown) return;
+  GOOG.errorShown = true;
+  acctRender();
+  if (typeof openAccountSection==="function") openAccountSection();
+  toast(googErrorText(GOOG.pendingError));
+}
+function googOnWelcome(msg){
+  if (msg && typeof msg.googleAuth==="boolean") GOOG.configured = msg.googleAuth;
+  /* A restored session for a needs-name account: username is null,
+     so the normal signed-in test misses it — the name sheet is
+     still owed. */
+  if (msg && msg.account && msg.account.needsName===true){
+    GOOG.needsName = true;
+    googShowClaimSheet();
+  }
+  if (GOOG.pendingError){ googShowPendingError(); GOOG.pendingError = null; }
+  if (GOOG.pendingCode){
+    var code = GOOG.pendingCode;
+    GOOG.pendingCode = null; // single-use: never re-send on reconnects
+    GOOG.redeemPending = true;
+    if (!srvSendRaw({ type:"authGoogleRedeem", code: code })){
+      GOOG.redeemPending = false;
+      ACCT.error = "Couldn't reach the server to finish Google sign-in — try again.";
+      acctRender();
+    }
+  }
+  acctRender();
+}
+function googAfterAuthOk(msg){
+  if (!msg) return;
+  GOOG.redeemPending = false;
+  GOOG.linkPending = false;
+  if (msg.action==="google" && msg.account){
+    /* A Google-established session: the account is Google-linked
+       (fresh Google account, linked password account, or the
+       redeem returning from a link flow). */
+    googSetLinked(msg.account.id);
+    try{ sessionStorage.removeItem("dicechess-google-link-return"); }catch(e){}
+    var np = document.getElementById("namePopup");
+    if (np) np.classList.remove("on");
+  }
+  if (msg.account && msg.account.needsName===true){
+    GOOG.needsName = true;
+    GOOG.claimPending = false;
+    GOOG.claimError = "";
+    googShowClaimSheet();
+  } else if (msg.action==="claimName"){
+    GOOG.needsName = false;
+    GOOG.claimPending = false;
+    GOOG.claimError = "";
+    closeSheet("claimNameSheet");
+  }
+  acctRender();
+}
+function googOnLogout(){
+  GOOG.needsName = false;
+  GOOG.claimPending = false;
+  GOOG.claimError = "";
+  GOOG.linkPending = false;
+  GOOG.linkError = "";
+  GOOG.linkNote = "";
+  closeSheet("claimNameSheet");
+}
+function googOnAuthError(msg){
+  var code = msg && msg.code;
+  var message = (msg && msg.message) || "";
+  if (GOOG.claimPending){
+    GOOG.claimPending = false;
+    if (code==="USERNAME_TAKEN") GOOG.claimError = "That name is taken — try another.";
+    else if (code==="BAD_USERNAME") GOOG.claimError = "Names are 3–20 characters: letters, numbers or underscore only.";
+    else if (code==="NAME_ALREADY_SET"){
+      /* The account already has its name — nothing is owed. */
+      GOOG.needsName = false;
+      GOOG.claimError = "";
+      closeSheet("claimNameSheet");
+      acctRender();
+      toast("Your name is already set — you're signed in.");
+      return true;
+    }
+    else if (code==="AUTH_RATE_LIMITED") GOOG.claimError = "Too many attempts — wait a minute, then try again.";
+    else if (code==="NOT_AUTHENTICATED"){
+      GOOG.needsName = false;
+      closeSheet("claimNameSheet");
+      ACCT.error = "Your session expired — sign in with Google again.";
+      acctRender();
+      return true;
+    }
+    else GOOG.claimError = message || "That name couldn't be claimed — try another.";
+    acctRender();
+    return true;
+  }
+  if (GOOG.redeemPending){
+    GOOG.redeemPending = false;
+    var linkReturn = false;
+    try{ linkReturn = sessionStorage.getItem("dicechess-google-link-return")==="1"; sessionStorage.removeItem("dicechess-google-link-return"); }catch(e){}
+    if (code==="ALREADY_AUTHENTICATED" && acctSignedIn()){
+      /* Link return: the browser came back already signed in as the
+         account the link was for (its session token restored it), so
+         the redeem itself is refused — but the link was completed
+         by the server callback before the return. The signed-in
+         state stands and the account shows as linked. */
+      if (linkReturn && ACCT.account) googSetLinked(ACCT.account.id);
+      acctRender();
+      if (linkReturn) toast("Google linked to your account.");
+      return true;
+    }
+    if (code==="GOOGLE_CODE_INVALID") ACCT.error = "That Google sign-in didn't finish — it may have expired. Try Continue with Google again.";
+    else if (code==="AUTH_RATE_LIMITED") ACCT.error = "Too many attempts — wait a minute, then try again.";
+    else ACCT.error = message || "Google sign-in didn't complete — try again.";
+    acctRender();
+    if (typeof openAccountSection==="function") openAccountSection();
+    toast(ACCT.error);
+    return true;
+  }
+  if (GOOG.linkPending){
+    GOOG.linkPending = false;
+    if (code==="ALREADY_LINKED"){
+      /* The server confirms this account already carries a Google
+         identity — that IS the linked state. */
+      if (ACCT.account) googSetLinked(ACCT.account.id);
+      GOOG.linkError = "";
+      GOOG.linkNote = "Google is already linked to this account.";
+    }
+    else if (code==="GOOGLE_UNAVAILABLE") GOOG.linkError = "Google sign-in isn't available on the server right now.";
+    else if (code==="NOT_AUTHENTICATED") GOOG.linkError = "Sign in first, then link Google.";
+    else GOOG.linkError = message || "Linking didn't start — try again.";
+    acctRender();
+    return true;
+  }
+  return false;
+}
+function googOnConnectFailed(){
+  if (GOOG.claimPending){
+    GOOG.claimPending = false;
+    GOOG.claimError = "Couldn't reach the server — give it a few seconds and try again.";
+    acctRender();
+  }
+  if (GOOG.linkPending){
+    GOOG.linkPending = false;
+    GOOG.linkError = "Couldn't reach the server — give it a few seconds and try again.";
+    acctRender();
+  }
+  if (GOOG.redeemPending){
+    GOOG.redeemPending = false;
+    ACCT.error = "Couldn't reach the server to finish Google sign-in — try again.";
+    acctRender();
+  }
+}
+function googStartSignIn(){
+  if (GOOG.configured!==true) return;
+  window.location.href = SRV_HTTP + "/auth/google/start";
+}
+function googStartLink(){
+  if (GOOG.linkPending || !acctSignedIn()) return;
+  GOOG.linkError = ""; GOOG.linkNote = "";
+  GOOG.linkPending = true;
+  acctRender();
+  acctSendOrConnect({ type:"linkGoogleStart" }, function(){
+    GOOG.linkPending = false;
+    GOOG.linkError = "Server isn't connected right now — try again in a moment.";
+    acctRender();
+  });
+}
+function googOnLink(msg){
+  if (!msg || typeof msg.url!=="string" || !msg.url){
+    GOOG.linkPending = false;
+    GOOG.linkError = "Linking didn't start — try again.";
+    acctRender();
+    return;
+  }
+  /* The server sends a path; resolve it against the server origin
+     and go there in this browser (Google + the link callback run
+     on the server, which returns us to the game page). */
+  var url = msg.url.charAt(0)==="/" ? SRV_HTTP + msg.url : msg.url;
+  try{ sessionStorage.setItem("dicechess-google-link-return", "1"); }catch(e){}
+  window.location.href = url;
+}
+/* ---------- choose-your-name sheet (blocking) ----------
+   No ✕ and no dismiss path: an unnamed Google account cannot do
+   anything online (the server refuses with NEEDS_NAME), so the
+   only exits are claiming a name or the plainly-labelled offline
+   link, which signs the session back out to guest. */
+function googShowClaimSheet(){
+  GOOG.needsName = true;
+  var np = document.getElementById("namePopup");
+  if (np) np.classList.remove("on");
+  if (typeof closePanels==="function") closePanels();
+  openSheet("claimNameSheet");
+  setTimeout(function(){
+    var i = document.getElementById("claimNameInput");
+    if (i){ try{ i.focus({ preventScroll:true }); }catch(e){} }
+  }, 90);
+}
+function googClaimSubmit(){
+  if (GOOG.claimPending) return;
+  var iEl = document.getElementById("claimNameInput");
+  var name = iEl ? iEl.value.trim() : "";
+  GOOG.claimError = "";
+  if (!/^[A-Za-z0-9_]{3,20}$/.test(name)){
+    GOOG.claimError = "Names are 3–20 characters: letters, numbers or underscore only.";
+    acctRender();
+    return;
+  }
+  GOOG.claimPending = true;
+  acctRender();
+  acctSendOrConnect({ type:"claimName", name: name }, function(){
+    GOOG.claimPending = false;
+    GOOG.claimError = "Server isn't connected right now — try again in a moment.";
+    acctRender();
+  });
+}
+function googPlayOffline(){
+  /* Sign the unnamed session back out to a guest, then close the
+     sheet — offline play needs no account at all. */
+  GOOG.needsName = false;
+  GOOG.claimPending = false;
+  GOOG.claimError = "";
+  closeSheet("claimNameSheet");
+  acctSendOrConnect({ type:"logout" }, function(){});
+  ACCT.account = null;
+  acctSaveDisplay();
+  acctSyncChip();
+  acctRender();
+  toast("You're playing as a guest — offline play is open. Sign in with Google any time to finish choosing your name.");
+}
+(function googBind(){
+  var b = document.getElementById("acctGoogleBtn");
+  if (b) b.addEventListener("click", googStartSignIn);
+  var nb = document.getElementById("nameGoogleBtn");
+  if (nb) nb.addEventListener("click", googStartSignIn);
+  var lb = document.getElementById("acctLinkGoogleBtn");
+  if (lb) lb.addEventListener("click", googStartLink);
+  var cb = document.getElementById("claimNameBtn");
+  if (cb) cb.addEventListener("click", googClaimSubmit);
+  var ci = document.getElementById("claimNameInput");
+  if (ci) ci.addEventListener("keydown", function(e){ if (e.key==="Enter"){ e.preventDefault(); googClaimSubmit(); } });
+  var ob = document.getElementById("claimOfflineBtn");
+  if (ob) ob.addEventListener("click", googPlayOffline);
+  /* A Google return with no saved session never auto-connects at
+     boot — connect now so the welcome can flush the redeem/error. */
+  if (GOOG.pendingCode || GOOG.pendingError){
+    setTimeout(function(){
+      if (GOOG.pendingError && !SRV.welcomed) googShowPendingError();
+      if (!SRV.ws && !SRV.welcomed) srvConnect();
+    }, 900);
+  }
+  acctRender();
 })();
 
 /* ---------- server state -> local rendering ---------- */
@@ -12400,7 +13141,13 @@ function srvHandleFinished(s){
   var key = (SRV.roomCode || "") + ":" + (s.version || 0) + ":" + (res.reason || "");
   if (SRV.overShownFor!==key){
     SRV.overShownFor = key;
-    if (res.reason==="king-capture" && res.winner && SRV.justFinished && G.lastMove){
+    /* The smash trigger accepts the server's stated reason OR the
+       board evidence itself (winner set, their last move a capture,
+       and the loser's King actually gone from the final board) — a
+       finish packet whose reason string ever drifts must not
+       silently downgrade the finale to a plain modal. */
+    var kingGone = !!(res.winner && G.lastMove && G.lastMove.cap && !findKing(G.st.board, opp(res.winner)));
+    if ((res.reason==="king-capture" || kingGone) && res.winner && SRV.justFinished && G.lastMove){
       // KING SMASH, server edition: the result and balances are already
       // committed from the server's verdict above — the finale only
       // delays the modal. Deferred a tick so srvApplyStateNow's
@@ -13016,9 +13763,13 @@ function srvKickReconnect(){
   // first visit with no saved name: ask for the in-game name over the menu.
   // Never when a server account is signed in — the account already
   // identifies the player (the menu chip shows the account username).
-  if (!PROFILE_NAME && !(typeof acctSignedIn==="function" && acctSignedIn())){
+  if (!PROFILE_NAME && !(typeof acctSignedIn==="function" && acctSignedIn())
+      && !(typeof GOOG!=="undefined" && GOOG && (GOOG.pendingCode || GOOG.pendingError))){
     var np = document.getElementById("namePopup");
     if (np) np.classList.add("on");
+    /* The popup can precede any server welcome: ask /health whether
+       Google sign-in exists so its button can appear right here. */
+    if (typeof googFetchHealth==="function") googFetchHealth();
   }
   try{
     var m = /code=([A-Za-z0-9._-]+)/.exec(location.hash || "");
@@ -13986,6 +14737,26 @@ showGameOver = function(title, msg){
       }
     }
     wrap.appendChild(head);
+    /* Gold coin burst on a win, tied to what was actually won: it
+       only fires when a pot was taken (potWon / server coinResult
+       naming the pot) or reward coins were granted (totalCoins) —
+       a stakeless friendly win stays restrained. CSS-driven,
+       fire-and-forget; skipped under reduced motion (the `reduced`
+       flag above already covers system + in-game settings). */
+    if (result==="victory" && !reduced && fxAnimOK() && (potWon>0 || totalCoins>0 || (G.coinResult && /pot/i.test(G.coinResult)))){
+      var cb = document.createElement("div"); cb.className = "pm-coinburst"; cb.setAttribute("aria-hidden", "true");
+      for (var ci=0; ci<12; ci++){
+        var coinEl = document.createElement("i");
+        var cAng = (ci/12)*Math.PI*2 + Math.random()*0.4;
+        var cDist = 46 + Math.random()*62;
+        coinEl.style.setProperty("--sex", Math.round(Math.cos(cAng)*cDist) + "px");
+        coinEl.style.setProperty("--sey", Math.round(Math.sin(cAng)*cDist*0.75 + 18) + "px");
+        coinEl.style.setProperty("--srot", Math.round(Math.random()*420 - 210) + "deg");
+        coinEl.style.animationDelay = (Math.random()*0.16) + "s";
+        cb.appendChild(coinEl);
+      }
+      wrap.appendChild(cb);
+    }
 
     var rows = [];
     if (baseWin) rows.push({ label:"🏆 Base match victory", val:baseWin });
@@ -17544,7 +18315,7 @@ var NX_MODES = {
     { id:"bo3", icon:"♜", name:"Best of Three", desc:"Ranked series · first to 2", play:"comp", kind:"series" },
     { id:"mirror", icon:"◐", name:"Mirror Dice", desc:"Ranked pair · same dice both ways", play:"comp", kind:"mirror" },
     { id:"gauntlet", icon:"🏆", name:"Royal Gauntlet", desc:"Tournaments", play:"gauntlet" },
-    { id:"alliance", icon:"🤝", name:"Royal Alliance", desc:"Team battles", play:"soon" }
+    { id:"alliance", icon:"🤝", name:"Royal Alliance", desc:"2v2 · shared army · casual", play:"alliance" }
   ],
   arcade: [
     { id:"hill", icon:"♚", name:"King of the Hill", desc:"Take the hill squares", play:"variant", variant:"hill" },
@@ -17589,8 +18360,8 @@ function nxExplainFor(m){
     rules:"Before the match, the server commits to one fixed dice sequence per side and shows the hash up front. In Game B you play the other colour against the same sequences, so both players face identical dice luck — and afterwards you can verify the reveal against the commitment. Mirror Dice balances dice-sequence exposure, not every strategic consequence of a roll. Games run on 10-minute clocks; one Mirror-pool rating update at the end." };
   if (m.id === "gauntlet") return { victory:"Win your bracket matches to take the tournament.",
     rules:"Royal Gauntlet is the Tournaments system: scheduled single-elimination brackets, Classic mode. Tap Play to open the Tournaments lobby." };
-  if (m.id === "alliance") return { victory:"Team battles — not built yet.",
-    rules:"Royal Alliance is planned but has no server support yet, so it can't be played. It stays on this list so you can see it's coming." };
+  if (m.id === "alliance") return { victory:"Win by capturing the enemy King — as a team. Either player on a team can land the capture.",
+    rules:"2v2 with ONE shared army and King per team: Team Gold (White) is two players, Team Shadow (Black) is two players. Turns rotate Gold A → Shadow C → Gold B → Shadow D, and only the player whose turn it is can move the shared army. Each team has a single 15-minute clock that runs on its turns and never pauses. If the player whose turn it is is disconnected, their teammate can take over and finish the turn with the dice already rolled. Casual play — no rating changes, no stakes. Needs a free account." };
   if (m.id === "custom") return { victory:"Your match, your settings.",
     rules:"Opens the full setup screen with the Customize sheet — names, turn timer, stake, computer difficulty and every existing option. It uses only the options the game already has; no new rules are invented." };
   return { victory:"", rules:"" };
@@ -17654,6 +18425,7 @@ function nxRenderModes(){
 }
 function nxTimerLabel(){
   var m = nxModeObj();
+  if (m && m.play === "alliance") return "Team clocks: 15:00 per team";
   if (m && m.play === "comp"){
     if (m.kind === "series" || m.kind === "mirror") return "Clock: 10:00 each";
     return "Clock: " + (m.pool === "blitz" ? "3:00" : "10:00") + " each";
@@ -17669,7 +18441,7 @@ function nxNamesLine(){
   var b = (nxEl("nameB") && nxEl("nameB").value.trim()) || "Black";
   if (NX.opponent === "ai") return w + " vs Computer" + (G.pendingAiDifficulty ? " · " + (AI_DIFF_LABELS[G.pendingAiDifficulty] || "Medium") : "");
   if (NX.opponent === "local") return w + " vs " + b + " — same device";
-  if (NX.opponent === "online"){ var m = nxModeObj(); return (m && m.play === "comp") ? "Ranked queue — account required" : "Server matchmaking · unstaked"; }
+  if (NX.opponent === "online"){ var m = nxModeObj(); return (m && m.play === "alliance") ? "2v2 teams — account required" : (m && m.play === "comp") ? "Ranked queue — account required" : "Server matchmaking · unstaked"; }
   return "";
 }
 function nxRenderSummary(){
@@ -17677,11 +18449,12 @@ function nxRenderSummary(){
   var sm = nxEl("nxSumMode");
   if (sm && m) sm.innerHTML = "Mode: <b>" + escHtml(m.name) + "</b> · " + escHtml(NX_OPP_LABEL[NX.opponent] || "");
   var st = nxEl("nxSumTimer"); if (st) st.textContent = nxTimerLabel();
-  var ss = nxEl("nxSumStake"); if (ss) ss.textContent = nxStakeLabel();
+  var ss = nxEl("nxSumStake"); if (ss) ss.textContent = (m && m.play === "alliance") ? "Stake: None — casual team play" : nxStakeLabel();
   var sn = nxEl("nxSumNames"); if (sn) sn.textContent = nxNamesLine();
   var btn = nxEl("nxStartBtn");
   if (btn && m){
     if (m.play === "soon"){ btn.disabled = true; btn.textContent = "COMING SOON"; }
+    else if (m.play === "alliance"){ btn.disabled = false; btn.textContent = "🤝 PLAY 2V2"; }
     else if (m.play === "gauntlet"){ btn.disabled = false; btn.textContent = "🏆 OPEN TOURNAMENTS"; }
     else if (m.play === "custom"){ btn.disabled = false; btn.textContent = "OPEN SETUP"; }
     else if (m.play === "comp"){ btn.disabled = false; btn.textContent = "⚔ FIND MATCH"; }
@@ -17863,6 +18636,10 @@ function nxStart(){
     var om = NX.opponent === "ai" ? "ai" : (NX.opponent === "local" ? "local" : "live");
     openSetup(om);
     setTimeout(nxOpenSheet, 180);
+    return;
+  }
+  if (m.play === "alliance"){
+    if (typeof alOpenEntry === "function") alOpenEntry();
     return;
   }
   if (m.play === "comp"){
@@ -18670,6 +19447,828 @@ rankedOnDashboard = function(msg){
   };
 })();
 </script>
+<script>
+/* ============================================================
+   ROYAL ALLIANCE (2v2) — client wiring against the live server
+   contract (alliance* messages). One shared army per team:
+   Gold = White (seats A/B), Shadow = Black (seats C/D), fixed
+   rotation Gold A → Shadow C → Gold B → Shadow D, one 15:00
+   clock per team (the Game's own clock block, interpolated by
+   the competitive clock renderer), teammate takeover with the
+   already-rolled dice, teammate-only chat + quick phrases, and
+   suggest-only move/ping hints. Casual: the rated flag is off
+   in production, so nothing here promises rating changes; if a
+   payload ever reports a rated match, its rating block is
+   displayed the same way the other pools display theirs.
+   The Game state inside allianceState is applied through the
+   ordinary server-state path, so dice animation, capture FX
+   and the king-kill finale behave exactly as in 1v1 server
+   games. The casual per-turn timer never runs here: the team
+   clocks govern (G.timerSec is pinned to 0 for the match).
+   ============================================================ */
+var ALLY_PHRASES = ["Good luck!","Nice move!","Well played!","Attack the king!","Defend the king!","Your move — no rush","Let's push!","Careful!","GG","Rematch?"];
+var ALLY = {
+  active: false, inMatch: false, over: false, phase: null, view: null,
+  allianceId: null, code: null, matchId: null, roomCode: null,
+  yourTeam: null, yourSeat: null, myAccountId: null, rated: false, source: null,
+  acting: false, coveredByMe: false, takeoverMsg: null,
+  queueMode: null, partyPartner: null, resultSource: null,
+  chat: [], muted: {}, suggestMode: false, suggestFrom: null,
+  suggestion: null, suggestionKey: null, gateDeadline: 0, gateTimer: null,
+  result: null, resultTimer: null
+};
+function alEl(id){ return document.getElementById(id); }
+function alTeamColor(team){ return team === "shadow" ? "b" : "w"; }
+function alTeamName(team){ return team === "shadow" ? "Shadow" : "Gold"; }
+function alSeatLabel(team, seat){
+  if (team === "gold") return seat === 1 ? "Gold B" : "Gold A";
+  return seat === 1 ? "Shadow D" : "Shadow C";
+}
+function alMyUsername(){ return (typeof ACCT !== "undefined" && ACCT.account && ACCT.account.username) || ""; }
+function alSeatOf(team, seat){
+  var v = ALLY.view; if (!v || !v.teams) return null;
+  var arr = v.teams[team] || [];
+  for (var i = 0; i < arr.length; i++) if (arr[i] && arr[i].seat === seat) return arr[i];
+  return null;
+}
+function alTeammate(){
+  if (!ALLY.yourTeam || !ALLY.view) return null;
+  return alSeatOf(ALLY.yourTeam, ALLY.yourSeat === 1 ? 0 : 1);
+}
+function alComputeActing(view){
+  ALLY.acting = false; ALLY.coveredByMe = false;
+  if (!view || !view.active) return;
+  var a = view.active;
+  if (ALLY.myAccountId && a.coveredBy && a.coveredBy.accountId === ALLY.myAccountId) ALLY.coveredByMe = true;
+  if ((ALLY.myAccountId && a.accountId === ALLY.myAccountId) || ALLY.coveredByMe) ALLY.acting = true;
+}
+function alSyncIdentityFromView(view){
+  if (!view || !view.teams) return;
+  ["gold", "shadow"].forEach(function(team){
+    (view.teams[team] || []).forEach(function(sv){
+      if (sv && sv.isYou){ ALLY.yourTeam = team; ALLY.yourSeat = sv.seat; if (sv.accountId) ALLY.myAccountId = sv.accountId; }
+    });
+  });
+}
+/* ---------- entry screen ---------- */
+function alOpenEntry(){
+  if (!(typeof acctSignedIn === "function" && acctSignedIn())){
+    showRankedGate("Royal Alliance needs a free account — register or log in first. It is free and takes a few seconds; guests can keep playing Casual.");
+    return;
+  }
+  alEl("allianceEntry").classList.add("on");
+}
+function alHideEntry(){ alEl("allianceEntry").classList.remove("on"); }
+function alEntryStatus(txt){ var s = alEl("alEntryStatus"); if (s) s.textContent = txt || ""; }
+function alSetQueued(on){
+  var b = alEl("alCancelQueueBtn"); if (b) b.style.display = on ? "" : "none";
+}
+function alSendQueue(payload, statusText){
+  alEntryStatus(statusText || "Contacting the server…");
+  srvConnect(function(){
+    if (!srvSendRaw(payload)) alEntryStatus("Couldn't reach the server — check your connection and try again.");
+  });
+}
+/* ---------- ready gate / room lobby ---------- */
+function alShowGate(){ alEl("allianceGate").classList.add("on"); alRenderGate(); alStartGateTimer(); }
+function alHideGate(){
+  alEl("allianceGate").classList.remove("on");
+  if (ALLY.gateTimer){ clearInterval(ALLY.gateTimer); ALLY.gateTimer = null; }
+}
+function alStartGateTimer(){
+  if (ALLY.gateTimer) clearInterval(ALLY.gateTimer);
+  var tick = function(){
+    var el = alEl("alGateCount"); if (!el) return;
+    if (ALLY.phase === "lobby"){ el.textContent = ""; return; }
+    if (!ALLY.gateDeadline){ el.textContent = ""; return; }
+    var left = Math.max(0, Math.ceil((ALLY.gateDeadline - Date.now()) / 1000));
+    el.textContent = left > 0 ? "Ready up within " + left + "s — the match dissolves if someone doesn't" : "";
+    if (left <= 0 && ALLY.gateTimer){ clearInterval(ALLY.gateTimer); ALLY.gateTimer = null; }
+  };
+  tick();
+  ALLY.gateTimer = setInterval(tick, 250);
+}
+function alGateTeams(){
+  if (ALLY.view && ALLY.view.teams) return ALLY.view.teams;
+  return ALLY.foundTeams || null;
+}
+function alRenderGate(){
+  var teams = alGateTeams();
+  var wrap = alEl("alGateTeams"); if (!wrap) return;
+  var isLobby = ALLY.phase === "lobby";
+  alEl("alGateTitle").textContent = isLobby ? "Royal Alliance — Private Room" : "Royal Alliance — Match Found";
+  alEl("alGateSub").textContent = isLobby
+    ? "Casual 2v2 · starts when all four seats are filled and everyone has readied"
+    : "Casual 2v2 · 15:00 team clocks · all four players must ready up";
+  var room = alEl("alGateRoom");
+  var code = ALLY.roomCode || (ALLY.view && ALLY.view.roomCode) || null;
+  if (isLobby && code){ room.style.display = ""; room.textContent = "Room code: " + code + " — share it with the other players"; }
+  else room.style.display = "none";
+  var html = "";
+  var filled = 0, myReady = false;
+  ["gold", "shadow"].forEach(function(team){
+    html += '<div class="al-teamcard ' + team + '"><div class="al-teamname">' + (team === "gold" ? "♔ Team Gold · White" : "♚ Team Shadow · Black") + '</div>';
+    var arr = (teams && teams[team]) || [null, null];
+    [0, 1].forEach(function(seat){
+      var sv = null;
+      for (var i = 0; i < arr.length; i++) if (arr[i] && arr[i].seat === seat) sv = arr[i];
+      if (sv && sv.accountId) filled++;
+      if (sv && sv.isYou && sv.ready) myReady = true;
+      if (!sv || !sv.accountId){
+        html += '<div class="al-seat empty"><div class="al-seat-name">Empty seat</div><div class="al-seat-meta">' + alSeatLabel(team, seat) + ' · waiting for a player…</div></div>';
+      } else {
+        html += '<div class="al-seat' + (sv.isYou ? " you" : "") + (sv.ready ? " ready" : "") + '">'
+          + '<div class="al-seat-name"><span class="al-dot' + (sv.connected ? "" : " off") + '"></span>' + escHtml(sv.username || "Player") + (sv.isYou ? " (you)" : "") + '</div>'
+          + '<div class="al-seat-meta">' + alSeatLabel(team, seat) + (sv.isHost ? " · Host" : "") + (sv.connected ? "" : " · disconnected") + '</div>'
+          + '<div class="al-ready">' + (sv.ready ? "Ready ✓" : "Not ready") + '</div></div>';
+      }
+    });
+    html += '</div>';
+  });
+  wrap.innerHTML = html;
+  var rb = alEl("alGateReadyBtn");
+  if (isLobby){
+    rb.disabled = filled < 4 || myReady;
+    rb.textContent = filled < 4 ? ("Waiting for players — " + filled + "/4 seats filled") : (myReady ? "Waiting for the others…" : "Ready");
+    alEl("alGateLeaveBtn").textContent = "Leave room";
+    alEl("alGateNote").textContent = "You sit at " + (ALLY.yourTeam ? alSeatLabel(ALLY.yourTeam, ALLY.yourSeat) : "your seat") + ". The host leaving closes the room for everyone.";
+  } else {
+    rb.disabled = myReady;
+    rb.textContent = myReady ? "Waiting for the others…" : "Ready";
+    alEl("alGateLeaveBtn").textContent = "Leave";
+    alEl("alGateNote").textContent = "Your seat is outlined in gold. The board is shared — you and your teammate move the same army, taking turns in rotation.";
+  }
+}
+/* ---------- server context for the shared Game ---------- */
+function alSetupSrv(code, team){
+  var color = alTeamColor(team || ALLY.yourTeam || "gold");
+  SRV.active = true; SRV.roomCode = code || SRV.roomCode; SRV.mySrvColor = color;
+  SRV.phase = "waiting"; SRV.nextSeq = 1; SRV.enteredGame = false; SRV.overShownFor = null;
+  SRV.isPrivate = ALLY.source === "room"; SRV.privateIntent = false;
+  SRV.timerAdopted = true; SRV.timerSec = 0; /* team clocks govern — the casual turn timer must not run */
+  SRV.rematchVotes = null; SRV.rematchRequested = false;
+  G.resultRecorded = false;
+  G.mode = "live"; G.myColor = color; G.orientation = color; G.timerSec = 0;
+}
+/* ---------- game state application ---------- */
+function alApplyGame(gs, view){
+  if (view){ ALLY.view = view; alSyncIdentityFromView(view); }
+  alComputeActing(ALLY.view);
+  SRV.timerAdopted = true; SRV.timerSec = 0; G.timerSec = 0;
+  if (gs){
+    if (!SRV.active && ALLY.view && ALLY.view.code) alSetupSrv(ALLY.view.code, ALLY.yourTeam);
+    srvAcceptPending();
+    srvApplyState(gs, false);
+    try{ compOnStateClock(gs); }catch(e){}
+    G.timerSec = 0;
+    if (typeof ttUpdateChip === "function") ttUpdateChip();
+    if (typeof ttResetClock === "function") ttResetClock();
+  }
+  alRenderGamePanel();
+  alPaintSuggestion();
+}
+/* ---------- in-game panel ---------- */
+function alActiveKey(view){
+  if (!view || !view.active) return "";
+  return view.active.team + ":" + view.active.seat + ":" + ((view.rotation && view.rotation.index) || 0);
+}
+function alRenderGamePanel(){
+  var panel = alEl("alPanel"); if (!panel) return;
+  var view = ALLY.view;
+  var show = !!(ALLY.active && view && document.body.classList.contains("playing"));
+  panel.classList.toggle("on", show);
+  var db = alEl("srvDrawBtn"), rb = alEl("srvResignBtn");
+  if (db) db.style.display = ALLY.active ? "none" : "";
+  if (rb) rb.style.display = ALLY.active ? "none" : "";
+  if (!show || !view) return;
+  /* rotation strip in fixed rotation order */
+  var order = (view.rotation && view.rotation.order && view.rotation.order.length === 4)
+    ? view.rotation.order : ["gold:0", "shadow:0", "gold:1", "shadow:1"];
+  var rotHtml = "";
+  order.forEach(function(key){
+    var parts = key.split(":"), team = parts[0], seat = parseInt(parts[1], 10);
+    var sv = alSeatOf(team, seat);
+    var isActive = !!(view.active && view.active.team === team && view.active.seat === seat);
+    var name = sv && sv.username ? sv.username : alSeatLabel(team, seat);
+    rotHtml += '<div class="al-rot-seat' + (isActive ? " active" : "") + (sv && sv.isYou ? " you" : "") + '">'
+      + '<span class="al-rot-team">' + (team === "gold" ? "♔ Gold" : "♚ Shadow") + ' ' + (seat === 1 ? (team === "gold" ? "B" : "D") : (team === "gold" ? "A" : "C")) + '</span>'
+      + '<span class="al-rot-name">' + escHtml(name) + (sv && sv.isYou ? " (you)" : "") + '</span>'
+      + (sv && !sv.connected ? '<span class="al-rot-team">offline</span>' : "")
+      + '</div>';
+  });
+  alEl("alRotation").innerHTML = rotHtml;
+  /* takeover banner */
+  var banner = alEl("alTakeoverBanner");
+  var bTxt = "";
+  var a = view.active;
+  if (ALLY.coveredByMe && a){
+    var forName = (ALLY.takeoverMsg && ALLY.takeoverMsg.for && ALLY.takeoverMsg.for.username) || a.username || "your teammate";
+    bTxt = ALLY.takeoverMsg && ALLY.takeoverMsg.finishOnly === false
+      ? "🤝 Covering for " + forName + " — you're playing their turns until they're back."
+      : "🤝 Covering for " + forName + " — finish this turn with the rolled dice.";
+  } else if (a && a.coveredBy){
+    bTxt = "🤝 " + a.coveredBy.username + " is covering this turn for " + (a.username || "their teammate") + ".";
+  }
+  banner.textContent = bTxt;
+  banner.classList.toggle("on", !!bTxt);
+  /* waiting / your-turn line */
+  var line = "";
+  if (view.phase === "ended" || ALLY.over) line = "Match over — the result is below the board.";
+  else if (!a) line = "Waiting for the next activation…";
+  else if (ALLY.acting) line = ALLY.coveredByMe ? "Your cover — play this turn for your team." : "Your activation — roll and play for Team " + alTeamName(ALLY.yourTeam) + ".";
+  else if (a.team === ALLY.yourTeam) line = "Waiting for " + (a.username || "your teammate") + " — your teammate is playing this activation.";
+  else line = "Waiting for " + (a.username || "the other team") + " — Team " + alTeamName(a.team) + " is playing.";
+  alEl("alWaitLine").textContent = line;
+  /* teammate panel */
+  var mate = alTeammate();
+  alEl("alTeamTitle").textContent = "Team " + alTeamName(ALLY.yourTeam || "gold") + (mate && mate.username ? " — with " + mate.username : "");
+  var canChat = ALLY.inMatch && !!mate;
+  alEl("alChatInput").disabled = !canChat;
+  alEl("alChatSend").disabled = !canChat;
+  document.querySelectorAll("#alPhrases button").forEach(function(b){ b.disabled = !canChat; });
+  var sb = alEl("alSuggestBtn");
+  var canSuggest = !!(ALLY.inMatch && !ALLY.acting && a && a.team === ALLY.yourTeam);
+  sb.disabled = !canSuggest;
+  sb.textContent = ALLY.suggestMode ? "Cancel suggestion" : "Suggest a move";
+  panel.classList.toggle("suggesting", !!ALLY.suggestMode);
+  var mb = alEl("alMuteBtn");
+  if (mate && mate.username){
+    mb.disabled = false;
+    mb.textContent = ALLY.muted[mate.username] ? "Unmute teammate" : "Mute teammate";
+  } else mb.disabled = true;
+  var rgb = alEl("alResignBtn");
+  rgb.disabled = !(ALLY.inMatch && ALLY.acting);
+  rgb.title = rgb.disabled ? "Only the player whose activation it is can resign for the team" : "Resign for your whole team";
+  alRenderChat();
+}
+function alRenderChat(){
+  var list = alEl("alChatList"); if (!list) return;
+  if (!ALLY.chat.length){
+    list.innerHTML = '<div class="al-chatempty">Team chat — only your teammate sees these messages.</div>';
+    return;
+  }
+  list.innerHTML = ALLY.chat.map(function(m){
+    var t = "";
+    try{ var d = new Date(m.ts); t = d.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" }); }catch(e){}
+    return '<div class="al-chatrow' + (m.mine ? " mine" : "") + '"><span class="al-chat-from">' + escHtml(m.name || "Teammate") + ':</span> ' + escHtml(m.text || "") + (t ? '<span class="al-chat-time">' + escHtml(t) + '</span>' : "") + '</div>';
+  }).join("");
+  list.scrollTop = list.scrollHeight;
+}
+function alPushChat(name, text, mine, ts){
+  ALLY.chat.push({ name: name, text: text, mine: !!mine, ts: ts || Date.now() });
+  if (ALLY.chat.length > 80) ALLY.chat.splice(0, ALLY.chat.length - 80);
+  alRenderChat();
+}
+/* ---------- suggestions ---------- */
+function alSetSuggestMode(on){
+  ALLY.suggestMode = !!on;
+  ALLY.suggestFrom = null;
+  var hint = alEl("alSuggestHint");
+  if (hint) hint.textContent = on ? "Tap one of your team's pieces, then the square it should go to. Tapping a square on its own sends a ping there. Suggestions are hints only — your teammate still makes the move." : "";
+  alRenderGamePanel();
+  if (hint && on) hint.textContent = "Tap one of your team's pieces, then the square it should go to. Tapping a square on its own sends a ping there. Suggestions are hints only — your teammate still makes the move.";
+}
+function alSuggestTap(r, c){
+  var view = ALLY.view;
+  if (!view || !view.active) { alSetSuggestMode(false); return; }
+  var sq = sqName(r, c);
+  var piece = G.st.board[r] ? G.st.board[r][c] : null;
+  if (!ALLY.suggestFrom){
+    if (piece && piece.c === G.myColor){
+      ALLY.suggestFrom = { r: r, c: c };
+      alEl("alSuggestHint").textContent = "Piece selected on " + sq + " — now tap where it should go, or tap it again to ping it.";
+      return;
+    }
+    if (srvSendRaw({ type: "allianceSuggest", kind: "ping", square: sq }))
+      alEl("alSuggestHint").textContent = "Ping sent on " + sq + " to " + (view.active.username || "your teammate") + ".";
+    alSetSuggestMode(false);
+    return;
+  }
+  var from = ALLY.suggestFrom;
+  if (from.r === r && from.c === c){
+    if (srvSendRaw({ type: "allianceSuggest", kind: "ping", square: sq }))
+      alEl("alSuggestHint").textContent = "Ping sent on " + sq + ".";
+  } else {
+    if (srvSendRaw({ type: "allianceSuggest", kind: "move", from: sqName(from.r, from.c), to: sq }))
+      alEl("alSuggestHint").textContent = "Suggested " + sqName(from.r, from.c) + " → " + sq + " to " + (view.active.username || "your teammate") + ".";
+  }
+  var keep = alEl("alSuggestHint").textContent;
+  alSetSuggestMode(false);
+  alEl("alSuggestHint").textContent = keep;
+}
+function alSqEl(sq){
+  var els = document.querySelectorAll("#board .sq");
+  for (var i = 0; i < els.length; i++){
+    var lab = els[i].getAttribute("aria-label") || "";
+    if (lab === sq || lab.indexOf(sq + " ") === 0) return els[i];
+  }
+  return null;
+}
+function alPaintSuggestion(){
+  try{
+    document.querySelectorAll("#board .sq.al-sug-from, #board .sq.al-sug-to").forEach(function(el){ el.classList.remove("al-sug-from", "al-sug-to"); });
+    var old = document.getElementById("alArrowSvg"); if (old) old.remove();
+    var s = ALLY.suggestion;
+    if (!s || !ALLY.inMatch) return;
+    if (Date.now() - (s.at || 0) > 20000){ ALLY.suggestion = null; return; }
+    var boardEl = document.getElementById("board");
+    if (!boardEl || !document.body.classList.contains("playing")) return;
+    if (s.kind === "move" && s.from && s.to){
+      var fEl = alSqEl(s.from), tEl = alSqEl(s.to);
+      if (fEl) fEl.classList.add("al-sug-from");
+      if (tEl) tEl.classList.add("al-sug-to");
+      var wrap = boardEl.parentElement;
+      if (wrap && s.from.length === 2 && s.to.length === 2){
+        var W = boardEl.clientWidth || 320, H = boardEl.clientHeight || W;
+        var o = G.orientation;
+        function ctr(sq){
+          var rc = srvSquareToRC(sq); if (!rc) return null;
+          var dr = o === "w" ? rc.r : 7 - rc.r, dc = o === "w" ? rc.c : 7 - rc.c;
+          return { x: (dc + 0.5) * W / 8, y: (dr + 0.5) * H / 8 };
+        }
+        var p1 = ctr(s.from), p2 = ctr(s.to);
+        if (p1 && p2){
+          var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+          svg.id = "alArrowSvg";
+          svg.setAttribute("viewBox", "0 0 " + W + " " + H);
+          svg.innerHTML = '<defs><marker id="alArrowHead" markerWidth="7" markerHeight="7" refX="5" refY="2.5" orient="auto"><path d="M0,0 L6,2.5 L0,5 Z" fill="#ffb340"/></marker></defs>'
+            + '<line x1="' + p1.x + '" y1="' + p1.y + '" x2="' + p2.x + '" y2="' + p2.y + '" stroke="#ffb340" stroke-width="' + Math.max(4, W / 60) + '" stroke-linecap="round" opacity="0.9" marker-end="url(#alArrowHead)"/>';
+          wrap.appendChild(svg);
+        }
+      }
+    } else if (s.kind === "ping" && s.square){
+      var pEl = alSqEl(s.square);
+      if (pEl) pEl.classList.add("al-sug-to");
+    }
+  }catch(e){}
+}
+/* ---------- status line while watching / covering ---------- */
+function alStatusLine(){
+  var view = ALLY.view;
+  if (!view || !view.active){ setStatus("<b>Royal Alliance</b> — waiting for the next activation…"); return; }
+  var a = view.active;
+  if (ALLY.acting){
+    if (ALLY.coveredByMe) setStatus("You're <b>covering for " + escHtml((ALLY.takeoverMsg && ALLY.takeoverMsg.for && ALLY.takeoverMsg.for.username) || a.username || "your teammate") + "</b> — play this turn for Team " + alTeamName(ALLY.yourTeam) + ".");
+    else setStatus("Your activation — <b>play for Team " + alTeamName(ALLY.yourTeam) + "</b>. Only you can move the shared army right now.");
+  } else if (a.team === ALLY.yourTeam){
+    setStatus("Waiting for <b>" + escHtml(a.username || "your teammate") + "</b> — your teammate is playing this activation for Team " + alTeamName(ALLY.yourTeam) + ". You can chat and suggest moves.");
+  } else {
+    setStatus("Waiting for <b>" + escHtml(a.username || "the other team") + "</b> — Team " + alTeamName(a.team) + " is playing.");
+  }
+}
+/* ---------- team resign (confirm, plain wording) ---------- */
+function alResignTeam(){
+  if (!ALLY.inMatch || !ALLY.acting) return;
+  var box = document.getElementById("modalBox");
+  box.innerHTML = "";
+  var h = document.createElement("h2"); h.textContent = "Resign for your team?";
+  var p = document.createElement("p"); p.textContent = "This resigns the whole team — Team " + alTeamName(ALLY.yourTeam === "gold" ? "shadow" : "gold") + " wins the match. It can't be undone.";
+  var b1 = document.createElement("button"); b1.type = "button"; b1.textContent = "Resign team";
+  b1.addEventListener("click", function(){
+    closeModal();
+    if (srvSendAction("resign")) toast("Resignation sent — your team resigns.");
+  });
+  var b2 = document.createElement("button"); b2.type = "button"; b2.className = "ghost"; b2.textContent = "Keep playing";
+  b2.addEventListener("click", closeModal);
+  box.appendChild(h); box.appendChild(p); box.appendChild(b1); box.appendChild(b2);
+  document.getElementById("overlay").classList.add("on");
+}
+/* ---------- result ---------- */
+function alReasonText(reason){
+  return { "king-capture": "King captured", "resignation": "Resignation", "timeout": "Team clock ran out", "disconnect": "Disconnect forfeit", "abandon": "A player abandoned the match", "no-moves": "No legal moves — draw" }[reason] || reason || "";
+}
+function alShowResult(msg){
+  ALLY.result = msg;
+  var mine = ALLY.yourTeam;
+  var won = !!(msg.winnerTeam && mine && msg.winnerTeam === mine);
+  alEl("alResultTitle").textContent = !msg.winnerTeam ? "Royal Alliance — Draw" : (won ? "Your Team Wins!" : "Team " + alTeamName(msg.winnerTeam) + " Wins");
+  alEl("alResultSub").textContent = "Royal Alliance · " + (msg.rated ? "Rated" : "Casual — no rating change") + (msg.reason ? " · " + alReasonText(msg.reason) : "");
+  var lines = "";
+  if (msg.winnerTeam){
+    var names = (msg.winner || []).join(" & ");
+    lines += "<p><b>Team " + alTeamName(msg.winnerTeam) + "</b>" + (names ? " — " + escHtml(names) : "") + " takes the match.</p>";
+  } else lines += "<p>The match ends level.</p>";
+  if (msg.capturingPlayer && msg.capturingPlayer.username)
+    lines += '<p class="al-cap">🏆 ' + escHtml(msg.capturingPlayer.username) + " captured the King.</p>";
+  var dur = "";
+  if (msg.durationMs){ var sec = Math.floor(msg.durationMs / 1000); dur = Math.floor(sec / 60) + ":" + ("0" + (sec % 60)).slice(-2); }
+  lines += "<p>" + (msg.totalTurns != null ? "<b>" + msg.totalTurns + "</b> turns · " : "") + (msg.activations != null ? "<b>" + msg.activations + "</b> activations" : "") + (dur ? " · played in <b>" + dur + "</b>" : "") + "</p>";
+  /* participation, from the last seat view */
+  var teams = ALLY.view && ALLY.view.teams;
+  if (teams){
+    lines += "<p><b>Players</b></p>";
+    ["gold", "shadow"].forEach(function(team){
+      (teams[team] || []).forEach(function(sv){
+        if (!sv || !sv.username) return;
+        var extra = [];
+        if (msg.capturingPlayer && sv.accountId && msg.capturingPlayer.accountId === sv.accountId) extra.push("captured the King");
+        var cov = 0, wasCovered = false;
+        (msg.takeovers || []).forEach(function(t){
+          if (t.byAccountId === sv.accountId) cov += (t.activationsCovered || []).length + (t.finishedCurrentTurn ? 1 : 0);
+          if (t.forAccountId === sv.accountId) wasCovered = true;
+        });
+        if (cov) extra.push("covered " + cov + (cov === 1 ? " turn" : " turns") + " for their teammate");
+        if (wasCovered) extra.push("was covered by their teammate");
+        var dc = 0;
+        (msg.disconnects || []).forEach(function(d){ if (d.accountId === sv.accountId) dc++; });
+        if (dc) extra.push("disconnected " + dc + (dc === 1 ? " time" : " times"));
+        lines += "<p>" + (team === "gold" ? "♔" : "♚") + " <b>" + escHtml(sv.username) + "</b> (" + alSeatLabel(team, sv.seat) + ")" + (extra.length ? " — " + escHtml(extra.join(" · ")) : "") + "</p>";
+      });
+    });
+  }
+  if ((msg.disconnects || []).length || (msg.takeovers || []).length){
+    lines += "<p>" + (msg.disconnects || []).length + " disconnect" + ((msg.disconnects || []).length === 1 ? "" : "s") + " · " + (msg.takeovers || []).length + " takeover" + ((msg.takeovers || []).length === 1 ? "" : "s") + " during the match.</p>";
+  }
+  alEl("alResultBody").innerHTML = lines;
+  var rEl = alEl("alResultRating");
+  if (msg.rating){
+    var r = msg.rating;
+    rEl.style.display = "";
+    rEl.textContent = "Alliance rating " + r.ratingBefore + " → " + r.ratingAfter + " (" + (r.delta >= 0 ? "+" : "") + r.delta + ")" + (r.tierAfter && r.tierAfter.name ? " · " + r.tierAfter.name : "") + (r.provisional ? " · Provisional" : "");
+  } else rEl.style.display = "none";
+  var isRoom = (msg.source === "room") || ALLY.resultSource === "room" || (ALLY.view && ALLY.view.source === "room");
+  alEl("alResultAgainBtn").style.display = isRoom ? "none" : "";
+  alEl("alResultNote").style.display = isRoom ? "" : "none";
+  closeModal();
+  alEl("allianceResult").classList.add("on");
+  setTimeout(closeModal, 350);
+  setTimeout(closeModal, 1300);
+}
+function alQueueShowResult(msg){
+  if (ALLY.resultTimer){ clearInterval(ALLY.resultTimer); ALLY.resultTimer = null; }
+  var started = Date.now();
+  ALLY.resultTimer = setInterval(function(){
+    var finale = (typeof _finaleActive !== "undefined") && _finaleActive;
+    if (!finale || Date.now() - started > 4000){
+      clearInterval(ALLY.resultTimer); ALLY.resultTimer = null;
+      alShowResult(msg);
+    }
+  }, 250);
+}
+/* ---------- errors ---------- */
+var ALLY_ERRORS = {
+  ALLIANCE_ACTIVE: "You're already in an alliance match.",
+  ALLIANCE_NOT_PLAYING: "That alliance match isn't in play.",
+  NOT_IN_ALLIANCE: "You're not in an alliance match right now.",
+  NOT_ACTIVE_SEAT: "It's not your activation — only the player whose turn it is can play.",
+  TAKEOVER_NO_ROLL: "You're covering a turn that was never rolled — no new roll is made for it; you can only pass the turn.",
+  ALLIANCE_NO_DRAWS: "There are no agreed draws in Royal Alliance.",
+  PARTY_TARGET_NOT_FOUND: "No player with that username was found.",
+  PARTY_SELF: "You can't party with yourself — type a friend's username.",
+  PARTY_TARGET_BUSY: "That player is busy in another match right now.",
+  PLAYER_BLOCKED: "A block between players prevents this match-up.",
+  ALLIANCE_ROOM_NOT_FOUND: "No alliance room with that code — check the code and try again.",
+  ALLIANCE_ROOM_FULL: "That alliance room is already full.",
+  WRONG_PASSWORD: "Wrong room password.",
+  PASSWORD_RATE_LIMITED: "Too many password tries — wait a minute and try again.",
+  ALLIANCE_NOT_IN_LOBBY: "That room lobby is no longer open.",
+  NO_TEAMMATE: "Your teammate isn't available for that.",
+  BAD_CHAT: "That message couldn't be sent.",
+  CHAT_RATE_LIMITED: "Easy — team chat is rate-limited for a few seconds.",
+  BAD_PHRASE: "That quick phrase isn't available.",
+  BAD_SQUARE: "That square isn't valid.",
+  BAD_SUGGESTION: "That suggestion couldn't be sent.",
+  SUGGESTION_TEAM_ONLY: "Suggestions go to your active teammate only.",
+  SUGGESTION_SELF: "You're the one playing this turn — no need to suggest to yourself.",
+  MUTE_TARGET_NOT_FOUND: "That player isn't in this match."
+};
+/* ---------- message routing ---------- */
+function alHandleMessage(msg){
+  switch (msg.type){
+    case "allianceQueued": {
+      ALLY.rated = !!msg.rated;
+      if (msg.queue && msg.queue.mode === "party"){
+        ALLY.queueMode = "party";
+        alEntryStatus(msg.queue.partnerReady || msg.partner
+          ? "Party nearly ready — searching for a match…"
+          : "Party invite recorded for " + (ALLY.partyPartner || "your friend") + " — a party forms when they also queue naming you.");
+      } else {
+        ALLY.queueMode = "solo";
+        alEntryStatus("Searching the solo queue… teams are drafted balanced by rating.");
+      }
+      alSetQueued(true);
+      return true;
+    }
+    case "alliancePartyFormed": {
+      var names = (msg.members || []).map(function(m){ return m.username; }).join(" & ");
+      alEntryStatus("Party formed" + (names ? " — " + names : "") + ". Searching for opponents…");
+      alSetQueued(true);
+      return true;
+    }
+    case "allianceQueueCancelled": {
+      ALLY.queueMode = null; alSetQueued(false);
+      var txt = msg.reason === "partner_left" ? "Your party partner left — the party was dissolved. Queue again when you're both ready."
+        : msg.reason === "partner_disconnected" ? "Your party partner disconnected — the party was dissolved."
+        : "Search cancelled.";
+      alEntryStatus(txt);
+      if (alEl("allianceEntry").classList.contains("on")) toast(txt);
+      return true;
+    }
+    case "allianceFound": {
+      ALLY.allianceId = msg.allianceId; ALLY.rated = !!msg.rated; ALLY.source = msg.source || ALLY.source;
+      ALLY.yourTeam = msg.yourTeam; ALLY.yourSeat = msg.yourSeat;
+      ALLY.foundTeams = msg.teams || null;
+      ALLY.phase = "ready";
+      ALLY.gateDeadline = Date.now() + (msg.readyTimeoutMs || 30000);
+      alHideEntry(); alSetQueued(false);
+      alShowGate();
+      return true;
+    }
+    case "allianceDissolved": {
+      alHideGate();
+      ALLY.phase = null; ALLY.foundTeams = null;
+      var why = msg.reason === "timeout" ? "A player didn't ready up in time — the match was dissolved."
+        : msg.reason === "declined" ? "A player left the ready gate — the match was dissolved."
+        : "A player disconnected — the match was dissolved.";
+      toast(why + (msg.requeued ? " You're back in the queue." : ""));
+      if (msg.requeued){ ALLY.queueMode = ALLY.queueMode || "solo"; alOpenEntry(); alEntryStatus("Back in the queue — searching again…"); alSetQueued(true); }
+      return true;
+    }
+    case "allianceMatchStart": {
+      ALLY.allianceId = msg.allianceId || ALLY.allianceId;
+      ALLY.code = msg.code; ALLY.matchId = msg.matchId;
+      ALLY.yourTeam = msg.yourTeam; ALLY.yourSeat = msg.yourSeat;
+      ALLY.active = true; ALLY.inMatch = true; ALLY.over = false; ALLY.phase = "playing";
+      ALLY.resultSource = ALLY.source;
+      ALLY.chat = []; ALLY.suggestion = null; ALLY.takeoverMsg = null;
+      alSetupSrv(msg.code, msg.yourTeam);
+      alHideGate(); alHideEntry();
+      toast("Match starting — you're " + alSeatLabel(msg.yourTeam, msg.yourSeat) + " on Team " + alTeamName(msg.yourTeam) + ".");
+      return true;
+    }
+    case "allianceState": {
+      var view = msg.alliance;
+      if (!view) return true;
+      ALLY.view = view;
+      ALLY.allianceId = view.allianceId || ALLY.allianceId;
+      ALLY.source = view.source || ALLY.source;
+      ALLY.rated = !!view.rated;
+      if (view.roomCode) ALLY.roomCode = view.roomCode;
+      alSyncIdentityFromView(view);
+      if (view.readyDeadline) ALLY.gateDeadline = view.readyDeadline;
+      if (ALLY.suggestion && ALLY.suggestionKey && ALLY.suggestionKey !== alActiveKey(view)) ALLY.suggestion = null;
+      if (view.phase === "lobby"){
+        ALLY.phase = "lobby"; ALLY.active = true;
+        alHideEntry(); alShowGate();
+      } else if (view.phase === "ready"){
+        ALLY.phase = "ready"; ALLY.active = true;
+        alHideEntry(); alShowGate();
+      } else if (view.phase === "playing"){
+        ALLY.phase = "playing"; ALLY.active = true; ALLY.inMatch = true;
+        alHideGate(); alHideEntry();
+        if (msg.game) alApplyGame(msg.game, view); else { alComputeActing(view); alRenderGamePanel(); }
+      } else if (view.phase === "ended"){
+        ALLY.phase = "ended"; ALLY.inMatch = false; ALLY.over = true;
+        if (msg.game) alApplyGame(msg.game, view); else alRenderGamePanel();
+      } else {
+        if (msg.game) alApplyGame(msg.game, view);
+      }
+      return true;
+    }
+    case "allianceRoomCreated": {
+      ALLY.allianceId = msg.allianceId; ALLY.roomCode = msg.roomCode;
+      ALLY.source = "room"; ALLY.phase = "lobby"; ALLY.active = true;
+      ALLY.yourTeam = "gold"; ALLY.yourSeat = 0;
+      alEntryStatus("");
+      alHideEntry(); alShowGate();
+      toast("Room " + msg.roomCode + " created — share the code. You're Gold A and host.");
+      return true;
+    }
+    case "allianceRoomJoined": {
+      ALLY.allianceId = msg.allianceId; ALLY.roomCode = msg.roomCode;
+      ALLY.source = "room"; ALLY.phase = "lobby"; ALLY.active = true;
+      ALLY.yourTeam = msg.team; ALLY.yourSeat = msg.seat;
+      alHideEntry(); alShowGate();
+      toast("Joined room " + msg.roomCode + " — you're " + alSeatLabel(msg.team, msg.seat) + ".");
+      return true;
+    }
+    case "allianceRoomLeft": {
+      alHideGate();
+      ALLY.phase = null; ALLY.active = false; ALLY.roomCode = null; ALLY.view = null;
+      toast("You left the alliance room.");
+      return true;
+    }
+    case "allianceRoomClosed": {
+      alHideGate();
+      ALLY.phase = null; ALLY.active = false; ALLY.roomCode = null; ALLY.view = null;
+      toast(msg.reason === "host_left" ? "The host left, so the room was closed." : msg.reason === "expired" ? "That room expired before it filled." : "The alliance room was closed.");
+      return true;
+    }
+    case "allianceTakeover": {
+      ALLY.takeoverMsg = msg;
+      if (ALLY.myAccountId && msg.by && msg.by.accountId === ALLY.myAccountId) ALLY.acting = true;
+      if (msg.by && msg.for) toast(msg.by.username + " is covering for " + msg.for.username + ".");
+      alRenderGamePanel();
+      return true;
+    }
+    case "allianceTakeoverEnd": {
+      if (ALLY.takeoverMsg && msg.for && ALLY.takeoverMsg.for && ALLY.takeoverMsg.for.accountId === msg.for.accountId) ALLY.takeoverMsg = null;
+      alRenderGamePanel();
+      return true;
+    }
+    case "allianceChat": {
+      var f1 = msg.from || {};
+      if (f1.username && ALLY.muted[f1.username]) return true;
+      alPushChat(f1.username || "Teammate", String(msg.text || ""), false, msg.ts);
+      return true;
+    }
+    case "allianceQuickMsg": {
+      var f2 = msg.from || {};
+      if (f2.username && ALLY.muted[f2.username]) return true;
+      alPushChat(f2.username || "Teammate", String(msg.text || ""), false, msg.ts);
+      return true;
+    }
+    case "allianceSuggestion": {
+      /* The contract names both the sender and a move's origin
+         square "from" — read defensively: an object is the sender,
+         a string is the square. */
+      var sender = (msg.from && typeof msg.from === "object") ? msg.from : (msg.sender || {});
+      if (sender.username && ALLY.muted[sender.username]) return true;
+      var fromSq = typeof msg.from === "string" ? msg.from : (msg.fromSquare || msg.moveFrom || null);
+      var toSq = msg.to || msg.toSquare || null;
+      ALLY.suggestion = { kind: msg.kind, from: fromSq, to: toSq, square: msg.square || null, at: Date.now() };
+      ALLY.suggestionKey = alActiveKey(ALLY.view);
+      var hint = alEl("alSuggestHint");
+      if (hint) hint.textContent = (sender.username || "Your teammate") + (msg.kind === "move" && fromSq && toSq ? " suggests " + fromSq + " → " + toSq + "." : " pinged " + (msg.square || "a square") + ".");
+      alPaintSuggestion();
+      setTimeout(alPaintSuggestion, 1600);
+      setTimeout(alPaintSuggestion, 21000);
+      return true;
+    }
+    case "allianceMuted": {
+      ALLY.muted[msg.username] = !!msg.muted;
+      toast(msg.muted ? msg.username + " muted — you won't see their team chat or suggestions." : msg.username + " unmuted.");
+      alRenderGamePanel();
+      return true;
+    }
+    case "allianceResult": {
+      ALLY.inMatch = false; ALLY.over = true; ALLY.phase = "ended";
+      alRenderGamePanel();
+      alQueueShowResult(msg);
+      return true;
+    }
+  }
+  return false;
+}
+var ALLY_TYPES = { allianceQueued: 1, alliancePartyFormed: 1, allianceQueueCancelled: 1, allianceFound: 1, allianceDissolved: 1, allianceMatchStart: 1, allianceState: 1, allianceRoomCreated: 1, allianceRoomJoined: 1, allianceRoomLeft: 1, allianceRoomClosed: 1, allianceTakeover: 1, allianceTakeoverEnd: 1, allianceChat: 1, allianceQuickMsg: 1, allianceSuggestion: 1, allianceMuted: 1, allianceResult: 1 };
+var _alSrvOnMessage = srvOnMessage;
+srvOnMessage = function(msg){
+  if (!msg || !msg.type){ _alSrvOnMessage(msg); return; }
+  if (ALLY_TYPES[msg.type]){ try{ alHandleMessage(msg); }catch(e){} return; }
+  if (msg.type === "error" && msg.code){
+    if (msg.code === "ALLIANCE_REQUIRES_ACCOUNT"){
+      alHideEntry();
+      showRankedGate(msg.message || "Royal Alliance needs a free account — register or log in first.");
+      return;
+    }
+    if (ALLY_ERRORS[msg.code]){
+      var txt = msg.code === "NOT_ACTIVE_SEAT" && msg.message ? msg.message : ALLY_ERRORS[msg.code];
+      toast(txt);
+      if (alEl("allianceEntry").classList.contains("on")) alEntryStatus(txt);
+      return;
+    }
+  }
+  _alSrvOnMessage(msg);
+  if (msg.type === "welcome" && ALLY.allianceId && ALLY.inMatch && !ALLY.over){
+    /* reconnected mid-match: ask the manager for the current state */
+    srvSendRaw({ type: "getState" });
+  }
+};
+/* Acting gate: in an alliance match the shared board answers only
+   on MY activation (or while I'm covering for my teammate). */
+var _alIsHumanTurn = isHumanTurn;
+isHumanTurn = function(){
+  if (ALLY.active && ALLY.inMatch) return _alIsHumanTurn() && ALLY.acting;
+  return _alIsHumanTurn();
+};
+/* No auto end-turn on someone else's activation, and alliance
+   wording for the board status line. */
+var _alSrvAfterState = srvAfterState;
+srvAfterState = function(s){
+  if (ALLY.active && ALLY.inMatch && !ALLY.acting){
+    if (SRV.autoEndTimer){ clearTimeout(SRV.autoEndTimer); SRV.autoEndTimer = null; }
+    return;
+  }
+  _alSrvAfterState(s);
+};
+var _alSrvStatusForTurn = srvStatusForTurn;
+srvStatusForTurn = function(s){
+  if (ALLY.active && (ALLY.inMatch || ALLY.phase === "playing")){ alStatusLine(); return; }
+  _alSrvStatusForTurn(s);
+};
+/* Suggestion highlights survive board re-renders. */
+var _alRenderBoard = renderBoard;
+renderBoard = function(){ _alRenderBoard(); alPaintSuggestion(); };
+/* Board taps route to suggestion mode when it's armed. */
+var _alOnSquare = onSquare;
+onSquare = function(r, c){
+  if (ALLY.active && ALLY.suggestMode){ alSuggestTap(r, c); return; }
+  _alOnSquare(r, c);
+};
+/* Leaving to the menu closes the alliance screens too. */
+var _alGoToMainMenu = goToMainMenu;
+goToMainMenu = function(){
+  _alGoToMainMenu();
+  alHideEntry(); alHideGate();
+  alEl("allianceResult").classList.remove("on");
+  if (ALLY.resultTimer){ clearInterval(ALLY.resultTimer); ALLY.resultTimer = null; }
+  ALLY.active = false; ALLY.inMatch = false; ALLY.view = null; ALLY.suggestion = null; ALLY.takeoverMsg = null;
+  var panel = alEl("alPanel"); if (panel) panel.classList.remove("on");
+  var db = alEl("srvDrawBtn"), rb2 = alEl("srvResignBtn");
+  if (db) db.style.display = ""; if (rb2) rb2.style.display = "";
+};
+/* ---------- bindings ---------- */
+(function alInit(){
+  var phrases = alEl("alPhrases");
+  if (phrases){
+    ALLY_PHRASES.forEach(function(text, i){
+      var b = document.createElement("button");
+      b.type = "button"; b.textContent = text;
+      b.addEventListener("click", function(){
+        if (srvSendRaw({ type: "allianceQuick", phrase: i })) alPushChat(alMyUsername() || "You", text, true);
+      });
+      phrases.appendChild(b);
+    });
+  }
+  alEl("alEntryClose").addEventListener("click", alHideEntry);
+  alEl("alPartyBtn").addEventListener("click", function(){
+    var name = alEl("alPartyName").value.trim();
+    if (!name){ alEntryStatus("Type your friend's username first — a party forms when you both name each other."); return; }
+    if (name.toLowerCase() === (alMyUsername() || "").toLowerCase()){ alEntryStatus("That's you — type a friend's username."); return; }
+    ALLY.partyPartner = name;
+    alSendQueue({ type: "allianceQueue", partyWith: name }, "Recording your party invite for " + name + "…");
+  });
+  alEl("alSoloBtn").addEventListener("click", function(){
+    ALLY.partyPartner = null;
+    alSendQueue({ type: "allianceQueue" }, "Joining the solo queue…");
+  });
+  alEl("alCancelQueueBtn").addEventListener("click", function(){
+    srvSendRaw({ type: "allianceCancelQueue" });
+    ALLY.queueMode = null; alSetQueued(false);
+    alEntryStatus("Search cancelled.");
+  });
+  alEl("alCreateRoomBtn").addEventListener("click", function(){
+    var pw = alEl("alRoomPw").value;
+    var payload = { type: "allianceCreateRoom" };
+    if (pw) payload.password = pw;
+    alSendQueue(payload, "Creating your room…");
+  });
+  alEl("alJoinRoomBtn").addEventListener("click", function(){
+    var code = alEl("alJoinCode").value.trim().toUpperCase().replace(/[^A-Z0-9]/g, "");
+    if (!code){ alEntryStatus("Type the room code first."); return; }
+    var payload = { type: "allianceJoinRoom", code: code };
+    var pw = alEl("alJoinPw").value;
+    if (pw) payload.password = pw;
+    var seat = alEl("alJoinSeat").value;
+    if (seat){ var p = seat.split(":"); payload.seat = { team: p[0], seat: parseInt(p[1], 10) }; }
+    alSendQueue(payload, "Joining room " + code + "…");
+  });
+  alEl("alGateReadyBtn").addEventListener("click", function(){
+    if (srvSendRaw({ type: "allianceReady" })){
+      var rb = alEl("alGateReadyBtn"); rb.disabled = true; rb.textContent = "Waiting for the others…";
+    }
+  });
+  alEl("alGateLeaveBtn").addEventListener("click", function(){
+    if (ALLY.phase === "lobby") srvSendRaw({ type: "allianceLeaveRoom" });
+    else srvSendRaw({ type: "allianceAbandon" });
+    alHideGate();
+    ALLY.phase = null;
+  });
+  alEl("alChatSend").addEventListener("click", alSendChat);
+  alEl("alChatInput").addEventListener("keydown", function(e){ if (e.key === "Enter"){ e.preventDefault(); alSendChat(); } });
+  function alSendChat(){
+    var inp = alEl("alChatInput");
+    var text = String(inp.value || "").trim().slice(0, 200);
+    if (!text) return;
+    if (srvSendRaw({ type: "allianceChat", text: text })){
+      alPushChat(alMyUsername() || "You", text, true);
+      inp.value = "";
+    } else toast("Team chat isn't connected right now.");
+  }
+  alEl("alSuggestBtn").addEventListener("click", function(){ alSetSuggestMode(!ALLY.suggestMode); });
+  alEl("alMuteBtn").addEventListener("click", function(){
+    var mate = alTeammate();
+    if (!mate || !mate.username) return;
+    srvSendRaw({ type: "allianceMute", username: mate.username, muted: !ALLY.muted[mate.username] });
+  });
+  alEl("alResignBtn").addEventListener("click", alResignTeam);
+  alEl("alResultClose").addEventListener("click", function(){ alEl("allianceResult").classList.remove("on"); });
+  alEl("alResultLeaveBtn").addEventListener("click", function(){
+    alEl("allianceResult").classList.remove("on");
+    goToMainMenu();
+  });
+  alEl("alResultAgainBtn").addEventListener("click", function(){
+    alEl("allianceResult").classList.remove("on");
+    ALLY.over = false; ALLY.view = null; ALLY.result = null;
+    var panel = alEl("alPanel"); if (panel) panel.classList.remove("on");
+    alOpenEntry();
+    if (ALLY.resultSource === "party" && ALLY.partyPartner) alSendQueue({ type: "allianceQueue", partyWith: ALLY.partyPartner }, "Queueing again with " + ALLY.partyPartner + "…");
+    else if (ALLY.resultSource === "party") alEntryStatus("Your party dissolved — queue solo or name your friend again.");
+    else alSendQueue({ type: "allianceQueue" }, "Queueing again…");
+  });
+})();
+</script>
+
 <script>
 /* ============================================================
    GLOBAL CHAT — one room for everyone, on the game server:
