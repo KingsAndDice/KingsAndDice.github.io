@@ -8595,6 +8595,32 @@ function aiSeqTerminal(bd, col, lastMove){
   if (G.variant==="horde" && col==="b" && lastMove.capture && countPieces(bd, "w", null)===0) return 400000;
   return 0;
 }
+/* Best legal SWAP pair on an arbitrary board, judged by the plain
+   position evaluation after the swap (with a heavy penalty for
+   leaving the King capturable). Returns {a, b, score, gain} or null
+   when no legal pair exists. This is the AI's general-purpose way
+   to spend a SWAP die: before this existed, the AI only ever swapped
+   to rescue its King or free a trapped piece, so a turn holding a
+   SWAP die plus only stuck dice (e.g. a stuck Knight) had nothing
+   the AI would play — dieCanPlay still counted SWAP as playable, so
+   the auto-pass never fired either, and the AI froze mid-turn. */
+function aiBestSwapPair(bd, col){
+  var mine = [];
+  for (var r=0;r<8;r++) for (var c=0;c<8;c++){ var p=bd[r][c]; if (p && p.c===col) mine.push({p:p,r:r,c:c}); }
+  if (mine.length<2) return null;
+  var base = evaluate(bd, col);
+  var best=null, bestScore=-Infinity;
+  for (var i=0;i<mine.length;i++) for (var j=i+1;j<mine.length;j++){
+    if (!swapPairLegal(mine[i].p, mine[i].r, mine[i].c, mine[j].p, mine[j].r, mine[j].c)) continue;
+    var cb = cloneBoard(bd);
+    var tmp = cb[mine[i].r][mine[i].c]; cb[mine[i].r][mine[i].c] = cb[mine[j].r][mine[j].c]; cb[mine[j].r][mine[j].c] = tmp;
+    var s = evaluate(cb, col);
+    if (aiKingCapturable(cb, col)) s -= 1500;
+    s += Math.random()*6;
+    if (s>bestScore){ bestScore=s; best={ a:{r:mine[i].r,c:mine[i].c}, b:{r:mine[j].r,c:mine[j].c}, score:s, gain:s-base }; }
+  }
+  return best;
+}
 function aiPlanTurn(){
   var AC = G.aiColor || "b";
   var hard = G.aiDifficulty==="hard";
@@ -8652,6 +8678,15 @@ function aiPlanTurn(){
                 && swapPairLegal(st.board[kSq2.r][kSq2.c], kSq2.r, kSq2.c, sp, sr, sc))
               cands.push({ swap: [[kSq2.r, kSq2.c], [sr, sc]], score0: 700 });
           }
+        }
+        if (!cands.length){
+          // General case (King safe): still offer the planner ONE
+          // swap — the best-scoring legal pair on this board — so a
+          // SWAP die is a real step in the sequence (it can, e.g.,
+          // relocate a stuck piece onto a square it can move from)
+          // instead of a die the plan silently strands.
+          var bsp = aiBestSwapPair(st.board, AC);
+          if (bsp) cands.push({ swap: [[bsp.a.r, bsp.a.c], [bsp.b.r, bsp.b.c]], score0: 0 });
         }
       } else {
         var ms = aiMovesOn(st, AC, face);
@@ -8916,6 +8951,16 @@ function aiNextDie(){
       }
       if (bestPartner){ aiUseSwapDie(swapIdx, {r:trapped.r,c:trapped.c}, bestPartner); return; }
     }
+    /* General fallback — the freeze fix. Reaching here means the King
+       is safe (or has no safe swap square) and no piece is trapped,
+       which is exactly the reported stall: a stuck numbered die
+       (e.g. Knight) plus a SWAP die. SWAP is still a legal, spendable
+       die (dieCanPlay says so, so the turn will not auto-pass), so
+       the AI must spend it or sit forever. Spend it on the
+       best-scoring legal pair, exactly like the SHIELD fallback
+       below always spends a leftover SHIELD. */
+    var anySwap = aiBestSwapPair(G.st.board, AC);
+    if (anySwap){ aiUseSwapDie(swapIdx, anySwap.a, anySwap.b); return; }
   }
   // 5) SHIELD as a fallback: protect the queen, else the King
   if (shieldIdx>=0){
@@ -8923,7 +8968,27 @@ function aiNextDie(){
     for (var r3=0;r3<8;r3++) for (var c3=0;c3<8;c3++){ var p3=G.st.board[r3][c3]; if (p3 && p3.c===AC && p3.t==="q") target={r:r3,c:c3}; }
     if (target){ aiUseShieldDie(shieldIdx, target.r, target.c); return; }
   }
+  /* 6) NO-FREEZE WATCHDOG: aiNextDie must never return having done
+     nothing while dice remain. checkDicePlayable ends the turn when
+     NO remaining die is playable — but if it leaves the turn open
+     (some die counted as playable, e.g. a SWAP the branches above
+     had no case for) and we still reach here, nothing would ever
+     call aiNextDie again and the AI would sit mid-turn forever.
+     Force-pass the rest of the turn instead, through the same
+     dice-are-lost wrap-up checkDicePlayable uses. */
   checkDicePlayable();
+  if (!G.over && G.mode==="ai" && G.st.turn===AC && G.phase==="await-move" && diceLeft()){
+    for (var wi=0; wi<G.dice.length; wi++){
+      if (G.dice[wi] && !G.diceUsed[wi]){ G.diceUsed[wi]=true; G.turnLog.push("🎲" + dieLabel(G.dice[wi]) + " ✕"); }
+    }
+    G.activeDie=null; G.roll=null; G.rollMoves=[]; G.selected=null; G.specialMode=null; G.swapFirst=null; G.aiPlan=null;
+    CALL_OVERRIDE={ glyph:"", kind:"lost", title:"Computer couldn't use its remaining dice", sub:"No move the computer can play is left, so its turn ends and the remaining dice are lost now." };
+    G.phase="no-move";
+    setStatus("<b>Computer</b> has no move it can use with its remaining dice — <b>its turn ends</b> and those dice are lost now.");
+    renderBoard();
+    broadcastState();
+    later(finishTurn, 1200);
+  }
 }
 
 /* ---------- link play (turn codes) ---------- */
@@ -11707,11 +11772,13 @@ function srvRenderWaitRoom(){
     readyBtn.classList.toggle("is-ready", meReady);
   }
 }
+/* Invite / replay links always point at the game's public home —
+   never at this page's own address (inside the app shell that
+   address is an internal gateway URL, not a shareable link). */
+var KD_PUBLIC_BASE = "https://kingsanddice.github.io/";
 function srvInviteLink(){
   if (!SRV.roomCode) return "";
-  var base = "";
-  try{ base = String(location.href || "").split("#")[0].split("?")[0]; }catch(e){}
-  return base + "?room=" + encodeURIComponent(SRV.roomCode);
+  return KD_PUBLIC_BASE + "?room=" + encodeURIComponent(SRV.roomCode);
 }
 function srvCopyText(text, doneMsg){
   function done(){ toast(doneMsg); srvNote(doneMsg); }
@@ -13177,7 +13244,7 @@ function googOnConnectFailed(){
 }
 function googStartSignIn(){
   if (GOOG.configured!==true) return;
-  window.location.href = SRV_HTTP + "/auth/google/start";
+  window.location.assign(SRV_HTTP + "/auth/google/start");
 }
 function googStartLink(){
   if (GOOG.linkPending || !acctSignedIn()) return;
@@ -13202,7 +13269,7 @@ function googOnLink(msg){
      on the server, which returns us to the game page). */
   var url = msg.url.charAt(0)==="/" ? SRV_HTTP + msg.url : msg.url;
   try{ sessionStorage.setItem("dicechess-google-link-return", "1"); }catch(e){}
-  window.location.href = url;
+  window.location.assign(url);
 }
 /* ---------- choose-your-name sheet (blocking) ----------
    No ✕ and no dismiss path: an unnamed Google account cannot do
@@ -18210,8 +18277,7 @@ function rplCycleSpeed(){
 }
 function rplShare(){
   if (!RPL.record) return;
-  var base = location.href.split("#")[0].split("?")[0];
-  var url = base + "?replay=" + encodeURIComponent(RPL.record.matchId);
+  var url = KD_PUBLIC_BASE + "?replay=" + encodeURIComponent(RPL.record.matchId);
   if (typeof srvCopyText==="function") srvCopyText(url, "Replay link copied");
   else if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(url).then(function(){ toast("Replay link copied"); }, function(){ toast("Couldn't copy the link"); });
 }
