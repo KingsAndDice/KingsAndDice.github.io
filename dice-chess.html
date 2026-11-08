@@ -21983,8 +21983,18 @@ body.board-fs-active #boardFsExitFloat{display:block;position:fixed;top:calc(54p
       <button id="inviteCopyMsgBtn" type="button">Copy invite message</button>
     </div>
     <button class="kd-inv-create" id="inviteCreateRoomBtn" type="button" style="display:none;">▶ Create a live room first — they join it in one tap</button>
+    <button class="kd-inv-park" id="parkInviteBtn" type="button">📩 Invite &amp; wait — get notified when they join</button>
+    <div id="parkExplain" style="display:none;">
+      <p class="kd-park-text">Not staying in the app? Park this invite on the server for <b>24 hours</b> with your current setup (<span id="parkSetupLine"></span>). Send the link, close the app — when your friend taps <b>Join</b>, this phone gets a <b>notification</b>; tap it and you're dropped straight back into the room with them. Casual matches only. Next step asks your phone for notification permission — you can say no and still park the invite.</p>
+      <button class="kd-inv-primary" id="parkConfirmBtn" type="button">Park this invite</button>
+      <div class="note" id="parkNote"></div>
+    </div>
     <div class="note" id="inviteNote"></div>
     <p class="kd-inv-fine">For casual friend matches in any mode — Classic and King of the Hill rooms run on the server, every other mode uses a Friend room, and the same invite works for both. Ranked matchmaking isn't invited this way.</p>
+    <div id="parkedListWrap" style="display:none;">
+      <h4 class="kd-parked-head">Invites you're waiting on</h4>
+      <div id="parkedList"></div>
+    </div>
   </div>
 </div>
 
@@ -22176,6 +22186,665 @@ body.board-fs-active #boardFsExitFloat{display:block;position:fixed;top:calc(54p
       }
     }, 300);
   }
+})();
+</script>
+
+<style id="kdAsyncCss">
+  .kd-inv-park{width:100%;margin-top:9px;border:1.5px solid var(--gold);background:var(--panel);color:var(--ink);font-size:14.5px;font-weight:850;padding:12px;border-radius:11px;cursor:pointer;min-height:48px;}
+  .kd-inv-park:active{transform:translateY(1px);}
+  .kd-park-text{font-size:13.5px;line-height:1.55;color:var(--ink-soft);margin:10px 0 0;}
+  .kd-park-text b{color:var(--ink);}
+  #parkConfirmBtn{margin-top:10px;}
+  #parkNote:empty{display:none;}
+  .kd-parked-head{font-size:13px;font-weight:850;letter-spacing:.04em;text-transform:uppercase;color:var(--brass);margin:14px 0 8px;}
+  .kd-parked-item{border:1px solid var(--line-strong);border-radius:12px;padding:10px 12px;background:var(--panel-2);}
+  .kd-parked-item + .kd-parked-item{margin-top:8px;}
+  .kd-parked-top{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+  .kd-parked-code{font-family:"Cinzel",Georgia,serif;font-weight:900;letter-spacing:.16em;font-size:16px;color:var(--brass);}
+  .kd-parked-meta{font-size:12.5px;color:var(--ink-soft);font-weight:650;}
+  .kd-parked-status{font-size:13.5px;line-height:1.45;margin-top:5px;color:var(--ink);}
+  .kd-parked-status.hot{font-weight:800;color:var(--accent);}
+  .kd-parked-btns{display:flex;gap:7px;margin-top:9px;}
+  .kd-parked-btns button{flex:1;border:1px solid var(--line-strong);background:var(--panel);color:var(--ink);font-size:13.5px;font-weight:750;padding:9px 6px;border-radius:10px;cursor:pointer;min-height:42px;}
+  .kd-parked-btns button.go{border-color:#7a5f10;background:linear-gradient(180deg,#ffe98a 0%,#e8c15a 45%,#c9a227 100%);color:#171106;font-weight:850;}
+  .kd-parked-btns button.danger{color:var(--danger);}
+  .kd-fixed-card{position:fixed;left:50%;transform:translateX(-50%) translateY(16px);bottom:calc(12px + env(safe-area-inset-bottom));width:min(560px,calc(100vw - 20px));z-index:66;background:var(--panel);color:var(--ink);border:1.5px solid var(--gold);border-radius:18px;box-shadow:0 18px 44px rgba(0,0,0,.42);padding:16px;display:none;opacity:0;transition:opacity .25s ease,transform .25s ease;}
+  .kd-fixed-card.on{display:block;opacity:1;transform:translateX(-50%) translateY(0);}
+  .kd-fixed-card .il-kicker{font-size:11px;font-weight:850;letter-spacing:.09em;text-transform:uppercase;color:var(--brass);}
+  .kd-fixed-card h2{margin:4px 0 6px;font-size:22px;line-height:1.15;letter-spacing:-.02em;}
+  .kd-fixed-card p{margin:0 0 12px;font-size:13.5px;line-height:1.55;color:var(--ink-soft);}
+  .kd-fixed-card p b{color:var(--ink);}
+  .kd-fixed-card .kd-go{width:100%;border:1px solid #7a5f10;background:linear-gradient(180deg,#ffe98a 0%,#e8c15a 45%,#c9a227 100%);color:#171106;font-size:16.5px;font-weight:850;padding:14px 16px;border-radius:12px;cursor:pointer;min-height:54px;}
+  .kd-fixed-card .kd-ghostbtn{width:100%;margin-top:8px;border:1px solid var(--line);background:transparent;color:var(--ink-soft);font-size:14px;font-weight:700;padding:11px;border-radius:11px;cursor:pointer;}
+  .kd-fixed-card .kd-x{position:absolute;top:10px;right:10px;width:36px;height:36px;border:1px solid var(--line);background:var(--panel-2);color:var(--ink);border-radius:50%;font-size:15px;cursor:pointer;display:grid;place-items:center;line-height:1;}
+  @keyframes kdPulseDot{0%,100%{opacity:1;}50%{opacity:.25;}}
+  .kd-waitdot{display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--gold-bright,#d4a017);margin-right:7px;animation:kdPulseDot 1.2s ease-in-out infinite;vertical-align:baseline;}
+  @media (prefers-reduced-motion: reduce){.kd-fixed-card{transition:none;}.kd-waitdot{animation:none;}}
+</style>
+
+<div id="hostBackCard" class="kd-fixed-card" role="dialog" aria-label="Your friend is waiting in your room">
+  <button class="kd-x" id="hostBackClose" type="button" aria-label="Dismiss">✕</button>
+  <div class="il-kicker">Kings &amp; Dice — your invite</div>
+  <h2 id="hostBackTitle">🔔 Your friend is waiting!</h2>
+  <p id="hostBackText"></p>
+  <button class="kd-go" id="hostBackJoinBtn" type="button">Join now</button>
+  <button class="kd-ghostbtn" id="hostBackLaterBtn" type="button">Later</button>
+</div>
+
+<div id="guestWaitCard" class="kd-fixed-card" role="dialog" aria-label="Waiting for your host">
+  <button class="kd-x" id="guestWaitClose" type="button" aria-label="Leave">✕</button>
+  <div class="il-kicker">Kings &amp; Dice — invited match</div>
+  <h2 id="guestWaitTitle">You're in! 🎉</h2>
+  <p id="guestWaitText"></p>
+  <button class="kd-go" id="guestKeepBtn" type="button" style="display:none;">Keep waiting</button>
+  <button class="kd-ghostbtn" id="guestLeaveBtn" type="button">Leave</button>
+</div>
+
+<!--
+  ============================================================
+  sw.js — SERVICE WORKER SOURCE (publish as a separate file named
+  sw.js at the SITE ROOT, next to index.html, on kingsanddice.github.io)
+  The page below registers "sw.js" and fails silently where it is
+  absent (e.g. inside the Muse app shell). Everything between the
+  SW-SOURCE-START and SW-SOURCE-END markers is the complete file.
+  SW-SOURCE-START
+  /* Kings & Dice service worker: Web Push for async invites. */
+  self.addEventListener("push", function (event) {
+    var data = { title: "Kings & Dice", body: "Your friend is ready to play!", url: "https://kingsanddice.github.io/" };
+    try {
+      if (event.data) {
+        var parsed = event.data.json();
+        if (parsed) {
+          if (parsed.title) data.title = String(parsed.title);
+          if (parsed.body) data.body = String(parsed.body);
+          if (parsed.url) data.url = String(parsed.url);
+        }
+      }
+    } catch (e) {
+      try { var t = event.data && event.data.text(); if (t) data.body = t; } catch (e2) {}
+    }
+    var tag = "kd-invite";
+    try {
+      var m = /[?&]room=([A-Za-z0-9]+)/.exec(data.url);
+      if (m) tag = "kd-invite-" + m[1].toUpperCase();
+    } catch (e) {}
+    event.waitUntil(
+      self.registration.showNotification(data.title, {
+        body: data.body,
+        tag: tag,
+        icon: "/assets/icon-192.png",
+        badge: "/assets/icon-192.png",
+        data: { url: data.url }
+      })
+    );
+  });
+  self.addEventListener("notificationclick", function (event) {
+    event.notification.close();
+    var url = (event.notification.data && event.notification.data.url) || "https://kingsanddice.github.io/";
+    event.waitUntil(
+      clients.matchAll({ type: "window", includeUncontrolled: true }).then(function (list) {
+        for (var i = 0; i < list.length; i++) {
+          var c = list[i];
+          if (c.url && c.url.indexOf("kingsanddice.github.io") !== -1 && "focus" in c) {
+            if ("navigate" in c) { try { c.navigate(url); } catch (e) {} }
+            return c.focus();
+          }
+        }
+        if (clients.openWindow) return clients.openWindow(url);
+      })
+    );
+  });
+  self.addEventListener("install", function (event) { event.waitUntil(self.skipWaiting()); });
+  self.addEventListener("activate", function (event) { event.waitUntil(clients.claim()); });
+  SW-SOURCE-END
+  ============================================================
+-->
+
+<script>
+/* ============================================================
+   ASYNC INVITES ("Invite & wait") — casual / unranked matches only.
+   The host parks an invite on the game server (24h), shares the
+   usual public link, and can close the app. When the guest accepts,
+   the server sends this device a Web Push; tapping it lands here
+   with ?room=CODE&host=1 and one tap ("Join now") drops the host
+   back into the room. Guests who open a parked link get a waiting
+   screen and are carried into the room automatically when the
+   host returns. Non-parked invite links are untouched — they keep
+   the seamless-invite behaviour above.
+   API (base SRV_HTTP): GET /api/push/key · POST /api/invites ·
+   POST /api/invites/:code/subscribe · GET /api/invites/:code ·
+   POST /api/invites/:code/join · POST /api/invites/:code/host-back ·
+   POST /api/invites/:code/cancel. The hostKey never appears in any
+   link or share text; neither does any room password.
+   ============================================================ */
+(function(){
+  "use strict";
+  function $(id){ return document.getElementById(id); }
+  var API = (typeof SRV_HTTP !== "undefined" && SRV_HTTP) || "https://kings-and-dice-server.onrender.com";
+  var BASE = (typeof KD_PUBLIC_BASE !== "undefined" && KD_PUBLIC_BASE) || "https://kingsanddice.github.io/";
+  var LS_KEY = "kd-parked-invites";
+  var SERVER_MODES = { normal: 1, hill: 1 };
+
+  /* ---------- service worker (push receiver lives in sw.js) ---------- */
+  var swRegPromise = null;
+  function registerSW(){
+    if (swRegPromise) return swRegPromise;
+    swRegPromise = new Promise(function(resolve){
+      try{
+        if (!("serviceWorker" in navigator) || location.protocol !== "https:"){ resolve(null); return; }
+        navigator.serviceWorker.register("sw.js").then(function(reg){ resolve(reg); }, function(){ resolve(null); });
+      }catch(e){ resolve(null); }
+    });
+    return swRegPromise;
+  }
+  registerSW(); // early, so a later subscribe is fast; silent where unavailable
+
+  /* ---------- small helpers ---------- */
+  function esc(s){ return (typeof escHtml === "function") ? escHtml(String(s == null ? "" : s)) : String(s == null ? "" : s).replace(/[&<>"']/g, function(c){ return { "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" }[c]; }); }
+  function myName(){
+    try{ if (typeof ACCT !== "undefined" && ACCT && ACCT.account && ACCT.account.username) return String(ACCT.account.username).slice(0, 24); }catch(e){}
+    try{ if (typeof PROFILE_NAME !== "undefined" && PROFILE_NAME) return String(PROFILE_NAME).slice(0, 24); }catch(e){}
+    return "Guest Player";
+  }
+  function modeLabel(m){ try{ if (typeof VARIANT_LABELS !== "undefined" && VARIANT_LABELS[m]) return VARIANT_LABELS[m]; }catch(e){} return m === "hill" ? "King of the Hill" : m === "normal" ? "Classic" : String(m || "Classic"); }
+  function apiFetch(path, opts){
+    opts = opts || {};
+    return new Promise(function(resolve, reject){
+      var ctrl = ("AbortController" in window) ? new AbortController() : null;
+      var to = setTimeout(function(){ if (ctrl) try{ ctrl.abort(); }catch(e){} }, 15000);
+      var o = { method: opts.method || "GET", headers: { "Content-Type": "application/json" } };
+      if (opts.body != null) o.body = JSON.stringify(opts.body);
+      if (ctrl) o.signal = ctrl.signal;
+      fetch(API + path, o).then(function(r){
+        clearTimeout(to);
+        if (!r.ok){ var err = new Error("http " + r.status); err.status = r.status; reject(err); return; }
+        r.json().then(resolve, function(){ resolve({}); });
+      }, function(e){ clearTimeout(to); reject(e); });
+    });
+  }
+  function loadParked(){
+    try{ var v = JSON.parse(localStorage.getItem(LS_KEY) || "[]"); return Array.isArray(v) ? v : []; }catch(e){ return []; }
+  }
+  function saveParked(list){ try{ localStorage.setItem(LS_KEY, JSON.stringify(list.slice(0, 12))); }catch(e){} }
+  function dropParked(code){
+    saveParked(loadParked().filter(function(p){ return p.code !== code; }));
+  }
+  function findParked(code){
+    var list = loadParked();
+    for (var i = 0; i < list.length; i++) if (list[i].code === code) return list[i];
+    return null;
+  }
+  function parkedLink(code){ return BASE + "?room=" + encodeURIComponent(code); }
+  function parkedMessage(p){
+    return "♟️🎲 " + (p.hostName && p.hostName !== "Guest Player" ? p.hostName + " invites you" : "You've been invited") +
+      " to play Kings & Dice — chess, but the dice decide which pieces you move!\n\nTap this link to join my match — it opens right in your browser, no download and no account needed:\n" +
+      parkedLink(p.code) + "\n\nRoom code (only if it asks): " + p.code +
+      "\n\nI might not be in the app when you tap it — join anyway and I'll get a ping and jump straight in.";
+  }
+  function shareText(text){
+    if (navigator.share){ navigator.share({ title: "Kings & Dice", text: text }).catch(function(err){ if (!err || err.name !== "AbortError") copyAny(text); }); }
+    else copyAny(text);
+  }
+  function copyAny(text){
+    function done(){ if (typeof toast === "function") toast("Invite copied — paste it into any text or WhatsApp chat."); }
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(done, function(){ fallbackCopyAny(text); done(); });
+    else { fallbackCopyAny(text); done(); }
+  }
+  function fallbackCopyAny(text){
+    try{
+      var ta = document.createElement("textarea");
+      ta.value = text; ta.style.position = "fixed"; ta.style.opacity = "0";
+      document.body.appendChild(ta); ta.select(); document.execCommand("copy"); document.body.removeChild(ta);
+    }catch(e){}
+  }
+  function isServerMode(m){ return !!SERVER_MODES[m || "normal"]; }
+  function currentSetup(){
+    var mode = "normal", stake = 0, timer = 60;
+    try{ mode = (typeof G !== "undefined" && G.pendingVariant) || "normal"; }catch(e){}
+    try{ stake = (typeof pendingStakeValue === "function") ? pendingStakeValue() : Math.max(0, Math.floor((G && G.pendingStake) || 0)); }catch(e){}
+    try{ timer = (typeof G !== "undefined" && typeof G.pendingTimerSec === "number") ? G.pendingTimerSec : 60; }catch(e){}
+    return { mode: mode, stake: Math.max(0, Math.floor(stake || 0)), timer: Math.max(0, Math.floor(timer || 0)) };
+  }
+  function setupLine(s){
+    return modeLabel(s.mode) + " · " + (s.stake > 0 ? ((typeof fmtCoins === "function" ? fmtCoins(s.stake) : s.stake) + " stake") : "no stake") + " · turn timer " + (s.timer > 0 ? s.timer + "s" : "off");
+  }
+  function applySetup(s){
+    if (!s) return;
+    try{
+      if (s.mode && typeof setPendingVariant === "function") setPendingVariant(s.mode);
+      else if (s.mode && typeof G !== "undefined") G.pendingVariant = s.mode;
+      if (typeof s.stake === "number" && typeof G !== "undefined"){ G.pendingStake = Math.max(0, Math.floor(s.stake)); G.pendingAllIn = false; }
+      if (typeof s.timer === "number" && typeof G !== "undefined") G.pendingTimerSec = Math.max(0, Math.floor(s.timer));
+      if (typeof syncVariantUI === "function") syncVariantUI();
+    }catch(e){}
+  }
+
+  /* ---------- entering rooms with a chosen code ---------- */
+  function srvCreateWithCode(code){
+    try{ if (typeof readNameInputs === "function") readNameInputs(); }catch(e){}
+    if (typeof LIVE !== "undefined" && LIVE.status !== "off"){ try{ liveTeardown(); }catch(e){} }
+    if (typeof srvEnsureLiveMode === "function") srvEnsureLiveMode();
+    srvConnect(function(){
+      var stake = G.pendingAllIn ? (SRV.balance != null && SRV.balance > 0 ? SRV.balance : 1000) : Math.max(0, Math.floor(G.pendingStake || 0));
+      if (SRV.balance != null){
+        var cap = SRV.balance > 0 ? SRV.balance : 1000;
+        if (stake > cap) stake = cap;
+      }
+      var msg = { type: "createRoom", mode: srvServerMode(), specials: true, stake: stake, hostColor: "w", timerSec: G.pendingTimerSec, code: code, inviteCode: code };
+      SRV.timerSec = G.pendingTimerSec; SRV.timerAdopted = true; G.timerSec = G.pendingTimerSec;
+      SRV.privateIntent = true;
+      srvSendRaw(msg);
+    });
+  }
+  function p2pCreateWithCode(code){
+    try{ if (typeof readNameInputs === "function") readNameInputs(); }catch(e){}
+    if (typeof SRV !== "undefined" && (SRV.active || SRV.ws || SRV.wakeRetryTimer || (SRV.readyQueue && SRV.readyQueue.length))){ try{ srvTeardown(); }catch(e){} }
+    if (typeof Peer === "undefined"){ if (typeof toast === "function") toast("Live relay library didn't load — check your connection"); return; }
+    try{ liveTeardown(true); }catch(e){}
+    G.mode = "live"; if (typeof syncModeUI === "function") syncModeUI();
+    LIVE.role = "host"; G.myColor = "w"; G.orientation = "w";
+    LIVE.code = code; LIVE.status = "creating"; LIVE.brokerRetry = 0;
+    updateLiveUI();
+    liveHostPeer();
+    resetGameOnly(); startTurn();
+  }
+  function enterRoomAsHost(code, setup){
+    applySetup(setup);
+    if (typeof openSetup === "function") openSetup("live");
+    if (isServerMode(setup && setup.mode)) srvCreateWithCode(code);
+    else p2pCreateWithCode(code);
+  }
+  function enterRoomAsGuest(code, mode){
+    applySetup({ mode: mode || "normal" });
+    if (typeof openSetup === "function") openSetup("live");
+    if (isServerMode(mode)){
+      var si = $("srvCodeIn"); if (si) si.value = code;
+      setTimeout(function(){ if (typeof srvJoin === "function") srvJoin(); }, 90);
+    } else {
+      guestJoinP2P(code, 0);
+    }
+  }
+  function guestJoinP2P(code, attempt){
+    var li = $("liveCodeIn"); if (li) li.value = code;
+    if (typeof liveJoin === "function") liveJoin();
+    setTimeout(function(){
+      try{
+        if (typeof LIVE === "undefined" || LIVE.status === "connected") return;
+        if ((LIVE.status === "failed" || LIVE.status === "connecting") && attempt < 4) guestJoinP2P(code, attempt + 1);
+        else if (LIVE.status === "failed" && typeof toast === "function") toast("Couldn't reach the room yet — the host may still be opening it. Your seat is held; try Join again in a moment.");
+      }catch(e){}
+    }, 6000);
+  }
+
+  /* ============================================================
+     HOST — park an invite
+     ============================================================ */
+  var parkBtn = $("parkInviteBtn"), parkExplain = $("parkExplain"), parkConfirm = $("parkConfirmBtn"), parkNote = $("parkNote");
+  function setParkNote(txt, isErr){
+    if (!parkNote) return;
+    parkNote.textContent = txt || "";
+    parkNote.className = "note" + (txt ? (isErr ? " err" : " ok") : "");
+  }
+  if (parkBtn) parkBtn.addEventListener("click", function(){
+    if (!parkExplain) return;
+    var opening = parkExplain.style.display === "none";
+    parkExplain.style.display = opening ? "" : "none";
+    if (opening){
+      var sl = $("parkSetupLine"); if (sl) sl.textContent = setupLine(currentSetup());
+      setParkNote("");
+    }
+  });
+
+  function urlB64ToUint8Array(s){
+    var pad = "=".repeat((4 - (s.length % 4)) % 4);
+    var b64 = (s + pad).replace(/-/g, "+").replace(/_/g, "/");
+    var raw = atob(b64);
+    var arr = new Uint8Array(raw.length);
+    for (var i = 0; i < raw.length; i++) arr[i] = raw.charCodeAt(i);
+    return arr;
+  }
+  function subscribePush(code, hostKey){
+    return new Promise(function(resolve){
+      try{
+        if (!("Notification" in window) || !("PushManager" in window) || !("serviceWorker" in navigator)){ resolve(false); return; }
+        Notification.requestPermission().then(function(perm){
+          if (perm !== "granted"){ resolve(false); return; }
+          registerSW().then(function(reg){
+            if (!reg){ resolve(false); return; }
+            var ready = navigator.serviceWorker.ready ? navigator.serviceWorker.ready : Promise.resolve(reg);
+            ready.then(function(r){
+              apiFetch("/api/push/key").then(function(k){
+                if (!k || !k.publicKey) throw new Error("no key");
+                return r.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: urlB64ToUint8Array(k.publicKey) });
+              }).then(function(sub){
+                var payload = (sub && sub.toJSON) ? sub.toJSON() : sub;
+                return apiFetch("/api/invites/" + encodeURIComponent(code) + "/subscribe", { method: "POST", body: { hostKey: hostKey, subscription: payload } });
+              }).then(function(){ resolve(true); }, function(){ resolve(false); });
+            }, function(){ resolve(false); });
+          });
+        }, function(){ resolve(false); });
+      }catch(e){ resolve(false); }
+    });
+  }
+
+  if (parkConfirm) parkConfirm.addEventListener("click", function(){
+    var setup = currentSetup();
+    parkConfirm.disabled = true;
+    setParkNote("Parking your invite…");
+    apiFetch("/api/invites", { method: "POST", body: { hostName: myName(), mode: setup.mode, stake: setup.stake, timer: setup.timer } }).then(function(res){
+      if (!res || !res.code || !res.hostKey) throw new Error("bad reply");
+      var p = { code: String(res.code).toUpperCase(), hostKey: String(res.hostKey), mode: setup.mode, stake: setup.stake, timer: setup.timer, hostName: myName(), createdAt: Date.now(), expiresAt: res.expiresAt || null };
+      var list = loadParked(); list.unshift(p); saveParked(list);
+      subscribePush(p.code, p.hostKey).then(function(subscribed){
+        parkConfirm.disabled = false;
+        /* point the sheet's own Share / WhatsApp / Text / Copy at the parked invite */
+        var msg = parkedMessage(p);
+        var box = $("inviteMsgBox"); if (box) box.value = msg;
+        var wa = $("inviteWaBtn"); if (wa) wa.href = "https://wa.me/?text=" + encodeURIComponent(msg);
+        var sms = $("inviteSmsBtn"); if (sms) sms.href = "sms:?&body=" + encodeURIComponent(msg);
+        var ctx = $("inviteContext");
+        if (ctx) ctx.innerHTML = "Your parked room <b>" + esc(p.code) + "</b> is saved on the server for 24 hours (" + esc(setupLine(setup)) + "). The invite above now carries that room — send it with Share, WhatsApp, Text or Copy, then close the app.";
+        setParkNote(subscribed
+          ? "✅ Invite parked — notifications are ON. Send the invite above, then close the app. When your friend joins, this phone gets a ping; tap it to jump straight in."
+          : "Invite saved — open the game to see when they join; notifications are off. (Permission wasn't granted or push isn't available here.) The invite above still works for 24 hours.");
+        if (parkExplain) parkExplain.style.display = "none";
+        renderParkedList();
+        if (typeof toast === "function") toast("Invite parked — room " + p.code);
+      });
+    }, function(){
+      parkConfirm.disabled = false;
+      setParkNote("Couldn't park the invite — check your connection and try again. The regular invite above still works as normal.", true);
+    });
+  });
+
+  /* ============================================================
+     HOST — "Invites you're waiting on" list (invite sheet)
+     ============================================================ */
+  function statusLineFor(p, info){
+    if (!info) return { txt: "Couldn't check its status just now.", hot: false };
+    if (info.state === "guest") return { txt: "🔔 " + (info.guestName ? esc(info.guestName) : "Your friend") + " joined and is waiting for you — tap Join now!", hot: true };
+    if (info.state === "live") return { txt: "This match is live.", hot: false };
+    if (info.state === "expired") return { txt: "This invite has expired.", hot: false };
+    return { txt: "Waiting for your friend to tap Join. Parked invites last 24 hours.", hot: false };
+  }
+  function renderParkedList(){
+    var wrap = $("parkedListWrap"), listEl = $("parkedList");
+    var list = loadParked();
+    if (!wrap || !listEl) return;
+    if (!list.length){ wrap.style.display = "none"; listEl.innerHTML = ""; return; }
+    wrap.style.display = "";
+    listEl.innerHTML = "";
+    list.forEach(function(p){
+      var item = document.createElement("div"); item.className = "kd-parked-item";
+      var top = document.createElement("div"); top.className = "kd-parked-top";
+      top.innerHTML = "<span class=\"kd-parked-code\">" + esc(p.code) + "</span><span class=\"kd-parked-meta\">" + esc(setupLine(p)) + "</span>";
+      var st = document.createElement("div"); st.className = "kd-parked-status"; st.textContent = "Checking status…";
+      var btns = document.createElement("div"); btns.className = "kd-parked-btns";
+      var shareB = document.createElement("button"); shareB.type = "button"; shareB.textContent = "Share invite";
+      shareB.addEventListener("click", function(){ shareText(parkedMessage(p)); });
+      var joinB = document.createElement("button"); joinB.type = "button"; joinB.className = "go"; joinB.textContent = "Join now"; joinB.style.display = "none";
+      joinB.addEventListener("click", function(){ hostJoinNow(p, null, joinB); });
+      var cancelB = document.createElement("button"); cancelB.type = "button"; cancelB.className = "danger"; cancelB.textContent = "Cancel";
+      cancelB.addEventListener("click", function(){
+        cancelB.disabled = true; cancelB.textContent = "Cancelling…";
+        apiFetch("/api/invites/" + encodeURIComponent(p.code) + "/cancel", { method: "POST", body: { hostKey: p.hostKey } }).then(function(){
+          dropParked(p.code); renderParkedList();
+          if (typeof toast === "function") toast("Invite " + p.code + " cancelled");
+        }, function(){
+          cancelB.disabled = false; cancelB.textContent = "Cancel";
+          if (typeof toast === "function") toast("Couldn't cancel just now — check your connection and try again.");
+        });
+      });
+      btns.appendChild(shareB); btns.appendChild(joinB); btns.appendChild(cancelB);
+      item.appendChild(top); item.appendChild(st); item.appendChild(btns);
+      listEl.appendChild(item);
+      apiFetch("/api/invites/" + encodeURIComponent(p.code)).then(function(info){
+        if (!info || info.exists === false){ st.textContent = "This invite has expired or was cancelled."; joinB.style.display = "none"; return; }
+        var s = statusLineFor(p, info);
+        st.innerHTML = s.txt; st.classList.toggle("hot", !!s.hot);
+        if (info.state === "guest"){ joinB.style.display = ""; joinB._info = info; }
+        if (info.state === "expired"){ joinB.style.display = "none"; }
+      }, function(){ st.textContent = "Couldn't check its status just now — your connection may be down."; });
+    });
+  }
+  ["inviteMenuBtn", "inviteFriendsBtn", "srvMoreShareBtn", "p2pShareInviteBtn"].forEach(function(id){
+    var b = $(id);
+    if (b) b.addEventListener("click", function(){ setTimeout(renderParkedList, 60); });
+  });
+
+  /* ============================================================
+     HOST RETURN — banner + Join now
+     ============================================================ */
+  var hostCardInvite = null; // {code, hostKey?, mode, stake, timer, guestName, hostName}
+  function revealWhenReady(el){
+    if (!el) return;
+    var tries = 0;
+    var iv = setInterval(function(){
+      tries++;
+      if (!document.body.classList.contains("title-open") || tries > 100){ clearInterval(iv); el.classList.add("on"); }
+    }, 300);
+  }
+  function showHostCard(inv){
+    hostCardInvite = inv;
+    var card = $("hostBackCard"); if (!card) return;
+    var t = $("hostBackTitle"), x = $("hostBackText");
+    if (t) t.textContent = "🔔 " + (inv.guestName || "Your friend") + " is waiting in your room!";
+    if (x) x.innerHTML = "Room <b>" + esc(inv.code) + "</b> · " + esc(setupLine(inv)) + " — your friend tapped Join and their seat is held. One tap puts you straight into the room with them; you both tap Ready and the match starts.";
+    revealWhenReady(card);
+  }
+  function hideHostCard(){ var c = $("hostBackCard"); if (c) c.classList.remove("on"); }
+  function hostJoinNow(p, infoHint, btnEl){
+    var code = p.code;
+    if (btnEl){ btnEl.disabled = true; btnEl.textContent = "Joining…"; }
+    apiFetch("/api/invites/" + encodeURIComponent(code) + "/host-back", { method: "POST", body: { hostKey: p.hostKey } }).then(function(res){
+      var setup = {
+        mode: (res && res.mode) || p.mode || "normal",
+        stake: (res && typeof res.stake === "number") ? res.stake : (p.stake || 0),
+        timer: (res && typeof res.timer === "number") ? res.timer : (p.timer != null ? p.timer : 60)
+      };
+      dropParked(code);
+      hideHostCard();
+      if (typeof closeSheet === "function") closeSheet("inviteSheet");
+      enterRoomAsHost(code, setup);
+      if (typeof toast === "function") toast("Welcome back — your friend is waiting in room " + code);
+    }, function(){
+      if (btnEl){ btnEl.disabled = false; btnEl.textContent = "Join now"; }
+      if (typeof toast === "function") toast("Couldn't reach the server to rejoin — check your connection and try again.");
+    });
+  }
+  var hbJoin = $("hostBackJoinBtn");
+  if (hbJoin) hbJoin.addEventListener("click", function(){
+    if (!hostCardInvite) return;
+    var stored = findParked(hostCardInvite.code);
+    if (stored){ hostJoinNow(stored, hostCardInvite, hbJoin); return; }
+    /* Opened from the notification on a device without the stored
+       hostKey (e.g. a second phone): fall back to entering the room
+       as the guest so the tap still lands in the match. */
+    hideHostCard();
+    enterRoomAsGuest(hostCardInvite.code, hostCardInvite.mode);
+    if (typeof toast === "function") toast("Joined room " + hostCardInvite.code + " — this device didn't park the invite, so you came in as the guest.");
+  });
+  var hbLater = $("hostBackLaterBtn"); if (hbLater) hbLater.addEventListener("click", hideHostCard);
+  var hbClose = $("hostBackClose"); if (hbClose) hbClose.addEventListener("click", hideHostCard);
+
+  /* On load: (a) notification tap ?room=CODE&host=1, (b) any parked
+     invite a guest has already accepted. */
+  (function hostReturnScan(){
+    var params = null;
+    try{ params = new URLSearchParams(location.search || ""); }catch(e){}
+    var urlCode = null, isHostTap = false;
+    if (params){
+      var rp = params.get("room");
+      if (rp) urlCode = String(rp).toUpperCase().replace(/[^A-Z0-9]/g, "").slice(0, 10) || null;
+      isHostTap = params.get("host") === "1";
+    }
+    var candidates = loadParked();
+    var seen = {};
+    var jobs = [];
+    if (urlCode && isHostTap){
+      jobs.push(apiFetch("/api/invites/" + encodeURIComponent(urlCode)).then(function(info){
+        if (info && info.exists !== false && info.state !== "expired"){
+          var stored = findParked(urlCode);
+          return { code: urlCode, hostKey: stored ? stored.hostKey : null, mode: info.mode || (stored && stored.mode) || "normal", stake: stored ? stored.stake : 0, timer: stored && stored.timer != null ? stored.timer : 60, guestName: info.guestName || null, hostName: info.hostName || null, _fromUrl: true };
+        }
+        return null;
+      }, function(){
+        var stored = findParked(urlCode);
+        return stored ? { code: urlCode, hostKey: stored.hostKey, mode: stored.mode, stake: stored.stake, timer: stored.timer, guestName: null, _fromUrl: true } : null;
+      }));
+    }
+    candidates.forEach(function(p){
+      if (urlCode && p.code === urlCode && isHostTap) return; // handled above
+      seen[p.code] = 1;
+      jobs.push(apiFetch("/api/invites/" + encodeURIComponent(p.code)).then(function(info){
+        if (info && info.state === "guest") return { code: p.code, hostKey: p.hostKey, mode: info.mode || p.mode, stake: p.stake, timer: p.timer, guestName: info.guestName || null };
+        if (info && info.state === "expired") dropParked(p.code);
+        return null;
+      }, function(){ return null; }));
+    });
+    if (!jobs.length) return;
+    Promise.all(jobs).then(function(results){
+      var urlHit = null, guestHit = null;
+      results.forEach(function(r){ if (!r) return; if (r._fromUrl) urlHit = r; else if (!guestHit) guestHit = r; });
+      if (urlHit) showHostCard(urlHit);
+      else if (guestHit) showHostCard(guestHit);
+    });
+  })();
+
+  /* ============================================================
+     GUEST — parked invite landing + waiting screen
+     ============================================================ */
+  var guestCtx = null; // {code, mode, hostName}
+  var guestPoll = null;
+  var guestJoinedAt = 0;
+  var guestSawWaitingAfterJoin = false;
+
+  function ensureGuestName(cb){
+    var nm = myName();
+    if (nm && nm !== "Guest Player"){ cb(nm); return; }
+    var np = $("namePopup");
+    if (!np){ cb("Guest Player"); return; }
+    np.classList.add("on");
+    var iv = setInterval(function(){
+      if (!np.classList.contains("on")){ clearInterval(iv); cb(myName()); }
+    }, 400);
+  }
+  function showGuestWait(text, showKeep){
+    var card = $("guestWaitCard"); if (!card) return;
+    var x = $("guestWaitText"); if (x) x.innerHTML = text;
+    var kb = $("guestKeepBtn"); if (kb) kb.style.display = showKeep ? "" : "none";
+    card.classList.add("on");
+  }
+  function hideGuestWait(){ var c = $("guestWaitCard"); if (c) c.classList.remove("on"); }
+  function stopGuestPoll(){ if (guestPoll){ clearInterval(guestPoll); guestPoll = null; } }
+  function guestProceedToRoom(){
+    stopGuestPoll();
+    hideGuestWait();
+    if (typeof toast === "function") toast((guestCtx.hostName || "Your host") + " is back — joining room " + guestCtx.code + "…");
+    enterRoomAsGuest(guestCtx.code, guestCtx.mode);
+  }
+  function guestPollTick(){
+    if (!guestCtx) { stopGuestPoll(); return; }
+    apiFetch("/api/invites/" + encodeURIComponent(guestCtx.code)).then(function(info){
+      if (!info) return;
+      if (info.state === "live"){ guestProceedToRoom(); return; }
+      if (info.state === "expired"){
+        stopGuestPoll();
+        showGuestWait("This invite has <b>expired</b> — parked invites last 24 hours. Ask your friend to send a fresh one.", false);
+        var lv = $("guestLeaveBtn"); if (lv) lv.textContent = "Close";
+        return;
+      }
+      if (info.state === "waiting" && guestJoinedAt){
+        /* host didn't come back inside the window and the seat was released */
+        guestSawWaitingAfterJoin = true;
+        stopGuestPoll();
+        showGuestWait("<b>" + esc(guestCtx.hostName || "Your host") + " didn't come back in time</b> — your held seat was released. You can keep waiting (tap below to hold your seat again) or leave.", true);
+      }
+    }, function(){ /* transient — keep polling */ });
+  }
+  function startGuestPoll(){
+    stopGuestPoll();
+    guestPoll = setInterval(guestPollTick, 3000);
+    guestPollTick();
+  }
+  function guestAccept(){
+    if (!guestCtx) return;
+    ensureGuestName(function(nm){
+      apiFetch("/api/invites/" + encodeURIComponent(guestCtx.code) + "/join", { method: "POST", body: { guestName: nm } }).then(function(){
+        guestJoinedAt = Date.now();
+        guestSawWaitingAfterJoin = false;
+        showGuestWait("<span class=\"kd-waitdot\"></span><b>" + esc(guestCtx.hostName || "Your host") + "</b> has been notified 🔔 — hang tight, your seat is held. The moment they're back, you'll be carried straight into the room.", false);
+        startGuestPoll();
+      }, function(){
+        if (typeof toast === "function") toast("Couldn't accept the invite just now — check your connection and tap Join again.");
+        var card = $("inviteLanding"); if (card) card.classList.add("on");
+      });
+    });
+  }
+  var gLeave = $("guestLeaveBtn");
+  if (gLeave) gLeave.addEventListener("click", function(){ stopGuestPoll(); hideGuestWait(); guestCtx = null; });
+  var gClose = $("guestWaitClose");
+  if (gClose) gClose.addEventListener("click", function(){ stopGuestPoll(); hideGuestWait(); guestCtx = null; });
+  var gKeep = $("guestKeepBtn");
+  if (gKeep) gKeep.addEventListener("click", function(){
+    if (!guestCtx) return;
+    guestJoinedAt = 0;
+    guestAccept();
+  });
+
+  /* Intercept the landing card only when the code is a live parked
+     invite. Anything else keeps today's seamless-invite behaviour. */
+  (function guestScan(){
+    var params = null;
+    try{ params = new URLSearchParams(location.search || ""); }catch(e){}
+    if (!params) return;
+    if (params.get("host") === "1") return; // host-return path owns this load
+    var rp = params.get("room");
+    if (!rp) return;
+    var code = String(rp).toUpperCase().replace(/[^A-Z0-9]/g, "").slice(0, 10);
+    if (!code) return;
+    if (findParked(code)) return; // my own parked invite opened on this device — not a guest visit
+    apiFetch("/api/invites/" + encodeURIComponent(code)).then(function(info){
+      var land = $("inviteLanding"), lt = $("inviteLandTitle"), lx = $("inviteLandText"), jb = $("inviteJoinBtn"), db = $("inviteDismissBtn");
+      if (!land || !jb) return;
+      if (!info || info.exists === false){
+        if (info && info.state === "expired"){
+          if (lx) lx.innerHTML += "<br><b>Note:</b> that invite has expired — the code stays filled in below in case your friend is still around.";
+        }
+        return; // not parked (or gone): today's behaviour, untouched
+      }
+      if (info.state === "expired"){
+        if (lx) lx.innerHTML += "<br><b>Note:</b> that invite has expired — the code stays filled in below in case your friend is still around.";
+        return;
+      }
+      guestCtx = { code: code, mode: info.mode || "normal", hostName: info.hostName || "" };
+      if (lt) lt.textContent = "🎲 You're invited to a match!";
+      if (lx) lx.innerHTML = "<b>" + esc(info.hostName || "A friend") + "</b> invited you to a <b>" + esc(modeLabel(guestCtx.mode)) + "</b> match of <b>Kings &amp; Dice</b> and parked the invite — they may not be in the app right now. Tap <b>Join</b>: they'll get a ping, and you'll be carried into room <span class=\"il-code\">" + esc(code) + "</span> the moment they're back. No download, no account.";
+      /* replace the seamless Join/Dismiss handlers with parked ones */
+      var jb2 = jb.cloneNode(true); jb.parentNode.replaceChild(jb2, jb);
+      jb2.textContent = info.state === "live" ? "Join match — room " + code : "Join — room " + code;
+      jb2.addEventListener("click", function(){
+        land.classList.remove("on");
+        var np = $("namePopup"); if (np) np.classList.remove("on");
+        if (info.state === "live"){
+          ensureGuestName(function(nm){
+            apiFetch("/api/invites/" + encodeURIComponent(code) + "/join", { method: "POST", body: { guestName: nm } }).then(function(){ guestProceedToRoom(); }, function(){ guestProceedToRoom(); });
+          });
+          return;
+        }
+        guestAccept();
+      });
+      if (db){
+        var db2 = db.cloneNode(true); db.parentNode.replaceChild(db2, db);
+        db2.addEventListener("click", function(){
+          land.classList.remove("on");
+          if (typeof toast === "function") toast("Room " + code + " stays filled in under Play Online → Live whenever you're ready");
+        });
+      }
+    }, function(){ /* invite API unreachable — today's behaviour, untouched */ });
+  })();
+
+  renderParkedList();
 })();
 </script>
 </body>
