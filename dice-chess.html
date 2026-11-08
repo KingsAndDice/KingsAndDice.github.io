@@ -3392,6 +3392,7 @@ html.comp-reduce .board.shuffle-reveal .piece,html.comp-reduce .board.shuffle-re
       <div class="nx-presets" id="nxPresets"></div>
       <button class="nx-preset-save" id="nxPresetSave" type="button">＋ Save current setup as a preset</button>
       <button class="nx-repeat-btn" id="nxFriendsBtn" type="button">🤝 Play With Friends</button>
+      <button class="nx-repeat-btn" id="inviteMenuBtn" type="button">📩 Invite a Friend</button>
     </div>
     <div class="radiobar" id="radioBar" aria-label="Game radio">
       <span class="radio-ic" aria-hidden="true">📻</span>
@@ -3505,6 +3506,7 @@ html.comp-reduce .board.shuffle-reveal .piece,html.comp-reduce .board.shuffle-re
     <div class="nx-friendcard">
       <button class="nx-bigopt" type="button" id="nxFrCreate"><span class="nx-bo-name">Create Live Room</span><span class="nx-bo-sub">Start a server room and share the code — Normal &amp; King of the Hill run on the server; other modes use a Friend (P2P) room from the same screen.</span></button>
       <button class="nx-bigopt" type="button" id="nxFrJoin"><span class="nx-bo-name">Join Live Room</span><span class="nx-bo-sub">Enter the room code your friend sent you.</span></button>
+      <button class="nx-bigopt" type="button" id="inviteFriendsBtn"><span class="nx-bo-name">📩 Invite a Friend</span><span class="nx-bo-sub">Send a ready-made invite by text, WhatsApp or any app — they tap the link and land right in the game. No download, no account. Works for any casual friend match, in any mode.</span></button>
       <div class="nx-codebox">
         <label for="nxCodeIn">Continue a Turn-Code Game</label>
         <input id="nxCodeIn" type="text" placeholder="Paste your friend's turn code…" autocomplete="off" />
@@ -4039,6 +4041,7 @@ html.comp-reduce .board.shuffle-reveal .piece,html.comp-reduce .board.shuffle-re
         <textarea id="codeOut" readonly placeholder="Your code appears here after your first move…"></textarea>
         <div class="row">
           <button id="copyCodeBtn" type="button">Copy code</button>
+          <button id="shareCodeBtn" type="button" class="ghost">📩 Share code + game link</button>
         </div>
         <div style="height:14px"></div>
         <label for="codeIn" style="font-size:13px;font-weight:700;">Got a code from your friend? Paste it here</label>
@@ -4100,9 +4103,11 @@ html.comp-reduce .board.shuffle-reveal .piece,html.comp-reduce .board.shuffle-re
             <div class="srv-wait-code" id="srvWaitCode">–––––</div>
             <div class="srv-wait-codelabel">Room code — share it with your friend</div>
             <div class="srv-invite-row">
-              <button id="srvCopyInviteBtn" type="button">Copy Invite Link</button>
-              <button id="srvShareInviteBtn" type="button" class="ghost">Share Invite</button>
+              <button id="srvShareInviteBtn" type="button">📩 Share Invite</button>
+              <button id="srvCopyInviteBtn" type="button" class="ghost">Copy Invite Link</button>
+              <button id="srvMoreShareBtn" type="button" class="ghost">More ways…</button>
             </div>
+            <p style="font-size:12.5px;color:var(--ink-soft);margin:2px 0 0;text-align:center;">Share opens your phone's share sheet — text it, WhatsApp it, anything. Your friend taps the link and lands straight in this room.</p>
             <div class="srv-slots" id="srvSlots"></div>
             <div class="srv-wait-settings">
               <div class="vtitle">Match settings</div>
@@ -4191,6 +4196,11 @@ html.comp-reduce .board.shuffle-reveal .piece,html.comp-reduce .board.shuffle-re
           <div id="liveCodeWrap" style="display:none;">
             <div style="font-size:13px;font-weight:700;margin-top:10px;">Your room code — send this to your friend</div>
             <div class="roomcode" id="liveCodeOut"></div>
+            <div class="row">
+              <button id="p2pShareInviteBtn" type="button">📩 Invite a friend</button>
+              <button id="p2pCopyInviteBtn" type="button" class="ghost">Copy invite</button>
+            </div>
+            <p style="font-size:12.5px;color:var(--ink-soft);margin:6px 0 0;">Send the invite by text, WhatsApp or any app — your friend taps the link and joins this room in one tap. Works for every match type.</p>
           </div>
           <div style="height:14px"></div>
           <label for="liveCodeIn" style="font-size:13px;font-weight:700;">Friend sent you a code? Join their room</label>
@@ -11804,7 +11814,7 @@ function srvShareInvite(){
   var link = srvInviteLink();
   if (!link){ srvNote("Create or join a private room first — then you can share the invite.", true); return; }
   if (navigator.share){
-    navigator.share({ title: "Kings & Dice", text: "Join my Kings & Dice match — room code " + SRV.roomCode, url: link })
+    navigator.share({ title: "Kings & Dice", text: "♟️🎲 Come play Kings & Dice with me — chess, but the dice decide which pieces you move! Tap the link to join my match — it opens in your browser, no download and no account needed. Room code (only if it asks): " + SRV.roomCode + "\n" + link })
       .catch(function(err){ if (!err || err.name!=="AbortError") srvCopyText(link, "Invite link copied — send it to your friend."); });
   } else {
     srvCopyText(link, "Invite link copied — send it to your friend. It carries the room code only, never the password.");
@@ -21929,6 +21939,243 @@ body.board-fs-active #boardFsExitFloat{display:block;position:fixed;top:calc(54p
     }
   });
   sync();
+})();
+</script>
+
+<style id="kdInviteCss">
+  #inviteMenuBtn{border-color:var(--gold);color:var(--brass);font-weight:800;}
+  #inviteSheet .sheetcard{max-height:calc(100dvh - env(safe-area-inset-top) - 10px);overflow-y:auto;}
+  .kd-inv-context{font-size:13.5px;line-height:1.55;color:var(--ink-soft);margin:0 0 10px;}
+  .kd-inv-context b{color:var(--ink);}
+  #inviteMsgBox{width:100%;font-size:13.5px;line-height:1.5;padding:11px 12px;border-radius:12px;border:1px solid var(--line-strong);background:var(--panel-2);color:var(--ink);resize:vertical;min-height:118px;word-break:break-word;}
+  .kd-inv-primary{width:100%;margin-top:12px;border:1px solid #7a5f10;background:linear-gradient(180deg,#ffe98a 0%,#e8c15a 45%,#c9a227 100%);color:#171106;font-size:16px;font-weight:850;padding:14px 16px;border-radius:12px;cursor:pointer;min-height:52px;}
+  .kd-inv-row{display:flex;gap:8px;margin-top:9px;}
+  .kd-inv-row a,.kd-inv-row button{flex:1;display:inline-flex;align-items:center;justify-content:center;min-height:46px;border:1px solid var(--line-strong);background:var(--panel);color:var(--ink);font-size:14px;font-weight:750;padding:10px 8px;border-radius:11px;cursor:pointer;text-decoration:none;text-align:center;}
+  .kd-inv-row a:active,.kd-inv-row button:active{transform:translateY(1px);}
+  .kd-inv-wa{border-color:#1f9d55 !important;color:#12703c !important;font-weight:800 !important;}
+  @media (prefers-color-scheme: dark){.kd-inv-wa{color:#4ade80 !important;}}
+  .kd-inv-create{width:100%;margin-top:9px;border:1px dashed var(--gold);background:var(--accent-soft);color:var(--ink);font-size:14px;font-weight:800;padding:12px;border-radius:11px;cursor:pointer;min-height:48px;}
+  .kd-inv-fine{font-size:12px;color:var(--ink-faint);line-height:1.5;margin:10px 0 0;text-align:center;}
+  #inviteLanding{position:fixed;left:50%;transform:translateX(-50%) translateY(16px);bottom:calc(12px + env(safe-area-inset-bottom));width:min(560px,calc(100vw - 20px));z-index:65;background:var(--panel);color:var(--ink);border:1.5px solid var(--gold);border-radius:18px;box-shadow:0 18px 44px rgba(0,0,0,.42);padding:16px;display:none;opacity:0;transition:opacity .25s ease,transform .25s ease;}
+  #inviteLanding.on{display:block;opacity:1;transform:translateX(-50%) translateY(0);}
+  #inviteLanding .il-kicker{font-size:11px;font-weight:850;letter-spacing:.09em;text-transform:uppercase;color:var(--brass);}
+  #inviteLanding h2{margin:4px 0 6px;font-size:22px;line-height:1.15;letter-spacing:-.02em;}
+  #inviteLanding p{margin:0 0 12px;font-size:13.5px;line-height:1.55;color:var(--ink-soft);}
+  #inviteLanding p b{color:var(--ink);}
+  #inviteLanding .il-code{display:inline-block;font-family:"Cinzel",Georgia,serif;font-weight:900;letter-spacing:.18em;background:var(--accent-soft);border:1px solid var(--gold);border-radius:9px;padding:2px 8px 2px 10px;color:var(--brass);}
+  #inviteJoinBtn{width:100%;border:1px solid #7a5f10;background:linear-gradient(180deg,#ffe98a 0%,#e8c15a 45%,#c9a227 100%);color:#171106;font-size:16.5px;font-weight:850;padding:14px 16px;border-radius:12px;cursor:pointer;min-height:54px;}
+  #inviteDismissBtn{width:100%;margin-top:8px;border:1px solid var(--line);background:transparent;color:var(--ink-soft);font-size:14px;font-weight:700;padding:11px;border-radius:11px;cursor:pointer;}
+  @media (prefers-reduced-motion: reduce){#inviteLanding{transition:none;}}
+</style>
+
+<div class="sheetdrawer" id="inviteSheet" aria-label="Invite a friend">
+  <div class="sheetcard">
+    <div class="chathead"><span class="ch-title">📩 Invite a friend</span><button class="chatclose" id="inviteCloseBtn" type="button" aria-label="Close invite">✕</button></div>
+    <p class="kd-inv-context" id="inviteContext"></p>
+    <label for="inviteMsgBox" style="font-size:13px;font-weight:700;">Your invite message — ready to send as-is</label>
+    <textarea id="inviteMsgBox"></textarea>
+    <button class="kd-inv-primary" id="inviteShareBtn" type="button">📤 Share invite…</button>
+    <div class="kd-inv-row">
+      <a id="inviteWaBtn" class="kd-inv-wa" href="#" target="_blank" rel="noopener">WhatsApp</a>
+      <a id="inviteSmsBtn" href="#">💬 Text message</a>
+    </div>
+    <div class="kd-inv-row">
+      <button id="inviteCopyMsgBtn" type="button">Copy invite message</button>
+    </div>
+    <button class="kd-inv-create" id="inviteCreateRoomBtn" type="button" style="display:none;">▶ Create a live room first — they join it in one tap</button>
+    <div class="note" id="inviteNote"></div>
+    <p class="kd-inv-fine">For casual friend matches in any mode — Classic and King of the Hill rooms run on the server, every other mode uses a Friend room, and the same invite works for both. Ranked matchmaking isn't invited this way.</p>
+  </div>
+</div>
+
+<div id="inviteLanding" role="dialog" aria-label="You're invited to a Kings and Dice match">
+  <div class="il-kicker">Kings &amp; Dice — Strategy Meets Chance</div>
+  <h2 id="inviteLandTitle">🎲 You're invited!</h2>
+  <p id="inviteLandText"></p>
+  <button id="inviteJoinBtn" type="button">Join match</button>
+  <button id="inviteDismissBtn" type="button">Look around first</button>
+</div>
+
+<script>
+/* ============================================================
+   SEAMLESS INVITES — for casual (unranked) friend matches in ANY
+   regular mode. One flow covers both friend-room transports:
+   server private rooms (Classic / King of the Hill) and Friend
+   (P2P) rooms (every other mode), plus turn-code games.
+   Sender: the invite sheet opens the phone's native share sheet
+   (Messages, WhatsApp, everything), with direct WhatsApp / SMS
+   links and a copyable pre-written message that carries the link.
+   Links always point at the game's public home (KD_PUBLIC_BASE),
+   never at this page's own in-app address. A room link carries
+   ONLY the room code (and t=p2p for Friend rooms) — never a
+   password.
+   Recipient: tapping the link in a text / WhatsApp lands here,
+   where a welcome card offers one-tap Join straight into the
+   room — no download, no account, no hunting for the join box.
+   ============================================================ */
+(function(){
+  "use strict";
+  function $(id){ return document.getElementById(id); }
+  var BASE = (typeof KD_PUBLIC_BASE !== "undefined" && KD_PUBLIC_BASE) || "https://kingsanddice.github.io/";
+  function roomInfo(){
+    try{ if (typeof SRV !== "undefined" && SRV.active && SRV.roomCode) return { code: SRV.roomCode, kind: "srv" }; }catch(e){}
+    try{ if (typeof LIVE !== "undefined" && LIVE.code && (LIVE.status === "waiting" || LIVE.status === "connected")) return { code: LIVE.code, kind: "p2p" }; }catch(e){}
+    return null;
+  }
+  function inviteLink(){
+    var r = roomInfo();
+    if (r) return BASE + "?room=" + encodeURIComponent(r.code) + (r.kind === "p2p" ? "&t=p2p" : "") + "&invite=1";
+    return BASE + "?invite=1";
+  }
+  function inviteMessage(){
+    var link = inviteLink(), r = roomInfo(), nm = "";
+    try{ nm = (typeof PROFILE_NAME !== "undefined" && PROFILE_NAME) || ""; }catch(e){}
+    var who = nm ? (nm + " invites you") : "You've been invited";
+    if (r) return "♟️🎲 " + who + " to play Kings & Dice — chess, but the dice decide which pieces you move!\n\nTap this link to join my match — it opens right in your browser, no download and no account needed:\n" + link + "\n\nRoom code (only if it asks): " + r.code;
+    return "♟️🎲 " + who + " to play Kings & Dice — chess, but the dice decide which pieces you move!\n\nPlay it free right in your browser — no download, no account needed:\n" + link + "\n\nOpen it and tap Play With Friends — I'll be setting up our match.";
+  }
+  function fallbackCopy(text){
+    try{
+      var ta = document.createElement("textarea");
+      ta.value = text; ta.style.position = "fixed"; ta.style.opacity = "0";
+      document.body.appendChild(ta); ta.select();
+      document.execCommand("copy");
+      document.body.removeChild(ta);
+    }catch(e){}
+  }
+  function copyText(text, okMsg){
+    function done(){
+      if (typeof toast === "function") toast(okMsg);
+      var n = $("inviteNote");
+      if (n){ n.textContent = okMsg; n.className = "note ok"; }
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(done, function(){ fallbackCopy(text); done(); });
+    } else { fallbackCopy(text); done(); }
+  }
+  function nativeShare(text){
+    if (!navigator.share) return false;
+    navigator.share({ title: "Kings & Dice", text: text }).catch(function(err){
+      if (!err || err.name !== "AbortError") copyText(text, "Invite copied — paste it into any text or WhatsApp chat.");
+    });
+    return true;
+  }
+  function refreshInvite(){
+    var r = roomInfo();
+    var box = $("inviteMsgBox"); if (box) box.value = inviteMessage();
+    var ctx = $("inviteContext");
+    if (ctx) ctx.innerHTML = r
+      ? "Your room <b>" + r.code + "</b> is live — this invite drops your friend <b>straight into this match</b>, whatever casual mode you're playing. If the room has a password, they'll be asked for it after tapping Join — passwords are never in the link."
+      : "Send this to <b>anyone, even if they've never opened the game</b> — the link opens Kings &amp; Dice in their browser, ready to play. Or create a room first (button below) and the invite will point straight at your match.";
+    var wa = $("inviteWaBtn"); if (wa) wa.href = "https://wa.me/?text=" + encodeURIComponent(inviteMessage());
+    var sms = $("inviteSmsBtn"); if (sms) sms.href = "sms:?&body=" + encodeURIComponent(inviteMessage());
+    var cr = $("inviteCreateRoomBtn"); if (cr) cr.style.display = r ? "none" : "";
+    var note = $("inviteNote"); if (note){ note.textContent = ""; note.className = "note"; }
+  }
+  function openInvite(){ refreshInvite(); if (typeof openSheet === "function") openSheet("inviteSheet"); }
+
+  /* ---------- sender wiring ---------- */
+  var menuBtn = $("inviteMenuBtn"); if (menuBtn) menuBtn.addEventListener("click", openInvite);
+  var frBtn = $("inviteFriendsBtn"); if (frBtn) frBtn.addEventListener("click", openInvite);
+  var moreBtn = $("srvMoreShareBtn"); if (moreBtn) moreBtn.addEventListener("click", openInvite);
+  var p2pShare = $("p2pShareInviteBtn"); if (p2pShare) p2pShare.addEventListener("click", openInvite);
+  var p2pCopy = $("p2pCopyInviteBtn"); if (p2pCopy) p2pCopy.addEventListener("click", function(){ copyText(inviteMessage(), "Invite copied — paste it into any text or WhatsApp chat."); });
+  var closeBtn = $("inviteCloseBtn"); if (closeBtn) closeBtn.addEventListener("click", function(){ if (typeof closeSheet === "function") closeSheet("inviteSheet"); });
+  var shareBtn = $("inviteShareBtn");
+  if (shareBtn) shareBtn.addEventListener("click", function(){
+    var box = $("inviteMsgBox");
+    var msg = box && box.value.trim() ? box.value : inviteMessage();
+    if (!nativeShare(msg)) copyText(msg, "Invite copied — paste it into any text or WhatsApp chat.");
+  });
+  var copyMsgBtn = $("inviteCopyMsgBtn");
+  if (copyMsgBtn) copyMsgBtn.addEventListener("click", function(){
+    var box = $("inviteMsgBox");
+    copyText(box && box.value.trim() ? box.value : inviteMessage(), "Invite message copied — paste it into any text or WhatsApp chat.");
+  });
+  var createBtn = $("inviteCreateRoomBtn");
+  if (createBtn) createBtn.addEventListener("click", function(){
+    if (typeof closeSheet === "function") closeSheet("inviteSheet");
+    var b = $("nxFrCreate");
+    if (b){ b.click(); if (typeof toast === "function") toast("Room on its way — once it opens, tap Share Invite in the waiting room"); }
+    else if (typeof openSetup === "function"){ openSetup("live"); }
+  });
+  var shareCodeBtn = $("shareCodeBtn");
+  if (shareCodeBtn) shareCodeBtn.addEventListener("click", function(){
+    var out = $("codeOut");
+    var code = out ? out.value.trim() : "";
+    if (!code){ if (typeof toast === "function") toast("Make your first move first — then your turn code is ready to share."); return; }
+    var msg = "♟️🎲 Your move in our Kings & Dice game! Open the game in your browser (no download, no account needed):\n" + BASE + "?invite=1\n\nThen tap Play With Friends, paste this code, and take your turn:\n" + code;
+    if (!nativeShare(msg)) copyText(msg, "Invite + turn code copied — paste it into any chat.");
+  });
+
+  /* ---------- recipient landing (tapped a link in a text / WhatsApp) ---------- */
+  var params = null;
+  try{ params = new URLSearchParams(location.search || ""); }catch(e){}
+  var pending = null;
+  if (params){
+    var rp = params.get("room");
+    if (rp){
+      var clean = String(rp).toUpperCase().replace(/[^A-Z0-9]/g, "").slice(0, 10);
+      if (clean) pending = { code: clean, kind: params.get("t") === "p2p" ? "p2p" : "srv" };
+    } else if (params.get("invite")) pending = { code: null, kind: "game" };
+  }
+  if (pending){
+    var land = $("inviteLanding"), lt = $("inviteLandTitle"), lx = $("inviteLandText"), jb = $("inviteJoinBtn");
+    if (pending.code){
+      /* keep both join boxes filled as a fallback, whichever screen they land on */
+      var si = $("srvCodeIn"); if (si && pending.kind === "srv") si.value = pending.code;
+      var li = $("liveCodeIn"); if (li && pending.kind === "p2p") li.value = pending.code;
+      if (lt) lt.textContent = "🎲 You're invited to a match!";
+      if (lx) lx.innerHTML = "A friend is waiting for you in <b>Kings &amp; Dice</b> — chess where the dice decide your moves. Your room <span class=\"il-code\">" + pending.code + "</span> is ready: <b>no download, no account</b> — just tap Join and you're in. New to the game? It teaches you as you play.";
+      if (jb) jb.textContent = "Join match — room " + pending.code;
+    } else {
+      if (lt) lt.textContent = "🎲 Welcome to Kings & Dice!";
+      if (lx) lx.innerHTML = "A friend invited you to <b>Kings &amp; Dice</b> — chess where the dice decide your moves. It plays free right here in your browser: <b>no download, no account</b>. Meet your friend in a live match, or warm up against the computer first.";
+      if (jb) jb.textContent = "▶ Start playing";
+    }
+    function hideLanding(){ if (land) land.classList.remove("on"); }
+    if (jb) jb.addEventListener("click", function(){
+      hideLanding();
+      var np = $("namePopup"); if (np) np.classList.remove("on");
+      if (!pending.code){
+        try{ if (typeof nxShowFriends === "function") nxShowFriends(); }catch(e){}
+        if (typeof toast === "function") toast("Welcome! Create a room here, or join with the code your friend sent you");
+        return;
+      }
+      if (pending.kind === "p2p"){
+        if (typeof openSetup === "function") openSetup("live");
+        var li2 = $("liveCodeIn"); if (li2) li2.value = pending.code;
+        setTimeout(function(){ if (typeof liveJoin === "function") liveJoin(); }, 80);
+      } else {
+        try{
+          if (typeof G !== "undefined" && typeof srvSupported === "function" && !srvSupported()){
+            G.pendingVariant = "normal";
+            if (typeof syncVariantUI === "function") syncVariantUI();
+          }
+        }catch(e){}
+        if (typeof openSetup === "function") openSetup("live");
+        var si2 = $("srvCodeIn"); if (si2) si2.value = pending.code;
+        setTimeout(function(){
+          if (typeof srvJoin === "function") srvJoin();
+          if (typeof toast === "function") toast("Joining room " + pending.code + "…");
+        }, 80);
+      }
+    });
+    var db = $("inviteDismissBtn");
+    if (db) db.addEventListener("click", function(){
+      hideLanding();
+      if (pending.code && typeof toast === "function") toast("Room " + pending.code + " stays filled in under Play Online → Live whenever you're ready");
+    });
+    /* reveal once the title splash is dismissed, so the card is the first thing they act on */
+    var tries = 0;
+    var iv = setInterval(function(){
+      tries++;
+      if (!document.body.classList.contains("title-open") || tries > 100){
+        clearInterval(iv);
+        if (land) land.classList.add("on");
+      }
+    }, 300);
+  }
 })();
 </script>
 </body>
