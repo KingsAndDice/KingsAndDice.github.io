@@ -21760,15 +21760,21 @@ html.reduce-motion .ts-emblem,html.reduce-motion .ts-title,html.reduce-motion .t
    replaced there by the header-style corner exit below.
    ============================================================ */
 .board-fs-toggle.on{color:#ffe98a !important;border-color:#ffe98a !important;background:linear-gradient(180deg,#8a6d1b,#5c4a0e 72%) !important;}
-#boardStage:fullscreen{background:#04060d;color:#f3ecd7;overflow-y:auto;overflow-x:hidden;padding:12px 12px calc(12px + env(safe-area-inset-bottom));scrollbar-width:thin;}
+#boardStage:fullscreen{background:#04060d;color:#f3ecd7;overflow-y:auto;overflow-x:hidden;padding:12px 12px calc(66px + env(safe-area-inset-bottom));scrollbar-width:thin;}
 #boardStage:fullscreen .boardframe,
 body.board-fs-on #boardStage .boardframe{width:min(calc(100vw - 24px),calc(100dvh - 330px));min-width:min(240px,calc(100vw - 24px));margin-inline:auto;}
 body.board-fs-on{overflow:hidden;}
-body.board-fs-on #boardStage{position:fixed;inset:0;z-index:96;width:100%;height:100dvh;background:#04060d;color:#f3ecd7;overflow-y:auto;overflow-x:hidden;padding:12px 12px calc(12px + env(safe-area-inset-bottom));display:flex;flex-direction:column;align-items:center;scrollbar-width:thin;}
+body.board-fs-on #boardStage{position:fixed;inset:0;z-index:96;width:100%;height:100dvh;background:#04060d;color:#f3ecd7;overflow-y:auto;overflow-x:hidden;padding:12px 12px calc(66px + env(safe-area-inset-bottom));display:flex;flex-direction:column;align-items:center;scrollbar-width:thin;}
 body.board-fs-on #boardStage>*{flex:0 0 auto;width:100%;}
 body.board-fs-on #boardStage .boardframe{flex:0 0 auto;}
 #boardFsExitFloat{display:none;}
-body.board-fs-active #boardFsExitFloat{display:block;position:fixed;top:calc(54px + env(safe-area-inset-top));right:12px;z-index:97;border:1.5px solid #c9a227;background:rgba(10,15,30,.92);color:#f6d776;font-size:13px;font-weight:800;padding:9px 13px;border-radius:999px;cursor:pointer;box-shadow:0 6px 18px rgba(0,0,0,.55);}
+/* exit pill lives BELOW the board, bottom-right of the screen: the old
+   top-right spot (top:54px) sat on the board's top rank and covered
+   pieces. The board never reaches the bottom strip (its height is
+   capped well above it, and the fs stage's bottom padding below keeps
+   the bottom player bar clear of the pill too). Still a ~42px tap
+   target, one tap exits via the same .board-fs-toggle wiring. */
+body.board-fs-active #boardFsExitFloat{display:block;position:fixed;top:auto;bottom:calc(10px + env(safe-area-inset-bottom));right:12px;z-index:97;border:1.5px solid #c9a227;background:rgba(10,15,30,.94);color:#f6d776;font-size:12.5px;font-weight:800;padding:10px 14px;min-height:42px;border-radius:999px;cursor:pointer;box-shadow:0 6px 18px rgba(0,0,0,.55);}
 @media (orientation:landscape) and (max-height:560px){
   #boardStage:fullscreen .playstatus,#boardStage:fullscreen .matchchat,#boardStage:fullscreen .utilrow,
   body.board-fs-on #boardStage .playstatus,body.board-fs-on #boardStage .matchchat,body.board-fs-on #boardStage .utilrow{display:none !important;}
@@ -22847,5 +22853,31 @@ body.board-fs-active #boardFsExitFloat{display:block;position:fixed;top:calc(54p
   renderParkedList();
 })();
 </script>
+<style id="kd-board-size-fix">
+/* ============================================================
+   BOARD SIZE FIX (final override — placed last so it wins over
+   every earlier boardframe width rule) — the board was sized
+   off the screen HEIGHT (100dvh minus up to 482px on viewports
+   under 720px tall), so on a phone with browser chrome showing
+   it collapsed to ~190px wide on a 390px-wide screen: less than
+   half the phone. Now, on phone-width screens, the board sizes
+   off the WIDTH first — full width minus the page margins, with
+   only a modest height allowance and a floor so it can never be
+   crushed again. On short viewports the match screen scrolls —
+   the same trade the layout already made under 640px — instead
+   of shrinking the board. Board-fullscreen sizing (the
+   higher-specificity #boardStage rules) is untouched.
+   ============================================================ */
+@media (max-width:700px){
+  body.playing .boardframe{width:min(calc(100vw - 12px),calc(100dvh - 264px));min-width:min(320px,calc(100vw - 12px));}
+}
+@media (max-width:700px) and (max-height:760px){
+  body.playing{overflow-y:auto;height:auto;min-height:100dvh;}
+  body.playing .wrap{height:auto;max-height:none;overflow:visible;min-height:100dvh;}
+  body.playing .layout{flex:0 0 auto;}
+  body.playing .layout>section{height:auto;}
+  body.playing .boardframe{width:min(calc(100vw - 12px),max(320px,calc(100dvh - 264px)));min-width:min(320px,calc(100vw - 12px));}
+}
+</style>
 </body>
 </html>
