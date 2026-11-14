@@ -1,6 +1,6 @@
 /* Kings & Dice service worker: Web Push for async invites. */
 self.addEventListener("push", function (event) {
-  var data = { title: "Kings & Dice", body: "Your friend is ready to play!", url: "https://kingsanddice.github.io/" };
+  var data = { title: "Kings & Dice", body: "Your friend is ready to play!", url: "https://ranagames.github.io/" };
   try {
     if (event.data) {
       var parsed = event.data.json();
@@ -30,12 +30,12 @@ self.addEventListener("push", function (event) {
 });
 self.addEventListener("notificationclick", function (event) {
   event.notification.close();
-  var url = (event.notification.data && event.notification.data.url) || "https://kingsanddice.github.io/";
+  var url = (event.notification.data && event.notification.data.url) || "https://ranagames.github.io/";
   event.waitUntil(
     clients.matchAll({ type: "window", includeUncontrolled: true }).then(function (list) {
       for (var i = 0; i < list.length; i++) {
         var c = list[i];
-        if (c.url && c.url.indexOf("kingsanddice.github.io") !== -1 && "focus" in c) {
+        if (c.url && c.url.indexOf("ranagames.github.io") !== -1 && "focus" in c) {
           if ("navigate" in c) { try { c.navigate(url); } catch (e) {} }
           return c.focus();
         }
