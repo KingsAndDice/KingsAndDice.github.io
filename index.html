@@ -10485,9 +10485,9 @@ applyCosmetics();
 
 /* ---------- radio: one station — House (3-track playlist, loops) ---------- */
 var HOUSE_TRACKS = [
-  { title:"Tropical Love — Del", url:"https://kingsanddice.github.io/music/tropical-love-del.mp3" },
-  { title:"What We Had That Night — RetroBlue", url:"https://kingsanddice.github.io/music/retroblue-what-we-had-that-night.mp3" },
-  { title:"Running — Jens East (feat. Elske)", url:"https://kingsanddice.github.io/music/jens-east-running.mp3" }
+  { title:"Tropical Love — Del", url:"https://ranagames.github.io/music/tropical-love-del.mp3" },
+  { title:"What We Had That Night — RetroBlue", url:"https://ranagames.github.io/music/retroblue-what-we-had-that-night.mp3" },
+  { title:"Running — Jens East (feat. Elske)", url:"https://ranagames.github.io/music/jens-east-running.mp3" }
 ];
 var HOUSE_TRACK_INDEX = 0;
 function houseTrack(){ return HOUSE_TRACKS[HOUSE_TRACK_INDEX]; }
@@ -11785,7 +11785,7 @@ function srvRenderWaitRoom(){
 /* Invite / replay links always point at the game's public home —
    never at this page's own address (inside the app shell that
    address is an internal gateway URL, not a shareable link). */
-var KD_PUBLIC_BASE = "https://kingsanddice.github.io/";
+var KD_PUBLIC_BASE = "https://ranagames.github.io/";
 function srvInviteLink(){
   if (!SRV.roomCode) return "";
   return KD_PUBLIC_BASE + "?room=" + encodeURIComponent(SRV.roomCode);
@@ -22032,7 +22032,7 @@ body.board-fs-active #boardFsExitFloat{display:block;position:fixed;top:auto;bot
 (function(){
   "use strict";
   function $(id){ return document.getElementById(id); }
-  var BASE = (typeof KD_PUBLIC_BASE !== "undefined" && KD_PUBLIC_BASE) || "https://kingsanddice.github.io/";
+  var BASE = (typeof KD_PUBLIC_BASE !== "undefined" && KD_PUBLIC_BASE) || "https://ranagames.github.io/";
   function roomInfo(){
     try{ if (typeof SRV !== "undefined" && SRV.active && SRV.roomCode) return { code: SRV.roomCode, kind: "srv" }; }catch(e){}
     try{ if (typeof LIVE !== "undefined" && LIVE.code && (LIVE.status === "waiting" || LIVE.status === "connected")) return { code: LIVE.code, kind: "p2p" }; }catch(e){}
@@ -22249,14 +22249,14 @@ body.board-fs-active #boardFsExitFloat{display:block;position:fixed;top:auto;bot
 <!--
   ============================================================
   sw.js — SERVICE WORKER SOURCE (publish as a separate file named
-  sw.js at the SITE ROOT, next to index.html, on kingsanddice.github.io)
+  sw.js at the SITE ROOT, next to index.html, on ranagames.github.io)
   The page below registers "sw.js" and fails silently where it is
   absent (e.g. inside the Muse app shell). Everything between the
   SW-SOURCE-START and SW-SOURCE-END markers is the complete file.
   SW-SOURCE-START
   /* Kings & Dice service worker: Web Push for async invites. */
   self.addEventListener("push", function (event) {
-    var data = { title: "Kings & Dice", body: "Your friend is ready to play!", url: "https://kingsanddice.github.io/" };
+    var data = { title: "Kings & Dice", body: "Your friend is ready to play!", url: "https://ranagames.github.io/" };
     try {
       if (event.data) {
         var parsed = event.data.json();
@@ -22286,12 +22286,12 @@ body.board-fs-active #boardFsExitFloat{display:block;position:fixed;top:auto;bot
   });
   self.addEventListener("notificationclick", function (event) {
     event.notification.close();
-    var url = (event.notification.data && event.notification.data.url) || "https://kingsanddice.github.io/";
+    var url = (event.notification.data && event.notification.data.url) || "https://ranagames.github.io/";
     event.waitUntil(
       clients.matchAll({ type: "window", includeUncontrolled: true }).then(function (list) {
         for (var i = 0; i < list.length; i++) {
           var c = list[i];
-          if (c.url && c.url.indexOf("kingsanddice.github.io") !== -1 && "focus" in c) {
+          if (c.url && c.url.indexOf("ranagames.github.io") !== -1 && "focus" in c) {
             if ("navigate" in c) { try { c.navigate(url); } catch (e) {} }
             return c.focus();
           }
@@ -22327,7 +22327,7 @@ body.board-fs-active #boardFsExitFloat{display:block;position:fixed;top:auto;bot
   "use strict";
   function $(id){ return document.getElementById(id); }
   var API = (typeof SRV_HTTP !== "undefined" && SRV_HTTP) || "https://kings-and-dice-server.onrender.com";
-  var BASE = (typeof KD_PUBLIC_BASE !== "undefined" && KD_PUBLIC_BASE) || "https://kingsanddice.github.io/";
+  var BASE = (typeof KD_PUBLIC_BASE !== "undefined" && KD_PUBLIC_BASE) || "https://ranagames.github.io/";
   var LS_KEY = "kd-parked-invites";
   var SERVER_MODES = { normal: 1, hill: 1 };
 
